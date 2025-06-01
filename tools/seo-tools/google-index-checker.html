@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Index Checker - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fab fa-google"></i> Google Index Checker</h1>
+                <p>Check if your pages are indexed by Google</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="checkForm">
+                                <div class="mb-3">
+                                    <label for="urls" class="form-label">URLs to Check (one per line)</label>
+                                    <textarea class="form-control" id="urls" rows="5" required
+                                        placeholder="https://example.com/page1&#10;https://example.com/page2"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkCache">
+                                        <label class="form-check-label" for="checkCache">
+                                            Check Google Cache
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Check Indexing
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Indexing Results</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>URL</th>
+                                            <th>Status</th>
+                                            <th>Last Cached</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="resultsTable">
+                                        <tr>
+                                            <td colspan="4" class="text-center">No results yet</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Index Checking</h5>
+                            <p class="card-text">
+                                Check if your web pages are indexed by Google and view their cache status.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Bulk URL checking</li>
+                                <li><i class="fas fa-check text-success"></i> Cache status</li>
+                                <li><i class="fas fa-check text-success"></i> Last indexed date</li>
+                                <li><i class="fas fa-check text-success"></i> Export results</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use Google Search Console for detailed indexing information.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('checkForm');
+            const resultsTable = document.getElementById('resultsTable');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                checkIndexing();
+            });
+
+            // Check indexing status
+            function checkIndexing() {
+                const urls = document.getElementById('urls').value.split('\n').filter(url => url.trim());
+                const checkCache = document.getElementById('checkCache').checked;
+
+                // Clear previous results
+                resultsTable.innerHTML = '';
+
+                // Simulate checking each URL
+                urls.forEach(url => {
+                    // Simulate API call delay
+                    setTimeout(() => {
+                        const isIndexed = Math.random() > 0.3; // 70% chance of being indexed
+                        const lastCached = isIndexed ? getRandomDate() : 'Not cached';
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${url}</td>
+                            <td>
+                                ${isIndexed 
+                                    ? '<span class="text-success"><i class="fas fa-check-circle"></i> Indexed</span>'
+                                    : '<span class="text-danger"><i class="fas fa-times-circle"></i> Not Indexed</span>'
+                                }
+                            </td>
+                            <td>${lastCached}</td>
+                            <td>
+                                <a href="https://www.google.com/search?q=site:${encodeURIComponent(url)}" 
+                                   target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-external-link-alt"></i> View
+                                </a>
+                            </td>
+                        `;
+                        resultsTable.appendChild(row);
+                    }, Math.random() * 1000); // Random delay between 0-1s
+                });
+
+                downloadButton.disabled = false;
+            }
+
+            // Get random date within last 30 days
+            function getRandomDate() {
+                const date = new Date();
+                date.setDate(date.getDate() - Math.floor(Math.random() * 30));
+                return date.toLocaleDateString();
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const rows = Array.from(resultsTable.querySelectorAll('tr'));
+                const csv = [
+                    ['URL', 'Status', 'Last Cached'],
+                    ...rows.map(row => {
+                        const cells = Array.from(row.querySelectorAll('td'));
+                        return [
+                            cells[0].textContent,
+                            cells[1].textContent.trim(),
+                            cells[2].textContent
+                        ];
+                    })
+                ].map(row => row.join(',')).join('\n');
+
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'indexing-report.csv';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

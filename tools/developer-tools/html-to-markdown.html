@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML to Markdown Converter - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <!-- Highlight.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/markdown.min.js"></script>
+    <!-- Turndown for HTML to Markdown conversion -->
+    <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.js"></script>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-exchange-alt"></i> HTML to Markdown Converter</h1>
+                <p>Convert HTML to Markdown format</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="converterForm">
+                                <div class="mb-3">
+                                    <label for="input" class="form-label">Enter your HTML</label>
+                                    <textarea class="form-control font-monospace" id="input" rows="10" placeholder="Paste your HTML here..."></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Conversion Options</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="headingStyle" checked>
+                                                <label class="form-check-label" for="headingStyle">
+                                                    Use # for headings
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="hrStyle" checked>
+                                                <label class="form-check-label" for="hrStyle">
+                                                    Use --- for horizontal rules
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="bulletListMarker" checked>
+                                                <label class="form-check-label" for="bulletListMarker">
+                                                    Use - for bullet lists
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="codeBlockStyle" checked>
+                                                <label class="form-check-label" for="codeBlockStyle">
+                                                    Use ``` for code blocks
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="convertButton">
+                                        <i class="fas fa-exchange-alt"></i> Convert to Markdown
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Markdown Output</h5>
+                            <div class="mb-3">
+                                <pre><code class="language-markdown" id="output"></code></pre>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="copyButton" disabled>
+                                    <i class="fas fa-copy"></i> Copy to Clipboard
+                                </button>
+                                <button class="btn btn-outline-secondary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Markdown
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Markdown Preview</h5>
+                            <div id="preview" class="markdown-preview p-3 border rounded">
+                                <p class="text-muted">Convert HTML to see preview</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About HTML to Markdown Converter</h5>
+                            <p class="card-text">
+                                Convert HTML content to Markdown format with various
+                                customization options.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> HTML to Markdown conversion</li>
+                                <li><i class="fas fa-check text-success"></i> Customizable output</li>
+                                <li><i class="fas fa-check text-success"></i> Live preview</li>
+                                <li><i class="fas fa-check text-success"></i> Export options</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the preview to check the converted Markdown.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Marked.js for Markdown preview -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('input');
+            const output = document.getElementById('output');
+            const preview = document.getElementById('preview');
+            const convertButton = document.getElementById('convertButton');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+            const headingStyle = document.getElementById('headingStyle');
+            const hrStyle = document.getElementById('hrStyle');
+            const bulletListMarker = document.getElementById('bulletListMarker');
+            const codeBlockStyle = document.getElementById('codeBlockStyle');
+
+            // Initialize Turndown
+            const turndownService = new TurndownService({
+                headingStyle: 'atx',
+                hr: '---',
+                bulletListMarker: '-',
+                codeBlockStyle: 'fenced'
+            });
+
+            // Configure Turndown options
+            turndownService.addRule('strikethrough', {
+                filter: ['del', 's'],
+                replacement: function(content) {
+                    return '~~' + content + '~~';
+                }
+            });
+
+            // Convert HTML to Markdown
+            convertButton.addEventListener('click', function() {
+                const html = input.value.trim();
+                if (!html) {
+                    alert('Please enter some HTML');
+                    return;
+                }
+
+                // Update Turndown options
+                turndownService.options.headingStyle = headingStyle.checked ? 'atx' : 'setext';
+                turndownService.options.hr = hrStyle.checked ? '---' : '***';
+                turndownService.options.bulletListMarker = bulletListMarker.checked ? '-' : '*';
+                turndownService.options.codeBlockStyle = codeBlockStyle.checked ? 'fenced' : 'indented';
+
+                // Convert HTML to Markdown
+                const markdown = turndownService.turndown(html);
+
+                // Update output
+                output.textContent = markdown;
+                hljs.highlightElement(output);
+
+                // Update preview
+                preview.innerHTML = marked.parse(markdown);
+
+                // Enable buttons
+                copyButton.disabled = false;
+                downloadButton.disabled = false;
+            });
+
+            // Handle copy to clipboard
+            copyButton.addEventListener('click', function() {
+                const text = output.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+                    }, 2000);
+                });
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const text = output.textContent;
+                const blob = new Blob([text], { type: 'text/markdown' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'converted.md';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Initialize highlight.js
+            hljs.configure({
+                languages: ['markdown']
+            });
+
+            // Configure marked.js
+            marked.setOptions({
+                breaks: true,
+                gfm: true
+            });
+        });
+    </script>
+</body>
+</html> 

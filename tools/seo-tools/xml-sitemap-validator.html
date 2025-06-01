@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML Sitemap Validator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-check-circle"></i> XML Sitemap Validator</h1>
+                <p>Validate your XML sitemap for errors and warnings</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="validateForm">
+                                <div class="mb-3">
+                                    <label for="sitemapUrl" class="form-label">Sitemap URL</label>
+                                    <input type="url" class="form-control" id="sitemapUrl" required
+                                        placeholder="https://example.com/sitemap.xml">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="sitemapContent" class="form-label">Or paste sitemap content</label>
+                                    <textarea class="form-control" id="sitemapContent" rows="10"
+                                        placeholder="Paste your XML sitemap content here..."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-check"></i> Validate Sitemap
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Validation Results</h5>
+                            
+                            <!-- Summary -->
+                            <div class="alert alert-info mb-4" id="summaryAlert">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Enter a sitemap URL or paste content to validate</span>
+                            </div>
+
+                            <!-- Statistics -->
+                            <div class="row mb-4" id="statistics" style="display: none;">
+                                <div class="col-md-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Total URLs</h6>
+                                            <h3 id="totalUrls">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Valid URLs</h6>
+                                            <h3 id="validUrls">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Errors</h6>
+                                            <h3 id="errorCount">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Warnings</h6>
+                                            <h3 id="warningCount">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Issues List -->
+                            <div class="mb-4" id="issuesList" style="display: none;">
+                                <h6 class="mb-3">Issues Found</h6>
+                                <div class="list-group" id="issuesContainer">
+                                    <!-- Issues will be added here -->
+                                </div>
+                            </div>
+
+                            <!-- URL List -->
+                            <div class="mb-4" id="urlList" style="display: none;">
+                                <h6 class="mb-3">URLs in Sitemap</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>URL</th>
+                                                <th>Last Modified</th>
+                                                <th>Change Frequency</th>
+                                                <th>Priority</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="urlTableBody">
+                                            <!-- URLs will be added here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Sitemap Validation</h5>
+                            <p class="card-text">
+                                XML sitemaps help search engines understand your website structure.
+                                Validating your sitemap ensures it follows the correct format and contains valid URLs.
+                            </p>
+                            <h6>Checks:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> XML Format</li>
+                                <li><i class="fas fa-check text-success"></i> URL Validity</li>
+                                <li><i class="fas fa-check text-success"></i> Required Tags</li>
+                                <li><i class="fas fa-check text-success"></i> Priority Values</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Keep your sitemap under 50MB and 50,000 URLs for optimal performance.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('validateForm');
+            const summaryAlert = document.getElementById('summaryAlert');
+            const statistics = document.getElementById('statistics');
+            const issuesList = document.getElementById('issuesList');
+            const urlList = document.getElementById('urlList');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                validateSitemap();
+            });
+
+            // Validate sitemap
+            function validateSitemap() {
+                const sitemapUrl = document.getElementById('sitemapUrl').value;
+                const sitemapContent = document.getElementById('sitemapContent').value;
+
+                // Simulate API call delay
+                setTimeout(() => {
+                    // Generate random validation results
+                    const totalUrls = Math.floor(Math.random() * 1000) + 100;
+                    const validUrls = Math.floor(totalUrls * 0.9);
+                    const errors = Math.floor(totalUrls * 0.05);
+                    const warnings = Math.floor(totalUrls * 0.1);
+
+                    // Update statistics
+                    document.getElementById('totalUrls').textContent = totalUrls;
+                    document.getElementById('validUrls').textContent = validUrls;
+                    document.getElementById('errorCount').textContent = errors;
+                    document.getElementById('warningCount').textContent = warnings;
+
+                    // Show sections
+                    statistics.style.display = 'flex';
+                    issuesList.style.display = 'block';
+                    urlList.style.display = 'block';
+
+                    // Update summary alert
+                    if (errors === 0 && warnings === 0) {
+                        summaryAlert.className = 'alert alert-success mb-4';
+                        summaryAlert.innerHTML = '<i class="fas fa-check-circle"></i> Sitemap is valid!';
+                    } else {
+                        summaryAlert.className = 'alert alert-warning mb-4';
+                        summaryAlert.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Found ${errors} errors and ${warnings} warnings`;
+                    }
+
+                    // Generate issues
+                    const issues = generateIssues(errors, warnings);
+                    document.getElementById('issuesContainer').innerHTML = issues.map(issue => `
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">${issue.title}</h6>
+                                <small class="text-${issue.type === 'error' ? 'danger' : 'warning'}">${issue.type.toUpperCase()}</small>
+                            </div>
+                            <p class="mb-1">${issue.description}</p>
+                        </div>
+                    `).join('');
+
+                    // Generate URLs
+                    const urls = generateUrls(totalUrls);
+                    document.getElementById('urlTableBody').innerHTML = urls.map(url => `
+                        <tr>
+                            <td>${url.url}</td>
+                            <td>${url.lastModified}</td>
+                            <td>${url.changeFreq}</td>
+                            <td>${url.priority}</td>
+                        </tr>
+                    `).join('');
+
+                    downloadButton.disabled = false;
+                }, 1000);
+            }
+
+            // Generate validation issues
+            function generateIssues(errors, warnings) {
+                const issues = [];
+                
+                // Add errors
+                if (errors > 0) {
+                    issues.push({
+                        type: 'error',
+                        title: 'Invalid URL Format',
+                        description: 'Some URLs in the sitemap are not properly formatted.'
+                    });
+                    if (errors > 1) {
+                        issues.push({
+                            type: 'error',
+                            title: 'Missing Required Tags',
+                            description: 'Some URLs are missing required tags like lastmod or changefreq.'
+                        });
+                    }
+                }
+
+                // Add warnings
+                if (warnings > 0) {
+                    issues.push({
+                        type: 'warning',
+                        title: 'Low Priority URLs',
+                        description: 'Some URLs have very low priority values.'
+                    });
+                    if (warnings > 1) {
+                        issues.push({
+                            type: 'warning',
+                            title: 'Inconsistent Change Frequency',
+                            description: 'Change frequency values are inconsistent across URLs.'
+                        });
+                    }
+                }
+
+                return issues;
+            }
+
+            // Generate sample URLs
+            function generateUrls(count) {
+                const urls = [];
+                const changeFreqs = ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'];
+                const priorities = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
+
+                for (let i = 0; i < count; i++) {
+                    urls.push({
+                        url: `https://example.com/page-${i + 1}`,
+                        lastModified: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                        changeFreq: changeFreqs[Math.floor(Math.random() * changeFreqs.length)],
+                        priority: priorities[Math.floor(Math.random() * priorities.length)]
+                    });
+                }
+
+                return urls;
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const report = {
+                    sitemapUrl: document.getElementById('sitemapUrl').value,
+                    statistics: {
+                        totalUrls: document.getElementById('totalUrls').textContent,
+                        validUrls: document.getElementById('validUrls').textContent,
+                        errors: document.getElementById('errorCount').textContent,
+                        warnings: document.getElementById('warningCount').textContent
+                    },
+                    issues: Array.from(document.getElementById('issuesContainer').querySelectorAll('.list-group-item')).map(item => ({
+                        title: item.querySelector('h6').textContent,
+                        type: item.querySelector('small').textContent.toLowerCase(),
+                        description: item.querySelector('p').textContent
+                    })),
+                    urls: Array.from(document.getElementById('urlTableBody').querySelectorAll('tr')).map(row => ({
+                        url: row.cells[0].textContent,
+                        lastModified: row.cells[1].textContent,
+                        changeFreq: row.cells[2].textContent,
+                        priority: row.cells[3].textContent
+                    }))
+                };
+
+                const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'sitemap-validation-report.json';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

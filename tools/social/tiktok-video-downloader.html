@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Video Downloader - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fab fa-tiktok"></i> TikTok Video Downloader</h1>
+                <p>Download high-quality videos from TikTok posts</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="videoForm">
+                                <!-- URL Input -->
+                                <div class="mb-3">
+                                    <label for="tiktokUrl" class="form-label">TikTok Video URL</label>
+                                    <div class="input-group">
+                                        <input type="url" class="form-control" id="tiktokUrl" 
+                                               placeholder="Enter TikTok video URL (e.g., https://www.tiktok.com/@username/video/...)" required>
+                                        <button class="btn btn-outline-secondary" type="button" id="clearButton">
+                                            <i class="fas fa-eraser"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Paste the full TikTok video URL here</div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" id="fetchButton">
+                                        <i class="fas fa-search"></i> Fetch Video
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Video Section -->
+                    <div class="card mt-4" id="videoCard" style="display: none;">
+                        <div class="card-body">
+                            <h5 class="card-title">Available Video</h5>
+                            <div id="videoContainer"></div>
+                        </div>
+                    </div>
+
+                    <!-- Video Information Section -->
+                    <div class="card mt-4" id="videoInfoCard" style="display: none;">
+                        <div class="card-body">
+                            <h5 class="card-title">Video Information</h5>
+                            <div id="videoInfo"></div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Downloads</h5>
+                            <div id="history" class="text-center text-muted">
+                                No videos downloaded yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About TikTok Video Downloader</h5>
+                            <p class="card-text">
+                                Download high-quality videos from any TikTok post.
+                                Supports various video formats and qualities.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> High-quality downloads</li>
+                                <li><i class="fas fa-check text-success"></i> Multiple formats</li>
+                                <li><i class="fas fa-check text-success"></i> Video preview</li>
+                                <li><i class="fas fa-check text-success"></i> Download history</li>
+                                <li><i class="fas fa-check text-success"></i> Easy to use</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Make sure the TikTok video is public and accessible.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tiktokUrl = document.getElementById('tiktokUrl');
+            const fetchButton = document.getElementById('fetchButton');
+            const clearButton = document.getElementById('clearButton');
+            const videoCard = document.getElementById('videoCard');
+            const videoInfoCard = document.getElementById('videoInfoCard');
+            const videoContainer = document.getElementById('videoContainer');
+            const videoInfo = document.getElementById('videoInfo');
+            const history = document.getElementById('history');
+            let downloadHistory = [];
+
+            // Extract video ID from URL
+            function extractVideoId(url) {
+                const regExp = /tiktok.com\/@[\w.-]+\/video\/(\d+)/;
+                const match = url.match(regExp);
+                return match ? match[1] : null;
+            }
+
+            // Fetch video
+            async function fetchVideo() {
+                try {
+                    const url = tiktokUrl.value.trim();
+                    const videoId = extractVideoId(url);
+                    
+                    if (!videoId) {
+                        throw new Error('Please enter a valid TikTok video URL');
+                    }
+
+                    // Show loading state
+                    videoContainer.innerHTML = `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Fetching video...</p>
+                        </div>
+                    `;
+                    videoCard.style.display = 'block';
+                    videoInfoCard.style.display = 'none';
+
+                    // Fetch video data (simulated for demo)
+                    // In a real implementation, you would need to use TikTok's API or a proxy service
+                    const videoData = {
+                        id: videoId,
+                        username: 'example_user',
+                        description: 'This is a sample TikTok video description #trending #viral',
+                        timestamp: new Date().toLocaleString(),
+                        stats: {
+                            likes: '1.2K',
+                            comments: '234',
+                            shares: '56'
+                        },
+                        video: {
+                            url: 'https://example.com/sample-video.mp4',
+                            thumbnail: 'https://via.placeholder.com/1080x1920',
+                            duration: '00:15',
+                            size: '2.8 MB',
+                            formats: [
+                                { quality: 'HD', url: 'https://example.com/sample-video-hd.mp4' },
+                                { quality: 'SD', url: 'https://example.com/sample-video-sd.mp4' }
+                            ]
+                        }
+                    };
+
+                    // Display video information
+                    videoInfo.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Username:</strong> @${videoData.username}</p>
+                                <p><strong>Posted:</strong> ${videoData.timestamp}</p>
+                                <p><strong>Stats:</strong></p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-heart text-danger"></i> ${videoData.stats.likes} likes</li>
+                                    <li><i class="fas fa-comment text-primary"></i> ${videoData.stats.comments} comments</li>
+                                    <li><i class="fas fa-share text-success"></i> ${videoData.stats.shares} shares</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Description:</strong></p>
+                                <p class="text-muted">${videoData.description}</p>
+                            </div>
+                        </div>
+                    `;
+                    videoInfoCard.style.display = 'block';
+
+                    // Display video
+                    videoContainer.innerHTML = `
+                        <div class="card">
+                            <img src="${videoData.video.thumbnail}" class="card-img-top" alt="Video Thumbnail">
+                            <div class="card-body">
+                                <h6 class="card-title">Video Information</h6>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        Duration: ${videoData.video.duration} | Size: ${videoData.video.size}
+                                    </small>
+                                </p>
+                                <div class="d-grid gap-2">
+                                    ${videoData.video.formats.map(format => `
+                                        <button class="btn btn-primary" onclick="downloadVideo('${format.url}', '${format.quality}')">
+                                            <i class="fas fa-download"></i> Download ${format.quality}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Add to history
+                    downloadHistory.unshift({
+                        videoId: videoId,
+                        username: videoData.username,
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+                } catch (error) {
+                    videoContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4 class="alert-heading">Error</h4>
+                            <p class="mb-0">${error.message}</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // Download video
+            window.downloadVideo = function(url, quality) {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `tiktok-video-${quality}.mp4`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+
+            // Update history display
+            function updateHistory() {
+                if (downloadHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No videos downloaded yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Username</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${downloadHistory.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>@${item.username}</td>
+                                        <td>
+                                            <a href="https://www.tiktok.com/@${item.username}/video/${item.videoId}" 
+                                               target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-external-link-alt"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Clear form
+            function clearForm() {
+                tiktokUrl.value = '';
+                videoCard.style.display = 'none';
+                videoInfoCard.style.display = 'none';
+                videoContainer.innerHTML = '';
+                videoInfo.innerHTML = '';
+            }
+
+            // Event listeners
+            fetchButton.addEventListener('click', fetchVideo);
+            clearButton.addEventListener('click', clearForm);
+        });
+    </script>
+</body>
+</html> 

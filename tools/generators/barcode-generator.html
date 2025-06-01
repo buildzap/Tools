@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <!-- JsBarcode -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        .barcode-preview {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .barcode-preview svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .barcode-history-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .barcode-history-item:last-child {
+            border-bottom: none;
+        }
+        .barcode-history-item svg {
+            width: 100px;
+            height: 50px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-barcode"></i> Barcode Generator</h1>
+                <p>Generate various types of barcodes with customization options</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Barcode Preview -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Barcode Preview</h5>
+                            <div class="barcode-preview" id="barcodePreview">
+                                <p class="text-muted">Enter data to generate barcode</p>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-success" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Barcode
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Barcode Type Selection -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Barcode Type</h5>
+                            <select class="form-select" id="barcodeType">
+                                <option value="CODE128">Code 128</option>
+                                <option value="EAN13">EAN-13</option>
+                                <option value="EAN8">EAN-8</option>
+                                <option value="UPC">UPC</option>
+                                <option value="CODE39">Code 39</option>
+                                <option value="ITF14">ITF-14</option>
+                                <option value="MSI">MSI</option>
+                                <option value="pharmacode">Pharmacode</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Content Input -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Content</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Data</label>
+                                <input type="text" class="form-control" id="barcodeData" placeholder="Enter barcode data">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Barcode Options -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Barcode Options</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Width</label>
+                                    <input type="range" class="form-range" id="barcodeWidth" min="1" max="5" step="0.1" value="2">
+                                    <div class="text-center" id="widthValue">2</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Height</label>
+                                    <input type="range" class="form-range" id="barcodeHeight" min="20" max="200" value="100">
+                                    <div class="text-center" id="heightValue">100px</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Display Value</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="displayValue" checked>
+                                        <label class="form-check-label" for="displayValue">Show value below barcode</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Font Size</label>
+                                    <input type="range" class="form-range" id="fontSize" min="10" max="30" value="20">
+                                    <div class="text-center" id="fontSizeValue">20px</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Line Color</label>
+                                    <input type="color" class="form-control form-control-color" id="lineColor" value="#000000">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Background Color</label>
+                                    <input type="color" class="form-control form-control-color" id="backgroundColor" value="#FFFFFF">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Barcodes</h5>
+                            <div id="history" class="text-center text-muted">
+                                No barcodes generated yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Barcode Generator</h5>
+                            <p class="card-text">
+                                Generate various types of barcodes with customization options.
+                                Download and use in your projects.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple barcode types</li>
+                                <li><i class="fas fa-check text-success"></i> Customizable appearance</li>
+                                <li><i class="fas fa-check text-success"></i> Size and color options</li>
+                                <li><i class="fas fa-check text-success"></i> Download options</li>
+                                <li><i class="fas fa-check text-success"></i> History tracking</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Different barcode types have different requirements for data format and length.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const barcodePreview = document.getElementById('barcodePreview');
+            const downloadButton = document.getElementById('downloadButton');
+            const history = document.getElementById('history');
+            let barcodeHistory = [];
+
+            // Generate barcode
+            function generateBarcode() {
+                const data = document.getElementById('barcodeData').value;
+                if (!data) {
+                    barcodePreview.innerHTML = '<p class="text-muted">Enter data to generate barcode</p>';
+                    downloadButton.disabled = true;
+                    return;
+                }
+
+                try {
+                    const type = document.getElementById('barcodeType').value;
+                    const width = document.getElementById('barcodeWidth').value;
+                    const height = document.getElementById('barcodeHeight').value;
+                    const displayValue = document.getElementById('displayValue').checked;
+                    const fontSize = document.getElementById('fontSize').value;
+                    const lineColor = document.getElementById('lineColor').value;
+                    const backgroundColor = document.getElementById('backgroundColor').value;
+
+                    barcodePreview.innerHTML = `<svg id="barcode"></svg>`;
+                    JsBarcode("#barcode", data, {
+                        format: type,
+                        width: width,
+                        height: height,
+                        displayValue: displayValue,
+                        fontSize: fontSize,
+                        lineColor: lineColor,
+                        background: backgroundColor
+                    });
+
+                    downloadButton.disabled = false;
+                } catch (error) {
+                    barcodePreview.innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
+                    downloadButton.disabled = true;
+                }
+            }
+
+            // Download barcode
+            function downloadBarcode() {
+                const svg = barcodePreview.querySelector('svg');
+                const svgData = new XMLSerializer().serializeToString(svg);
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    const link = document.createElement('a');
+                    link.download = `barcode-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    // Add to history
+                    barcodeHistory.unshift({
+                        type: document.getElementById('barcodeType').value,
+                        data: document.getElementById('barcodeData').value,
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+                };
+
+                img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+            }
+
+            // Update history display
+            function updateHistory() {
+                if (barcodeHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No barcodes generated yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Type</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${barcodeHistory.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>${item.type}</td>
+                                        <td>${item.data}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Event listeners
+            document.getElementById('barcodeType').addEventListener('change', generateBarcode);
+            document.getElementById('barcodeData').addEventListener('input', generateBarcode);
+            document.getElementById('barcodeWidth').addEventListener('input', (e) => {
+                document.getElementById('widthValue').textContent = e.target.value;
+                generateBarcode();
+            });
+            document.getElementById('barcodeHeight').addEventListener('input', (e) => {
+                document.getElementById('heightValue').textContent = `${e.target.value}px`;
+                generateBarcode();
+            });
+            document.getElementById('displayValue').addEventListener('change', generateBarcode);
+            document.getElementById('fontSize').addEventListener('input', (e) => {
+                document.getElementById('fontSizeValue').textContent = `${e.target.value}px`;
+                generateBarcode();
+            });
+            document.getElementById('lineColor').addEventListener('input', generateBarcode);
+            document.getElementById('backgroundColor').addEventListener('input', generateBarcode);
+            downloadButton.addEventListener('click', downloadBarcode);
+
+            // Initialize
+            generateBarcode();
+        });
+    </script>
+</body>
+</html> 

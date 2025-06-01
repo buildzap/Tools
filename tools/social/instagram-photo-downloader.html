@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Photo Downloader - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fab fa-instagram"></i> Instagram Photo Downloader</h1>
+                <p>Download high-quality photos from Instagram posts</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="photoForm">
+                                <!-- URL Input -->
+                                <div class="mb-3">
+                                    <label for="postUrl" class="form-label">Instagram Post URL</label>
+                                    <div class="input-group">
+                                        <input type="url" class="form-control" id="postUrl" 
+                                               placeholder="Enter Instagram post URL (e.g., https://www.instagram.com/p/...)" required>
+                                        <button class="btn btn-outline-secondary" type="button" id="clearButton">
+                                            <i class="fas fa-eraser"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Paste the full Instagram post URL here</div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" id="fetchButton">
+                                        <i class="fas fa-search"></i> Fetch Photos
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Photos Section -->
+                    <div class="card mt-4" id="photosCard" style="display: none;">
+                        <div class="card-body">
+                            <h5 class="card-title">Available Photos</h5>
+                            <div class="row" id="photosList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Post Information Section -->
+                    <div class="card mt-4" id="postInfoCard" style="display: none;">
+                        <div class="card-body">
+                            <h5 class="card-title">Post Information</h5>
+                            <div id="postInfo"></div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Downloads</h5>
+                            <div id="history" class="text-center text-muted">
+                                No photos downloaded yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Instagram Photo Downloader</h5>
+                            <p class="card-text">
+                                Download high-quality photos from any Instagram post.
+                                Supports single photos and carousel posts.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> High-quality downloads</li>
+                                <li><i class="fas fa-check text-success"></i> Carousel support</li>
+                                <li><i class="fas fa-check text-success"></i> Post information</li>
+                                <li><i class="fas fa-check text-success"></i> Download history</li>
+                                <li><i class="fas fa-check text-success"></i> Easy to use</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Make sure the Instagram post is public and accessible.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const postUrl = document.getElementById('postUrl');
+            const fetchButton = document.getElementById('fetchButton');
+            const clearButton = document.getElementById('clearButton');
+            const photosCard = document.getElementById('photosCard');
+            const postInfoCard = document.getElementById('postInfoCard');
+            const photosList = document.getElementById('photosList');
+            const postInfo = document.getElementById('postInfo');
+            const history = document.getElementById('history');
+            let downloadHistory = [];
+
+            // Extract post ID from URL
+            function extractPostId(url) {
+                const regExp = /instagram.com\/p\/([^/?]+)/;
+                const match = url.match(regExp);
+                return match ? match[1] : null;
+            }
+
+            // Fetch photos
+            async function fetchPhotos() {
+                try {
+                    const url = postUrl.value.trim();
+                    const postId = extractPostId(url);
+                    
+                    if (!postId) {
+                        throw new Error('Please enter a valid Instagram post URL');
+                    }
+
+                    // Show loading state
+                    photosList.innerHTML = `
+                        <div class="col-12 text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Fetching photos...</p>
+                        </div>
+                    `;
+                    photosCard.style.display = 'block';
+                    postInfoCard.style.display = 'none';
+
+                    // Fetch post data (simulated for demo)
+                    // In a real implementation, you would need to use Instagram's API or a proxy service
+                    const postData = {
+                        id: postId,
+                        username: 'example_user',
+                        caption: 'This is a sample Instagram post caption',
+                        timestamp: new Date().toLocaleString(),
+                        photos: [
+                            {
+                                url: 'https://via.placeholder.com/1080x1080',
+                                width: 1080,
+                                height: 1080
+                            },
+                            {
+                                url: 'https://via.placeholder.com/1080x1080',
+                                width: 1080,
+                                height: 1080
+                            }
+                        ]
+                    };
+
+                    // Display post information
+                    postInfo.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Username:</strong> ${postData.username}</p>
+                                <p><strong>Posted:</strong> ${postData.timestamp}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Caption:</strong></p>
+                                <p class="text-muted">${postData.caption}</p>
+                            </div>
+                        </div>
+                    `;
+                    postInfoCard.style.display = 'block';
+
+                    // Display photos
+                    photosList.innerHTML = postData.photos.map((photo, index) => `
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <img src="${photo.url}" class="card-img-top" alt="Instagram Photo ${index + 1}">
+                                <div class="card-body">
+                                    <h6 class="card-title">Photo ${index + 1}</h6>
+                                    <p class="card-text">
+                                        <small class="text-muted">${photo.width}x${photo.height}</small>
+                                    </p>
+                                    <button class="btn btn-sm btn-primary" onclick="downloadPhoto('${photo.url}', ${index + 1})">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    // Add to history
+                    downloadHistory.unshift({
+                        postId: postId,
+                        username: postData.username,
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+                } catch (error) {
+                    photosList.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                <h4 class="alert-heading">Error</h4>
+                                <p class="mb-0">${error.message}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Download photo
+            window.downloadPhoto = function(url, index) {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `instagram-photo-${index}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+
+            // Update history display
+            function updateHistory() {
+                if (downloadHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No photos downloaded yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Username</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${downloadHistory.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>@${item.username}</td>
+                                        <td>
+                                            <a href="https://www.instagram.com/p/${item.postId}" 
+                                               target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-external-link-alt"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Clear form
+            function clearForm() {
+                postUrl.value = '';
+                photosCard.style.display = 'none';
+                postInfoCard.style.display = 'none';
+                photosList.innerHTML = '';
+                postInfo.innerHTML = '';
+            }
+
+            // Event listeners
+            fetchButton.addEventListener('click', fetchPhotos);
+            clearButton.addEventListener('click', clearForm);
+        });
+    </script>
+</body>
+</html> 

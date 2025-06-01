@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Address Lookup - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <!-- Leaflet CSS for maps -->
+    <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-network-wired"></i> IP Address Lookup</h1>
+                <p>Look up IP address information and geolocation</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="lookupForm">
+                                <div class="mb-3">
+                                    <label for="ipInput" class="form-label">IP Address</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="ipInput" placeholder="Enter IP address (e.g., 8.8.8.8)">
+                                        <button class="btn btn-outline-secondary" type="button" id="myIpButton">
+                                            <i class="fas fa-location-arrow"></i> My IP
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Enter an IPv4 or IPv6 address</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Lookup Options</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="geolocation" checked>
+                                                <label class="form-check-label" for="geolocation">
+                                                    Geolocation
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="network" checked>
+                                                <label class="form-check-label" for="network">
+                                                    Network Info
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="security" checked>
+                                                <label class="form-check-label" for="security">
+                                                    Security Check
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="dns" checked>
+                                                <label class="form-check-label" for="dns">
+                                                    DNS Records
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="lookupButton">
+                                        <i class="fas fa-search"></i> Lookup IP
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">IP Information</h5>
+                            <div id="ipInfo" class="text-center text-muted">
+                                Enter an IP address to see information
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Location Map</h5>
+                            <div id="map" style="height: 300px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Security Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Security Information</h5>
+                            <div id="securityInfo" class="text-center text-muted">
+                                Look up an IP to see security information
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About IP Address Lookup</h5>
+                            <p class="card-text">
+                                Look up detailed information about IP addresses,
+                                including geolocation and security data.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> IP geolocation</li>
+                                <li><i class="fas fa-check text-success"></i> Network information</li>
+                                <li><i class="fas fa-check text-success"></i> Security checks</li>
+                                <li><i class="fas fa-check text-success"></i> DNS records</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the "My IP" button to look up your own IP address.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ipInput = document.getElementById('ipInput');
+            const myIpButton = document.getElementById('myIpButton');
+            const lookupButton = document.getElementById('lookupButton');
+            const ipInfo = document.getElementById('ipInfo');
+            const securityInfo = document.getElementById('securityInfo');
+            const geolocation = document.getElementById('geolocation');
+            const network = document.getElementById('network');
+            const security = document.getElementById('security');
+            const dns = document.getElementById('dns');
+
+            // Initialize map
+            const map = L.map('map').setView([0, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Validate IP address
+            function isValidIP(ip) {
+                const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+                const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+                return ipv4Regex.test(ip) || ipv6Regex.test(ip);
+            }
+
+            // Get my IP address
+            myIpButton.addEventListener('click', async function() {
+                try {
+                    const response = await fetch('https://api.ipify.org?format=json');
+                    const data = await response.json();
+                    ipInput.value = data.ip;
+                } catch (error) {
+                    alert('Error getting your IP address');
+                }
+            });
+
+            // Lookup IP address
+            lookupButton.addEventListener('click', async function() {
+                const ip = ipInput.value.trim();
+                if (!ip) {
+                    alert('Please enter an IP address');
+                    return;
+                }
+
+                if (!isValidIP(ip)) {
+                    alert('Please enter a valid IP address');
+                    return;
+                }
+
+                try {
+                    // Show loading state
+                    ipInfo.innerHTML = '<div class="spinner-border text-primary" role="status"></div>';
+                    securityInfo.innerHTML = '<div class="spinner-border text-primary" role="status"></div>';
+
+                    // Fetch IP information
+                    const response = await fetch(`https://ipapi.co/${ip}/json/`);
+                    const data = await response.json();
+
+                    // Update IP information
+                    updateIPInfo(data);
+                    updateMap(data);
+                    updateSecurityInfo(data);
+                } catch (error) {
+                    alert('Error looking up IP address');
+                    ipInfo.innerHTML = '<div class="alert alert-danger">Error looking up IP address</div>';
+                    securityInfo.innerHTML = '<div class="alert alert-danger">Error looking up security information</div>';
+                }
+            });
+
+            // Update IP information
+            function updateIPInfo(data) {
+                const info = [];
+                if (geolocation.checked) {
+                    info.push(`
+                        <tr>
+                            <th>Location:</th>
+                            <td>${data.city}, ${data.region}, ${data.country_name}</td>
+                        </tr>
+                        <tr>
+                            <th>Coordinates:</th>
+                            <td>${data.latitude}, ${data.longitude}</td>
+                        </tr>
+                        <tr>
+                            <th>Timezone:</th>
+                            <td>${data.timezone}</td>
+                        </tr>
+                    `);
+                }
+                if (network.checked) {
+                    info.push(`
+                        <tr>
+                            <th>ISP:</th>
+                            <td>${data.org}</td>
+                        </tr>
+                        <tr>
+                            <th>ASN:</th>
+                            <td>${data.asn}</td>
+                        </tr>
+                    `);
+                }
+                if (dns.checked) {
+                    info.push(`
+                        <tr>
+                            <th>Hostname:</th>
+                            <td>${data.hostname || 'N/A'}</td>
+                        </tr>
+                    `);
+                }
+
+                ipInfo.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tbody>
+                                ${info.join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Update map
+            function updateMap(data) {
+                if (geolocation.checked && data.latitude && data.longitude) {
+                    map.setView([data.latitude, data.longitude], 10);
+                    L.marker([data.latitude, data.longitude])
+                        .bindPopup(`${data.city}, ${data.country_name}`)
+                        .addTo(map);
+                }
+            }
+
+            // Update security information
+            function updateSecurityInfo(data) {
+                if (!security.checked) {
+                    securityInfo.innerHTML = '<p class="text-muted">Security check disabled</p>';
+                    return;
+                }
+
+                const securityChecks = [
+                    {
+                        name: 'Proxy/VPN',
+                        value: data.proxy || 'No',
+                        status: data.proxy ? 'warning' : 'success'
+                    },
+                    {
+                        name: 'Tor Exit Node',
+                        value: data.tor || 'No',
+                        status: data.tor ? 'danger' : 'success'
+                    },
+                    {
+                        name: 'Hosting Provider',
+                        value: data.hosting || 'No',
+                        status: data.hosting ? 'info' : 'success'
+                    }
+                ];
+
+                securityInfo.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tbody>
+                                ${securityChecks.map(check => `
+                                    <tr>
+                                        <th>${check.name}:</th>
+                                        <td>
+                                            <span class="badge bg-${check.status}">${check.value}</span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+        });
+    </script>
+    <style>
+        #map {
+            border-radius: 0.25rem;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</body>
+</html> 

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Thumbnail Downloader - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fab fa-youtube"></i> YouTube Thumbnail Downloader</h1>
+                <p>Download high-quality thumbnails from any YouTube video</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="thumbnailForm">
+                                <!-- URL Input -->
+                                <div class="mb-3">
+                                    <label for="videoUrl" class="form-label">YouTube Video URL</label>
+                                    <div class="input-group">
+                                        <input type="url" class="form-control" id="videoUrl" 
+                                               placeholder="Enter YouTube video URL (e.g., https://www.youtube.com/watch?v=...)" required>
+                                        <button class="btn btn-outline-secondary" type="button" id="clearButton">
+                                            <i class="fas fa-eraser"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Paste the full YouTube video URL here</div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" id="fetchButton">
+                                        <i class="fas fa-search"></i> Fetch Thumbnails
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Thumbnails Section -->
+                    <div class="card mt-4" id="thumbnailsCard" style="display: none;">
+                        <div class="card-body">
+                            <h5 class="card-title">Available Thumbnails</h5>
+                            <div class="row" id="thumbnailsList"></div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Downloads</h5>
+                            <div id="history" class="text-center text-muted">
+                                No thumbnails downloaded yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About YouTube Thumbnail Downloader</h5>
+                            <p class="card-text">
+                                Download high-quality thumbnails from any YouTube video.
+                                Supports multiple thumbnail resolutions.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple resolutions</li>
+                                <li><i class="fas fa-check text-success"></i> Quick download</li>
+                                <li><i class="fas fa-check text-success"></i> Preview thumbnails</li>
+                                <li><i class="fas fa-check text-success"></i> Download history</li>
+                                <li><i class="fas fa-check text-success"></i> Easy to use</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the highest resolution thumbnail for best quality.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoUrl = document.getElementById('videoUrl');
+            const fetchButton = document.getElementById('fetchButton');
+            const clearButton = document.getElementById('clearButton');
+            const thumbnailsCard = document.getElementById('thumbnailsCard');
+            const thumbnailsList = document.getElementById('thumbnailsList');
+            const history = document.getElementById('history');
+            let downloadHistory = [];
+
+            // Extract video ID from URL
+            function extractVideoId(url) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[2].length === 11) ? match[2] : null;
+            }
+
+            // Generate thumbnail URLs
+            function generateThumbnailUrls(videoId) {
+                return {
+                    maxres: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                    hq: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+                    mq: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+                    sd: `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
+                    default: `https://img.youtube.com/vi/${videoId}/default.jpg`
+                };
+            }
+
+            // Fetch thumbnails
+            async function fetchThumbnails() {
+                try {
+                    const url = videoUrl.value.trim();
+                    const videoId = extractVideoId(url);
+                    
+                    if (!videoId) {
+                        throw new Error('Please enter a valid YouTube video URL');
+                    }
+
+                    // Show loading state
+                    thumbnailsList.innerHTML = `
+                        <div class="col-12 text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Fetching thumbnails...</p>
+                        </div>
+                    `;
+                    thumbnailsCard.style.display = 'block';
+
+                    // Generate thumbnail URLs
+                    const thumbnails = generateThumbnailUrls(videoId);
+
+                    // Display thumbnails
+                    thumbnailsList.innerHTML = `
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <img src="${thumbnails.maxres}" class="card-img-top" alt="Max Resolution Thumbnail">
+                                <div class="card-body">
+                                    <h6 class="card-title">Max Resolution</h6>
+                                    <button class="btn btn-sm btn-primary" onclick="downloadThumbnail('${thumbnails.maxres}', 'maxres')">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <img src="${thumbnails.hq}" class="card-img-top" alt="High Quality Thumbnail">
+                                <div class="card-body">
+                                    <h6 class="card-title">High Quality</h6>
+                                    <button class="btn btn-sm btn-primary" onclick="downloadThumbnail('${thumbnails.hq}', 'hq')">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <img src="${thumbnails.mq}" class="card-img-top" alt="Medium Quality Thumbnail">
+                                <div class="card-body">
+                                    <h6 class="card-title">Medium Quality</h6>
+                                    <button class="btn btn-sm btn-primary" onclick="downloadThumbnail('${thumbnails.mq}', 'mq')">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <img src="${thumbnails.sd}" class="card-img-top" alt="Standard Definition Thumbnail">
+                                <div class="card-body">
+                                    <h6 class="card-title">Standard Definition</h6>
+                                    <button class="btn btn-sm btn-primary" onclick="downloadThumbnail('${thumbnails.sd}', 'sd')">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Add to history
+                    downloadHistory.unshift({
+                        videoId: videoId,
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+                } catch (error) {
+                    thumbnailsList.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                <h4 class="alert-heading">Error</h4>
+                                <p class="mb-0">${error.message}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Download thumbnail
+            window.downloadThumbnail = function(url, quality) {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `youtube-thumbnail-${quality}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+
+            // Update history display
+            function updateHistory() {
+                if (downloadHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No thumbnails downloaded yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Video ID</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${downloadHistory.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>${item.videoId}</td>
+                                        <td>
+                                            <a href="https://www.youtube.com/watch?v=${item.videoId}" 
+                                               target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-external-link-alt"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Clear form
+            function clearForm() {
+                videoUrl.value = '';
+                thumbnailsCard.style.display = 'none';
+                thumbnailsList.innerHTML = '';
+            }
+
+            // Event listeners
+            fetchButton.addEventListener('click', fetchThumbnails);
+            clearButton.addEventListener('click', clearForm);
+        });
+    </script>
+</body>
+</html> 

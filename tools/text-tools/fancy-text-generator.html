@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Text Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-magic"></i> Fancy Text Generator</h1>
+                <p>Transform your text into fancy styles</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="fancyForm">
+                                <div class="mb-3">
+                                    <label for="input" class="form-label">Enter your text</label>
+                                    <textarea class="form-control" id="input" rows="3" required></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Text Styles</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="styleBold" checked>
+                                                <label class="form-check-label" for="styleBold">
+                                                    Bold Text
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="styleItalic" checked>
+                                                <label class="form-check-label" for="styleItalic">
+                                                    Italic Text
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="styleUnderline" checked>
+                                                <label class="form-check-label" for="styleUnderline">
+                                                    Underline Text
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="styleStrike" checked>
+                                                <label class="form-check-label" for="styleStrike">
+                                                    Strikethrough Text
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="styleSmall" checked>
+                                                <label class="form-check-label" for="styleSmall">
+                                                    Small Caps
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="styleReverse" checked>
+                                                <label class="form-check-label" for="styleReverse">
+                                                    Reverse Text
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Special Effects</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="effectGlitch">
+                                                <label class="form-check-label" for="effectGlitch">
+                                                    Glitch Effect
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="effectBubble">
+                                                <label class="form-check-label" for="effectBubble">
+                                                    Bubble Text
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="effectDouble">
+                                                <label class="form-check-label" for="effectDouble">
+                                                    Double Text
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="effectShadow">
+                                                <label class="form-check-label" for="effectShadow">
+                                                    Shadow Text
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="generateButton">
+                                        <i class="fas fa-magic"></i> Generate Fancy Text
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Generated Text</h5>
+                            <div class="mb-3">
+                                <div id="output" class="p-3 border rounded bg-light"></div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="copyButton" disabled>
+                                    <i class="fas fa-copy"></i> Copy to Clipboard
+                                </button>
+                                <button class="btn btn-outline-secondary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Text
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Style Preview</h5>
+                            <div id="preview" class="p-3 border rounded">
+                                <div class="mb-2"><strong>Bold Text:</strong> <span id="previewBold"></span></div>
+                                <div class="mb-2"><em>Italic Text:</em> <span id="previewItalic"></span></div>
+                                <div class="mb-2"><u>Underline Text:</u> <span id="previewUnderline"></span></div>
+                                <div class="mb-2"><s>Strikethrough Text:</s> <span id="previewStrike"></span></div>
+                                <div class="mb-2"><small>Small Caps:</small> <span id="previewSmall"></span></div>
+                                <div class="mb-2">Reverse Text: <span id="previewReverse"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Fancy Text Generator</h5>
+                            <p class="card-text">
+                                Transform your text into various fancy styles and effects
+                                for social media, gaming, or creative projects.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple text styles</li>
+                                <li><i class="fas fa-check text-success"></i> Special effects</li>
+                                <li><i class="fas fa-check text-success"></i> Real-time preview</li>
+                                <li><i class="fas fa-check text-success"></i> Copy & download options</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Combine different styles for unique text effects.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('input');
+            const output = document.getElementById('output');
+            const generateButton = document.getElementById('generateButton');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+            const preview = document.getElementById('preview');
+
+            // Style checkboxes
+            const styleBold = document.getElementById('styleBold');
+            const styleItalic = document.getElementById('styleItalic');
+            const styleUnderline = document.getElementById('styleUnderline');
+            const styleStrike = document.getElementById('styleStrike');
+            const styleSmall = document.getElementById('styleSmall');
+            const styleReverse = document.getElementById('styleReverse');
+
+            // Effect checkboxes
+            const effectGlitch = document.getElementById('effectGlitch');
+            const effectBubble = document.getElementById('effectBubble');
+            const effectDouble = document.getElementById('effectDouble');
+            const effectShadow = document.getElementById('effectShadow');
+
+            // Preview elements
+            const previewBold = document.getElementById('previewBold');
+            const previewItalic = document.getElementById('previewItalic');
+            const previewUnderline = document.getElementById('previewUnderline');
+            const previewStrike = document.getElementById('previewStrike');
+            const previewSmall = document.getElementById('previewSmall');
+            const previewReverse = document.getElementById('previewReverse');
+
+            // Update preview
+            function updatePreview() {
+                const text = input.value || 'Preview Text';
+                previewBold.textContent = text;
+                previewItalic.textContent = text;
+                previewUnderline.textContent = text;
+                previewStrike.textContent = text;
+                previewSmall.textContent = text;
+                previewReverse.textContent = text.split('').reverse().join('');
+            }
+
+            // Generate fancy text
+            generateButton.addEventListener('click', function() {
+                let text = input.value;
+                if (!text.trim()) {
+                    alert('Please enter some text');
+                    return;
+                }
+
+                let result = text;
+
+                // Apply styles
+                if (styleBold.checked) {
+                    result = result.split('').map(char => char + '\u0332').join('');
+                }
+                if (styleItalic.checked) {
+                    result = result.split('').map(char => char + '\u0336').join('');
+                }
+                if (styleUnderline.checked) {
+                    result = result.split('').map(char => char + '\u0332').join('');
+                }
+                if (styleStrike.checked) {
+                    result = result.split('').map(char => char + '\u0336').join('');
+                }
+                if (styleSmall.checked) {
+                    result = result.toUpperCase();
+                }
+                if (styleReverse.checked) {
+                    result = result.split('').reverse().join('');
+                }
+
+                // Apply effects
+                if (effectGlitch.checked) {
+                    result = result.split('').map(char => {
+                        return Math.random() > 0.5 ? char : String.fromCharCode(char.charCodeAt(0) + 1);
+                    }).join('');
+                }
+                if (effectBubble.checked) {
+                    result = result.split('').map(char => {
+                        return char === ' ' ? ' ' : 'ⓞ' + char + 'ⓞ';
+                    }).join('');
+                }
+                if (effectDouble.checked) {
+                    result = result.split('').map(char => char + char).join('');
+                }
+                if (effectShadow.checked) {
+                    result = result.split('').map(char => char + '\u0332').join('');
+                }
+
+                output.textContent = result;
+                copyButton.disabled = false;
+                downloadButton.disabled = false;
+            });
+
+            // Update preview on input
+            input.addEventListener('input', updatePreview);
+
+            // Handle copy to clipboard
+            copyButton.addEventListener('click', function() {
+                const text = output.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+                    }, 2000);
+                });
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const text = output.textContent;
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'fancy-text.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Initial preview update
+            updatePreview();
+        });
+    </script>
+</body>
+</html> 

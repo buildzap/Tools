@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Address Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        .address-card {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .address-card p {
+            margin-bottom: 5px;
+        }
+        .address-card .label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        .copy-btn {
+            cursor: pointer;
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+        .copy-btn:hover {
+            color: #0d6efd;
+        }
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .history-item:hover {
+            background-color: #f8f9fa;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-map"></i> Fake Address Generator</h1>
+                <p>Generate realistic-looking fake addresses for testing or development</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Generator Form -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Generate Address</h5>
+                            <form id="addressForm" class="mb-4">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Country</label>
+                                        <select class="form-select" id="country">
+                                            <option value="US">United States</option>
+                                            <option value="UK">United Kingdom</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="DE">Germany</option>
+                                            <option value="FR">France</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Address Type</label>
+                                        <select class="form-select" id="addressType">
+                                            <option value="residential">Residential</option>
+                                            <option value="business">Business</option>
+                                            <option value="po_box">PO Box</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-random"></i> Generate Address
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Generated Address -->
+                            <div class="address-card" id="generatedAddress" style="display: none;">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p><span class="label">Street Address:</span> <span id="streetAddress"></span></p>
+                                        <p><span class="label">City:</span> <span id="city"></span></p>
+                                        <p><span class="label">State/Province:</span> <span id="state"></span></p>
+                                        <p><span class="label">Postal Code:</span> <span id="postalCode"></span></p>
+                                        <p><span class="label">Country:</span> <span id="countryName"></span></p>
+                                    </div>
+                                    <button class="btn btn-outline-primary copy-btn" id="copyAddress">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Addresses</h5>
+                            <div id="history" class="text-center text-muted">
+                                No addresses generated yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Fake Address Generator</h5>
+                            <p class="card-text">
+                                Generate realistic-looking fake addresses for testing,
+                                development, or other legitimate purposes.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple countries</li>
+                                <li><i class="fas fa-check text-success"></i> Different address types</li>
+                                <li><i class="fas fa-check text-success"></i> Realistic formatting</li>
+                                <li><i class="fas fa-check text-success"></i> Copy to clipboard</li>
+                                <li><i class="fas fa-check text-success"></i> History tracking</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the copy button to quickly copy the entire address.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addressForm = document.getElementById('addressForm');
+            const generatedAddress = document.getElementById('generatedAddress');
+            const copyAddress = document.getElementById('copyAddress');
+            const history = document.getElementById('history');
+            let addressHistory = [];
+
+            // Sample data for address generation
+            const addressData = {
+                US: {
+                    streets: ['Main St', 'Oak Ave', 'Maple Dr', 'Cedar Ln', 'Pine Rd'],
+                    cities: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+                    states: ['NY', 'CA', 'IL', 'TX', 'AZ'],
+                    postalFormat: '#####'
+                },
+                UK: {
+                    streets: ['High St', 'Church Rd', 'Park Ave', 'Station Rd', 'Victoria St'],
+                    cities: ['London', 'Manchester', 'Birmingham', 'Liverpool', 'Edinburgh'],
+                    states: ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+                    postalFormat: 'A## ###'
+                },
+                CA: {
+                    streets: ['Queen St', 'King St', 'Yonge St', 'Bloor St', 'Bay St'],
+                    cities: ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa'],
+                    states: ['ON', 'BC', 'QC', 'AB', 'NS'],
+                    postalFormat: 'A#A #A#'
+                }
+            };
+
+            // Generate random number
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            // Generate random postal code
+            function generatePostalCode(format) {
+                return format.replace(/[#A]/g, match => {
+                    if (match === '#') return getRandomInt(0, 9);
+                    return String.fromCharCode(65 + getRandomInt(0, 25));
+                });
+            }
+
+            // Generate address
+            function generateAddress(country, type) {
+                const data = addressData[country];
+                const streetNum = getRandomInt(1, 9999);
+                const street = data.streets[getRandomInt(0, data.streets.length - 1)];
+                const city = data.cities[getRandomInt(0, data.cities.length - 1)];
+                const state = data.states[getRandomInt(0, data.states.length - 1)];
+                const postalCode = generatePostalCode(data.postalFormat);
+
+                let streetAddress = `${streetNum} ${street}`;
+                if (type === 'po_box') {
+                    streetAddress = `PO Box ${getRandomInt(1000, 9999)}`;
+                } else if (type === 'business') {
+                    streetAddress += `, Suite ${getRandomInt(100, 999)}`;
+                }
+
+                return {
+                    streetAddress,
+                    city,
+                    state,
+                    postalCode,
+                    country: document.getElementById('country').options[document.getElementById('country').selectedIndex].text
+                };
+            }
+
+            // Update address display
+            function updateAddressDisplay(address) {
+                document.getElementById('streetAddress').textContent = address.streetAddress;
+                document.getElementById('city').textContent = address.city;
+                document.getElementById('state').textContent = address.state;
+                document.getElementById('postalCode').textContent = address.postalCode;
+                document.getElementById('countryName').textContent = address.country;
+                generatedAddress.style.display = 'block';
+            }
+
+            // Copy address to clipboard
+            function copyToClipboard() {
+                const address = [
+                    document.getElementById('streetAddress').textContent,
+                    document.getElementById('city').textContent + ', ' + document.getElementById('state').textContent + ' ' + document.getElementById('postalCode').textContent,
+                    document.getElementById('countryName').textContent
+                ].join('\n');
+
+                navigator.clipboard.writeText(address).then(() => {
+                    const btn = copyAddress;
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                });
+            }
+
+            // Add to history
+            function addToHistory(address) {
+                addressHistory.unshift({
+                    ...address,
+                    timestamp: new Date().toLocaleString()
+                });
+                updateHistory();
+            }
+
+            // Update history display
+            function updateHistory() {
+                if (addressHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No addresses generated yet</p>';
+                    return;
+                }
+
+                history.innerHTML = addressHistory.slice(0, 5).map(item => `
+                    <div class="history-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>${item.streetAddress}</strong>
+                                <div class="text-muted small">${item.city}, ${item.state}</div>
+                            </div>
+                            <div class="text-muted small">${item.timestamp}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Handle form submission
+            function handleSubmit(event) {
+                event.preventDefault();
+                const country = document.getElementById('country').value;
+                const type = document.getElementById('addressType').value;
+                const address = generateAddress(country, type);
+                updateAddressDisplay(address);
+                addToHistory(address);
+            }
+
+            // Event listeners
+            addressForm.addEventListener('submit', handleSubmit);
+            copyAddress.addEventListener('click', copyToClipboard);
+        });
+    </script>
+</body>
+</html> 

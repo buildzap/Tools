@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Keyboard - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 8px;
+            padding: 10px;
+        }
+        .emoji-item {
+            font-size: 1.5rem;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .emoji-item:hover {
+            background-color: #f8f9fa;
+        }
+        .emoji-item.selected {
+            background-color: #e9ecef;
+        }
+        .emoji-category {
+            display: none;
+        }
+        .emoji-category.active {
+            display: block;
+        }
+        .category-tabs .nav-link {
+            padding: 8px 16px;
+            font-size: 1.2rem;
+        }
+        .recent-emojis {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            overflow-x: auto;
+        }
+        .recent-emoji {
+            font-size: 1.5rem;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+        .recent-emoji:hover {
+            background-color: #e9ecef;
+        }
+        .emoji-preview {
+            font-size: 2rem;
+            padding: 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .emoji-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="far fa-smile"></i> Emoji Keyboard</h1>
+                <p>Find and copy emojis for your social media posts</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Emoji Preview -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="emoji-preview" id="emojiPreview">
+                                Click an emoji to preview
+                            </div>
+                            <div class="emoji-info text-center" id="emojiInfo"></div>
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <button class="btn btn-primary" onclick="copyEmoji()">
+                                    <i class="fas fa-copy"></i> Copy Emoji
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="clearPreview()">
+                                    <i class="fas fa-eraser"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" class="form-control" id="emojiSearch" 
+                                       placeholder="Search emojis...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Emojis -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Emojis</h5>
+                            <div class="recent-emojis" id="recentEmojis">
+                                <p class="text-muted">No recent emojis</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emoji Categories -->
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs category-tabs" id="emojiTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-category="smileys">
+                                        <i class="far fa-smile"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-category="people">
+                                        <i class="fas fa-user"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-category="animals">
+                                        <i class="fas fa-paw"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-category="food">
+                                        <i class="fas fa-utensils"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-category="activities">
+                                        <i class="fas fa-futbol"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-category="travel">
+                                        <i class="fas fa-plane"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-category="objects">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-category="symbols">
+                                        <i class="fas fa-heart"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-category="flags">
+                                        <i class="fas fa-flag"></i>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class="emoji-categories mt-3">
+                                <!-- Categories will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Emoji Keyboard</h5>
+                            <p class="card-text">
+                                Find and copy emojis for your social media posts, messages, and documents.
+                                Search, browse categories, and keep track of your recent emojis.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Emoji categories</li>
+                                <li><i class="fas fa-check text-success"></i> Search functionality</li>
+                                <li><i class="fas fa-check text-success"></i> Recent emojis</li>
+                                <li><i class="fas fa-check text-success"></i> Copy to clipboard</li>
+                                <li><i class="fas fa-check text-success"></i> Emoji information</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the search bar to quickly find specific emojis.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const emojiPreview = document.getElementById('emojiPreview');
+            const emojiInfo = document.getElementById('emojiInfo');
+            const emojiSearch = document.getElementById('emojiSearch');
+            const recentEmojis = document.getElementById('recentEmojis');
+            const emojiCategories = document.querySelector('.emoji-categories');
+            let recentEmojiList = [];
+
+            // Emoji data (simplified for demo)
+            const emojiData = {
+                smileys: ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇'],
+                people: ['👋', '👌', '✌️', '🤞', '🤟', '🤘', '👈', '👉', '👆', '👇'],
+                animals: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯'],
+                food: ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍈', '🍒'],
+                activities: ['⚽️', '🏀', '🏈', '⚾️', '🥎', '🎾', '🏐', '🏉', '🎱', '🏓'],
+                travel: ['✈️', '🚗', '🚕', '🚙', '🚌', '🚎', '🏎', '🚓', '🚑', '🚒'],
+                objects: ['⌚️', '📱', '💻', '⌨️', '🖥', '🖨', '🖱', '🖲', '🕹', '🗜'],
+                symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '💔', '💯', '💢'],
+                flags: ['🏳️', '🏴', '🏁', '🚩', '🎌', '🏳️‍🌈', '🏴‍☠️', '🇺🇳', '🇦🇫', '🇦🇽']
+            };
+
+            // Initialize emoji categories
+            function initializeCategories() {
+                Object.entries(emojiData).forEach(([category, emojis]) => {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = `emoji-category ${category === 'smileys' ? 'active' : ''}`;
+                    categoryDiv.id = `category-${category}`;
+                    
+                    const emojiGrid = document.createElement('div');
+                    emojiGrid.className = 'emoji-grid';
+                    
+                    emojis.forEach(emoji => {
+                        const emojiItem = document.createElement('div');
+                        emojiItem.className = 'emoji-item';
+                        emojiItem.textContent = emoji;
+                        emojiItem.onclick = () => selectEmoji(emoji);
+                        emojiGrid.appendChild(emojiItem);
+                    });
+                    
+                    categoryDiv.appendChild(emojiGrid);
+                    emojiCategories.appendChild(categoryDiv);
+                });
+            }
+
+            // Select emoji
+            function selectEmoji(emoji) {
+                emojiPreview.textContent = emoji;
+                emojiInfo.textContent = `Unicode: ${emoji.codePointAt(0).toString(16).toUpperCase()}`;
+                
+                // Add to recent emojis
+                if (!recentEmojiList.includes(emoji)) {
+                    recentEmojiList.unshift(emoji);
+                    if (recentEmojiList.length > 20) {
+                        recentEmojiList.pop();
+                    }
+                    updateRecentEmojis();
+                }
+            }
+
+            // Copy emoji
+            window.copyEmoji = function() {
+                const emoji = emojiPreview.textContent;
+                if (emoji && emoji !== 'Click an emoji to preview') {
+                    navigator.clipboard.writeText(emoji).then(() => {
+                        const button = document.querySelector('.btn-primary');
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                        }, 2000);
+                    });
+                }
+            };
+
+            // Clear preview
+            window.clearPreview = function() {
+                emojiPreview.textContent = 'Click an emoji to preview';
+                emojiInfo.textContent = '';
+            };
+
+            // Update recent emojis
+            function updateRecentEmojis() {
+                if (recentEmojiList.length === 0) {
+                    recentEmojis.innerHTML = '<p class="text-muted">No recent emojis</p>';
+                    return;
+                }
+
+                recentEmojis.innerHTML = recentEmojiList.map(emoji => `
+                    <div class="recent-emoji" onclick="selectEmoji('${emoji}')">
+                        ${emoji}
+                    </div>
+                `).join('');
+            }
+
+            // Search emojis
+            emojiSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const allEmojis = document.querySelectorAll('.emoji-item');
+                
+                allEmojis.forEach(item => {
+                    const emoji = item.textContent;
+                    const category = item.closest('.emoji-category').id.replace('category-', '');
+                    const matches = emojiData[category].some(e => e.includes(searchTerm));
+                    item.style.display = matches ? '' : 'none';
+                });
+            });
+
+            // Category tabs
+            document.querySelectorAll('.category-tabs .nav-link').forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Update active tab
+                    document.querySelectorAll('.category-tabs .nav-link').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected category
+                    const category = this.dataset.category;
+                    document.querySelectorAll('.emoji-category').forEach(c => c.classList.remove('active'));
+                    document.getElementById(`category-${category}`).classList.add('active');
+                });
+            });
+
+            // Initialize
+            initializeCategories();
+        });
+    </script>
+</body>
+</html> 

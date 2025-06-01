@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Counter - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-text-width"></i> Character Counter</h1>
+                <p>Analyze characters in your text with detailed statistics</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="counterForm">
+                                <div class="mb-3">
+                                    <label for="text" class="form-label">Enter or paste your text</label>
+                                    <textarea class="form-control" id="text" rows="10" required></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="ignoreSpaces">
+                                        <label class="form-check-label" for="ignoreSpaces">
+                                            Ignore spaces
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="ignorePunctuation">
+                                        <label class="form-check-label" for="ignorePunctuation">
+                                            Ignore punctuation
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-calculator"></i> Count Characters
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Character Analysis</h5>
+                            
+                            <!-- Basic Stats -->
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Total Characters</h6>
+                                            <h3 id="totalChars">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Letters</h6>
+                                            <h3 id="letterCount">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Numbers</h6>
+                                            <h3 id="numberCount">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Special Chars</h6>
+                                            <h3 id="specialCount">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Character Distribution -->
+                            <div class="mb-4">
+                                <h6>Character Distribution</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Character</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="charDistribution">
+                                            <tr>
+                                                <td colspan="3" class="text-center">No text entered</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Character Frequency -->
+                            <div class="mb-4">
+                                <h6>Most Common Characters</h6>
+                                <div class="row" id="charFrequency">
+                                    <div class="col-12 text-center text-muted">No text entered</div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Character Counter</h5>
+                            <p class="card-text">
+                                A detailed character analysis tool that provides insights into your text's
+                                character composition and distribution.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Character count</li>
+                                <li><i class="fas fa-check text-success"></i> Character distribution</li>
+                                <li><i class="fas fa-check text-success"></i> Frequency analysis</li>
+                                <li><i class="fas fa-check text-success"></i> Detailed statistics</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use this tool to analyze text patterns and character usage.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('counterForm');
+            const text = document.getElementById('text');
+            const totalChars = document.getElementById('totalChars');
+            const letterCount = document.getElementById('letterCount');
+            const numberCount = document.getElementById('numberCount');
+            const specialCount = document.getElementById('specialCount');
+            const charDistribution = document.getElementById('charDistribution');
+            const charFrequency = document.getElementById('charFrequency');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Update counts in real-time
+            text.addEventListener('input', function() {
+                updateCounts();
+            });
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateCounts();
+            });
+
+            // Update all counts
+            function updateCounts() {
+                const content = text.value;
+                const ignoreSpaces = document.getElementById('ignoreSpaces').checked;
+                const ignorePunctuation = document.getElementById('ignorePunctuation').checked;
+
+                // Process text based on options
+                let processedText = content;
+                if (ignoreSpaces) {
+                    processedText = processedText.replace(/\s+/g, '');
+                }
+                if (ignorePunctuation) {
+                    processedText = processedText.replace(/[^\w\s]/g, '');
+                }
+
+                // Count characters
+                const chars = processedText.split('');
+                totalChars.textContent = chars.length;
+
+                // Count by type
+                const letters = chars.filter(char => /[a-zA-Z]/.test(char)).length;
+                const numbers = chars.filter(char => /[0-9]/.test(char)).length;
+                const special = chars.filter(char => /[^a-zA-Z0-9\s]/.test(char)).length;
+
+                letterCount.textContent = letters;
+                numberCount.textContent = numbers;
+                specialCount.textContent = special;
+
+                // Character distribution
+                const distribution = {};
+                chars.forEach(char => {
+                    distribution[char] = (distribution[char] || 0) + 1;
+                });
+
+                // Sort by frequency
+                const sortedChars = Object.entries(distribution)
+                    .sort((a, b) => b[1] - a[1]);
+
+                // Update distribution table
+                charDistribution.innerHTML = sortedChars.map(([char, count]) => `
+                    <tr>
+                        <td>${char === ' ' ? 'Space' : char}</td>
+                        <td>${count}</td>
+                        <td>${((count / chars.length) * 100).toFixed(2)}%</td>
+                    </tr>
+                `).join('');
+
+                // Update frequency visualization
+                const topChars = sortedChars.slice(0, 5);
+                charFrequency.innerHTML = topChars.map(([char, count]) => `
+                    <div class="col">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${char === ' ' ? 'Space' : char}</h6>
+                                <h3>${count}</h3>
+                                <small>${((count / chars.length) * 100).toFixed(1)}%</small>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                downloadButton.disabled = false;
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const report = {
+                    text: text.value,
+                    statistics: {
+                        totalCharacters: totalChars.textContent,
+                        letters: letterCount.textContent,
+                        numbers: numberCount.textContent,
+                        specialCharacters: specialCount.textContent
+                    },
+                    distribution: Array.from(charDistribution.querySelectorAll('tr')).map(row => ({
+                        character: row.cells[0].textContent,
+                        count: row.cells[1].textContent,
+                        percentage: row.cells[2].textContent
+                    }))
+                };
+
+                const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'character-analysis-report.json';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Tag Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-tags"></i> Meta Tag Generator</h1>
+                <p>Generate SEO-optimized meta tags for your website</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="metaForm">
+                                <div class="mb-3">
+                                    <label for="pageTitle" class="form-label">Page Title</label>
+                                    <input type="text" class="form-control" id="pageTitle" maxlength="60" required>
+                                    <div class="form-text">
+                                        <span id="titleLength">0</span>/60 characters
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="metaDescription" class="form-label">Meta Description</label>
+                                    <textarea class="form-control" id="metaDescription" rows="3" maxlength="160" required></textarea>
+                                    <div class="form-text">
+                                        <span id="descriptionLength">0</span>/160 characters
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="keywords" class="form-label">Keywords</label>
+                                    <input type="text" class="form-control" id="keywords" placeholder="Separate keywords with commas">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="author" class="form-label">Author</label>
+                                    <input type="text" class="form-control" id="author">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="robots" class="form-label">Robots</label>
+                                    <select class="form-select" id="robots">
+                                        <option value="index,follow">Index, Follow</option>
+                                        <option value="noindex,follow">No Index, Follow</option>
+                                        <option value="index,nofollow">Index, No Follow</option>
+                                        <option value="noindex,nofollow">No Index, No Follow</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="canonicalUrl" class="form-label">Canonical URL</label>
+                                    <input type="url" class="form-control" id="canonicalUrl" placeholder="https://example.com/page">
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="openGraph" checked>
+                                        <label class="form-check-label" for="openGraph">
+                                            Include Open Graph Tags
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div id="openGraphFields">
+                                    <div class="mb-3">
+                                        <label for="ogTitle" class="form-label">OG Title</label>
+                                        <input type="text" class="form-control" id="ogTitle">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ogDescription" class="form-label">OG Description</label>
+                                        <textarea class="form-control" id="ogDescription" rows="2"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ogImage" class="form-label">OG Image URL</label>
+                                        <input type="url" class="form-control" id="ogImage" placeholder="https://example.com/image.jpg">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ogType" class="form-label">OG Type</label>
+                                        <select class="form-select" id="ogType">
+                                            <option value="website">Website</option>
+                                            <option value="article">Article</option>
+                                            <option value="product">Product</option>
+                                            <option value="profile">Profile</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="twitterCard" checked>
+                                        <label class="form-check-label" for="twitterCard">
+                                            Include Twitter Card Tags
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div id="twitterCardFields">
+                                    <div class="mb-3">
+                                        <label for="twitterCardType" class="form-label">Twitter Card Type</label>
+                                        <select class="form-select" id="twitterCardType">
+                                            <option value="summary">Summary</option>
+                                            <option value="summary_large_image">Summary Large Image</option>
+                                            <option value="app">App</option>
+                                            <option value="player">Player</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="twitterSite" class="form-label">Twitter Site</label>
+                                        <input type="text" class="form-control" id="twitterSite" placeholder="@username">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-code"></i> Generate Meta Tags
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Output Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Generated Meta Tags</h5>
+                            <div class="mb-3">
+                                <pre id="metaOutput" class="bg-light p-3 rounded" style="white-space: pre-wrap;"></pre>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="copyButton" disabled>
+                                    <i class="fas fa-copy"></i> Copy to Clipboard
+                                </button>
+                                <button class="btn btn-outline-secondary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download as HTML
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Meta Tags</h5>
+                            <p class="card-text">
+                                Meta tags are HTML elements that provide metadata about your webpage.
+                                They are crucial for SEO and social media sharing.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Basic meta tags</li>
+                                <li><i class="fas fa-check text-success"></i> Open Graph tags</li>
+                                <li><i class="fas fa-check text-success"></i> Twitter Cards</li>
+                                <li><i class="fas fa-check text-success"></i> Character counters</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Keep titles under 60 characters and descriptions under 160 characters for optimal display in search results.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('metaForm');
+            const pageTitle = document.getElementById('pageTitle');
+            const metaDescription = document.getElementById('metaDescription');
+            const titleLength = document.getElementById('titleLength');
+            const descriptionLength = document.getElementById('descriptionLength');
+            const openGraph = document.getElementById('openGraph');
+            const openGraphFields = document.getElementById('openGraphFields');
+            const twitterCard = document.getElementById('twitterCard');
+            const twitterCardFields = document.getElementById('twitterCardFields');
+            const metaOutput = document.getElementById('metaOutput');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Update character counts
+            pageTitle.addEventListener('input', function() {
+                titleLength.textContent = this.value.length;
+            });
+
+            metaDescription.addEventListener('input', function() {
+                descriptionLength.textContent = this.value.length;
+            });
+
+            // Toggle Open Graph fields
+            openGraph.addEventListener('change', function() {
+                openGraphFields.style.display = this.checked ? 'block' : 'none';
+            });
+
+            // Toggle Twitter Card fields
+            twitterCard.addEventListener('change', function() {
+                twitterCardFields.style.display = this.checked ? 'block' : 'none';
+            });
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                generateMetaTags();
+            });
+
+            // Generate meta tags
+            function generateMetaTags() {
+                let tags = [];
+
+                // Basic meta tags
+                tags.push(`<title>${escapeHtml(pageTitle.value)}</title>`);
+                tags.push(`<meta name="description" content="${escapeHtml(metaDescription.value)}">`);
+                
+                if (document.getElementById('keywords').value) {
+                    tags.push(`<meta name="keywords" content="${escapeHtml(document.getElementById('keywords').value)}">`);
+                }
+                
+                if (document.getElementById('author').value) {
+                    tags.push(`<meta name="author" content="${escapeHtml(document.getElementById('author').value)}">`);
+                }
+                
+                tags.push(`<meta name="robots" content="${document.getElementById('robots').value}">`);
+                
+                if (document.getElementById('canonicalUrl').value) {
+                    tags.push(`<link rel="canonical" href="${escapeHtml(document.getElementById('canonicalUrl').value)}">`);
+                }
+
+                // Open Graph tags
+                if (openGraph.checked) {
+                    tags.push('<meta property="og:title" content="' + escapeHtml(document.getElementById('ogTitle').value || pageTitle.value) + '">');
+                    tags.push('<meta property="og:description" content="' + escapeHtml(document.getElementById('ogDescription').value || metaDescription.value) + '">');
+                    if (document.getElementById('ogImage').value) {
+                        tags.push('<meta property="og:image" content="' + escapeHtml(document.getElementById('ogImage').value) + '">');
+                    }
+                    tags.push('<meta property="og:type" content="' + document.getElementById('ogType').value + '">');
+                    if (document.getElementById('canonicalUrl').value) {
+                        tags.push('<meta property="og:url" content="' + escapeHtml(document.getElementById('canonicalUrl').value) + '">');
+                    }
+                }
+
+                // Twitter Card tags
+                if (twitterCard.checked) {
+                    tags.push('<meta name="twitter:card" content="' + document.getElementById('twitterCardType').value + '">');
+                    if (document.getElementById('twitterSite').value) {
+                        tags.push('<meta name="twitter:site" content="' + escapeHtml(document.getElementById('twitterSite').value) + '">');
+                    }
+                    tags.push('<meta name="twitter:title" content="' + escapeHtml(document.getElementById('ogTitle').value || pageTitle.value) + '">');
+                    tags.push('<meta name="twitter:description" content="' + escapeHtml(document.getElementById('ogDescription').value || metaDescription.value) + '">');
+                    if (document.getElementById('ogImage').value) {
+                        tags.push('<meta name="twitter:image" content="' + escapeHtml(document.getElementById('ogImage').value) + '">');
+                    }
+                }
+
+                // Update output
+                metaOutput.textContent = tags.join('\n');
+                copyButton.disabled = false;
+                downloadButton.disabled = false;
+            }
+
+            // Handle copy to clipboard
+            copyButton.addEventListener('click', function() {
+                metaOutput.select();
+                document.execCommand('copy');
+                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+                }, 2000);
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const blob = new Blob([metaOutput.textContent], { type: 'text/html' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'meta-tags.html';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Helper function to escape HTML
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        });
+    </script>
+</body>
+</html> 

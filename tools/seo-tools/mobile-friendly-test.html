@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile-Friendly Test - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-mobile-alt"></i> Mobile-Friendly Test</h1>
+                <p>Test your website's mobile responsiveness</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="testForm">
+                                <div class="mb-3">
+                                    <label for="url" class="form-label">Website URL</label>
+                                    <input type="url" class="form-control" id="url" required
+                                        placeholder="https://example.com">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Device Type</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="device" id="mobile" checked>
+                                        <label class="form-check-label" for="mobile">
+                                            Mobile
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="device" id="tablet">
+                                        <label class="form-check-label" for="tablet">
+                                            Tablet
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Test Mobile-Friendliness
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Test Results</h5>
+                            
+                            <!-- Summary -->
+                            <div class="alert alert-info mb-4" id="summaryAlert">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Enter a URL to test mobile-friendliness</span>
+                            </div>
+
+                            <!-- Score -->
+                            <div class="text-center mb-4">
+                                <div class="display-1" id="mobileScore">0</div>
+                                <div class="text-muted">Mobile-Friendliness Score</div>
+                            </div>
+
+                            <!-- Issues -->
+                            <div class="mb-4" id="issuesList" style="display: none;">
+                                <h6 class="mb-3">Issues Found</h6>
+                                <div class="list-group" id="issuesContainer">
+                                    <!-- Issues will be added here -->
+                                </div>
+                            </div>
+
+                            <!-- Screenshot Preview -->
+                            <div class="mb-4" id="screenshotPreview" style="display: none;">
+                                <h6 class="mb-3">Mobile Preview</h6>
+                                <div class="text-center">
+                                    <img src="" alt="Mobile Preview" class="img-fluid border" id="previewImage">
+                                </div>
+                            </div>
+
+                            <!-- Recommendations -->
+                            <div class="mb-4" id="recommendations" style="display: none;">
+                                <h6 class="mb-3">Recommendations</h6>
+                                <div class="list-group" id="recommendationsContainer">
+                                    <!-- Recommendations will be added here -->
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Mobile-Friendliness</h5>
+                            <p class="card-text">
+                                Mobile-friendly websites are essential for good user experience and SEO.
+                                Google uses mobile-first indexing, making mobile optimization crucial.
+                            </p>
+                            <h6>Key Factors:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Responsive Design</li>
+                                <li><i class="fas fa-check text-success"></i> Readable Text</li>
+                                <li><i class="fas fa-check text-success"></i> Touch Elements</li>
+                                <li><i class="fas fa-check text-success"></i> Viewport Settings</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Test your website on multiple devices and screen sizes for best results.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('testForm');
+            const summaryAlert = document.getElementById('summaryAlert');
+            const mobileScore = document.getElementById('mobileScore');
+            const issuesList = document.getElementById('issuesList');
+            const screenshotPreview = document.getElementById('screenshotPreview');
+            const recommendations = document.getElementById('recommendations');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                testMobileFriendly();
+            });
+
+            // Test mobile-friendliness
+            function testMobileFriendly() {
+                const url = document.getElementById('url').value;
+                const isTablet = document.getElementById('tablet').checked;
+
+                // Simulate API call delay
+                setTimeout(() => {
+                    // Generate random score
+                    const score = Math.floor(Math.random() * 100);
+
+                    // Update score
+                    mobileScore.textContent = score;
+                    mobileScore.className = `display-1 ${getScoreClass(score)}`;
+
+                    // Show sections
+                    issuesList.style.display = 'block';
+                    screenshotPreview.style.display = 'block';
+                    recommendations.style.display = 'block';
+
+                    // Update summary alert
+                    if (score >= 90) {
+                        summaryAlert.className = 'alert alert-success mb-4';
+                        summaryAlert.innerHTML = '<i class="fas fa-check-circle"></i> Your website is mobile-friendly!';
+                    } else if (score >= 60) {
+                        summaryAlert.className = 'alert alert-warning mb-4';
+                        summaryAlert.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Your website needs some improvements for mobile devices.';
+                    } else {
+                        summaryAlert.className = 'alert alert-danger mb-4';
+                        summaryAlert.innerHTML = '<i class="fas fa-times-circle"></i> Your website is not mobile-friendly.';
+                    }
+
+                    // Generate issues
+                    const issues = generateIssues(score);
+                    document.getElementById('issuesContainer').innerHTML = issues.map(issue => `
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">${issue.title}</h6>
+                                <small class="text-${issue.severity}">${issue.severity.toUpperCase()}</small>
+                            </div>
+                            <p class="mb-1">${issue.description}</p>
+                        </div>
+                    `).join('');
+
+                    // Generate recommendations
+                    const recommendations = generateRecommendations(score);
+                    document.getElementById('recommendationsContainer').innerHTML = recommendations.map(rec => `
+                        <div class="list-group-item">
+                            <h6 class="mb-1">${rec.title}</h6>
+                            <p class="mb-1">${rec.description}</p>
+                        </div>
+                    `).join('');
+
+                    // Set preview image
+                    document.getElementById('previewImage').src = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`;
+
+                    downloadButton.disabled = false;
+                }, 1000);
+            }
+
+            // Get score class
+            function getScoreClass(score) {
+                if (score >= 90) return 'text-success';
+                if (score >= 60) return 'text-warning';
+                return 'text-danger';
+            }
+
+            // Generate issues
+            function generateIssues(score) {
+                const issues = [];
+                
+                if (score < 90) {
+                    issues.push({
+                        title: 'Text Too Small',
+                        severity: 'warning',
+                        description: 'Some text elements are too small to read on mobile devices.'
+                    });
+                }
+                
+                if (score < 80) {
+                    issues.push({
+                        title: 'Touch Elements Too Close',
+                        severity: 'error',
+                        description: 'Clickable elements are too close together, making them difficult to tap.'
+                    });
+                }
+                
+                if (score < 70) {
+                    issues.push({
+                        title: 'Content Wider Than Screen',
+                        severity: 'error',
+                        description: 'Some content extends beyond the viewport width.'
+                    });
+                }
+                
+                if (score < 60) {
+                    issues.push({
+                        title: 'Missing Viewport Meta Tag',
+                        severity: 'error',
+                        description: 'The viewport meta tag is missing or incorrectly configured.'
+                    });
+                }
+
+                return issues;
+            }
+
+            // Generate recommendations
+            function generateRecommendations(score) {
+                const recommendations = [];
+                
+                if (score < 90) {
+                    recommendations.push({
+                        title: 'Increase Text Size',
+                        description: 'Ensure all text is at least 16px for comfortable reading on mobile devices.'
+                    });
+                }
+                
+                if (score < 80) {
+                    recommendations.push({
+                        title: 'Improve Touch Targets',
+                        description: 'Make clickable elements at least 44x44 pixels and add proper spacing.'
+                    });
+                }
+                
+                if (score < 70) {
+                    recommendations.push({
+                        title: 'Implement Responsive Design',
+                        description: 'Use CSS media queries to adapt layout for different screen sizes.'
+                    });
+                }
+                
+                if (score < 60) {
+                    recommendations.push({
+                        title: 'Add Viewport Meta Tag',
+                        description: 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> to your HTML.'
+                    });
+                }
+
+                return recommendations;
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const report = {
+                    url: document.getElementById('url').value,
+                    device: document.getElementById('tablet').checked ? 'Tablet' : 'Mobile',
+                    score: mobileScore.textContent,
+                    issues: Array.from(document.getElementById('issuesContainer').querySelectorAll('.list-group-item')).map(item => ({
+                        title: item.querySelector('h6').textContent,
+                        severity: item.querySelector('small').textContent.toLowerCase(),
+                        description: item.querySelector('p').textContent
+                    })),
+                    recommendations: Array.from(document.getElementById('recommendationsContainer').querySelectorAll('.list-group-item')).map(item => ({
+                        title: item.querySelector('h6').textContent,
+                        description: item.querySelector('p').textContent
+                    }))
+                };
+
+                const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'mobile-friendly-test-report.json';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

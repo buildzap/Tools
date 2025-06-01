@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hashtag Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-hashtag"></i> Hashtag Generator</h1>
+                <p>Generate relevant hashtags for your social media posts</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="hashtagForm">
+                                <!-- Content Input -->
+                                <div class="mb-3">
+                                    <label for="content" class="form-label">Post Content</label>
+                                    <textarea class="form-control" id="content" rows="4" 
+                                              placeholder="Enter your post content or description..." required></textarea>
+                                </div>
+
+                                <!-- Platform Selection -->
+                                <div class="mb-3">
+                                    <label class="form-label">Platform</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="platform" id="instagram" value="instagram" checked>
+                                        <label class="btn btn-outline-primary" for="instagram">
+                                            <i class="fab fa-instagram"></i> Instagram
+                                        </label>
+                                        <input type="radio" class="btn-check" name="platform" id="twitter" value="twitter">
+                                        <label class="btn btn-outline-primary" for="twitter">
+                                            <i class="fab fa-twitter"></i> Twitter
+                                        </label>
+                                        <input type="radio" class="btn-check" name="platform" id="tiktok" value="tiktok">
+                                        <label class="btn btn-outline-primary" for="tiktok">
+                                            <i class="fab fa-tiktok"></i> TikTok
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Options -->
+                                <div class="mb-3">
+                                    <label class="form-label">Options</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="includeTrending" checked>
+                                        <label class="form-check-label" for="includeTrending">
+                                            Include trending hashtags
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="includeRelated" checked>
+                                        <label class="form-check-label" for="includeRelated">
+                                            Include related hashtags
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="includeLocation">
+                                        <label class="form-check-label" for="includeLocation">
+                                            Include location-based hashtags
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" id="generateButton">
+                                        <i class="fas fa-magic"></i> Generate Hashtags
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Generated Hashtags Section -->
+                    <div class="card mt-4" id="hashtagsCard" style="display: none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Generated Hashtags</h5>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="copyHashtags()">
+                                        <i class="fas fa-copy"></i> Copy All
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="copyHashtagsWithSpaces()">
+                                        <i class="fas fa-copy"></i> Copy with Spaces
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="hashtagsContainer"></div>
+                        </div>
+                    </div>
+
+                    <!-- Hashtag Analysis Section -->
+                    <div class="card mt-4" id="analysisCard" style="display: none;">
+                        <div class="card-body">
+                            <h5 class="card-title">Hashtag Analysis</h5>
+                            <div id="analysisContainer"></div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Generations</h5>
+                            <div id="history" class="text-center text-muted">
+                                No hashtags generated yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Hashtag Generator</h5>
+                            <p class="card-text">
+                                Generate relevant and trending hashtags for your social media posts.
+                                Improve your content's visibility and reach.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple platforms</li>
+                                <li><i class="fas fa-check text-success"></i> Trending hashtags</li>
+                                <li><i class="fas fa-check text-success"></i> Related suggestions</li>
+                                <li><i class="fas fa-check text-success"></i> Copy options</li>
+                                <li><i class="fas fa-check text-success"></i> Usage analysis</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use a mix of popular and niche hashtags for better reach.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const content = document.getElementById('content');
+            const generateButton = document.getElementById('generateButton');
+            const hashtagsCard = document.getElementById('hashtagsCard');
+            const analysisCard = document.getElementById('analysisCard');
+            const hashtagsContainer = document.getElementById('hashtagsContainer');
+            const analysisContainer = document.getElementById('analysisContainer');
+            const history = document.getElementById('history');
+            let generationHistory = [];
+
+            // Generate hashtags
+            async function generateHashtags() {
+                try {
+                    const text = content.value.trim();
+                    if (!text) {
+                        throw new Error('Please enter some content');
+                    }
+
+                    const platform = document.querySelector('input[name="platform"]:checked').value;
+                    const includeTrending = document.getElementById('includeTrending').checked;
+                    const includeRelated = document.getElementById('includeRelated').checked;
+                    const includeLocation = document.getElementById('includeLocation').checked;
+
+                    // Show loading state
+                    hashtagsContainer.innerHTML = `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Generating hashtags...</p>
+                        </div>
+                    `;
+                    hashtagsCard.style.display = 'block';
+                    analysisCard.style.display = 'none';
+
+                    // Generate hashtags (simulated for demo)
+                    // In a real implementation, you would use NLP and API calls
+                    const hashtags = {
+                        main: ['photography', 'nature', 'travel', 'adventure', 'explore'],
+                        trending: ['photooftheday', 'instagood', 'picoftheday', 'beautiful', 'naturephotography'],
+                        related: ['photographer', 'photographylovers', 'photographysouls', 'photographylife', 'photographyislife'],
+                        location: ['travelphotography', 'naturephotography', 'landscapephotography', 'streetphotography', 'wildlifephotography']
+                    };
+
+                    // Display hashtags
+                    hashtagsContainer.innerHTML = `
+                        <div class="mb-3">
+                            <h6>Main Hashtags</h6>
+                            <div class="hashtags-container mb-3">
+                                ${hashtags.main.map(tag => `
+                                    <span class="badge bg-primary me-2 mb-2">#${tag}</span>
+                                `).join('')}
+                            </div>
+                            ${includeTrending ? `
+                                <h6>Trending Hashtags</h6>
+                                <div class="hashtags-container mb-3">
+                                    ${hashtags.trending.map(tag => `
+                                        <span class="badge bg-success me-2 mb-2">#${tag}</span>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                            ${includeRelated ? `
+                                <h6>Related Hashtags</h6>
+                                <div class="hashtags-container mb-3">
+                                    ${hashtags.related.map(tag => `
+                                        <span class="badge bg-info me-2 mb-2">#${tag}</span>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                            ${includeLocation ? `
+                                <h6>Location-Based Hashtags</h6>
+                                <div class="hashtags-container">
+                                    ${hashtags.location.map(tag => `
+                                        <span class="badge bg-warning text-dark me-2 mb-2">#${tag}</span>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+
+                    // Display analysis
+                    const totalHashtags = [
+                        ...hashtags.main,
+                        ...(includeTrending ? hashtags.trending : []),
+                        ...(includeRelated ? hashtags.related : []),
+                        ...(includeLocation ? hashtags.location : [])
+                    ];
+
+                    analysisContainer.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Statistics</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-hashtag"></i> Total Hashtags: ${totalHashtags.length}</li>
+                                    <li><i class="fas fa-chart-line"></i> Trending: ${includeTrending ? hashtags.trending.length : 0}</li>
+                                    <li><i class="fas fa-link"></i> Related: ${includeRelated ? hashtags.related.length : 0}</li>
+                                    <li><i class="fas fa-map-marker-alt"></i> Location: ${includeLocation ? hashtags.location.length : 0}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Recommendations</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check-circle text-success"></i> Mix of popular and niche hashtags</li>
+                                    <li><i class="fas fa-check-circle text-success"></i> Relevant to your content</li>
+                                    <li><i class="fas fa-check-circle text-success"></i> Platform-optimized</li>
+                                    <li><i class="fas fa-check-circle text-success"></i> Good hashtag count</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    analysisCard.style.display = 'block';
+
+                    // Add to history
+                    generationHistory.unshift({
+                        content: text.substring(0, 50) + (text.length > 50 ? '...' : ''),
+                        platform: platform,
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+                } catch (error) {
+                    hashtagsContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4 class="alert-heading">Error</h4>
+                            <p class="mb-0">${error.message}</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // Copy hashtags to clipboard
+            window.copyHashtags = function() {
+                const hashtags = Array.from(document.querySelectorAll('.hashtags-container .badge'))
+                    .map(badge => badge.textContent)
+                    .join(' ');
+                navigator.clipboard.writeText(hashtags).then(() => {
+                    const button = document.querySelector('.btn-outline-primary');
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                    }, 2000);
+                });
+            };
+
+            // Copy hashtags with spaces
+            window.copyHashtagsWithSpaces = function() {
+                const hashtags = Array.from(document.querySelectorAll('.hashtags-container .badge'))
+                    .map(badge => badge.textContent)
+                    .join('  ');
+                navigator.clipboard.writeText(hashtags).then(() => {
+                    const button = document.querySelectorAll('.btn-outline-primary')[1];
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                    }, 2000);
+                });
+            };
+
+            // Update history display
+            function updateHistory() {
+                if (generationHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No hashtags generated yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Content</th>
+                                    <th>Platform</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${generationHistory.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>${item.content}</td>
+                                        <td>
+                                            <i class="fab fa-${item.platform}"></i>
+                                            ${item.platform.charAt(0).toUpperCase() + item.platform.slice(1)}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Event listeners
+            generateButton.addEventListener('click', generateHashtags);
+        });
+    </script>
+</body>
+</html> 
