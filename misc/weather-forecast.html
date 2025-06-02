@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast - Multi-Tools</title>
+    <meta name="description" content="Check current weather and forecasts for any location. Free online weather forecast tool.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        .weather-card {
+            transition: transform 0.3s;
+        }
+        .weather-card:hover {
+            transform: translateY(-5px);
+        }
+        .weather-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .forecast-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(0,0,0,0.02);
+            margin-bottom: 1rem;
+        }
+        .forecast-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .detail-item {
+            text-align: center;
+            padding: 0.5rem;
+            background-color: rgba(0,0,0,0.02);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title text-center mb-4">
+                            <i class="fas fa-cloud-sun text-primary me-2"></i>
+                            Weather Forecast
+                        </h1>
+                        
+                        <div class="mb-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="locationInput" placeholder="Enter city name">
+                                <button class="btn btn-primary" id="searchBtn">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="currentWeather" class="card weather-card mb-4" style="display: none;">
+                            <div class="card-body text-center">
+                                <div class="weather-icon" id="weatherIcon"></div>
+                                <h2 class="card-title" id="locationName"></h2>
+                                <h3 class="temperature" id="temperature"></h3>
+                                <p class="weather-description" id="weatherDescription"></p>
+                                
+                                <div class="weather-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-wind"></i>
+                                        <div>Wind</div>
+                                        <div id="windSpeed"></div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-tint"></i>
+                                        <div>Humidity</div>
+                                        <div id="humidity"></div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-compress-arrows-alt"></i>
+                                        <div>Pressure</div>
+                                        <div id="pressure"></div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-eye"></i>
+                                        <div>Visibility</div>
+                                        <div id="visibility"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="forecast" class="row g-3" style="display: none;">
+                            <h4 class="mb-3">5-Day Forecast</h4>
+                            <!-- Forecast items will be added here -->
+                        </div>
+                        
+                        <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        // Load header and footer
+        fetch('../../components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('../../components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+        // Weather API configuration
+        const API_KEY = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+        const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+
+        // Weather icons mapping
+        const weatherIcons = {
+            'Clear': 'fa-sun',
+            'Clouds': 'fa-cloud',
+            'Rain': 'fa-cloud-rain',
+            'Drizzle': 'fa-cloud-rain',
+            'Thunderstorm': 'fa-bolt',
+            'Snow': 'fa-snowflake',
+            'Mist': 'fa-smog',
+            'Smoke': 'fa-smog',
+            'Haze': 'fa-smog',
+            'Dust': 'fa-smog',
+            'Fog': 'fa-smog',
+            'Sand': 'fa-smog',
+            'Ash': 'fa-smog',
+            'Squall': 'fa-wind',
+            'Tornado': 'fa-wind'
+        };
+
+        function getWeatherIcon(weather) {
+            return weatherIcons[weather] || 'fa-cloud';
+        }
+
+        function formatTemperature(kelvin) {
+            return `${Math.round(kelvin - 273.15)}°C`;
+        }
+
+        function formatWindSpeed(speed) {
+            return `${Math.round(speed * 3.6)} km/h`;
+        }
+
+        function formatVisibility(meters) {
+            return `${(meters / 1000).toFixed(1)} km`;
+        }
+
+        function formatPressure(hPa) {
+            return `${hPa} hPa`;
+        }
+
+        function formatHumidity(humidity) {
+            return `${humidity}%`;
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
+
+        async function getWeatherData(location) {
+            try {
+                // Get current weather
+                const currentResponse = await fetch(`${BASE_URL}/weather?q=${location}&appid=${API_KEY}`);
+                const currentData = await currentResponse.json();
+                
+                if (currentData.cod !== 200) {
+                    throw new Error(currentData.message);
+                }
+                
+                // Get 5-day forecast
+                const forecastResponse = await fetch(`${BASE_URL}/forecast?q=${location}&appid=${API_KEY}`);
+                const forecastData = await forecastResponse.json();
+                
+                return { current: currentData, forecast: forecastData };
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        function displayCurrentWeather(data) {
+            const current = data.current;
+            const weather = current.weather[0];
+            
+            document.getElementById('locationName').textContent = `${current.name}, ${current.sys.country}`;
+            document.getElementById('temperature').textContent = formatTemperature(current.main.temp);
+            document.getElementById('weatherDescription').textContent = weather.description;
+            document.getElementById('weatherIcon').innerHTML = `<i class="fas ${getWeatherIcon(weather.main)}"></i>`;
+            
+            document.getElementById('windSpeed').textContent = formatWindSpeed(current.wind.speed);
+            document.getElementById('humidity').textContent = formatHumidity(current.main.humidity);
+            document.getElementById('pressure').textContent = formatPressure(current.main.pressure);
+            document.getElementById('visibility').textContent = formatVisibility(current.visibility);
+            
+            document.getElementById('currentWeather').style.display = 'block';
+        }
+
+        function displayForecast(data) {
+            const forecast = data.forecast;
+            const forecastContainer = document.getElementById('forecast');
+            forecastContainer.innerHTML = '<h4 class="mb-3">5-Day Forecast</h4>';
+            
+            // Group forecast by day
+            const dailyForecasts = {};
+            forecast.list.forEach(item => {
+                const date = new Date(item.dt * 1000).toLocaleDateString();
+                if (!dailyForecasts[date]) {
+                    dailyForecasts[date] = item;
+                }
+            });
+            
+            // Display one forecast per day
+            Object.values(dailyForecasts).forEach(item => {
+                const weather = item.weather[0];
+                const forecastItem = document.createElement('div');
+                forecastItem.className = 'col-md-4 col-lg-2';
+                forecastItem.innerHTML = `
+                    <div class="forecast-item">
+                        <div class="forecast-icon">
+                            <i class="fas ${getWeatherIcon(weather.main)}"></i>
+                        </div>
+                        <div class="date">${formatDate(item.dt)}</div>
+                        <div class="temperature">${formatTemperature(item.main.temp)}</div>
+                        <div class="description">${weather.description}</div>
+                    </div>
+                `;
+                forecastContainer.appendChild(forecastItem);
+            });
+            
+            forecastContainer.style.display = 'flex';
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            
+            document.getElementById('currentWeather').style.display = 'none';
+            document.getElementById('forecast').style.display = 'none';
+        }
+
+        // Event listeners
+        document.getElementById('searchBtn').addEventListener('click', async function() {
+            const location = document.getElementById('locationInput').value.trim();
+            
+            if (!location) {
+                showError('Please enter a location');
+                return;
+            }
+            
+            try {
+                const data = await getWeatherData(location);
+                displayCurrentWeather(data);
+                displayForecast(data);
+                document.getElementById('errorMessage').style.display = 'none';
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+
+        document.getElementById('locationInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('searchBtn').click();
+            }
+        });
+    </script>
+</body>
+</html> 

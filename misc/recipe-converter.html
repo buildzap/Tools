@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Converter - Multi-Tools</title>
+    <meta name="description" content="Convert recipe measurements between different units. Easy to use recipe converter for cooking and baking.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        .conversion-card {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .conversion-card:hover {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .conversion-result {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0d6efd;
+            text-align: center;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+        .unit-group {
+            margin-bottom: 1rem;
+        }
+        .unit-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .common-conversions {
+            margin-top: 2rem;
+        }
+        .common-conversion {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .common-conversion:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title text-center mb-4">
+                            <i class="fas fa-balance-scale text-primary me-2"></i>
+                            Recipe Converter
+                        </h1>
+                        
+                        <div class="conversion-card">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="unit-group">
+                                        <label>From Unit</label>
+                                        <select class="form-select" id="fromUnit">
+                                            <option value="g">Grams (g)</option>
+                                            <option value="kg">Kilograms (kg)</option>
+                                            <option value="oz">Ounces (oz)</option>
+                                            <option value="lb">Pounds (lb)</option>
+                                            <option value="ml">Milliliters (ml)</option>
+                                            <option value="l">Liters (l)</option>
+                                            <option value="tsp">Teaspoons (tsp)</option>
+                                            <option value="tbsp">Tablespoons (tbsp)</option>
+                                            <option value="cup">Cups (cup)</option>
+                                            <option value="floz">Fluid Ounces (fl oz)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="unit-group">
+                                        <label>Amount</label>
+                                        <input type="number" class="form-control" id="amount" value="1" min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="unit-group">
+                                        <label>To Unit</label>
+                                        <select class="form-select" id="toUnit">
+                                            <option value="g">Grams (g)</option>
+                                            <option value="kg">Kilograms (kg)</option>
+                                            <option value="oz">Ounces (oz)</option>
+                                            <option value="lb">Pounds (lb)</option>
+                                            <option value="ml">Milliliters (ml)</option>
+                                            <option value="l">Liters (l)</option>
+                                            <option value="tsp">Teaspoons (tsp)</option>
+                                            <option value="tbsp">Tablespoons (tbsp)</option>
+                                            <option value="cup">Cups (cup)</option>
+                                            <option value="floz">Fluid Ounces (fl oz)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="conversion-result" id="conversionResult">
+                                Enter values to convert
+                            </div>
+                        </div>
+                        
+                        <div class="common-conversions">
+                            <h3 class="mb-3">Common Conversions</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="common-conversion" onclick="setCommonConversion('cup', 'ml', 1)">
+                                        1 cup = 240 ml
+                                    </div>
+                                    <div class="common-conversion" onclick="setCommonConversion('tbsp', 'ml', 1)">
+                                        1 tablespoon = 15 ml
+                                    </div>
+                                    <div class="common-conversion" onclick="setCommonConversion('tsp', 'ml', 1)">
+                                        1 teaspoon = 5 ml
+                                    </div>
+                                    <div class="common-conversion" onclick="setCommonConversion('oz', 'g', 1)">
+                                        1 ounce = 28.35 g
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="common-conversion" onclick="setCommonConversion('lb', 'g', 1)">
+                                        1 pound = 453.59 g
+                                    </div>
+                                    <div class="common-conversion" onclick="setCommonConversion('floz', 'ml', 1)">
+                                        1 fluid ounce = 29.57 ml
+                                    </div>
+                                    <div class="common-conversion" onclick="setCommonConversion('cup', 'tbsp', 1)">
+                                        1 cup = 16 tablespoons
+                                    </div>
+                                    <div class="common-conversion" onclick="setCommonConversion('tbsp', 'tsp', 1)">
+                                        1 tablespoon = 3 teaspoons
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        // Load header and footer
+        fetch('../../components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('../../components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+        // Conversion factors (to grams or milliliters)
+        const conversionFactors = {
+            // Weight
+            g: 1,
+            kg: 1000,
+            oz: 28.35,
+            lb: 453.59,
+            // Volume
+            ml: 1,
+            l: 1000,
+            tsp: 5,
+            tbsp: 15,
+            cup: 240,
+            floz: 29.57
+        };
+
+        // Unit types (weight or volume)
+        const unitTypes = {
+            g: 'weight',
+            kg: 'weight',
+            oz: 'weight',
+            lb: 'weight',
+            ml: 'volume',
+            l: 'volume',
+            tsp: 'volume',
+            tbsp: 'volume',
+            cup: 'volume',
+            floz: 'volume'
+        };
+
+        function convert() {
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            
+            if (isNaN(amount) || amount < 0) {
+                document.getElementById('conversionResult').textContent = 'Please enter a valid amount';
+                return;
+            }
+            
+            // Check if units are of the same type
+            if (unitTypes[fromUnit] !== unitTypes[toUnit]) {
+                document.getElementById('conversionResult').textContent = 'Cannot convert between weight and volume units';
+                return;
+            }
+            
+            // Convert to base unit (g or ml) then to target unit
+            const baseValue = amount * conversionFactors[fromUnit];
+            const result = baseValue / conversionFactors[toUnit];
+            
+            // Format result
+            const formattedResult = result.toFixed(2).replace(/\.?0+$/, '');
+            document.getElementById('conversionResult').textContent = 
+                `${amount} ${fromUnit} = ${formattedResult} ${toUnit}`;
+        }
+
+        function setCommonConversion(fromUnit, toUnit, amount) {
+            document.getElementById('fromUnit').value = fromUnit;
+            document.getElementById('toUnit').value = toUnit;
+            document.getElementById('amount').value = amount;
+            convert();
+        }
+
+        // Add event listeners
+        document.getElementById('fromUnit').addEventListener('change', convert);
+        document.getElementById('toUnit').addEventListener('change', convert);
+        document.getElementById('amount').addEventListener('input', convert);
+    </script>
+</body>
+</html> 

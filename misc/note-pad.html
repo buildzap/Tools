@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Pad - Multi-Tools</title>
+    <meta name="description" content="Simple online note pad for quick notes. Free online note taking tool.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        .note-pad {
+            height: 400px;
+            resize: vertical;
+        }
+        .note-pad:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+        .auto-save-indicator {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .note-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title text-center mb-4">
+                            <i class="fas fa-sticky-note text-primary me-2"></i>
+                            Note Pad
+                        </h1>
+                        
+                        <div class="mb-3">
+                            <textarea class="form-control note-pad" id="notePad" placeholder="Start typing your notes here..."></textarea>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="auto-save-indicator" id="autoSaveIndicator">
+                                <i class="fas fa-save me-1"></i>
+                                <span>Auto-saved</span>
+                            </div>
+                            
+                            <div class="note-actions">
+                                <button class="btn btn-outline-primary" onclick="downloadNote()">
+                                    <i class="fas fa-download me-2"></i>Download
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="clearNote()">
+                                    <i class="fas fa-trash me-2"></i>Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        // Load header and footer
+        fetch('../../components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('../../components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+        const notePad = document.getElementById('notePad');
+        const autoSaveIndicator = document.getElementById('autoSaveIndicator');
+        let autoSaveTimeout;
+
+        // Load saved note from localStorage
+        const savedNote = localStorage.getItem('notePadContent');
+        if (savedNote) {
+            notePad.value = savedNote;
+        }
+
+        // Auto-save functionality
+        notePad.addEventListener('input', function() {
+            // Clear previous timeout
+            clearTimeout(autoSaveTimeout);
+            
+            // Show saving indicator
+            autoSaveIndicator.innerHTML = '<i class="fas fa-save me-1"></i><span>Saving...</span>';
+            
+            // Set new timeout for auto-save
+            autoSaveTimeout = setTimeout(function() {
+                localStorage.setItem('notePadContent', notePad.value);
+                autoSaveIndicator.innerHTML = '<i class="fas fa-save me-1"></i><span>Auto-saved</span>';
+            }, 1000);
+        });
+
+        function downloadNote() {
+            const content = notePad.value;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'note.txt';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        function clearNote() {
+            if (confirm('Are you sure you want to clear the note?')) {
+                notePad.value = '';
+                localStorage.removeItem('notePadContent');
+                autoSaveIndicator.innerHTML = '<i class="fas fa-save me-1"></i><span>Auto-saved</span>';
+            }
+        }
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Ctrl/Cmd + S to save
+            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                event.preventDefault();
+                downloadNote();
+            }
+        });
+    </script>
+</body>
+</html> 

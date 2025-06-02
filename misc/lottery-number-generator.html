@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Number Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .number-ball {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0.5rem;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .powerball {
+            background: #ff6b6b;
+        }
+        .megaball {
+            background: #4dabf7;
+        }
+        .regular {
+            background: #51cf66;
+        }
+        .history-item {
+            transition: transform 0.2s;
+        }
+        .history-item:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Lottery Number Generator</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form id="lotteryForm">
+                            <div class="mb-3">
+                                <label for="lotteryType" class="form-label">Lottery Type</label>
+                                <select class="form-select" id="lotteryType" required>
+                                    <option value="powerball">Powerball</option>
+                                    <option value="megamillions">Mega Millions</option>
+                                    <option value="eurojackpot">EuroJackpot</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+
+                            <div id="customOptions" class="d-none">
+                                <div class="mb-3">
+                                    <label for="mainNumbers" class="form-label">Number of Main Numbers</label>
+                                    <input type="number" class="form-control" id="mainNumbers" min="1" max="10" value="5">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mainRange" class="form-label">Main Numbers Range</label>
+                                    <input type="number" class="form-control" id="mainRange" min="1" value="69">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="specialNumbers" class="form-label">Number of Special Numbers</label>
+                                    <input type="number" class="form-control" id="specialNumbers" min="0" max="2" value="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="specialRange" class="form-label">Special Numbers Range</label>
+                                    <input type="number" class="form-control" id="specialRange" min="1" value="26">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="sets" class="form-label">Number of Sets</label>
+                                <input type="number" class="form-control" id="sets" min="1" max="10" value="1">
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Generate Numbers</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="results" class="mb-4"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">History</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="history" class="row g-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const lotteryConfigs = {
+            powerball: { main: { count: 5, range: 69 }, special: { count: 1, range: 26 } },
+            megamillions: { main: { count: 5, range: 70 }, special: { count: 1, range: 25 } },
+            eurojackpot: { main: { count: 5, range: 50 }, special: { count: 2, range: 10 } }
+        };
+
+        document.getElementById('lotteryType').addEventListener('change', function() {
+            const customOptions = document.getElementById('customOptions');
+            if (this.value === 'custom') {
+                customOptions.classList.remove('d-none');
+            } else {
+                customOptions.classList.add('d-none');
+            }
+        });
+
+        document.getElementById('lotteryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateNumbers();
+        });
+
+        function generateNumbers() {
+            const type = document.getElementById('lotteryType').value;
+            const sets = parseInt(document.getElementById('sets').value);
+            let config;
+
+            if (type === 'custom') {
+                config = {
+                    main: {
+                        count: parseInt(document.getElementById('mainNumbers').value),
+                        range: parseInt(document.getElementById('mainRange').value)
+                    },
+                    special: {
+                        count: parseInt(document.getElementById('specialNumbers').value),
+                        range: parseInt(document.getElementById('specialRange').value)
+                    }
+                };
+            } else {
+                config = lotteryConfigs[type];
+            }
+
+            const results = [];
+            for (let i = 0; i < sets; i++) {
+                results.push(generateSet(config));
+            }
+
+            displayResults(results, type);
+            addToHistory(results, type);
+        }
+
+        function generateSet(config) {
+            const mainNumbers = new Set();
+            while (mainNumbers.size < config.main.count) {
+                mainNumbers.add(Math.floor(Math.random() * config.main.range) + 1);
+            }
+
+            const specialNumbers = new Set();
+            while (specialNumbers.size < config.special.count) {
+                specialNumbers.add(Math.floor(Math.random() * config.special.range) + 1);
+            }
+
+            return {
+                main: Array.from(mainNumbers).sort((a, b) => a - b),
+                special: Array.from(specialNumbers).sort((a, b) => a - b)
+            };
+        }
+
+        function displayResults(results, type) {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+
+            results.forEach((set, index) => {
+                const setDiv = document.createElement('div');
+                setDiv.className = 'card mb-3';
+                setDiv.innerHTML = `
+                    <div class="card-body">
+                        <h5 class="card-title">Set ${index + 1}</h5>
+                        <div class="d-flex flex-wrap">
+                            ${set.main.map(num => `
+                                <div class="number-ball regular">${num}</div>
+                            `).join('')}
+                            ${set.special.map(num => `
+                                <div class="number-ball ${type === 'powerball' ? 'powerball' : 'megaball'}">${num}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                resultsContainer.appendChild(setDiv);
+            });
+        }
+
+        function addToHistory(results, type) {
+            const historyContainer = document.getElementById('history');
+            const historyItem = document.createElement('div');
+            historyItem.className = 'col-md-6';
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const numbers = results[0].main.join(', ') + ' | ' + results[0].special.join(', ');
+            
+            historyItem.innerHTML = `
+                <div class="card history-item">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">${type.charAt(0).toUpperCase() + type.slice(1)}</h6>
+                                <p class="mb-0 text-muted">${numbers}</p>
+                            </div>
+                            <small class="text-muted">${timestamp}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            historyContainer.insertBefore(historyItem, historyContainer.firstChild);
+            
+            // Keep only last 10 history items
+            if (historyContainer.children.length > 10) {
+                historyContainer.removeChild(historyContainer.lastChild);
+            }
+        }
+    </script>
+</body>
+</html> 

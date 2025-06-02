@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Price Calculator - Multi-Tools</title>
+    <meta name="description" content="Compare prices of products with different quantities and units. Find the best value for your money.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        .product-card {
+            margin-bottom: 1rem;
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-2px);
+        }
+        .product-card.best-value {
+            border-color: #198754;
+        }
+        .product-card.best-value .card-header {
+            background-color: #198754;
+            color: white;
+        }
+        .unit-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .comparison-table {
+            margin-top: 2rem;
+        }
+        .comparison-table th {
+            background-color: #f8f9fa;
+        }
+        .savings {
+            color: #198754;
+            font-weight: bold;
+        }
+        .add-product-btn {
+            margin-bottom: 1rem;
+        }
+        .remove-product-btn {
+            color: #dc3545;
+            cursor: pointer;
+        }
+        .remove-product-btn:hover {
+            color: #bb2d3b;
+        }
+        .product-input {
+            margin-bottom: 1rem;
+        }
+        .unit-select {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title text-center mb-4">
+                            <i class="fas fa-calculator text-primary me-2"></i>
+                            Unit Price Calculator
+                        </h1>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Add products to compare their unit prices and find the best value. The calculator will automatically determine the best deal.
+                        </div>
+                        
+                        <div id="productsContainer">
+                            <!-- Products will be added here -->
+                        </div>
+                        
+                        <button class="btn btn-primary add-product-btn" onclick="addProduct()">
+                            <i class="fas fa-plus me-2"></i>
+                            Add Product
+                        </button>
+                        
+                        <div class="comparison-table">
+                            <h3 class="mb-3">Comparison Summary</h3>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Unit</th>
+                                            <th>Unit Price</th>
+                                            <th>Savings</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="comparisonTable">
+                                        <!-- Comparison data will be added here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        // Load header and footer
+        fetch('../../components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('../../components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+        let products = [];
+        let productCounter = 0;
+
+        const units = {
+            weight: ['g', 'kg', 'oz', 'lb'],
+            volume: ['ml', 'l', 'fl oz', 'gal'],
+            count: ['piece', 'dozen', 'pack']
+        };
+
+        function addProduct() {
+            const productId = `product-${productCounter++}`;
+            const productCard = document.createElement('div');
+            productCard.className = 'card product-card';
+            productCard.id = productId;
+            
+            productCard.innerHTML = `
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Product ${productCounter}</h5>
+                    <i class="fas fa-times remove-product-btn" onclick="removeProduct('${productId}')"></i>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="product-input">
+                                <label class="form-label">Product Name</label>
+                                <input type="text" class="form-control" placeholder="Enter product name" onchange="updateProduct('${productId}')">
+                            </div>
+                            <div class="product-input">
+                                <label class="form-label">Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" placeholder="0.00" step="0.01" min="0" onchange="updateProduct('${productId}')">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="product-input">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" class="form-control" placeholder="Enter quantity" min="0" onchange="updateProduct('${productId}')">
+                            </div>
+                            <div class="unit-select">
+                                <label class="form-label">Unit</label>
+                                <select class="form-select" onchange="updateProduct('${productId}')">
+                                    <option value="">Select unit</option>
+                                    <optgroup label="Weight">
+                                        ${units.weight.map(unit => `<option value="${unit}">${unit}</option>`).join('')}
+                                    </optgroup>
+                                    <optgroup label="Volume">
+                                        ${units.volume.map(unit => `<option value="${unit}">${unit}</option>`).join('')}
+                                    </optgroup>
+                                    <optgroup label="Count">
+                                        ${units.count.map(unit => `<option value="${unit}">${unit}</option>`).join('')}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="unit-price mt-3 text-center">
+                        Unit Price: <span class="unit-price-value">-</span>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('productsContainer').appendChild(productCard);
+            products.push({
+                id: productId,
+                name: '',
+                price: 0,
+                quantity: 0,
+                unit: '',
+                unitPrice: 0
+            });
+            
+            updateComparison();
+        }
+
+        function removeProduct(productId) {
+            const productCard = document.getElementById(productId);
+            productCard.remove();
+            products = products.filter(p => p.id !== productId);
+            updateComparison();
+        }
+
+        function updateProduct(productId) {
+            const productCard = document.getElementById(productId);
+            const product = products.find(p => p.id === productId);
+            
+            product.name = productCard.querySelector('input[type="text"]').value;
+            product.price = parseFloat(productCard.querySelector('input[type="number"]').value) || 0;
+            product.quantity = parseFloat(productCard.querySelectorAll('input[type="number"]')[1].value) || 0;
+            product.unit = productCard.querySelector('select').value;
+            
+            if (product.quantity > 0 && product.unit) {
+                product.unitPrice = product.price / product.quantity;
+                productCard.querySelector('.unit-price-value').textContent = `$${product.unitPrice.toFixed(2)}/${product.unit}`;
+            } else {
+                product.unitPrice = 0;
+                productCard.querySelector('.unit-price-value').textContent = '-';
+            }
+            
+            updateComparison();
+        }
+
+        function updateComparison() {
+            const validProducts = products.filter(p => p.quantity > 0 && p.unit);
+            if (validProducts.length === 0) {
+                document.getElementById('comparisonTable').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center">Add products to compare prices</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Find the best value
+            const bestValue = validProducts.reduce((best, current) => 
+                current.unitPrice < best.unitPrice ? current : best
+            );
+            
+            // Update product cards
+            validProducts.forEach(product => {
+                const productCard = document.getElementById(product.id);
+                if (product.id === bestValue.id) {
+                    productCard.classList.add('best-value');
+                } else {
+                    productCard.classList.remove('best-value');
+                }
+            });
+            
+            // Update comparison table
+            const tableHTML = validProducts.map(product => {
+                const savings = product.unitPrice - bestValue.unitPrice;
+                const savingsPercentage = (savings / product.unitPrice) * 100;
+                
+                return `
+                    <tr>
+                        <td>${product.name || `Product ${product.id.split('-')[1]}`}</td>
+                        <td>$${product.price.toFixed(2)}</td>
+                        <td>${product.quantity} ${product.unit}</td>
+                        <td>${product.unit}</td>
+                        <td>$${product.unitPrice.toFixed(2)}/${product.unit}</td>
+                        <td class="${product.id === bestValue.id ? 'text-success' : 'savings'}">
+                            ${product.id === bestValue.id ? 'Best Value' : 
+                              `$${savings.toFixed(2)} (${savingsPercentage.toFixed(1)}%)`}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            document.getElementById('comparisonTable').innerHTML = tableHTML;
+        }
+
+        // Initialize with one product
+        addProduct();
+    </script>
+</body>
+</html> 
