@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Formatter - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <!-- Highlight.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/json.min.js"></script>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-code"></i> JSON Formatter</h1>
+                <p>Format, validate, and beautify your JSON data</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="jsonForm">
+                                <div class="mb-3">
+                                    <label for="input" class="form-label">Enter your JSON</label>
+                                    <textarea class="form-control font-monospace" id="input" rows="10" placeholder="Paste your JSON here..."></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Formatting Options</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="sortKeys" checked>
+                                                <label class="form-check-label" for="sortKeys">
+                                                    Sort keys alphabetically
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="removeComments" checked>
+                                                <label class="form-check-label" for="removeComments">
+                                                    Remove comments
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="minify" checked>
+                                                <label class="form-check-label" for="minify">
+                                                    Minify output
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="validateOnly">
+                                                <label class="form-check-label" for="validateOnly">
+                                                    Validate only
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="formatButton">
+                                        <i class="fas fa-magic"></i> Format JSON
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Formatted JSON</h5>
+                            <div class="mb-3">
+                                <pre><code class="language-json" id="output"></code></pre>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="copyButton" disabled>
+                                    <i class="fas fa-copy"></i> Copy to Clipboard
+                                </button>
+                                <button class="btn btn-outline-secondary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download JSON
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Validation Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Validation Results</h5>
+                            <div id="validation" class="text-center text-muted">
+                                Enter JSON to validate
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About JSON Formatter</h5>
+                            <p class="card-text">
+                                Format and validate your JSON data with various options
+                                for better readability and structure.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> JSON formatting</li>
+                                <li><i class="fas fa-check text-success"></i> Syntax validation</li>
+                                <li><i class="fas fa-check text-success"></i> Key sorting</li>
+                                <li><i class="fas fa-check text-success"></i> Minification</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the validation feature to check your JSON syntax.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('input');
+            const output = document.getElementById('output');
+            const formatButton = document.getElementById('formatButton');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+            const validation = document.getElementById('validation');
+            const sortKeys = document.getElementById('sortKeys');
+            const removeComments = document.getElementById('removeComments');
+            const minify = document.getElementById('minify');
+            const validateOnly = document.getElementById('validateOnly');
+
+            // Format JSON
+            formatButton.addEventListener('click', function() {
+                try {
+                    let jsonText = input.value.trim();
+                    
+                    // Remove comments if option is checked
+                    if (removeComments.checked) {
+                        jsonText = jsonText.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
+                    }
+
+                    // Parse JSON
+                    let json = JSON.parse(jsonText);
+
+                    // Sort keys if option is checked
+                    if (sortKeys.checked) {
+                        json = sortObjectKeys(json);
+                    }
+
+                    // Format or minify
+                    const formattedJson = minify.checked ? 
+                        JSON.stringify(json) : 
+                        JSON.stringify(json, null, 2);
+
+                    // Update output
+                    output.textContent = formattedJson;
+                    hljs.highlightElement(output);
+                    
+                    // Update validation
+                    validation.innerHTML = `
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> Valid JSON
+                        </div>
+                    `;
+
+                    // Enable buttons
+                    copyButton.disabled = false;
+                    downloadButton.disabled = false;
+                } catch (error) {
+                    // Show error
+                    validation.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> ${error.message}
+                        </div>
+                    `;
+                    
+                    // Disable buttons
+                    copyButton.disabled = true;
+                    downloadButton.disabled = true;
+                }
+            });
+
+            // Sort object keys recursively
+            function sortObjectKeys(obj) {
+                if (obj === null || typeof obj !== 'object') {
+                    return obj;
+                }
+
+                if (Array.isArray(obj)) {
+                    return obj.map(sortObjectKeys);
+                }
+
+                return Object.keys(obj).sort().reduce((result, key) => {
+                    result[key] = sortObjectKeys(obj[key]);
+                    return result;
+                }, {});
+            }
+
+            // Handle copy to clipboard
+            copyButton.addEventListener('click', function() {
+                const text = output.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+                    }, 2000);
+                });
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const text = output.textContent;
+                const blob = new Blob([text], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'formatted.json';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Initialize highlight.js
+            hljs.configure({
+                languages: ['json']
+            });
+        });
+    </script>
+</body>
+</html> 

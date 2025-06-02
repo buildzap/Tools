@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robots.txt Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-robot"></i> Robots.txt Generator</h1>
+                <p>Generate robots.txt files for your website</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="robotsForm">
+                                <div class="mb-3">
+                                    <label for="sitemapUrl" class="form-label">Sitemap URL</label>
+                                    <input type="url" class="form-control" id="sitemapUrl"
+                                        placeholder="https://example.com/sitemap.xml">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">User Agents</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="allowAll" checked>
+                                        <label class="form-check-label" for="allowAll">
+                                            Allow all robots
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="allowGoogle">
+                                        <label class="form-check-label" for="allowGoogle">
+                                            Allow Googlebot
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="allowBing">
+                                        <label class="form-check-label" for="allowBing">
+                                            Allow Bingbot
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Disallow Rules</label>
+                                    <div id="disallowRules">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" placeholder="/admin/">
+                                            <button type="button" class="btn btn-outline-danger remove-rule">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="addRule">
+                                        <i class="fas fa-plus"></i> Add Rule
+                                    </button>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Crawl Delay (seconds)</label>
+                                    <input type="number" class="form-control" id="crawlDelay" min="0" max="30" value="0">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-code"></i> Generate Robots.txt
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Generated Robots.txt</h5>
+                            <div class="mb-3">
+                                <pre id="robotsOutput" class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;"></pre>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Robots.txt
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Robots.txt</h5>
+                            <p class="card-text">
+                                Robots.txt files tell search engines which pages they can and cannot crawl
+                                on your website.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> User-agent rules</li>
+                                <li><i class="fas fa-check text-success"></i> Disallow directives</li>
+                                <li><i class="fas fa-check text-success"></i> Crawl delay settings</li>
+                                <li><i class="fas fa-check text-success"></i> Sitemap location</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Place your robots.txt file in your website's root directory.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('robotsForm');
+            const robotsOutput = document.getElementById('robotsOutput');
+            const downloadButton = document.getElementById('downloadButton');
+            const addRuleButton = document.getElementById('addRule');
+            const disallowRules = document.getElementById('disallowRules');
+
+            // Add new rule
+            addRuleButton.addEventListener('click', function() {
+                const ruleDiv = document.createElement('div');
+                ruleDiv.className = 'input-group mb-2';
+                ruleDiv.innerHTML = `
+                    <input type="text" class="form-control" placeholder="/path/">
+                    <button type="button" class="btn btn-outline-danger remove-rule">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                disallowRules.appendChild(ruleDiv);
+            });
+
+            // Remove rule
+            disallowRules.addEventListener('click', function(e) {
+                if (e.target.closest('.remove-rule')) {
+                    e.target.closest('.input-group').remove();
+                }
+            });
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                generateRobotsTxt();
+            });
+
+            // Generate robots.txt
+            function generateRobotsTxt() {
+                let content = '';
+
+                // Add user agent rules
+                if (document.getElementById('allowAll').checked) {
+                    content += 'User-agent: *\n';
+                } else {
+                    if (document.getElementById('allowGoogle').checked) {
+                        content += 'User-agent: Googlebot\n';
+                    }
+                    if (document.getElementById('allowBing').checked) {
+                        content += 'User-agent: Bingbot\n';
+                    }
+                }
+
+                // Add disallow rules
+                const rules = Array.from(disallowRules.querySelectorAll('input'))
+                    .map(input => input.value.trim())
+                    .filter(value => value);
+                
+                if (rules.length > 0) {
+                    rules.forEach(rule => {
+                        content += `Disallow: ${rule}\n`;
+                    });
+                }
+
+                // Add crawl delay
+                const crawlDelay = document.getElementById('crawlDelay').value;
+                if (crawlDelay > 0) {
+                    content += `Crawl-delay: ${crawlDelay}\n`;
+                }
+
+                // Add sitemap
+                const sitemapUrl = document.getElementById('sitemapUrl').value.trim();
+                if (sitemapUrl) {
+                    content += `\nSitemap: ${sitemapUrl}\n`;
+                }
+
+                // Update output
+                robotsOutput.textContent = content;
+                downloadButton.disabled = false;
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const blob = new Blob([robotsOutput.textContent], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'robots.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

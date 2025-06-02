@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        .meme-preview {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .meme-preview img {
+            max-width: 100%;
+            height: auto;
+        }
+        .meme-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            text-align: center;
+            font-family: Impact, sans-serif;
+            color: white;
+            text-shadow: 2px 2px 0 #000,
+                        -2px -2px 0 #000,
+                        2px -2px 0 #000,
+                        -2px 2px 0 #000;
+            font-size: 32px;
+            text-transform: uppercase;
+        }
+        .meme-text.top {
+            top: 20px;
+        }
+        .meme-text.bottom {
+            bottom: 20px;
+        }
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .template-item {
+            cursor: pointer;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .template-item:hover {
+            transform: scale(1.05);
+        }
+        .template-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .template-item.selected {
+            border: 3px solid #0d6efd;
+        }
+        .meme-history-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .meme-history-item:last-child {
+            border-bottom: none;
+        }
+        .meme-history-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-laugh"></i> Meme Generator</h1>
+                <p>Create memes with popular templates</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Meme Preview -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Meme Preview</h5>
+                            <div class="meme-preview" id="memePreview">
+                                <p class="text-muted">Select a template to get started</p>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-success" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Meme
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Controls -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Text Controls</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Top Text</label>
+                                    <input type="text" class="form-control" id="topText" placeholder="Enter top text">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Bottom Text</label>
+                                    <input type="text" class="form-control" id="bottomText" placeholder="Enter bottom text">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Text Size</label>
+                                    <input type="range" class="form-range" id="textSize" min="20" max="60" value="32">
+                                    <div class="text-center" id="sizeValue">32px</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Text Color</label>
+                                    <input type="color" class="form-control form-control-color" id="textColor" value="#FFFFFF">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Template Selection -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Meme Templates</h5>
+                            <div class="template-grid" id="templateGrid">
+                                <!-- Templates will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Memes</h5>
+                            <div id="history" class="text-center text-muted">
+                                No memes created yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Meme Generator</h5>
+                            <p class="card-text">
+                                Create memes with popular templates.
+                                Add text and customize appearance.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Popular templates</li>
+                                <li><i class="fas fa-check text-success"></i> Text customization</li>
+                                <li><i class="fas fa-check text-success"></i> Real-time preview</li>
+                                <li><i class="fas fa-check text-success"></i> Download options</li>
+                                <li><i class="fas fa-check text-success"></i> History tracking</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Keep your text short and impactful for better meme readability.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- html2canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const memePreview = document.getElementById('memePreview');
+            const downloadButton = document.getElementById('downloadButton');
+            const templateGrid = document.getElementById('templateGrid');
+            const history = document.getElementById('history');
+            let memeHistory = [];
+            let selectedTemplate = null;
+
+            // Sample meme templates (in a real app, these would be loaded from a server)
+            const templates = [
+                { id: 1, name: 'Drake Hotline Bling', url: 'https://example.com/drake.jpg' },
+                { id: 2, name: 'Two Buttons', url: 'https://example.com/buttons.jpg' },
+                { id: 3, name: 'Change My Mind', url: 'https://example.com/change-mind.jpg' },
+                { id: 4, name: 'Distracted Boyfriend', url: 'https://example.com/distracted.jpg' },
+                { id: 5, name: 'Expanding Brain', url: 'https://example.com/brain.jpg' },
+                { id: 6, name: 'This is Fine', url: 'https://example.com/this-is-fine.jpg' }
+            ];
+
+            // Initialize template grid
+            function initializeTemplates() {
+                templateGrid.innerHTML = templates.map(template => `
+                    <div class="template-item" data-id="${template.id}">
+                        <img src="${template.url}" alt="${template.name}" title="${template.name}">
+                        <div class="text-center mt-2">${template.name}</div>
+                    </div>
+                `).join('');
+
+                // Add click handlers
+                document.querySelectorAll('.template-item').forEach(item => {
+                    item.addEventListener('click', () => selectTemplate(item.dataset.id));
+                });
+            }
+
+            // Select template
+            function selectTemplate(id) {
+                const template = templates.find(t => t.id === parseInt(id));
+                if (!template) return;
+
+                selectedTemplate = template;
+                document.querySelectorAll('.template-item').forEach(item => {
+                    item.classList.toggle('selected', item.dataset.id === id);
+                });
+
+                updatePreview();
+                downloadButton.disabled = false;
+            }
+
+            // Update preview
+            function updatePreview() {
+                if (!selectedTemplate) {
+                    memePreview.innerHTML = '<p class="text-muted">Select a template to get started</p>';
+                    return;
+                }
+
+                const topText = document.getElementById('topText').value;
+                const bottomText = document.getElementById('bottomText').value;
+                const textSize = document.getElementById('textSize').value;
+                const textColor = document.getElementById('textColor').value;
+
+                memePreview.innerHTML = `
+                    <img src="${selectedTemplate.url}" alt="${selectedTemplate.name}">
+                    ${topText ? `<div class="meme-text top" style="font-size: ${textSize}px; color: ${textColor}">${topText}</div>` : ''}
+                    ${bottomText ? `<div class="meme-text bottom" style="font-size: ${textSize}px; color: ${textColor}">${bottomText}</div>` : ''}
+                `;
+            }
+
+            // Download meme
+            function downloadMeme() {
+                html2canvas(memePreview).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `meme-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    // Add to history
+                    memeHistory.unshift({
+                        template: selectedTemplate.name,
+                        topText: document.getElementById('topText').value,
+                        bottomText: document.getElementById('bottomText').value,
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+                });
+            }
+
+            // Update history display
+            function updateHistory() {
+                if (memeHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No memes created yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Template</th>
+                                    <th>Text</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${memeHistory.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>${item.template}</td>
+                                        <td>${item.topText ? item.topText + ' / ' : ''}${item.bottomText || ''}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Event listeners
+            document.getElementById('textSize').addEventListener('input', (e) => {
+                document.getElementById('sizeValue').textContent = `${e.target.value}px`;
+                updatePreview();
+            });
+            document.getElementById('textColor').addEventListener('input', updatePreview);
+            document.getElementById('topText').addEventListener('input', updatePreview);
+            document.getElementById('bottomText').addEventListener('input', updatePreview);
+            downloadButton.addEventListener('click', downloadMeme);
+
+            // Initialize
+            initializeTemplates();
+        });
+    </script>
+</body>
+</html> 

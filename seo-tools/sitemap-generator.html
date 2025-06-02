@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-sitemap"></i> Sitemap Generator</h1>
+                <p>Generate XML sitemaps for your website</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="sitemapForm">
+                                <div class="mb-3">
+                                    <label for="websiteUrl" class="form-label">Website URL</label>
+                                    <input type="url" class="form-control" id="websiteUrl" required
+                                        placeholder="https://example.com">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="urls" class="form-label">URLs (one per line)</label>
+                                    <textarea class="form-control" id="urls" rows="10" required
+                                        placeholder="https://example.com/page1&#10;https://example.com/page2"></textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="changeFreq" class="form-label">Change Frequency</label>
+                                            <select class="form-select" id="changeFreq">
+                                                <option value="always">Always</option>
+                                                <option value="hourly">Hourly</option>
+                                                <option value="daily" selected>Daily</option>
+                                                <option value="weekly">Weekly</option>
+                                                <option value="monthly">Monthly</option>
+                                                <option value="yearly">Yearly</option>
+                                                <option value="never">Never</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="priority" class="form-label">Priority</label>
+                                            <select class="form-select" id="priority">
+                                                <option value="0.0">0.0</option>
+                                                <option value="0.1">0.1</option>
+                                                <option value="0.2">0.2</option>
+                                                <option value="0.3">0.3</option>
+                                                <option value="0.4">0.4</option>
+                                                <option value="0.5" selected>0.5</option>
+                                                <option value="0.6">0.6</option>
+                                                <option value="0.7">0.7</option>
+                                                <option value="0.8">0.8</option>
+                                                <option value="0.9">0.9</option>
+                                                <option value="1.0">1.0</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="includeImages">
+                                        <label class="form-check-label" for="includeImages">
+                                            Include Image Sitemap
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-code"></i> Generate Sitemap
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Generated Sitemap</h5>
+                            <div class="mb-3">
+                                <pre id="sitemapOutput" class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;"></pre>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Sitemap
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Sitemaps</h5>
+                            <p class="card-text">
+                                XML sitemaps help search engines understand your website structure
+                                and improve crawling efficiency.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Standard XML format</li>
+                                <li><i class="fas fa-check text-success"></i> Change frequency settings</li>
+                                <li><i class="fas fa-check text-success"></i> Priority levels</li>
+                                <li><i class="fas fa-check text-success"></i> Image sitemap support</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Submit your sitemap to Google Search Console for better indexing.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('sitemapForm');
+            const sitemapOutput = document.getElementById('sitemapOutput');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                generateSitemap();
+            });
+
+            // Generate sitemap
+            function generateSitemap() {
+                const websiteUrl = document.getElementById('websiteUrl').value;
+                const urls = document.getElementById('urls').value.split('\n').filter(url => url.trim());
+                const changeFreq = document.getElementById('changeFreq').value;
+                const priority = document.getElementById('priority').value;
+                const includeImages = document.getElementById('includeImages').checked;
+
+                // Create XML
+                let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+                xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
+                
+                if (includeImages) {
+                    xml += ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"';
+                }
+                
+                xml += '>\n';
+
+                // Add URLs
+                urls.forEach(url => {
+                    xml += '  <url>\n';
+                    xml += `    <loc>${url}</loc>\n`;
+                    xml += `    <changefreq>${changeFreq}</changefreq>\n`;
+                    xml += `    <priority>${priority}</priority>\n`;
+                    
+                    if (includeImages) {
+                        xml += '    <image:image>\n';
+                        xml += `      <image:loc>${url}/image.jpg</image:loc>\n`;
+                        xml += '      <image:title>Image Title</image:title>\n';
+                        xml += '    </image:image>\n';
+                    }
+                    
+                    xml += '  </url>\n';
+                });
+
+                xml += '</urlset>';
+
+                // Update output
+                sitemapOutput.textContent = xml;
+                downloadButton.disabled = false;
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const blob = new Blob([sitemapOutput.textContent], { type: 'application/xml' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'sitemap.xml';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

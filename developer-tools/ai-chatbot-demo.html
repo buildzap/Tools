@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot Demo - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        .chat-container {
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .message.user {
+            align-items: flex-end;
+        }
+        .message.bot {
+            align-items: flex-start;
+        }
+        .message-content {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+        }
+        .message.user .message-content {
+            background-color: #007bff;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        .message.bot .message-content {
+            background-color: #e9ecef;
+            color: #212529;
+            border-bottom-left-radius: 5px;
+        }
+        .message-time {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex-grow: 1;
+        }
+        .typing-indicator {
+            display: none;
+            padding: 10px 15px;
+            background-color: #e9ecef;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            width: fit-content;
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #6c757d;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1s infinite;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        .suggestions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .suggestion-chip {
+            background-color: #e9ecef;
+            border: none;
+            border-radius: 15px;
+            padding: 5px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .suggestion-chip:hover {
+            background-color: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-robot"></i> AI Chatbot Demo</h1>
+                <p>Experience a simple demonstration of an AI chatbot interface</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Chat Interface -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Chat with AI Assistant</h5>
+                            <div class="chat-container">
+                                <div class="chat-messages" id="chatMessages">
+                                    <div class="message bot">
+                                        <div class="message-content">
+                                            Hello! I'm your AI assistant. How can I help you today?
+                                        </div>
+                                        <div class="message-time">Just now</div>
+                                    </div>
+                                </div>
+                                <div class="suggestions" id="suggestions">
+                                    <button class="suggestion-chip">What can you do?</button>
+                                    <button class="suggestion-chip">Tell me a joke</button>
+                                    <button class="suggestion-chip">Help me with coding</button>
+                                </div>
+                                <div class="typing-indicator" id="typingIndicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <div class="chat-input">
+                                    <input type="text" class="form-control" id="messageInput" placeholder="Type your message...">
+                                    <button class="btn btn-primary" id="sendButton">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat History -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Chat History</h5>
+                            <div id="chatHistory" class="text-center text-muted">
+                                No chat history available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About AI Chatbot Demo</h5>
+                            <p class="card-text">
+                                This is a simple demonstration of an AI chatbot interface.
+                                Try asking questions or using the suggestion chips!
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Real-time chat interface</li>
+                                <li><i class="fas fa-check text-success"></i> Quick suggestions</li>
+                                <li><i class="fas fa-check text-success"></i> Typing indicators</li>
+                                <li><i class="fas fa-check text-success"></i> Chat history</li>
+                                <li><i class="fas fa-check text-success"></i> Responsive design</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the suggestion chips to quickly start a conversation.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const typingIndicator = document.getElementById('typingIndicator');
+            const suggestions = document.getElementById('suggestions');
+            const chatHistory = document.getElementById('chatHistory');
+            let chatHistoryList = [];
+
+            // Predefined responses
+            const responses = {
+                'what can you do': 'I can help you with various tasks like answering questions, telling jokes, and providing information about different topics. Just ask me anything!',
+                'tell me a joke': 'Why don\'t scientists trust atoms? Because they make up everything! 😄',
+                'help me with coding': 'I can help you with coding questions! What programming language or topic would you like to learn about?',
+                'hello': 'Hello! How can I assist you today?',
+                'hi': 'Hi there! What can I do for you?',
+                'bye': 'Goodbye! Have a great day! 👋',
+                'thanks': 'You\'re welcome! Is there anything else I can help you with?',
+                'thank you': 'You\'re welcome! Feel free to ask if you need anything else.',
+                'default': 'I\'m not sure I understand. Could you please rephrase your question?'
+            };
+
+            // Add message to chat
+            function addMessage(content, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+                messageDiv.innerHTML = `
+                    <div class="message-content">${content}</div>
+                    <div class="message-time">${new Date().toLocaleTimeString()}</div>
+                `;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Add to history
+                if (isUser) {
+                    chatHistoryList.unshift({
+                        message: content,
+                        timestamp: new Date().toLocaleString()
+                    });
+                    updateChatHistory();
+                }
+            }
+
+            // Show typing indicator
+            function showTypingIndicator() {
+                typingIndicator.style.display = 'block';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Hide typing indicator
+            function hideTypingIndicator() {
+                typingIndicator.style.display = 'none';
+            }
+
+            // Get bot response
+            function getBotResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                for (const [key, value] of Object.entries(responses)) {
+                    if (lowerMessage.includes(key)) {
+                        return value;
+                    }
+                }
+                return responses.default;
+            }
+
+            // Handle message sending
+            function handleMessage() {
+                const message = messageInput.value.trim();
+                if (message) {
+                    // Add user message
+                    addMessage(message, true);
+                    messageInput.value = '';
+
+                    // Show typing indicator
+                    showTypingIndicator();
+
+                    // Simulate bot thinking
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        const response = getBotResponse(message);
+                        addMessage(response);
+                    }, 1000 + Math.random() * 1000);
+                }
+            }
+
+            // Update chat history
+            function updateChatHistory() {
+                if (chatHistoryList.length === 0) {
+                    chatHistory.innerHTML = '<p class="text-muted">No chat history available</p>';
+                    return;
+                }
+
+                chatHistory.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${chatHistoryList.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>${item.message}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Event listeners
+            sendButton.addEventListener('click', handleMessage);
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleMessage();
+                }
+            });
+
+            // Add click handlers for suggestion chips
+            suggestions.querySelectorAll('.suggestion-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    messageInput.value = chip.textContent;
+                    handleMessage();
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

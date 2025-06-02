@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name to Numerology Calculator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        .result-card {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .number-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0d6efd;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .interpretation {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #dee2e6;
+        }
+        .interpretation h6 {
+            color: #0d6efd;
+            margin-bottom: 10px;
+        }
+        .letter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .letter-item {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+        }
+        .letter-item .letter {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .letter-item .number {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .history-item:hover {
+            background-color: #f8f9fa;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-calculator"></i> Name to Numerology Calculator</h1>
+                <p>Calculate numerology numbers and meanings from names</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Calculator Form -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Calculate Numerology</h5>
+                            <form id="numerologyForm" class="mb-4">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="fullName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Calculation Method</label>
+                                        <select class="form-select" id="method">
+                                            <option value="pythagorean">Pythagorean</option>
+                                            <option value="chaldean">Chaldean</option>
+                                            <option value="modern">Modern</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-calculator"></i> Calculate
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Result Display -->
+                            <div class="result-card" id="resultCard" style="display: none;">
+                                <h5>Numerology Results</h5>
+                                
+                                <!-- Letter Breakdown -->
+                                <div class="letter-grid" id="letterGrid">
+                                    <!-- Letter items will be inserted here -->
+                                </div>
+
+                                <!-- Core Numbers -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="interpretation">
+                                            <h6>Expression Number</h6>
+                                            <div class="number-display" id="expressionNumber">-</div>
+                                            <p class="text-muted small" id="expressionMeaning">-</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="interpretation">
+                                            <h6>Soul Urge Number</h6>
+                                            <div class="number-display" id="soulUrgeNumber">-</div>
+                                            <p class="text-muted small" id="soulUrgeMeaning">-</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="interpretation">
+                                            <h6>Personality Number</h6>
+                                            <div class="number-display" id="personalityNumber">-</div>
+                                            <p class="text-muted small" id="personalityMeaning">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detailed Interpretation -->
+                                <div class="interpretation mt-4">
+                                    <h6>Detailed Interpretation</h6>
+                                    <p id="detailedInterpretation">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Calculations</h5>
+                            <div id="history" class="text-center text-muted">
+                                No calculations yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Numerology</h5>
+                            <p class="card-text">
+                                Numerology is the study of numbers and their influence on human life.
+                                Each letter in your name corresponds to a number, which can reveal insights
+                                about your personality and life path.
+                            </p>
+                            <h6>Core Numbers:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Expression Number</li>
+                                <li><i class="fas fa-check text-success"></i> Soul Urge Number</li>
+                                <li><i class="fas fa-check text-success"></i> Personality Number</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use your full birth name for the most accurate calculation.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const numerologyForm = document.getElementById('numerologyForm');
+            const resultCard = document.getElementById('resultCard');
+            const history = document.getElementById('history');
+            let calculationHistory = [];
+
+            // Numerology letter values (Pythagorean system)
+            const letterValues = {
+                'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9,
+                'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 6, 'P': 7, 'Q': 8, 'R': 9,
+                'S': 1, 'T': 2, 'U': 3, 'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
+            };
+
+            // Number meanings
+            const numberMeanings = {
+                1: "Leadership, independence, and creativity",
+                2: "Cooperation, balance, and diplomacy",
+                3: "Expression, creativity, and joy",
+                4: "Stability, order, and practicality",
+                5: "Freedom, change, and adventure",
+                6: "Love, harmony, and responsibility",
+                7: "Spirituality, wisdom, and introspection",
+                8: "Power, abundance, and material success",
+                9: "Humanitarianism, compassion, and completion"
+            };
+
+            // Calculate single digit
+            function reduceToSingleDigit(num) {
+                while (num > 9) {
+                    num = num.toString().split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                }
+                return num;
+            }
+
+            // Calculate expression number
+            function calculateExpressionNumber(name) {
+                return reduceToSingleDigit(
+                    name.toUpperCase().split('')
+                        .filter(char => letterValues[char])
+                        .reduce((sum, char) => sum + letterValues[char], 0)
+                );
+            }
+
+            // Calculate soul urge number
+            function calculateSoulUrgeNumber(name) {
+                const vowels = name.toUpperCase().match(/[AEIOU]/g) || [];
+                return reduceToSingleDigit(
+                    vowels.reduce((sum, vowel) => sum + letterValues[vowel], 0)
+                );
+            }
+
+            // Calculate personality number
+            function calculatePersonalityNumber(name) {
+                const consonants = name.toUpperCase().match(/[BCDFGHJKLMNPQRSTVWXYZ]/g) || [];
+                return reduceToSingleDigit(
+                    consonants.reduce((sum, consonant) => sum + letterValues[consonant], 0)
+                );
+            }
+
+            // Generate letter grid
+            function generateLetterGrid(name) {
+                return name.toUpperCase().split('').map(letter => `
+                    <div class="letter-item">
+                        <div class="letter">${letter}</div>
+                        <div class="number">${letterValues[letter] || '-'}</div>
+                    </div>
+                `).join('');
+            }
+
+            // Generate detailed interpretation
+            function generateInterpretation(expression, soulUrge, personality) {
+                return `
+                    Your Expression Number (${expression}) indicates ${numberMeanings[expression]}.
+                    The Soul Urge Number (${soulUrge}) reveals your inner desires and motivations,
+                    suggesting ${numberMeanings[soulUrge]}. Your Personality Number (${personality})
+                    shows how others perceive you, reflecting ${numberMeanings[personality]}.
+                `;
+            }
+
+            // Update result display
+            function updateResult(name) {
+                const expression = calculateExpressionNumber(name);
+                const soulUrge = calculateSoulUrgeNumber(name);
+                const personality = calculatePersonalityNumber(name);
+
+                document.getElementById('expressionNumber').textContent = expression;
+                document.getElementById('soulUrgeNumber').textContent = soulUrge;
+                document.getElementById('personalityNumber').textContent = personality;
+
+                document.getElementById('expressionMeaning').textContent = numberMeanings[expression];
+                document.getElementById('soulUrgeMeaning').textContent = numberMeanings[soulUrge];
+                document.getElementById('personalityMeaning').textContent = numberMeanings[personality];
+
+                document.getElementById('letterGrid').innerHTML = generateLetterGrid(name);
+                document.getElementById('detailedInterpretation').textContent = generateInterpretation(
+                    expression, soulUrge, personality
+                );
+
+                resultCard.style.display = 'block';
+            }
+
+            // Add to history
+            function addToHistory(name, numbers) {
+                calculationHistory.unshift({
+                    name,
+                    ...numbers,
+                    timestamp: new Date().toLocaleString()
+                });
+                updateHistory();
+            }
+
+            // Update history display
+            function updateHistory() {
+                if (calculationHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No calculations yet</p>';
+                    return;
+                }
+
+                history.innerHTML = calculationHistory.slice(0, 5).map(item => `
+                    <div class="history-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>${item.name}</strong>
+                                <div class="text-muted small">
+                                    Expression: ${item.expression} | 
+                                    Soul: ${item.soulUrge} | 
+                                    Personality: ${item.personality}
+                                </div>
+                            </div>
+                            <div class="text-muted small">${item.timestamp}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Handle form submission
+            function handleSubmit(event) {
+                event.preventDefault();
+                const name = document.getElementById('fullName').value;
+                const expression = calculateExpressionNumber(name);
+                const soulUrge = calculateSoulUrgeNumber(name);
+                const personality = calculatePersonalityNumber(name);
+                
+                updateResult(name);
+                addToHistory(name, { expression, soulUrge, personality });
+            }
+
+            // Event listeners
+            numerologyForm.addEventListener('submit', handleSubmit);
+        });
+    </script>
+</body>
+</html> 

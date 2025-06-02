@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-book Creator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <!-- Quill Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        .ebook-preview {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            min-height: 500px;
+        }
+        .ebook-preview .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .ebook-preview .author {
+            font-size: 18px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #666;
+        }
+        .ebook-preview .content {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .ebook-history-item {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .ebook-history-item:last-child {
+            border-bottom: none;
+        }
+        #editor {
+            height: 300px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-book"></i> E-book Creator</h1>
+                <p>Create and format professional e-books with various customization options</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- E-book Editor -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Create E-book</h5>
+                            <form id="ebookForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Author</label>
+                                        <input type="text" class="form-control" id="author" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Content</label>
+                                    <div id="editor"></div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Font Family</label>
+                                        <select class="form-select" id="fontFamily">
+                                            <option value="Arial">Arial</option>
+                                            <option value="Times New Roman">Times New Roman</option>
+                                            <option value="Georgia">Georgia</option>
+                                            <option value="Verdana">Verdana</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Font Size</label>
+                                        <select class="form-select" id="fontSize">
+                                            <option value="12">12px</option>
+                                            <option value="14">14px</option>
+                                            <option value="16" selected>16px</option>
+                                            <option value="18">18px</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Line Height</label>
+                                        <select class="form-select" id="lineHeight">
+                                            <option value="1.2">1.2</option>
+                                            <option value="1.4">1.4</option>
+                                            <option value="1.6" selected>1.6</option>
+                                            <option value="1.8">1.8</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Theme</label>
+                                        <select class="form-select" id="theme">
+                                            <option value="light">Light</option>
+                                            <option value="dark">Dark</option>
+                                            <option value="sepia">Sepia</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save E-book
+                                    </button>
+                                    <button type="button" class="btn btn-success" id="downloadButton">
+                                        <i class="fas fa-download"></i> Download E-book
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- E-book Preview -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Preview</h5>
+                            <div class="ebook-preview" id="preview">
+                                <div class="title"></div>
+                                <div class="author"></div>
+                                <div class="content"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent E-books</h5>
+                            <div id="history" class="text-center text-muted">
+                                No e-books created yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About E-book Creator</h5>
+                            <p class="card-text">
+                                Create professional e-books with customizable formatting options.
+                                Export your work in various formats.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Rich text editor</li>
+                                <li><i class="fas fa-check text-success"></i> Multiple themes</li>
+                                <li><i class="fas fa-check text-success"></i> Custom formatting</li>
+                                <li><i class="fas fa-check text-success"></i> Live preview</li>
+                                <li><i class="fas fa-check text-success"></i> Export options</li>
+                                <li><i class="fas fa-check text-success"></i> History tracking</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the rich text editor to format your content with headings, lists, and images.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Quill Editor -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ebookForm = document.getElementById('ebookForm');
+            const preview = document.getElementById('preview');
+            const downloadButton = document.getElementById('downloadButton');
+            const history = document.getElementById('history');
+            let ebookHistory = [];
+
+            // Initialize Quill editor
+            const quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            // Update preview
+            function updatePreview() {
+                const title = document.getElementById('title').value;
+                const author = document.getElementById('author').value;
+                const content = quill.root.innerHTML;
+                const fontFamily = document.getElementById('fontFamily').value;
+                const fontSize = document.getElementById('fontSize').value;
+                const lineHeight = document.getElementById('lineHeight').value;
+                const theme = document.getElementById('theme').value;
+
+                // Update preview content
+                preview.querySelector('.title').textContent = title;
+                preview.querySelector('.author').textContent = `By ${author}`;
+                preview.querySelector('.content').innerHTML = content;
+
+                // Update preview styles
+                preview.style.fontFamily = fontFamily;
+                preview.style.fontSize = `${fontSize}px`;
+                preview.querySelector('.content').style.lineHeight = lineHeight;
+
+                // Update theme
+                preview.className = 'ebook-preview';
+                if (theme === 'dark') {
+                    preview.style.backgroundColor = '#333';
+                    preview.style.color = '#fff';
+                } else if (theme === 'sepia') {
+                    preview.style.backgroundColor = '#f4ecd8';
+                    preview.style.color = '#5b4636';
+                }
+            }
+
+            // Save e-book
+            function saveEbook(event) {
+                event.preventDefault();
+
+                const ebook = {
+                    title: document.getElementById('title').value,
+                    author: document.getElementById('author').value,
+                    content: quill.root.innerHTML,
+                    fontFamily: document.getElementById('fontFamily').value,
+                    fontSize: document.getElementById('fontSize').value,
+                    lineHeight: document.getElementById('lineHeight').value,
+                    theme: document.getElementById('theme').value,
+                    timestamp: new Date().toLocaleString()
+                };
+
+                // Add to history
+                ebookHistory.unshift(ebook);
+
+                // Update history display
+                updateHistory();
+
+                alert('E-book saved successfully!');
+            }
+
+            // Download e-book
+            function downloadEbook() {
+                const title = document.getElementById('title').value;
+                const author = document.getElementById('author').value;
+                const content = quill.root.innerHTML;
+
+                // Create HTML content
+                const html = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>${title}</title>
+                        <style>
+                            body {
+                                font-family: ${document.getElementById('fontFamily').value};
+                                font-size: ${document.getElementById('fontSize').value}px;
+                                line-height: ${document.getElementById('lineHeight').value};
+                                padding: 20px;
+                            }
+                            .title {
+                                font-size: 24px;
+                                font-weight: bold;
+                                margin-bottom: 20px;
+                                text-align: center;
+                            }
+                            .author {
+                                font-size: 18px;
+                                margin-bottom: 30px;
+                                text-align: center;
+                                color: #666;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="title">${title}</div>
+                        <div class="author">By ${author}</div>
+                        <div class="content">${content}</div>
+                    </body>
+                    </html>
+                `;
+
+                // Create download link
+                const blob = new Blob([html], { type: 'text/html' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `${title.toLowerCase().replace(/\s+/g, '-')}.html`;
+                link.click();
+                window.URL.revokeObjectURL(url);
+            }
+
+            // Update history display
+            function updateHistory() {
+                if (ebookHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No e-books created yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${ebookHistory.slice(0, 5).map(ebook => `
+                                    <tr>
+                                        <td>${ebook.timestamp}</td>
+                                        <td>${ebook.title}</td>
+                                        <td>${ebook.author}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Event listeners
+            ebookForm.addEventListener('submit', saveEbook);
+            downloadButton.addEventListener('click', downloadEbook);
+            document.getElementById('fontFamily').addEventListener('change', updatePreview);
+            document.getElementById('fontSize').addEventListener('change', updatePreview);
+            document.getElementById('lineHeight').addEventListener('change', updatePreview);
+            document.getElementById('theme').addEventListener('change', updatePreview);
+            quill.on('text-change', updatePreview);
+        });
+    </script>
+</body>
+</html> 

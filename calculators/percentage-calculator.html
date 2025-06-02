@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-percentage"></i> Percentage Calculator</h1>
+                <p>Calculate percentages, increases, decreases, and more</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="calculatorForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Calculation Type</label>
+                                    <select class="form-select" id="calcType">
+                                        <option value="basic">Basic Percentage</option>
+                                        <option value="increase">Percentage Increase</option>
+                                        <option value="decrease">Percentage Decrease</option>
+                                        <option value="difference">Percentage Difference</option>
+                                        <option value="of">Percentage of Number</option>
+                                    </select>
+                                </div>
+
+                                <!-- Basic Percentage -->
+                                <div id="basicCalc" class="calc-section">
+                                    <div class="mb-3">
+                                        <label for="value1" class="form-label">Value</label>
+                                        <input type="number" class="form-control" id="value1" step="any">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="value2" class="form-label">Total Value</label>
+                                        <input type="number" class="form-control" id="value2" step="any">
+                                    </div>
+                                </div>
+
+                                <!-- Increase/Decrease -->
+                                <div id="changeCalc" class="calc-section d-none">
+                                    <div class="mb-3">
+                                        <label for="originalValue" class="form-label">Original Value</label>
+                                        <input type="number" class="form-control" id="originalValue" step="any">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newValue" class="form-label">New Value</label>
+                                        <input type="number" class="form-control" id="newValue" step="any">
+                                    </div>
+                                </div>
+
+                                <!-- Percentage of Number -->
+                                <div id="ofCalc" class="calc-section d-none">
+                                    <div class="mb-3">
+                                        <label for="percentage" class="form-label">Percentage</label>
+                                        <input type="number" class="form-control" id="percentage" step="any">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="number" class="form-label">Number</label>
+                                        <input type="number" class="form-control" id="number" step="any">
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="calculateButton">
+                                        <i class="fas fa-calculator"></i> Calculate
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Result</h5>
+                            <div id="result" class="text-center text-muted">
+                                Enter values to calculate
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Calculation History</h5>
+                            <div id="history" class="text-center text-muted">
+                                No calculations yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Percentage Calculator</h5>
+                            <p class="card-text">
+                                Calculate various types of percentage calculations
+                                with ease and accuracy.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Basic percentage</li>
+                                <li><i class="fas fa-check text-success"></i> Increase/decrease</li>
+                                <li><i class="fas fa-check text-success"></i> Percentage difference</li>
+                                <li><i class="fas fa-check text-success"></i> Percentage of number</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the calculation history to keep track of your calculations.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calcType = document.getElementById('calcType');
+            const basicCalc = document.getElementById('basicCalc');
+            const changeCalc = document.getElementById('changeCalc');
+            const ofCalc = document.getElementById('ofCalc');
+            const calculateButton = document.getElementById('calculateButton');
+            const result = document.getElementById('result');
+            const history = document.getElementById('history');
+            let calculationHistory = [];
+
+            // Show/hide calculation sections
+            calcType.addEventListener('change', function() {
+                basicCalc.classList.add('d-none');
+                changeCalc.classList.add('d-none');
+                ofCalc.classList.add('d-none');
+
+                switch (this.value) {
+                    case 'basic':
+                        basicCalc.classList.remove('d-none');
+                        break;
+                    case 'increase':
+                    case 'decrease':
+                    case 'difference':
+                        changeCalc.classList.remove('d-none');
+                        break;
+                    case 'of':
+                        ofCalc.classList.remove('d-none');
+                        break;
+                }
+            });
+
+            // Calculate percentage
+            calculateButton.addEventListener('click', function() {
+                const type = calcType.value;
+                let calculation = '';
+                let resultValue = 0;
+
+                try {
+                    switch (type) {
+                        case 'basic':
+                            const value1 = parseFloat(document.getElementById('value1').value);
+                            const value2 = parseFloat(document.getElementById('value2').value);
+                            if (isNaN(value1) || isNaN(value2)) throw new Error('Please enter valid numbers');
+                            if (value2 === 0) throw new Error('Total value cannot be zero');
+                            resultValue = (value1 / value2) * 100;
+                            calculation = `${value1} is ${resultValue.toFixed(2)}% of ${value2}`;
+                            break;
+
+                        case 'increase':
+                        case 'decrease':
+                            const originalValue = parseFloat(document.getElementById('originalValue').value);
+                            const newValue = parseFloat(document.getElementById('newValue').value);
+                            if (isNaN(originalValue) || isNaN(newValue)) throw new Error('Please enter valid numbers');
+                            if (originalValue === 0) throw new Error('Original value cannot be zero');
+                            resultValue = ((newValue - originalValue) / originalValue) * 100;
+                            calculation = `${type === 'increase' ? 'Increase' : 'Decrease'} from ${originalValue} to ${newValue} is ${Math.abs(resultValue).toFixed(2)}%`;
+                            break;
+
+                        case 'difference':
+                            const val1 = parseFloat(document.getElementById('originalValue').value);
+                            const val2 = parseFloat(document.getElementById('newValue').value);
+                            if (isNaN(val1) || isNaN(val2)) throw new Error('Please enter valid numbers');
+                            if (val1 === 0 && val2 === 0) throw new Error('Both values cannot be zero');
+                            resultValue = Math.abs(((val2 - val1) / ((val1 + val2) / 2)) * 100);
+                            calculation = `Difference between ${val1} and ${val2} is ${resultValue.toFixed(2)}%`;
+                            break;
+
+                        case 'of':
+                            const percentage = parseFloat(document.getElementById('percentage').value);
+                            const number = parseFloat(document.getElementById('number').value);
+                            if (isNaN(percentage) || isNaN(number)) throw new Error('Please enter valid numbers');
+                            resultValue = (percentage / 100) * number;
+                            calculation = `${percentage}% of ${number} is ${resultValue.toFixed(2)}`;
+                            break;
+                    }
+
+                    // Update result
+                    result.innerHTML = `
+                        <div class="alert alert-success">
+                            <h4 class="alert-heading">${resultValue.toFixed(2)}%</h4>
+                            <p class="mb-0">${calculation}</p>
+                        </div>
+                    `;
+
+                    // Add to history
+                    calculationHistory.unshift({
+                        type: type,
+                        calculation: calculation,
+                        result: resultValue.toFixed(2),
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+
+                } catch (error) {
+                    result.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4 class="alert-heading">Error</h4>
+                            <p class="mb-0">${error.message}</p>
+                        </div>
+                    `;
+                }
+            });
+
+            // Update history display
+            function updateHistory() {
+                if (calculationHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No calculations yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Calculation</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${calculationHistory.slice(0, 5).map(calc => `
+                                    <tr>
+                                        <td>${calc.timestamp}</td>
+                                        <td>${calc.calculation}</td>
+                                        <td>${calc.result}%</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 

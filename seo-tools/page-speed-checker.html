@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Speed Checker - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-tachometer-alt"></i> Page Speed Checker</h1>
+                <p>Analyze your website's performance</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="checkForm">
+                                <div class="mb-3">
+                                    <label for="url" class="form-label">Website URL</label>
+                                    <input type="url" class="form-control" id="url" required
+                                        placeholder="https://example.com">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Device Type</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="device" id="mobile" checked>
+                                        <label class="form-check-label" for="mobile">
+                                            Mobile
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="device" id="desktop">
+                                        <label class="form-check-label" for="desktop">
+                                            Desktop
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Check Speed
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Performance Analysis</h5>
+                            
+                            <!-- Performance Score -->
+                            <div class="text-center mb-4">
+                                <div class="display-1" id="performanceScore">0</div>
+                                <div class="text-muted">Performance Score</div>
+                            </div>
+
+                            <!-- Metrics -->
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">First Contentful Paint</h6>
+                                            <h3 id="fcpScore">0s</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Speed Index</h6>
+                                            <h3 id="siScore">0s</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Time to Interactive</h6>
+                                            <h3 id="ttiScore">0s</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Opportunities -->
+                            <h6 class="mb-3">Optimization Opportunities</h6>
+                            <div class="list-group mb-4" id="opportunitiesList">
+                                <div class="text-center text-muted">No results yet</div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Page Speed</h5>
+                            <p class="card-text">
+                                Page speed is a crucial factor for user experience and SEO.
+                                Faster pages rank better and provide better user experience.
+                            </p>
+                            <h6>Metrics:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Performance Score</li>
+                                <li><i class="fas fa-check text-success"></i> First Contentful Paint</li>
+                                <li><i class="fas fa-check text-success"></i> Speed Index</li>
+                                <li><i class="fas fa-check text-success"></i> Time to Interactive</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Aim for a performance score above 90 for optimal results.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('checkForm');
+            const performanceScore = document.getElementById('performanceScore');
+            const fcpScore = document.getElementById('fcpScore');
+            const siScore = document.getElementById('siScore');
+            const ttiScore = document.getElementById('ttiScore');
+            const opportunitiesList = document.getElementById('opportunitiesList');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                checkSpeed();
+            });
+
+            // Check page speed
+            function checkSpeed() {
+                const url = document.getElementById('url').value;
+                const isMobile = document.getElementById('mobile').checked;
+
+                // Simulate API call delay
+                setTimeout(() => {
+                    // Generate random scores
+                    const score = Math.floor(Math.random() * 100);
+                    const fcp = (Math.random() * 2).toFixed(1);
+                    const si = (Math.random() * 3).toFixed(1);
+                    const tti = (Math.random() * 4).toFixed(1);
+
+                    // Update scores
+                    performanceScore.textContent = score;
+                    performanceScore.className = `display-1 ${getScoreClass(score)}`;
+                    fcpScore.textContent = `${fcp}s`;
+                    siScore.textContent = `${si}s`;
+                    ttiScore.textContent = `${tti}s`;
+
+                    // Generate opportunities
+                    const opportunities = generateOpportunities(score);
+                    opportunitiesList.innerHTML = opportunities.map(opp => `
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">${opp.title}</h6>
+                                <small class="text-muted">${opp.impact}</small>
+                            </div>
+                            <p class="mb-1">${opp.description}</p>
+                        </div>
+                    `).join('');
+
+                    downloadButton.disabled = false;
+                }, 1000);
+            }
+
+            // Get score class
+            function getScoreClass(score) {
+                if (score >= 90) return 'text-success';
+                if (score >= 50) return 'text-warning';
+                return 'text-danger';
+            }
+
+            // Generate optimization opportunities
+            function generateOpportunities(score) {
+                const opportunities = [
+                    {
+                        title: 'Optimize Images',
+                        impact: 'High Impact',
+                        description: 'Compress and resize images to reduce file size.'
+                    },
+                    {
+                        title: 'Minify CSS',
+                        impact: 'Medium Impact',
+                        description: 'Remove unnecessary whitespace and comments from CSS files.'
+                    },
+                    {
+                        title: 'Enable Compression',
+                        impact: 'High Impact',
+                        description: 'Enable GZIP compression to reduce file sizes.'
+                    },
+                    {
+                        title: 'Leverage Browser Caching',
+                        impact: 'Medium Impact',
+                        description: 'Set appropriate cache headers for static resources.'
+                    },
+                    {
+                        title: 'Reduce Server Response Time',
+                        impact: 'High Impact',
+                        description: 'Optimize server configuration and database queries.'
+                    }
+                ];
+
+                // Return fewer opportunities for higher scores
+                return opportunities.slice(0, Math.ceil((100 - score) / 20));
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const report = {
+                    url: document.getElementById('url').value,
+                    device: document.getElementById('mobile').checked ? 'Mobile' : 'Desktop',
+                    performanceScore: performanceScore.textContent,
+                    metrics: {
+                        fcp: fcpScore.textContent,
+                        si: siScore.textContent,
+                        tti: ttiScore.textContent
+                    },
+                    opportunities: Array.from(opportunitiesList.querySelectorAll('.list-group-item')).map(item => ({
+                        title: item.querySelector('h6').textContent,
+                        impact: item.querySelector('small').textContent,
+                        description: item.querySelector('p').textContent
+                    }))
+                };
+
+                const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'speed-report.json';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

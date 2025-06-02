@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-thermometer-half"></i> Temperature Converter</h1>
+                <p>Convert between different temperature scales</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="converterForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="fromValue" class="form-label">From</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="fromValue" step="any" required>
+                                                <select class="form-select" id="fromUnit" style="max-width: 150px;">
+                                                    <option value="c" selected>Celsius (°C)</option>
+                                                    <option value="f">Fahrenheit (°F)</option>
+                                                    <option value="k">Kelvin (K)</option>
+                                                    <option value="r">Rankine (°R)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="toValue" class="form-label">To</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="toValue" readonly>
+                                                <select class="form-select" id="toUnit" style="max-width: 150px;">
+                                                    <option value="c">Celsius (°C)</option>
+                                                    <option value="f" selected>Fahrenheit (°F)</option>
+                                                    <option value="k">Kelvin (K)</option>
+                                                    <option value="r">Rankine (°R)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="convertButton">
+                                        <i class="fas fa-sync-alt"></i> Convert
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" id="swapButton">
+                                        <i class="fas fa-exchange-alt"></i> Swap Units
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Conversion Results</h5>
+                            <div id="results" class="text-center text-muted">
+                                Enter a value to convert
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Common Conversions Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Common Conversions</h5>
+                            <div id="commonConversions" class="text-center text-muted">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Conversion History</h5>
+                            <div id="history" class="text-center text-muted">
+                                No conversions yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Temperature Converter</h5>
+                            <p class="card-text">
+                                Convert between different temperature scales,
+                                including Celsius, Fahrenheit, Kelvin, and Rankine.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple scales</li>
+                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
+                                <li><i class="fas fa-check text-success"></i> Common conversions</li>
+                                <li><i class="fas fa-check text-success"></i> Conversion history</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the swap button to quickly switch between scales.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fromValue = document.getElementById('fromValue');
+            const toValue = document.getElementById('toValue');
+            const fromUnit = document.getElementById('fromUnit');
+            const toUnit = document.getElementById('toUnit');
+            const convertButton = document.getElementById('convertButton');
+            const swapButton = document.getElementById('swapButton');
+            const results = document.getElementById('results');
+            const commonConversions = document.getElementById('commonConversions');
+            const history = document.getElementById('history');
+            let conversionHistory = [];
+
+            // Convert to Celsius first
+            function toCelsius(value, from) {
+                switch (from) {
+                    case 'c': return value;
+                    case 'f': return (value - 32) * 5/9;
+                    case 'k': return value - 273.15;
+                    case 'r': return (value - 491.67) * 5/9;
+                    default: return value;
+                }
+            }
+
+            // Convert from Celsius
+            function fromCelsius(value, to) {
+                switch (to) {
+                    case 'c': return value;
+                    case 'f': return (value * 9/5) + 32;
+                    case 'k': return value + 273.15;
+                    case 'r': return (value * 9/5) + 491.67;
+                    default: return value;
+                }
+            }
+
+            // Format number
+            function formatNumber(number) {
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(number);
+            }
+
+            // Convert temperature
+            function convertTemperature() {
+                try {
+                    const value = parseFloat(fromValue.value);
+                    const from = fromUnit.value;
+                    const to = toUnit.value;
+
+                    if (isNaN(value)) {
+                        throw new Error('Please enter a valid number');
+                    }
+
+                    // Convert to Celsius first, then to target unit
+                    const celsius = toCelsius(value, from);
+                    const result = fromCelsius(celsius, to);
+
+                    // Update result
+                    toValue.value = formatNumber(result);
+
+                    // Update results display
+                    results.innerHTML = `
+                        <div class="alert alert-success">
+                            <h4 class="alert-heading">Conversion Result</h4>
+                            <p class="mb-0">
+                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
+                            </p>
+                        </div>
+                    `;
+
+                    // Update common conversions
+                    updateCommonConversions(value, from);
+
+                    // Add to history
+                    conversionHistory.unshift({
+                        fromValue: value,
+                        fromUnit: from,
+                        toValue: result,
+                        toUnit: to,
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+
+                } catch (error) {
+                    results.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4 class="alert-heading">Error</h4>
+                            <p class="mb-0">${error.message}</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // Update common conversions
+            function updateCommonConversions(value, fromUnit) {
+                const commonUnits = ['c', 'f', 'k'];
+                const celsius = toCelsius(value, fromUnit);
+                
+                const conversions = commonUnits.map(unit => {
+                    const result = fromCelsius(celsius, unit);
+                    return `
+                        <div class="mb-2">
+                            <strong>${formatNumber(value)} ${fromUnit}</strong> = 
+                            <strong>${formatNumber(result)} ${unit}</strong>
+                        </div>
+                    `;
+                }).join('');
+
+                commonConversions.innerHTML = conversions;
+            }
+
+            // Update history display
+            function updateHistory() {
+                if (conversionHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${conversionHistory.slice(0, 5).map(conv => `
+                                    <tr>
+                                        <td>${conv.timestamp}</td>
+                                        <td>${formatNumber(conv.fromValue)} ${conv.fromUnit}</td>
+                                        <td>${formatNumber(conv.toValue)} ${conv.toUnit}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Swap units
+            function swapUnits() {
+                const tempValue = fromValue.value;
+                const tempUnit = fromUnit.value;
+                fromValue.value = toValue.value;
+                fromUnit.value = toUnit.value;
+                toValue.value = tempValue;
+                toUnit.value = tempUnit;
+                convertTemperature();
+            }
+
+            // Event listeners
+            convertButton.addEventListener('click', convertTemperature);
+            swapButton.addEventListener('click', swapUnits);
+            fromValue.addEventListener('input', convertTemperature);
+            fromUnit.addEventListener('change', convertTemperature);
+            toUnit.addEventListener('change', convertTemperature);
+        });
+    </script>
+</body>
+</html> 

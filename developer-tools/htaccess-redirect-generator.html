@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTACCESS Redirect Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <!-- Highlight.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/apache.min.js"></script>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-exchange-alt"></i> HTACCESS Redirect Generator</h1>
+                <p>Generate Apache HTACCESS redirect rules</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="redirectForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Redirect Type</label>
+                                    <select class="form-select" id="redirectType">
+                                        <option value="301">301 (Permanent Redirect)</option>
+                                        <option value="302">302 (Temporary Redirect)</option>
+                                        <option value="307">307 (Temporary Redirect)</option>
+                                        <option value="308">308 (Permanent Redirect)</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Source URL</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">/</span>
+                                        <input type="text" class="form-control" id="sourceUrl" placeholder="old-page.html">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Target URL</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">/</span>
+                                        <input type="text" class="form-control" id="targetUrl" placeholder="new-page.html">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Additional Options</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="forceHttps">
+                                                <label class="form-check-label" for="forceHttps">
+                                                    Force HTTPS
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="forceWww">
+                                                <label class="form-check-label" for="forceWww">
+                                                    Force www
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="preserveQuery">
+                                                <label class="form-check-label" for="preserveQuery">
+                                                    Preserve query string
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="caseInsensitive">
+                                                <label class="form-check-label" for="caseInsensitive">
+                                                    Case insensitive
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="generateButton">
+                                        <i class="fas fa-magic"></i> Generate Rules
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Generated HTACCESS Rules</h5>
+                            <div class="mb-3">
+                                <pre><code class="language-apache" id="output"></code></pre>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="copyButton" disabled>
+                                    <i class="fas fa-copy"></i> Copy to Clipboard
+                                </button>
+                                <button class="btn btn-outline-secondary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download HTACCESS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Rule Preview</h5>
+                            <div id="preview" class="text-center text-muted">
+                                Generate rules to see preview
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About HTACCESS Redirect Generator</h5>
+                            <p class="card-text">
+                                Generate Apache HTACCESS redirect rules with various
+                                options and configurations.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple redirect types</li>
+                                <li><i class="fas fa-check text-success"></i> HTTPS enforcement</li>
+                                <li><i class="fas fa-check text-success"></i> www redirection</li>
+                                <li><i class="fas fa-check text-success"></i> Query string handling</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the preview to understand how your redirects will work.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const redirectType = document.getElementById('redirectType');
+            const sourceUrl = document.getElementById('sourceUrl');
+            const targetUrl = document.getElementById('targetUrl');
+            const forceHttps = document.getElementById('forceHttps');
+            const forceWww = document.getElementById('forceWww');
+            const preserveQuery = document.getElementById('preserveQuery');
+            const caseInsensitive = document.getElementById('caseInsensitive');
+            const generateButton = document.getElementById('generateButton');
+            const output = document.getElementById('output');
+            const preview = document.getElementById('preview');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Generate HTACCESS rules
+            generateButton.addEventListener('click', function() {
+                const source = sourceUrl.value.trim();
+                const target = targetUrl.value.trim();
+
+                if (!source || !target) {
+                    alert('Please enter both source and target URLs');
+                    return;
+                }
+
+                // Generate rules
+                const rules = generateRules(source, target);
+                output.textContent = rules;
+                hljs.highlightElement(output);
+
+                // Update preview
+                preview.innerHTML = generatePreview(source, target);
+
+                // Enable buttons
+                copyButton.disabled = false;
+                downloadButton.disabled = false;
+            });
+
+            // Generate HTACCESS rules
+            function generateRules(source, target) {
+                let rules = [];
+
+                // Add RewriteEngine On
+                rules.push('RewriteEngine On');
+
+                // Add HTTPS rule if enabled
+                if (forceHttps.checked) {
+                    rules.push(`
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]`);
+                }
+
+                // Add www rule if enabled
+                if (forceWww.checked) {
+                    rules.push(`
+# Force www
+RewriteCond %{HTTP_HOST} !^www\\. [NC]
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]`);
+                }
+
+                // Add main redirect rule
+                const flags = ['R=' + redirectType.value];
+                if (caseInsensitive.checked) flags.push('NC');
+                if (preserveQuery.checked) flags.push('QSA');
+                flags.push('L');
+
+                rules.push(`
+# Redirect ${source} to ${target}
+RewriteRule ^${source}$ ${target} [${flags.join(',')}]`);
+
+                return rules.join('\n');
+            }
+
+            // Generate preview
+            function generatePreview(source, target) {
+                const type = redirectType.value;
+                const typeText = type === '301' ? 'Permanent' : 'Temporary';
+                const https = forceHttps.checked ? 'https://' : 'http://';
+                const www = forceWww.checked ? 'www.' : '';
+                const query = preserveQuery.checked ? '?param=value' : '';
+
+                return `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>Redirect Type:</th>
+                                    <td>${typeText} (${type})</td>
+                                </tr>
+                                <tr>
+                                    <th>From:</th>
+                                    <td>${https}${www}example.com/${source}${query}</td>
+                                </tr>
+                                <tr>
+                                    <th>To:</th>
+                                    <td>${https}${www}example.com/${target}${query}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Handle copy to clipboard
+            copyButton.addEventListener('click', function() {
+                const text = output.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+                    }, 2000);
+                });
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const text = output.textContent;
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '.htaccess';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Initialize highlight.js
+            hljs.configure({
+                languages: ['apache']
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-birthday-cake"></i> Age Calculator</h1>
+                <p>Calculate age and important dates</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="calculatorForm">
+                                <div class="mb-3">
+                                    <label for="birthDate" class="form-label">Birth Date</label>
+                                    <input type="date" class="form-control" id="birthDate" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="calculationDate" class="form-label">Calculation Date</label>
+                                    <input type="date" class="form-control" id="calculationDate">
+                                    <div class="form-text">Leave empty to use current date</div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="calculateButton">
+                                        <i class="fas fa-calculator"></i> Calculate Age
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Age Information</h5>
+                            <div id="result" class="text-center text-muted">
+                                Enter birth date to calculate age
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Important Dates Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Important Dates</h5>
+                            <div id="importantDates" class="text-center text-muted">
+                                Calculate age to see important dates
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Age Calculator</h5>
+                            <p class="card-text">
+                                Calculate exact age and important dates
+                                with precision and detail.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Exact age calculation</li>
+                                <li><i class="fas fa-check text-success"></i> Important dates</li>
+                                <li><i class="fas fa-check text-success"></i> Next birthday info</li>
+                                <li><i class="fas fa-check text-success"></i> Custom calculation date</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: You can use a custom calculation date to find age at any point in time.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const birthDateInput = document.getElementById('birthDate');
+            const calculationDateInput = document.getElementById('calculationDate');
+            const calculateButton = document.getElementById('calculateButton');
+            const result = document.getElementById('result');
+            const importantDates = document.getElementById('importantDates');
+
+            // Set max date to today
+            const today = new Date().toISOString().split('T')[0];
+            birthDateInput.max = today;
+            calculationDateInput.max = today;
+
+            // Calculate age
+            calculateButton.addEventListener('click', function() {
+                const birthDate = new Date(birthDateInput.value);
+                const calculationDate = calculationDateInput.value ? 
+                    new Date(calculationDateInput.value) : new Date();
+
+                if (isNaN(birthDate.getTime())) {
+                    result.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4 class="alert-heading">Error</h4>
+                            <p class="mb-0">Please enter a valid birth date</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                if (birthDate > calculationDate) {
+                    result.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4 class="alert-heading">Error</h4>
+                            <p class="mb-0">Birth date cannot be after calculation date</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Calculate age
+                const age = calculateAge(birthDate, calculationDate);
+                const nextBirthday = calculateNextBirthday(birthDate, calculationDate);
+
+                // Update result
+                result.innerHTML = `
+                    <div class="alert alert-success">
+                        <h4 class="alert-heading">Age: ${age.years} years, ${age.months} months, ${age.days} days</h4>
+                        <p class="mb-0">
+                            Total days: ${age.totalDays}<br>
+                            Total months: ${age.totalMonths}<br>
+                            Total weeks: ${age.totalWeeks}
+                        </p>
+                    </div>
+                `;
+
+                // Update important dates
+                importantDates.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>Next Birthday:</th>
+                                    <td>${nextBirthday.date.toLocaleDateString()}</td>
+                                </tr>
+                                <tr>
+                                    <th>Days until next birthday:</th>
+                                    <td>${nextBirthday.daysUntil}</td>
+                                </tr>
+                                <tr>
+                                    <th>Zodiac Sign:</th>
+                                    <td>${getZodiacSign(birthDate)}</td>
+                                </tr>
+                                <tr>
+                                    <th>Chinese Zodiac:</th>
+                                    <td>${getChineseZodiac(birthDate.getFullYear())}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+
+            // Calculate age
+            function calculateAge(birthDate, calculationDate) {
+                let years = calculationDate.getFullYear() - birthDate.getFullYear();
+                let months = calculationDate.getMonth() - birthDate.getMonth();
+                let days = calculationDate.getDate() - birthDate.getDate();
+
+                if (days < 0) {
+                    months--;
+                    days += new Date(calculationDate.getFullYear(), calculationDate.getMonth(), 0).getDate();
+                }
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+
+                const totalDays = Math.floor((calculationDate - birthDate) / (1000 * 60 * 60 * 24));
+                const totalMonths = years * 12 + months;
+                const totalWeeks = Math.floor(totalDays / 7);
+
+                return {
+                    years,
+                    months,
+                    days,
+                    totalDays,
+                    totalMonths,
+                    totalWeeks
+                };
+            }
+
+            // Calculate next birthday
+            function calculateNextBirthday(birthDate, calculationDate) {
+                const nextBirthday = new Date(calculationDate);
+                nextBirthday.setMonth(birthDate.getMonth());
+                nextBirthday.setDate(birthDate.getDate());
+
+                if (nextBirthday < calculationDate) {
+                    nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+                }
+
+                const daysUntil = Math.ceil((nextBirthday - calculationDate) / (1000 * 60 * 60 * 24));
+
+                return {
+                    date: nextBirthday,
+                    daysUntil
+                };
+            }
+
+            // Get zodiac sign
+            function getZodiacSign(date) {
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+
+                if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Aries';
+                if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Taurus';
+                if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Gemini';
+                if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Cancer';
+                if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Leo';
+                if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgo';
+                if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
+                if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Scorpio';
+                if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'Sagittarius';
+                if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricorn';
+                if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquarius';
+                return 'Pisces';
+            }
+
+            // Get Chinese zodiac
+            function getChineseZodiac(year) {
+                const zodiacs = ['Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake', 'Horse', 'Goat', 'Monkey', 'Rooster', 'Dog', 'Pig'];
+                return zodiacs[(year - 4) % 12];
+            }
+        });
+    </script>
+</body>
+</html> 

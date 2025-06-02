@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Text Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-random"></i> Random Text Generator</h1>
+                <p>Generate random text for various purposes</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="generatorForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Text Type</label>
+                                    <select class="form-select" id="textType">
+                                        <option value="lorem">Lorem Ipsum</option>
+                                        <option value="words">Random Words</option>
+                                        <option value="sentences">Random Sentences</option>
+                                        <option value="paragraphs">Random Paragraphs</option>
+                                        <option value="names">Random Names</option>
+                                        <option value="passwords">Random Passwords</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="length" class="form-label">Length</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="length" min="1" max="1000" value="100">
+                                        <select class="form-select" id="lengthUnit" style="max-width: 150px;">
+                                            <option value="words">Words</option>
+                                            <option value="sentences">Sentences</option>
+                                            <option value="paragraphs">Paragraphs</option>
+                                            <option value="characters">Characters</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Options</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="startWithLorem" checked>
+                                                <label class="form-check-label" for="startWithLorem">
+                                                    Start with "Lorem ipsum"
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="includePunctuation" checked>
+                                                <label class="form-check-label" for="includePunctuation">
+                                                    Include punctuation
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="includeNumbers">
+                                                <label class="form-check-label" for="includeNumbers">
+                                                    Include numbers
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="includeSpecialChars">
+                                                <label class="form-check-label" for="includeSpecialChars">
+                                                    Include special characters
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="generateButton">
+                                        <i class="fas fa-random"></i> Generate Text
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Generated Text</h5>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="output" rows="10" readonly></textarea>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="copyButton" disabled>
+                                    <i class="fas fa-copy"></i> Copy to Clipboard
+                                </button>
+                                <button class="btn btn-outline-secondary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Text
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Text Statistics</h5>
+                            <div id="statistics" class="text-center text-muted">
+                                Generate text to see statistics
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Random Text Generator</h5>
+                            <p class="card-text">
+                                Generate random text for testing, design, or creative purposes
+                                with various customization options.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple text types</li>
+                                <li><i class="fas fa-check text-success"></i> Customizable length</li>
+                                <li><i class="fas fa-check text-success"></i> Various options</li>
+                                <li><i class="fas fa-check text-success"></i> Text statistics</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use different text types for different purposes.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textType = document.getElementById('textType');
+            const length = document.getElementById('length');
+            const lengthUnit = document.getElementById('lengthUnit');
+            const startWithLorem = document.getElementById('startWithLorem');
+            const includePunctuation = document.getElementById('includePunctuation');
+            const includeNumbers = document.getElementById('includeNumbers');
+            const includeSpecialChars = document.getElementById('includeSpecialChars');
+            const generateButton = document.getElementById('generateButton');
+            const output = document.getElementById('output');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+            const statistics = document.getElementById('statistics');
+
+            // Sample data
+            const words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 'magna', 'aliqua'];
+            const names = ['John', 'Jane', 'Michael', 'Emily', 'David', 'Sarah', 'Robert', 'Lisa', 'William', 'Emma'];
+            const specialChars = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/'];
+
+            // Update length unit options based on text type
+            textType.addEventListener('change', function() {
+                const type = this.value;
+                lengthUnit.innerHTML = '';
+                
+                switch(type) {
+                    case 'lorem':
+                    case 'words':
+                        lengthUnit.innerHTML = '<option value="words">Words</option><option value="characters">Characters</option>';
+                        break;
+                    case 'sentences':
+                        lengthUnit.innerHTML = '<option value="sentences">Sentences</option><option value="characters">Characters</option>';
+                        break;
+                    case 'paragraphs':
+                        lengthUnit.innerHTML = '<option value="paragraphs">Paragraphs</option><option value="characters">Characters</option>';
+                        break;
+                    case 'names':
+                        lengthUnit.innerHTML = '<option value="names">Names</option><option value="characters">Characters</option>';
+                        break;
+                    case 'passwords':
+                        lengthUnit.innerHTML = '<option value="passwords">Passwords</option><option value="characters">Characters</option>';
+                        break;
+                }
+            });
+
+            // Generate random text
+            generateButton.addEventListener('click', function() {
+                const type = textType.value;
+                const len = parseInt(length.value);
+                const unit = lengthUnit.value;
+                let result = '';
+
+                switch(type) {
+                    case 'lorem':
+                        result = generateLoremIpsum(len, unit);
+                        break;
+                    case 'words':
+                        result = generateRandomWords(len, unit);
+                        break;
+                    case 'sentences':
+                        result = generateRandomSentences(len, unit);
+                        break;
+                    case 'paragraphs':
+                        result = generateRandomParagraphs(len, unit);
+                        break;
+                    case 'names':
+                        result = generateRandomNames(len, unit);
+                        break;
+                    case 'passwords':
+                        result = generateRandomPasswords(len, unit);
+                        break;
+                }
+
+                output.value = result;
+                copyButton.disabled = false;
+                downloadButton.disabled = false;
+                updateStatistics(result);
+            });
+
+            // Generate Lorem Ipsum
+            function generateLoremIpsum(length, unit) {
+                let result = startWithLorem.checked ? 'Lorem ipsum ' : '';
+                const count = unit === 'characters' ? Math.ceil(length / 5) : length;
+                
+                for (let i = 0; i < count; i++) {
+                    result += words[Math.floor(Math.random() * words.length)] + ' ';
+                    if (includePunctuation.checked && Math.random() > 0.7) {
+                        result = result.trim() + '. ';
+                    }
+                }
+                
+                return result.trim();
+            }
+
+            // Generate random words
+            function generateRandomWords(length, unit) {
+                let result = '';
+                const count = unit === 'characters' ? Math.ceil(length / 5) : length;
+                
+                for (let i = 0; i < count; i++) {
+                    result += words[Math.floor(Math.random() * words.length)] + ' ';
+                }
+                
+                return result.trim();
+            }
+
+            // Generate random sentences
+            function generateRandomSentences(length, unit) {
+                let result = '';
+                const count = unit === 'characters' ? Math.ceil(length / 50) : length;
+                
+                for (let i = 0; i < count; i++) {
+                    const sentenceLength = Math.floor(Math.random() * 5) + 5;
+                    let sentence = '';
+                    
+                    for (let j = 0; j < sentenceLength; j++) {
+                        sentence += words[Math.floor(Math.random() * words.length)] + ' ';
+                    }
+                    
+                    result += sentence.trim() + '. ';
+                }
+                
+                return result.trim();
+            }
+
+            // Generate random paragraphs
+            function generateRandomParagraphs(length, unit) {
+                let result = '';
+                const count = unit === 'characters' ? Math.ceil(length / 200) : length;
+                
+                for (let i = 0; i < count; i++) {
+                    const paragraphLength = Math.floor(Math.random() * 3) + 3;
+                    let paragraph = '';
+                    
+                    for (let j = 0; j < paragraphLength; j++) {
+                        const sentenceLength = Math.floor(Math.random() * 5) + 5;
+                        let sentence = '';
+                        
+                        for (let k = 0; k < sentenceLength; k++) {
+                            sentence += words[Math.floor(Math.random() * words.length)] + ' ';
+                        }
+                        
+                        paragraph += sentence.trim() + '. ';
+                    }
+                    
+                    result += paragraph.trim() + '\n\n';
+                }
+                
+                return result.trim();
+            }
+
+            // Generate random names
+            function generateRandomNames(length, unit) {
+                let result = '';
+                const count = unit === 'characters' ? Math.ceil(length / 5) : length;
+                
+                for (let i = 0; i < count; i++) {
+                    result += names[Math.floor(Math.random() * names.length)] + ' ';
+                }
+                
+                return result.trim();
+            }
+
+            // Generate random passwords
+            function generateRandomPasswords(length, unit) {
+                let result = '';
+                const count = unit === 'characters' ? Math.ceil(length / 8) : length;
+                
+                for (let i = 0; i < count; i++) {
+                    let password = '';
+                    const passwordLength = Math.floor(Math.random() * 4) + 8;
+                    
+                    for (let j = 0; j < passwordLength; j++) {
+                        if (includeNumbers.checked && Math.random() > 0.7) {
+                            password += Math.floor(Math.random() * 10);
+                        } else if (includeSpecialChars.checked && Math.random() > 0.7) {
+                            password += specialChars[Math.floor(Math.random() * specialChars.length)];
+                        } else {
+                            password += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+                        }
+                    }
+                    
+                    result += password + ' ';
+                }
+                
+                return result.trim();
+            }
+
+            // Update statistics
+            function updateStatistics(text) {
+                const words = text.split(/\s+/).filter(word => word.length > 0);
+                const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0);
+                const paragraphs = text.split(/\n\n+/).filter(paragraph => paragraph.trim().length > 0);
+                
+                statistics.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>Characters:</th>
+                                    <td>${text.length}</td>
+                                </tr>
+                                <tr>
+                                    <th>Words:</th>
+                                    <td>${words.length}</td>
+                                </tr>
+                                <tr>
+                                    <th>Sentences:</th>
+                                    <td>${sentences.length}</td>
+                                </tr>
+                                <tr>
+                                    <th>Paragraphs:</th>
+                                    <td>${paragraphs.length}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Handle copy to clipboard
+            copyButton.addEventListener('click', function() {
+                output.select();
+                document.execCommand('copy');
+                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+                }, 2000);
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const blob = new Blob([output.value], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'random-text.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Initial length unit update
+            textType.dispatchEvent(new Event('change'));
+        });
+    </script>
+</body>
+</html> 

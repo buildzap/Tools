@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plagiarism Checker - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-copy"></i> Plagiarism Checker</h1>
+                <p>Check your text for potential plagiarism and ensure originality</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="checkerForm">
+                                <div class="mb-3">
+                                    <label for="text" class="form-label">Enter or paste your text</label>
+                                    <textarea class="form-control" id="text" rows="10" required></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Check Options</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="checkWeb" checked>
+                                                <label class="form-check-label" for="checkWeb">
+                                                    Check against web sources
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="checkAcademic" checked>
+                                                <label class="form-check-label" for="checkAcademic">
+                                                    Check academic databases
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="excludeQuotes">
+                                                <label class="form-check-label" for="excludeQuotes">
+                                                    Exclude quoted text
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="excludeReferences">
+                                                <label class="form-check-label" for="excludeReferences">
+                                                    Exclude references
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Check Plagiarism
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Plagiarism Analysis</h5>
+                            
+                            <!-- Overall Score -->
+                            <div class="text-center mb-4">
+                                <div class="display-4" id="originalityScore">--</div>
+                                <p class="text-muted">Originality Score</p>
+                            </div>
+
+                            <!-- Detailed Results -->
+                            <div class="mb-4">
+                                <h6>Similarity Analysis</h6>
+                                <div class="progress mb-3">
+                                    <div class="progress-bar bg-success" id="originalityBar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card bg-light">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-title">Original Content</h6>
+                                                <h3 id="originalContent">0%</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card bg-light">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-title">Similar Content</h6>
+                                                <h3 id="similarContent">0%</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card bg-light">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-title">Plagiarized</h6>
+                                                <h3 id="plagiarizedContent">0%</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Matches Found -->
+                            <div class="mb-4">
+                                <h6>Potential Matches</h6>
+                                <div id="matchesList" class="list-group">
+                                    <div class="text-center text-muted">No matches found</div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Plagiarism Checker</h5>
+                            <p class="card-text">
+                                A comprehensive tool to check your text for potential plagiarism
+                                and ensure content originality.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Web source checking</li>
+                                <li><i class="fas fa-check text-success"></i> Academic database search</li>
+                                <li><i class="fas fa-check text-success"></i> Detailed similarity report</li>
+                                <li><i class="fas fa-check text-success"></i> Source matching</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Always cite your sources properly to avoid plagiarism.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('checkerForm');
+            const text = document.getElementById('text');
+            const originalityScore = document.getElementById('originalityScore');
+            const originalityBar = document.getElementById('originalityBar');
+            const originalContent = document.getElementById('originalContent');
+            const similarContent = document.getElementById('similarContent');
+            const plagiarizedContent = document.getElementById('plagiarizedContent');
+            const matchesList = document.getElementById('matchesList');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                checkPlagiarism();
+            });
+
+            // Simulate plagiarism check
+            function checkPlagiarism() {
+                const content = text.value;
+                if (!content.trim()) {
+                    alert('Please enter some text to check');
+                    return;
+                }
+
+                // Show loading state
+                originalityScore.textContent = '...';
+                matchesList.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"></div></div>';
+
+                // Simulate API call delay
+                setTimeout(() => {
+                    // Generate random scores for demonstration
+                    const original = Math.floor(Math.random() * 60) + 40; // 40-100%
+                    const similar = Math.floor(Math.random() * 20); // 0-20%
+                    const plagiarized = 100 - original - similar;
+
+                    // Update scores
+                    originalityScore.textContent = original + '%';
+                    originalityBar.style.width = original + '%';
+                    originalContent.textContent = original + '%';
+                    similarContent.textContent = similar + '%';
+                    plagiarizedContent.textContent = plagiarized + '%';
+
+                    // Generate sample matches
+                    const matches = generateSampleMatches(content);
+                    updateMatchesList(matches);
+
+                    downloadButton.disabled = false;
+                }, 2000);
+            }
+
+            // Generate sample matches for demonstration
+            function generateSampleMatches(content) {
+                const words = content.split(/\s+/);
+                const matches = [];
+                
+                if (words.length > 10) {
+                    // Generate 1-3 random matches
+                    const numMatches = Math.floor(Math.random() * 3) + 1;
+                    
+                    for (let i = 0; i < numMatches; i++) {
+                        const startIndex = Math.floor(Math.random() * (words.length - 10));
+                        const length = Math.floor(Math.random() * 5) + 5;
+                        const matchedText = words.slice(startIndex, startIndex + length).join(' ');
+                        
+                        matches.push({
+                            source: 'Sample Source ' + (i + 1),
+                            url: 'https://example.com/source' + (i + 1),
+                            similarity: Math.floor(Math.random() * 30) + 70,
+                            matchedText: matchedText
+                        });
+                    }
+                }
+                
+                return matches;
+            }
+
+            // Update matches list
+            function updateMatchesList(matches) {
+                if (matches.length === 0) {
+                    matchesList.innerHTML = '<div class="text-center text-muted">No matches found</div>';
+                    return;
+                }
+
+                matchesList.innerHTML = matches.map(match => `
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">${match.source}</h6>
+                            <small class="text-muted">${match.similarity}% similar</small>
+                        </div>
+                        <p class="mb-1">${match.matchedText}</p>
+                        <small><a href="${match.url}" target="_blank">View source</a></small>
+                    </div>
+                `).join('');
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const report = {
+                    text: text.value,
+                    analysis: {
+                        originality: originalityScore.textContent,
+                        originalContent: originalContent.textContent,
+                        similarContent: similarContent.textContent,
+                        plagiarizedContent: plagiarizedContent.textContent
+                    },
+                    matches: Array.from(matchesList.querySelectorAll('.list-group-item')).map(item => ({
+                        source: item.querySelector('h6').textContent,
+                        similarity: item.querySelector('.text-muted').textContent,
+                        matchedText: item.querySelector('p').textContent,
+                        url: item.querySelector('a').href
+                    }))
+                };
+
+                const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'plagiarism-report.json';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

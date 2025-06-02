@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Authority Checker - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-chart-line"></i> Domain Authority Checker</h1>
+                <p>Check domain authority and SEO metrics</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="checkForm">
+                                <div class="mb-3">
+                                    <label for="domains" class="form-label">Domains to Check (one per line)</label>
+                                    <textarea class="form-control" id="domains" rows="5" required
+                                        placeholder="example.com&#10;example.org"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkBacklinks">
+                                        <label class="form-check-label" for="checkBacklinks">
+                                            Check Backlinks
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Check Authority
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Authority Results</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Domain</th>
+                                            <th>DA</th>
+                                            <th>PA</th>
+                                            <th>Backlinks</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="resultsTable">
+                                        <tr>
+                                            <td colspan="5" class="text-center">No results yet</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Domain Authority</h5>
+                            <p class="card-text">
+                                Domain Authority (DA) is a search engine ranking score that predicts
+                                how likely a website is to rank in search results.
+                            </p>
+                            <h6>Metrics:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Domain Authority (DA)</li>
+                                <li><i class="fas fa-check text-success"></i> Page Authority (PA)</li>
+                                <li><i class="fas fa-check text-success"></i> Backlink count</li>
+                                <li><i class="fas fa-check text-success"></i> Quality score</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Higher DA scores indicate better ranking potential.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('checkForm');
+            const resultsTable = document.getElementById('resultsTable');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                checkAuthority();
+            });
+
+            // Check domain authority
+            function checkAuthority() {
+                const domains = document.getElementById('domains').value.split('\n').filter(domain => domain.trim());
+                const checkBacklinks = document.getElementById('checkBacklinks').checked;
+
+                // Clear previous results
+                resultsTable.innerHTML = '';
+
+                // Simulate checking each domain
+                domains.forEach(domain => {
+                    // Simulate API call delay
+                    setTimeout(() => {
+                        const da = Math.floor(Math.random() * 100);
+                        const pa = Math.floor(Math.random() * 100);
+                        const backlinks = Math.floor(Math.random() * 10000);
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${domain}</td>
+                            <td>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar ${getProgressBarClass(da)}" 
+                                         role="progressbar" 
+                                         style="width: ${da}%"
+                                         aria-valuenow="${da}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                        ${da}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar ${getProgressBarClass(pa)}" 
+                                         role="progressbar" 
+                                         style="width: ${pa}%"
+                                         aria-valuenow="${pa}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                        ${pa}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${backlinks.toLocaleString()}</td>
+                            <td>
+                                ${getAuthorityStatus(da)}
+                            </td>
+                        `;
+                        resultsTable.appendChild(row);
+                    }, Math.random() * 1000); // Random delay between 0-1s
+                });
+
+                downloadButton.disabled = false;
+            }
+
+            // Get progress bar class based on value
+            function getProgressBarClass(value) {
+                if (value >= 70) return 'bg-success';
+                if (value >= 40) return 'bg-warning';
+                return 'bg-danger';
+            }
+
+            // Get authority status
+            function getAuthorityStatus(da) {
+                if (da >= 70) {
+                    return '<span class="text-success"><i class="fas fa-star"></i> Excellent</span>';
+                } else if (da >= 40) {
+                    return '<span class="text-warning"><i class="fas fa-star-half-alt"></i> Good</span>';
+                } else {
+                    return '<span class="text-danger"><i class="far fa-star"></i> Poor</span>';
+                }
+            }
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const rows = Array.from(resultsTable.querySelectorAll('tr'));
+                const csv = [
+                    ['Domain', 'DA', 'PA', 'Backlinks', 'Status'],
+                    ...rows.map(row => {
+                        const cells = Array.from(row.querySelectorAll('td'));
+                        return [
+                            cells[0].textContent,
+                            cells[1].textContent.trim(),
+                            cells[2].textContent.trim(),
+                            cells[3].textContent,
+                            cells[4].textContent.trim()
+                        ];
+                    })
+                ].map(row => row.join(',')).join('\n');
+
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'authority-report.csv';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

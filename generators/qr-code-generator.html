@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        .qr-preview {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .qr-preview img {
+            max-width: 100%;
+            height: auto;
+        }
+        .content-type-section {
+            display: none;
+        }
+        .content-type-section.active {
+            display: block;
+        }
+        .qr-history-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .qr-history-item:last-child {
+            border-bottom: none;
+        }
+        .qr-history-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-qrcode"></i> QR Code Generator</h1>
+                <p>Generate QR codes for various types of content</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- QR Code Preview -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">QR Code Preview</h5>
+                            <div class="qr-preview" id="qrPreview">
+                                <p class="text-muted">Select content type and enter data to generate QR code</p>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-success" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download QR Code
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Type Selection -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Content Type</h5>
+                            <select class="form-select" id="contentType">
+                                <option value="text">Text</option>
+                                <option value="url">URL</option>
+                                <option value="email">Email</option>
+                                <option value="phone">Phone Number</option>
+                                <option value="sms">SMS</option>
+                                <option value="wifi">WiFi</option>
+                                <option value="vcard">vCard</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Content Input Sections -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Content</h5>
+                            
+                            <!-- Text Content -->
+                            <div class="content-type-section active" id="textContent">
+                                <div class="mb-3">
+                                    <label class="form-label">Text</label>
+                                    <textarea class="form-control" id="textInput" rows="3" placeholder="Enter text"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- URL Content -->
+                            <div class="content-type-section" id="urlContent">
+                                <div class="mb-3">
+                                    <label class="form-label">URL</label>
+                                    <input type="url" class="form-control" id="urlInput" placeholder="https://example.com">
+                                </div>
+                            </div>
+
+                            <!-- Email Content -->
+                            <div class="content-type-section" id="emailContent">
+                                <div class="mb-3">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="emailInput" placeholder="example@email.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Subject (Optional)</label>
+                                    <input type="text" class="form-control" id="emailSubject" placeholder="Email subject">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Message (Optional)</label>
+                                    <textarea class="form-control" id="emailMessage" rows="2" placeholder="Email message"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Phone Content -->
+                            <div class="content-type-section" id="phoneContent">
+                                <div class="mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phoneInput" placeholder="+1 234 567 890">
+                                </div>
+                            </div>
+
+                            <!-- SMS Content -->
+                            <div class="content-type-section" id="smsContent">
+                                <div class="mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="smsPhone" placeholder="+1 234 567 890">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Message</label>
+                                    <textarea class="form-control" id="smsMessage" rows="2" placeholder="SMS message"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- WiFi Content -->
+                            <div class="content-type-section" id="wifiContent">
+                                <div class="mb-3">
+                                    <label class="form-label">Network Name (SSID)</label>
+                                    <input type="text" class="form-control" id="wifiSSID" placeholder="WiFi network name">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="wifiPassword" placeholder="WiFi password">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Encryption Type</label>
+                                    <select class="form-select" id="wifiEncryption">
+                                        <option value="WPA">WPA/WPA2</option>
+                                        <option value="WEP">WEP</option>
+                                        <option value="nopass">No Password</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- vCard Content -->
+                            <div class="content-type-section" id="vcardContent">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="vcardFirstName" placeholder="First name">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="vcardLastName" placeholder="Last name">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone</label>
+                                        <input type="tel" class="form-control" id="vcardPhone" placeholder="Phone number">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="vcardEmail" placeholder="Email address">
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="vcardAddress" placeholder="Address">
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">Website</label>
+                                        <input type="url" class="form-control" id="vcardWebsite" placeholder="Website URL">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QR Code Options -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">QR Code Options</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Size</label>
+                                    <input type="range" class="form-range" id="qrSize" min="100" max="500" value="200">
+                                    <div class="text-center" id="sizeValue">200px</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Error Correction Level</label>
+                                    <select class="form-select" id="errorCorrection">
+                                        <option value="L">Low (7%)</option>
+                                        <option value="M">Medium (15%)</option>
+                                        <option value="Q">Quartile (25%)</option>
+                                        <option value="H">High (30%)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Foreground Color</label>
+                                    <input type="color" class="form-control form-control-color" id="foregroundColor" value="#000000">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Background Color</label>
+                                    <input type="color" class="form-control form-control-color" id="backgroundColor" value="#FFFFFF">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent QR Codes</h5>
+                            <div id="history" class="text-center text-muted">
+                                No QR codes generated yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About QR Code Generator</h5>
+                            <p class="card-text">
+                                Generate QR codes for various types of content.
+                                Customize appearance and download.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple content types</li>
+                                <li><i class="fas fa-check text-success"></i> Customizable appearance</li>
+                                <li><i class="fas fa-check text-success"></i> Error correction</li>
+                                <li><i class="fas fa-check text-success"></i> Download options</li>
+                                <li><i class="fas fa-check text-success"></i> History tracking</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Higher error correction levels make QR codes more reliable but larger.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const qrPreview = document.getElementById('qrPreview');
+            const downloadButton = document.getElementById('downloadButton');
+            const history = document.getElementById('history');
+            let qrHistory = [];
+            let qrCode = null;
+
+            // Initialize QR code
+            function initializeQRCode() {
+                qrCode = new QRCode(qrPreview, {
+                    text: '',
+                    width: 200,
+                    height: 200,
+                    colorDark: '#000000',
+                    colorLight: '#FFFFFF',
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            }
+
+            // Show selected content type section
+            function showContentType(type) {
+                document.querySelectorAll('.content-type-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(`${type}Content`).classList.add('active');
+            }
+
+            // Get content based on type
+            function getContent() {
+                const type = document.getElementById('contentType').value;
+                let content = '';
+
+                switch (type) {
+                    case 'text':
+                        content = document.getElementById('textInput').value;
+                        break;
+                    case 'url':
+                        content = document.getElementById('urlInput').value;
+                        break;
+                    case 'email':
+                        const emailAddr = document.getElementById('emailInput').value;
+                        const subject = document.getElementById('emailSubject').value;
+                        const message = document.getElementById('emailMessage').value;
+                        content = `mailto:${emailAddr}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}${message ? `&body=${encodeURIComponent(message)}` : ''}`;
+                        break;
+                    case 'phone':
+                        content = `tel:${document.getElementById('phoneInput').value}`;
+                        break;
+                    case 'sms':
+                        const phone = document.getElementById('smsPhone').value;
+                        const smsMessage = document.getElementById('smsMessage').value;
+                        content = `sms:${phone}${smsMessage ? `?body=${encodeURIComponent(smsMessage)}` : ''}`;
+                        break;
+                    case 'wifi':
+                        const ssid = document.getElementById('wifiSSID').value;
+                        const password = document.getElementById('wifiPassword').value;
+                        const encryption = document.getElementById('wifiEncryption').value;
+                        content = `WIFI:S:${ssid};T:${encryption};P:${password};;`;
+                        break;
+                    case 'vcard':
+                        const firstName = document.getElementById('vcardFirstName').value;
+                        const lastName = document.getElementById('vcardLastName').value;
+                        const vcardPhone = document.getElementById('vcardPhone').value;
+                        const vcardEmail = document.getElementById('vcardEmail').value;
+                        const address = document.getElementById('vcardAddress').value;
+                        const website = document.getElementById('vcardWebsite').value;
+                        content = `BEGIN:VCARD\nVERSION:3.0\nN:${lastName};${firstName}\nTEL:${vcardPhone}\nEMAIL:${vcardEmail}\nADR:${address}\nURL:${website}\nEND:VCARD`;
+                        break;
+                }
+
+                return content;
+            }
+
+            // Update QR code
+            function updateQRCode() {
+                const content = getContent();
+                if (!content) {
+                    qrPreview.innerHTML = '<p class="text-muted">Select content type and enter data to generate QR code</p>';
+                    downloadButton.disabled = true;
+                    return;
+                }
+
+                const size = document.getElementById('qrSize').value;
+                const errorCorrection = document.getElementById('errorCorrection').value;
+                const foregroundColor = document.getElementById('foregroundColor').value;
+                const backgroundColor = document.getElementById('backgroundColor').value;
+
+                qrCode.clear();
+                qrCode.makeCode(content);
+                qrCode._oDrawing._elCanvas.width = size;
+                qrCode._oDrawing._elCanvas.height = size;
+                qrCode._oDrawing._elCanvas.style.width = `${size}px`;
+                qrCode._oDrawing._elCanvas.style.height = `${size}px`;
+                qrCode._htOption.colorDark = foregroundColor;
+                qrCode._htOption.colorLight = backgroundColor;
+                qrCode._htOption.correctLevel = QRCode.CorrectLevel[errorCorrection];
+
+                downloadButton.disabled = false;
+            }
+
+            // Download QR code
+            function downloadQRCode() {
+                const canvas = qrPreview.querySelector('canvas');
+                const link = document.createElement('a');
+                link.download = `qrcode-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                // Add to history
+                qrHistory.unshift({
+                    type: document.getElementById('contentType').value,
+                    content: getContent(),
+                    timestamp: new Date().toLocaleString()
+                });
+
+                // Update history display
+                updateHistory();
+            }
+
+            // Update history display
+            function updateHistory() {
+                if (qrHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No QR codes generated yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Type</th>
+                                    <th>Content</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${qrHistory.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>${item.type}</td>
+                                        <td>${item.content.substring(0, 30)}${item.content.length > 30 ? '...' : ''}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Event listeners
+            document.getElementById('contentType').addEventListener('change', (e) => {
+                showContentType(e.target.value);
+                updateQRCode();
+            });
+            document.getElementById('qrSize').addEventListener('input', (e) => {
+                document.getElementById('sizeValue').textContent = `${e.target.value}px`;
+                updateQRCode();
+            });
+            document.getElementById('errorCorrection').addEventListener('change', updateQRCode);
+            document.getElementById('foregroundColor').addEventListener('input', updateQRCode);
+            document.getElementById('backgroundColor').addEventListener('input', updateQRCode);
+            downloadButton.addEventListener('click', downloadQRCode);
+
+            // Add input handlers for all content fields
+            document.querySelectorAll('input, textarea, select').forEach(input => {
+                input.addEventListener('input', updateQRCode);
+            });
+
+            // Initialize
+            initializeQRCode();
+        });
+    </script>
+</body>
+</html> 

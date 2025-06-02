@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Base64 Converter - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-code"></i> Image to Base64 Converter</h1>
+                <p>Convert your images to Base64 encoded strings</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="base64Form">
+                                <div class="mb-3">
+                                    <label for="imageInput" class="form-label">Select Image</label>
+                                    <input type="file" class="form-control" id="imageInput" accept="image/*" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Output Format</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="outputFormat" id="formatDataUrl" checked>
+                                        <label class="btn btn-outline-primary" for="formatDataUrl">Data URL</label>
+                                        
+                                        <input type="radio" class="btn-check" name="outputFormat" id="formatBase64">
+                                        <label class="btn btn-outline-primary" for="formatBase64">Plain Base64</label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="includeMetadata" checked>
+                                        <label class="form-check-label" for="includeMetadata">
+                                            Include Image Metadata
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-code"></i> Convert to Base64
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Preview</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="text-center mb-3">
+                                        <img id="previewImage" class="img-fluid rounded" src="" alt="Preview" style="max-height: 200px;">
+                                    </div>
+                                    <div id="imageInfo" class="text-center" style="display: none;">
+                                        <p class="mb-1">Original Size: <span id="originalSize">0 KB</span></p>
+                                        <p class="mb-1">Dimensions: <span id="imageDimensions">0 x 0</span></p>
+                                        <p class="mb-1">Format: <span id="imageFormat">Unknown</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="base64Output" class="form-label">Base64 Output</label>
+                                        <textarea class="form-control" id="base64Output" rows="5" readonly></textarea>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-outline-primary" id="copyButton" disabled>
+                                            <i class="fas fa-copy"></i> Copy to Clipboard
+                                        </button>
+                                        <button class="btn btn-outline-secondary" id="downloadButton" disabled>
+                                            <i class="fas fa-download"></i> Download as Text
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Base64 Encoding</h5>
+                            <p class="card-text">
+                                Base64 encoding converts binary data into ASCII characters, making it suitable for:
+                            </p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Embedding images in HTML/CSS</li>
+                                <li><i class="fas fa-check text-success"></i> Storing images in databases</li>
+                                <li><i class="fas fa-check text-success"></i> Sending images via APIs</li>
+                                <li><i class="fas fa-check text-success"></i> Including images in JSON data</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Note: Base64 encoding increases file size by approximately 33%.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('base64Form');
+            const imageInput = document.getElementById('imageInput');
+            const previewImage = document.getElementById('previewImage');
+            const base64Output = document.getElementById('base64Output');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+            const imageInfo = document.getElementById('imageInfo');
+            const originalSize = document.getElementById('originalSize');
+            const imageDimensions = document.getElementById('imageDimensions');
+            const imageFormat = document.getElementById('imageFormat');
+
+            // Handle image preview and conversion
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        imageInfo.style.display = 'block';
+                        originalSize.textContent = formatFileSize(file.size);
+                        
+                        const img = new Image();
+                        img.onload = function() {
+                            imageDimensions.textContent = `${img.width} x ${img.height}`;
+                        };
+                        img.src = e.target.result;
+                        
+                        imageFormat.textContent = file.type.split('/')[1].toUpperCase();
+                        
+                        // Enable buttons
+                        copyButton.disabled = false;
+                        downloadButton.disabled = false;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const file = imageInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        let base64String = e.target.result;
+                        
+                        // Handle output format
+                        if (document.getElementById('formatBase64').checked) {
+                            base64String = base64String.split(',')[1];
+                        }
+                        
+                        // Handle metadata
+                        if (!document.getElementById('includeMetadata').checked) {
+                            base64String = base64String.split(',')[1];
+                        }
+                        
+                        base64Output.value = base64String;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Handle copy to clipboard
+            copyButton.addEventListener('click', function() {
+                base64Output.select();
+                document.execCommand('copy');
+                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+                }, 2000);
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                const blob = new Blob([base64Output.value], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'base64_output.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Format file size
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        });
+    </script>
+</body>
+</html> 

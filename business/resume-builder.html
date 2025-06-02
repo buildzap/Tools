@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        .resume-preview {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .resume-preview h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .resume-preview h2 {
+            font-size: 18px;
+            margin: 15px 0 10px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+        .resume-preview p {
+            margin-bottom: 5px;
+        }
+        .resume-preview .section {
+            margin-bottom: 20px;
+        }
+        .resume-preview .skill-tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin: 2px;
+            font-size: 14px;
+        }
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .template-item {
+            cursor: pointer;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .template-item:hover {
+            transform: scale(1.05);
+        }
+        .template-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+        .template-item.selected {
+            border: 3px solid #0d6efd;
+        }
+        .resume-history-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .resume-history-item:last-child {
+            border-bottom: none;
+        }
+        .resume-history-item img {
+            width: 100px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .section-content {
+            margin-bottom: 15px;
+        }
+        .skill-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .skill-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+        .skill-tag .remove-skill {
+            cursor: pointer;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-file-alt"></i> Resume Builder</h1>
+                <p>Create professional resumes with customizable templates</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Resume Preview -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Resume Preview</h5>
+                            <div class="resume-preview" id="resumePreview">
+                                <p class="text-muted">Fill in your information to see the preview</p>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-success" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Resume
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Personal Information</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" placeholder="John Doe">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="jobTitle" placeholder="Software Engineer">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" placeholder="john@example.com">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="phone" placeholder="+1 234 567 890">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="location" placeholder="City, Country">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Professional Summary</label>
+                                    <textarea class="form-control" id="summary" rows="3" placeholder="Brief summary of your professional background and goals"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Work Experience -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="section-header">
+                                <h5 class="card-title mb-0">Work Experience</h5>
+                                <button class="btn btn-sm btn-primary" id="addExperience">
+                                    <i class="fas fa-plus"></i> Add Experience
+                                </button>
+                            </div>
+                            <div id="experienceList">
+                                <!-- Experience items will be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="section-header">
+                                <h5 class="card-title mb-0">Education</h5>
+                                <button class="btn btn-sm btn-primary" id="addEducation">
+                                    <i class="fas fa-plus"></i> Add Education
+                                </button>
+                            </div>
+                            <div id="educationList">
+                                <!-- Education items will be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Skills</h5>
+                            <div class="skill-input-group">
+                                <input type="text" class="form-control" id="skillInput" placeholder="Add a skill">
+                                <button class="btn btn-primary" id="addSkill">Add</button>
+                            </div>
+                            <div class="skill-tags" id="skillTags">
+                                <!-- Skill tags will be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Template Selection -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Resume Templates</h5>
+                            <div class="template-grid" id="templateGrid">
+                                <!-- Templates will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Resumes</h5>
+                            <div id="history" class="text-center text-muted">
+                                No resumes created yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Resume Builder</h5>
+                            <p class="card-text">
+                                Create professional resumes with customizable templates.
+                                Download and share your resume.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Professional templates</li>
+                                <li><i class="fas fa-check text-success"></i> Customizable sections</li>
+                                <li><i class="fas fa-check text-success"></i> Real-time preview</li>
+                                <li><i class="fas fa-check text-success"></i> Download options</li>
+                                <li><i class="fas fa-check text-success"></i> History tracking</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Keep your resume concise and focused on relevant achievements.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- html2canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resumePreview = document.getElementById('resumePreview');
+            const downloadButton = document.getElementById('downloadButton');
+            const templateGrid = document.getElementById('templateGrid');
+            const history = document.getElementById('history');
+            let resumeHistory = [];
+            let selectedTemplate = null;
+            let skills = [];
+
+            // Sample resume templates (in a real app, these would be loaded from a server)
+            const templates = [
+                { id: 1, name: 'Professional', url: 'https://example.com/professional.jpg' },
+                { id: 2, name: 'Modern', url: 'https://example.com/modern.jpg' },
+                { id: 3, name: 'Creative', url: 'https://example.com/creative.jpg' },
+                { id: 4, name: 'Minimal', url: 'https://example.com/minimal.jpg' }
+            ];
+
+            // Initialize template grid
+            function initializeTemplates() {
+                templateGrid.innerHTML = templates.map(template => `
+                    <div class="template-item" data-id="${template.id}">
+                        <img src="${template.url}" alt="${template.name}" title="${template.name}">
+                        <div class="text-center mt-2">${template.name}</div>
+                    </div>
+                `).join('');
+
+                // Add click handlers
+                document.querySelectorAll('.template-item').forEach(item => {
+                    item.addEventListener('click', () => selectTemplate(item.dataset.id));
+                });
+            }
+
+            // Select template
+            function selectTemplate(id) {
+                const template = templates.find(t => t.id === parseInt(id));
+                if (!template) return;
+
+                selectedTemplate = template;
+                document.querySelectorAll('.template-item').forEach(item => {
+                    item.classList.toggle('selected', item.dataset.id === id);
+                });
+
+                updatePreview();
+                downloadButton.disabled = false;
+            }
+
+            // Add work experience
+            function addExperience() {
+                const experienceList = document.getElementById('experienceList');
+                const experienceId = Date.now();
+                const experienceHtml = `
+                    <div class="section-content" id="experience-${experienceId}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Company</label>
+                                <input type="text" class="form-control" placeholder="Company name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Position</label>
+                                <input type="text" class="form-control" placeholder="Job title">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Start Date</label>
+                                <input type="month" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">End Date</label>
+                                <input type="month" class="form-control">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" rows="3" placeholder="Describe your responsibilities and achievements"></textarea>
+                            </div>
+                            <div class="col-12 text-end">
+                                <button class="btn btn-sm btn-danger" onclick="removeExperience(${experienceId})">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                experienceList.insertAdjacentHTML('beforeend', experienceHtml);
+                updatePreview();
+            }
+
+            // Remove work experience
+            window.removeExperience = function(id) {
+                const experience = document.getElementById(`experience-${id}`);
+                if (experience) {
+                    experience.remove();
+                    updatePreview();
+                }
+            };
+
+            // Add education
+            function addEducation() {
+                const educationList = document.getElementById('educationList');
+                const educationId = Date.now();
+                const educationHtml = `
+                    <div class="section-content" id="education-${educationId}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">School</label>
+                                <input type="text" class="form-control" placeholder="School name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Degree</label>
+                                <input type="text" class="form-control" placeholder="Degree name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Start Date</label>
+                                <input type="month" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">End Date</label>
+                                <input type="month" class="form-control">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" rows="2" placeholder="Additional information about your education"></textarea>
+                            </div>
+                            <div class="col-12 text-end">
+                                <button class="btn btn-sm btn-danger" onclick="removeEducation(${educationId})">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                educationList.insertAdjacentHTML('beforeend', educationHtml);
+                updatePreview();
+            }
+
+            // Remove education
+            window.removeEducation = function(id) {
+                const education = document.getElementById(`education-${id}`);
+                if (education) {
+                    education.remove();
+                    updatePreview();
+                }
+            };
+
+            // Add skill
+            function addSkill() {
+                const skillInput = document.getElementById('skillInput');
+                const skill = skillInput.value.trim();
+                if (skill && !skills.includes(skill)) {
+                    skills.push(skill);
+                    updateSkillTags();
+                    skillInput.value = '';
+                    updatePreview();
+                }
+            }
+
+            // Remove skill
+            function removeSkill(skill) {
+                skills = skills.filter(s => s !== skill);
+                updateSkillTags();
+                updatePreview();
+            }
+
+            // Update skill tags
+            function updateSkillTags() {
+                const skillTags = document.getElementById('skillTags');
+                skillTags.innerHTML = skills.map(skill => `
+                    <span class="skill-tag">
+                        ${skill}
+                        <i class="fas fa-times remove-skill" onclick="removeSkill('${skill}')"></i>
+                    </span>
+                `).join('');
+            }
+
+            // Update preview
+            function updatePreview() {
+                const fullName = document.getElementById('fullName').value;
+                const jobTitle = document.getElementById('jobTitle').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const location = document.getElementById('location').value;
+                const summary = document.getElementById('summary').value;
+
+                if (!fullName) {
+                    resumePreview.innerHTML = '<p class="text-muted">Fill in your information to see the preview</p>';
+                    return;
+                }
+
+                let experienceHtml = '';
+                document.querySelectorAll('[id^="experience-"]').forEach(exp => {
+                    const company = exp.querySelector('input[placeholder="Company name"]').value;
+                    const position = exp.querySelector('input[placeholder="Job title"]').value;
+                    const startDate = exp.querySelector('input[type="month"]:first-of-type').value;
+                    const endDate = exp.querySelector('input[type="month"]:last-of-type').value;
+                    const description = exp.querySelector('textarea').value;
+
+                    if (company) {
+                        experienceHtml += `
+                            <div class="section">
+                                <h3>${position}</h3>
+                                <p><strong>${company}</strong> | ${startDate} - ${endDate || 'Present'}</p>
+                                <p>${description}</p>
+                            </div>
+                        `;
+                    }
+                });
+
+                let educationHtml = '';
+                document.querySelectorAll('[id^="education-"]').forEach(edu => {
+                    const school = edu.querySelector('input[placeholder="School name"]').value;
+                    const degree = edu.querySelector('input[placeholder="Degree name"]').value;
+                    const startDate = edu.querySelector('input[type="month"]:first-of-type').value;
+                    const endDate = edu.querySelector('input[type="month"]:last-of-type').value;
+                    const description = edu.querySelector('textarea').value;
+
+                    if (school) {
+                        educationHtml += `
+                            <div class="section">
+                                <h3>${degree}</h3>
+                                <p><strong>${school}</strong> | ${startDate} - ${endDate || 'Present'}</p>
+                                <p>${description}</p>
+                            </div>
+                        `;
+                    }
+                });
+
+                resumePreview.innerHTML = `
+                    <h1>${fullName}</h1>
+                    <p>${jobTitle}</p>
+                    <p>${email} | ${phone} | ${location}</p>
+                    <p>${summary}</p>
+
+                    <h2>Work Experience</h2>
+                    ${experienceHtml || '<p>No work experience added</p>'}
+
+                    <h2>Education</h2>
+                    ${educationHtml || '<p>No education added</p>'}
+
+                    <h2>Skills</h2>
+                    <div class="skill-tags">
+                        ${skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('') || '<p>No skills added</p>'}
+                    </div>
+                `;
+            }
+
+            // Download resume
+            function downloadResume() {
+                html2canvas(resumePreview).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `resume-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    // Add to history
+                    resumeHistory.unshift({
+                        name: document.getElementById('fullName').value,
+                        jobTitle: document.getElementById('jobTitle').value,
+                        timestamp: new Date().toLocaleString()
+                    });
+
+                    // Update history display
+                    updateHistory();
+                });
+            }
+
+            // Update history display
+            function updateHistory() {
+                if (resumeHistory.length === 0) {
+                    history.innerHTML = '<p class="text-muted">No resumes created yet</p>';
+                    return;
+                }
+
+                history.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Name</th>
+                                    <th>Job Title</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${resumeHistory.slice(0, 5).map(item => `
+                                    <tr>
+                                        <td>${item.timestamp}</td>
+                                        <td>${item.name}</td>
+                                        <td>${item.jobTitle}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Event listeners
+            document.getElementById('addExperience').addEventListener('click', addExperience);
+            document.getElementById('addEducation').addEventListener('click', addEducation);
+            document.getElementById('addSkill').addEventListener('click', addSkill);
+            document.getElementById('skillInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addSkill();
+                }
+            });
+            downloadButton.addEventListener('click', downloadResume);
+
+            // Add input handlers for all fields
+            document.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+
+            // Initialize
+            initializeTemplates();
+        });
+    </script>
+</body>
+</html> 
