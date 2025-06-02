@@ -1,1 +1,327 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        .color-preview {
+            width: 100%;
+            height: 100px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #dee2e6;
+        }
+        .color-value {
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+        .color-history-item {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #dee2e6;
+        }
+        .color-history-item:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-palette"></i> Color Picker</h1>
+                <p>Pick, convert, and generate color palettes</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="colorPicker" class="form-label">Select Color</label>
+                                        <input type="color" class="form-control form-control-color w-100" id="colorPicker" value="#4a90e2">
+                                    </div>
+                                    <div class="color-preview" id="colorPreview"></div>
+                                    <div class="color-value text-center mb-3" id="colorValue">#4a90e2</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Color Formats</label>
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>HEX</span>
+                                                    <code id="hexValue">#4a90e2</code>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>RGB</span>
+                                                    <code id="rgbValue">rgb(74, 144, 226)</code>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>HSL</span>
+                                                    <code id="hslValue">hsl(210, 75%, 59%)</code>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>CMYK</span>
+                                                    <code id="cmykValue">cmyk(67%, 36%, 0%, 11%)</code>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Color History</label>
+                                <div class="d-flex gap-2" id="colorHistory"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Generate Palette</label>
+                                <div class="d-flex gap-2 mb-2">
+                                    <button type="button" class="btn btn-outline-primary" id="generateAnalogous">
+                                        <i class="fas fa-palette"></i> Analogous
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" id="generateComplementary">
+                                        <i class="fas fa-palette"></i> Complementary
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" id="generateTriadic">
+                                        <i class="fas fa-palette"></i> Triadic
+                                    </button>
+                                </div>
+                                <div class="d-flex gap-2" id="paletteColors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Color Picker</h5>
+                            <p class="card-text">
+                                A powerful tool for selecting, converting, and generating color palettes.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Color selection</li>
+                                <li><i class="fas fa-check text-success"></i> Multiple color formats</li>
+                                <li><i class="fas fa-check text-success"></i> Color history</li>
+                                <li><i class="fas fa-check text-success"></i> Palette generation</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Tip: Use the color history to quickly access recently used colors.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const colorPicker = document.getElementById('colorPicker');
+            const colorPreview = document.getElementById('colorPreview');
+            const colorValue = document.getElementById('colorValue');
+            const hexValue = document.getElementById('hexValue');
+            const rgbValue = document.getElementById('rgbValue');
+            const hslValue = document.getElementById('hslValue');
+            const cmykValue = document.getElementById('cmykValue');
+            const colorHistory = document.getElementById('colorHistory');
+            const paletteColors = document.getElementById('paletteColors');
+            const generateAnalogous = document.getElementById('generateAnalogous');
+            const generateComplementary = document.getElementById('generateComplementary');
+            const generateTriadic = document.getElementById('generateTriadic');
+
+            let colorHistoryArray = [];
+
+            // Update color values
+            function updateColor(color) {
+                colorPreview.style.backgroundColor = color;
+                colorValue.textContent = color;
+                hexValue.textContent = color;
+
+                // Convert to RGB
+                const r = parseInt(color.substr(1,2), 16);
+                const g = parseInt(color.substr(3,2), 16);
+                const b = parseInt(color.substr(5,2), 16);
+                rgbValue.textContent = `rgb(${r}, ${g}, ${b})`;
+
+                // Convert to HSL
+                const hsl = rgbToHsl(r, g, b);
+                hslValue.textContent = `hsl(${Math.round(hsl.h)}°, ${Math.round(hsl.s)}%, ${Math.round(hsl.l)}%)`;
+
+                // Convert to CMYK
+                const cmyk = rgbToCmyk(r, g, b);
+                cmykValue.textContent = `cmyk(${Math.round(cmyk.c)}%, ${Math.round(cmyk.m)}%, ${Math.round(cmyk.y)}%, ${Math.round(cmyk.k)}%)`;
+
+                // Add to history
+                if (!colorHistoryArray.includes(color)) {
+                    colorHistoryArray.unshift(color);
+                    if (colorHistoryArray.length > 10) {
+                        colorHistoryArray.pop();
+                    }
+                    updateColorHistory();
+                }
+            }
+
+            // RGB to HSL conversion
+            function rgbToHsl(r, g, b) {
+                r /= 255;
+                g /= 255;
+                b /= 255;
+
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+
+                if (max === min) {
+                    h = s = 0;
+                } else {
+                    const d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+
+                    h *= 60;
+                }
+
+                return { h, s: s * 100, l: l * 100 };
+            }
+
+            // RGB to CMYK conversion
+            function rgbToCmyk(r, g, b) {
+                r /= 255;
+                g /= 255;
+                b /= 255;
+
+                const k = 1 - Math.max(r, g, b);
+                const c = (1 - r - k) / (1 - k) || 0;
+                const m = (1 - g - k) / (1 - k) || 0;
+                const y = (1 - b - k) / (1 - k) || 0;
+
+                return {
+                    c: c * 100,
+                    m: m * 100,
+                    y: y * 100,
+                    k: k * 100
+                };
+            }
+
+            // Update color history display
+            function updateColorHistory() {
+                colorHistory.innerHTML = colorHistoryArray.map(color => `
+                    <div class="color-history-item" style="background-color: ${color}" 
+                         onclick="document.getElementById('colorPicker').value = '${color}'; updateColor('${color}')">
+                    </div>
+                `).join('');
+            }
+
+            // Generate color palette
+            function generatePalette(type) {
+                const color = colorPicker.value;
+                const r = parseInt(color.substr(1,2), 16);
+                const g = parseInt(color.substr(3,2), 16);
+                const b = parseInt(color.substr(5,2), 16);
+                const hsl = rgbToHsl(r, g, b);
+
+                let palette = [];
+                switch (type) {
+                    case 'analogous':
+                        palette = [
+                            hslToHex((hsl.h + 30) % 360, hsl.s, hsl.l),
+                            hslToHex((hsl.h + 60) % 360, hsl.s, hsl.l),
+                            color,
+                            hslToHex((hsl.h - 30 + 360) % 360, hsl.s, hsl.l),
+                            hslToHex((hsl.h - 60 + 360) % 360, hsl.s, hsl.l)
+                        ];
+                        break;
+                    case 'complementary':
+                        palette = [
+                            color,
+                            hslToHex((hsl.h + 180) % 360, hsl.s, hsl.l)
+                        ];
+                        break;
+                    case 'triadic':
+                        palette = [
+                            color,
+                            hslToHex((hsl.h + 120) % 360, hsl.s, hsl.l),
+                            hslToHex((hsl.h + 240) % 360, hsl.s, hsl.l)
+                        ];
+                        break;
+                }
+
+                paletteColors.innerHTML = palette.map(color => `
+                    <div class="color-history-item" style="background-color: ${color}" 
+                         onclick="document.getElementById('colorPicker').value = '${color}'; updateColor('${color}')">
+                    </div>
+                `).join('');
+            }
+
+            // HSL to HEX conversion
+            function hslToHex(h, s, l) {
+                s /= 100;
+                l /= 100;
+
+                const a = s * Math.min(l, 1 - l);
+                const f = n => {
+                    const k = (n + h / 30) % 12;
+                    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                    return Math.round(255 * color).toString(16).padStart(2, '0');
+                };
+
+                return `#${f(0)}${f(8)}${f(4)}`;
+            }
+
+            // Event listeners
+            colorPicker.addEventListener('input', function() {
+                updateColor(this.value);
+            });
+
+            generateAnalogous.addEventListener('click', () => generatePalette('analogous'));
+            generateComplementary.addEventListener('click', () => generatePalette('complementary'));
+            generateTriadic.addEventListener('click', () => generatePalette('triadic'));
+
+            // Initialize
+            updateColor(colorPicker.value);
+        });
+    </script>
+</body>
+</html> 
