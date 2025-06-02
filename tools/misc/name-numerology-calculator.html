@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Numerology Calculator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .result-card {
+            transition: transform 0.2s;
+        }
+        .result-card:hover {
+            transform: translateY(-5px);
+        }
+        .history-item {
+            transition: transform 0.2s;
+        }
+        .history-item:hover {
+            transform: translateY(-2px);
+        }
+        .number-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .meaning-text {
+            font-style: italic;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Name Numerology Calculator</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form id="numerologyForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-calculator me-2"></i>Calculate Numerology
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="results" class="mb-4"></div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Numerology Meanings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <h6>Expression Number (Destiny)</h6>
+                                <p class="small text-muted">Represents your natural abilities, talents, and the goals you are most likely to pursue.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Soul Urge Number (Heart's Desire)</h6>
+                                <p class="small text-muted">Reveals your inner cravings, motivations, and what you truly want in life.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Personality Number</h6>
+                                <p class="small text-muted">Shows how others see you and your first impressions on people.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Life Path Number</h6>
+                                <p class="small text-muted">Indicates the path you'll take in life and the lessons you'll learn.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Calculation History</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="history" class="row g-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const numerologyForm = document.getElementById('numerologyForm');
+        const resultsContainer = document.getElementById('results');
+        const historyContainer = document.getElementById('history');
+
+        const numberMeanings = {
+            1: "Leadership, independence, and creativity",
+            2: "Cooperation, balance, and diplomacy",
+            3: "Expression, creativity, and joy",
+            4: "Stability, order, and service",
+            5: "Freedom, change, and adventure",
+            6: "Love, harmony, and responsibility",
+            7: "Spirituality, wisdom, and analysis",
+            8: "Power, abundance, and material success",
+            9: "Humanitarianism, compassion, and completion"
+        };
+
+        const letterValues = {
+            'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9,
+            'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 6, 'P': 7, 'Q': 8, 'R': 9,
+            'S': 1, 'T': 2, 'U': 3, 'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
+        };
+
+        numerologyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateNumerology();
+        });
+
+        function calculateNumerology() {
+            const firstName = document.getElementById('firstName').value.toUpperCase();
+            const lastName = document.getElementById('lastName').value.toUpperCase();
+            const fullName = firstName + ' ' + lastName;
+
+            const expressionNumber = calculateExpressionNumber(fullName);
+            const soulUrgeNumber = calculateSoulUrgeNumber(fullName);
+            const personalityNumber = calculatePersonalityNumber(fullName);
+            const lifePathNumber = calculateLifePathNumber(fullName);
+
+            displayResults({
+                fullName,
+                expressionNumber,
+                soulUrgeNumber,
+                personalityNumber,
+                lifePathNumber
+            });
+
+            addToHistory(fullName, {
+                expressionNumber,
+                soulUrgeNumber,
+                personalityNumber,
+                lifePathNumber
+            });
+        }
+
+        function calculateExpressionNumber(name) {
+            let sum = 0;
+            for (let i = 0; i < name.length; i++) {
+                const char = name[i];
+                if (letterValues[char]) {
+                    sum += letterValues[char];
+                }
+            }
+            return reduceToSingleDigit(sum);
+        }
+
+        function calculateSoulUrgeNumber(name) {
+            let sum = 0;
+            const vowels = 'AEIOU';
+            for (let i = 0; i < name.length; i++) {
+                const char = name[i];
+                if (vowels.includes(char) && letterValues[char]) {
+                    sum += letterValues[char];
+                }
+            }
+            return reduceToSingleDigit(sum);
+        }
+
+        function calculatePersonalityNumber(name) {
+            let sum = 0;
+            const consonants = 'BCDFGHJKLMNPQRSTVWXYZ';
+            for (let i = 0; i < name.length; i++) {
+                const char = name[i];
+                if (consonants.includes(char) && letterValues[char]) {
+                    sum += letterValues[char];
+                }
+            }
+            return reduceToSingleDigit(sum);
+        }
+
+        function calculateLifePathNumber(name) {
+            const birthDate = new Date();
+            const day = birthDate.getDate();
+            const month = birthDate.getMonth() + 1;
+            const year = birthDate.getFullYear();
+            
+            const daySum = reduceToSingleDigit(day);
+            const monthSum = reduceToSingleDigit(month);
+            const yearSum = reduceToSingleDigit(year);
+            
+            return reduceToSingleDigit(daySum + monthSum + yearSum);
+        }
+
+        function reduceToSingleDigit(number) {
+            while (number > 9) {
+                number = number.toString().split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            }
+            return number;
+        }
+
+        function displayResults(results) {
+            resultsContainer.innerHTML = `
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card result-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Expression Number</h5>
+                                <div class="number-value">${results.expressionNumber}</div>
+                                <p class="meaning-text">${numberMeanings[results.expressionNumber]}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card result-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Soul Urge Number</h5>
+                                <div class="number-value">${results.soulUrgeNumber}</div>
+                                <p class="meaning-text">${numberMeanings[results.soulUrgeNumber]}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card result-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Personality Number</h5>
+                                <div class="number-value">${results.personalityNumber}</div>
+                                <p class="meaning-text">${numberMeanings[results.personalityNumber]}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card result-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Life Path Number</h5>
+                                <div class="number-value">${results.lifePathNumber}</div>
+                                <p class="meaning-text">${numberMeanings[results.lifePathNumber]}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function addToHistory(name, numbers) {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'col-md-6';
+            
+            const timestamp = new Date().toLocaleTimeString();
+            
+            historyItem.innerHTML = `
+                <div class="card history-item">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">${name}</h6>
+                                <p class="mb-0 text-muted">
+                                    Expression: ${numbers.expressionNumber} | 
+                                    Soul: ${numbers.soulUrgeNumber} | 
+                                    Personality: ${numbers.personalityNumber}
+                                </p>
+                            </div>
+                            <small class="text-muted">${timestamp}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            historyContainer.insertBefore(historyItem, historyContainer.firstChild);
+            
+            // Keep only last 10 history items
+            if (historyContainer.children.length > 10) {
+                historyContainer.removeChild(historyContainer.lastChild);
+            }
+        }
+    </script>
+</body>
+</html> 

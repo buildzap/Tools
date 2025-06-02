@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .dice {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+            margin: 1rem;
+        }
+        .dice.rolling {
+            animation: roll 1s ease-in-out;
+        }
+        .dice-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            backface-visibility: hidden;
+        }
+        .dice-face-1 { transform: rotateY(0deg) translateZ(50px); }
+        .dice-face-2 { transform: rotateY(180deg) translateZ(50px); }
+        .dice-face-3 { transform: rotateX(90deg) translateZ(50px); }
+        .dice-face-4 { transform: rotateX(-90deg) translateZ(50px); }
+        .dice-face-5 { transform: rotateY(90deg) translateZ(50px); }
+        .dice-face-6 { transform: rotateY(-90deg) translateZ(50px); }
+        @keyframes roll {
+            0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
+            100% { transform: rotateX(720deg) rotateY(720deg) rotateZ(720deg); }
+        }
+        .dice-container {
+            perspective: 1000px;
+        }
+        .stats-card {
+            transition: transform 0.2s;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        .history-item {
+            transition: transform 0.2s;
+        }
+        .history-item:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Dice Roller</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form id="diceForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="diceType" class="form-label">Dice Type</label>
+                                    <select class="form-select" id="diceType" required>
+                                        <option value="d4">D4</option>
+                                        <option value="d6" selected>D6</option>
+                                        <option value="d8">D8</option>
+                                        <option value="d10">D10</option>
+                                        <option value="d12">D12</option>
+                                        <option value="d20">D20</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="diceCount" class="form-label">Number of Dice</label>
+                                    <input type="number" class="form-control" id="diceCount" min="1" max="10" value="1" required>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-dice me-2"></i>Roll Dice
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="dice-container text-center mb-4" id="diceContainer"></div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="card stats-card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Total Rolls</h5>
+                                <h2 class="mb-0" id="totalRolls">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stats-card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Highest Roll</h5>
+                                <h2 class="mb-0" id="highestRoll">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stats-card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Total Sum</h5>
+                                <h2 class="mb-0" id="totalSum">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Roll History</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="history" class="row g-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let stats = {
+            total: 0,
+            highest: 0,
+            sum: 0
+        };
+
+        document.getElementById('diceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            rollDice();
+        });
+
+        function rollDice() {
+            const type = document.getElementById('diceType').value;
+            const count = parseInt(document.getElementById('diceCount').value);
+            const maxValue = parseInt(type.substring(1));
+            const results = [];
+
+            const diceContainer = document.getElementById('diceContainer');
+            diceContainer.innerHTML = '';
+
+            for (let i = 0; i < count; i++) {
+                const result = Math.floor(Math.random() * maxValue) + 1;
+                results.push(result);
+                createDice(result, maxValue);
+            }
+
+            updateStats(results);
+            addToHistory(results, type);
+        }
+
+        function createDice(value, maxValue) {
+            const dice = document.createElement('div');
+            dice.className = 'dice';
+            dice.innerHTML = `
+                <div class="dice-face dice-face-1">1</div>
+                <div class="dice-face dice-face-2">2</div>
+                <div class="dice-face dice-face-3">3</div>
+                <div class="dice-face dice-face-4">4</div>
+                <div class="dice-face dice-face-5">5</div>
+                <div class="dice-face dice-face-6">6</div>
+            `;
+
+            document.getElementById('diceContainer').appendChild(dice);
+            dice.classList.add('rolling');
+
+            setTimeout(() => {
+                dice.classList.remove('rolling');
+                dice.style.transform = `rotateX(${Math.random() * 360}deg) rotateY(${Math.random() * 360}deg)`;
+            }, 1000);
+        }
+
+        function updateStats(results) {
+            stats.total++;
+            stats.highest = Math.max(stats.highest, ...results);
+            stats.sum += results.reduce((a, b) => a + b, 0);
+
+            document.getElementById('totalRolls').textContent = stats.total;
+            document.getElementById('highestRoll').textContent = stats.highest;
+            document.getElementById('totalSum').textContent = stats.sum;
+        }
+
+        function addToHistory(results, type) {
+            const historyContainer = document.getElementById('history');
+            const historyItem = document.createElement('div');
+            historyItem.className = 'col-md-6';
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const sum = results.reduce((a, b) => a + b, 0);
+            
+            historyItem.innerHTML = `
+                <div class="card history-item">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">${type.toUpperCase()}</h6>
+                                <p class="mb-0 text-muted">
+                                    ${results.join(', ')} (Sum: ${sum})
+                                </p>
+                            </div>
+                            <small class="text-muted">${timestamp}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            historyContainer.insertBefore(historyItem, historyContainer.firstChild);
+            
+            // Keep only last 10 history items
+            if (historyContainer.children.length > 10) {
+                historyContainer.removeChild(historyContainer.lastChild);
+            }
+        }
+    </script>
+</body>
+</html> 

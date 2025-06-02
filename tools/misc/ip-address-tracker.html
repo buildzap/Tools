@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Address Tracker - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <style>
+        .info-card {
+            transition: transform 0.2s;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        .history-item {
+            transition: transform 0.2s;
+        }
+        .history-item:hover {
+            transform: translateY(-2px);
+        }
+        #map {
+            height: 300px;
+            border-radius: 0.5rem;
+        }
+        .ip-input {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">IP Address Tracker</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form id="ipForm" class="mb-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control ip-input" id="ipInput" placeholder="Enter IP address (e.g., 8.8.8.8)" pattern="^(\d{1,3}\.){3}\d{1,3}$" required>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search me-2"></i>Track
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="map"></div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="card info-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Location Information</h5>
+                                <div id="locationInfo">
+                                    <p class="mb-1"><strong>Country:</strong> <span id="country">-</span></p>
+                                    <p class="mb-1"><strong>Region:</strong> <span id="region">-</span></p>
+                                    <p class="mb-1"><strong>City:</strong> <span id="city">-</span></p>
+                                    <p class="mb-1"><strong>Postal Code:</strong> <span id="postal">-</span></p>
+                                    <p class="mb-0"><strong>Timezone:</strong> <span id="timezone">-</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card info-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Network Information</h5>
+                                <div id="networkInfo">
+                                    <p class="mb-1"><strong>IP Address:</strong> <span id="ip">-</span></p>
+                                    <p class="mb-1"><strong>ISP:</strong> <span id="isp">-</span></p>
+                                    <p class="mb-1"><strong>Organization:</strong> <span id="org">-</span></p>
+                                    <p class="mb-1"><strong>AS Number:</strong> <span id="asn">-</span></p>
+                                    <p class="mb-0"><strong>Connection Type:</strong> <span id="connection">-</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Search History</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="history" class="row g-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <script>
+        let map = L.map('map').setView([0, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        let marker = null;
+
+        const ipForm = document.getElementById('ipForm');
+        const ipInput = document.getElementById('ipInput');
+
+        ipForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            trackIP(ipInput.value);
+        });
+
+        function trackIP(ip) {
+            // Simulate API call with random data
+            setTimeout(() => {
+                const data = generateRandomData(ip);
+                updateUI(data);
+                addToHistory(data);
+            }, 1000);
+        }
+
+        function generateRandomData(ip) {
+            const countries = ['United States', 'United Kingdom', 'Germany', 'Japan', 'Canada', 'Australia'];
+            const cities = ['New York', 'London', 'Berlin', 'Tokyo', 'Toronto', 'Sydney'];
+            const isps = ['Comcast', 'AT&T', 'Verizon', 'BT', 'Deutsche Telekom', 'NTT'];
+            const orgs = ['Google LLC', 'Amazon.com', 'Microsoft Corporation', 'Apple Inc.', 'Meta Platforms'];
+            
+            const lat = Math.random() * 180 - 90;
+            const lng = Math.random() * 360 - 180;
+            
+            return {
+                ip: ip,
+                location: {
+                    country: countries[Math.floor(Math.random() * countries.length)],
+                    region: 'Region ' + Math.floor(Math.random() * 100),
+                    city: cities[Math.floor(Math.random() * cities.length)],
+                    postal: Math.floor(Math.random() * 100000),
+                    timezone: 'UTC' + (Math.random() > 0.5 ? '+' : '-') + Math.floor(Math.random() * 12),
+                    lat: lat,
+                    lng: lng
+                },
+                network: {
+                    isp: isps[Math.floor(Math.random() * isps.length)],
+                    org: orgs[Math.floor(Math.random() * orgs.length)],
+                    asn: 'AS' + Math.floor(Math.random() * 100000),
+                    connection: ['Cable', 'Fiber', 'DSL', 'Wireless'][Math.floor(Math.random() * 4)]
+                }
+            };
+        }
+
+        function updateUI(data) {
+            // Update location info
+            document.getElementById('country').textContent = data.location.country;
+            document.getElementById('region').textContent = data.location.region;
+            document.getElementById('city').textContent = data.location.city;
+            document.getElementById('postal').textContent = data.location.postal;
+            document.getElementById('timezone').textContent = data.location.timezone;
+
+            // Update network info
+            document.getElementById('ip').textContent = data.ip;
+            document.getElementById('isp').textContent = data.network.isp;
+            document.getElementById('org').textContent = data.network.org;
+            document.getElementById('asn').textContent = data.network.asn;
+            document.getElementById('connection').textContent = data.network.connection;
+
+            // Update map
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker([data.location.lat, data.location.lng]).addTo(map);
+            map.setView([data.location.lat, data.location.lng], 10);
+        }
+
+        function addToHistory(data) {
+            const historyContainer = document.getElementById('history');
+            const historyItem = document.createElement('div');
+            historyItem.className = 'col-md-6';
+            
+            const timestamp = new Date().toLocaleTimeString();
+            
+            historyItem.innerHTML = `
+                <div class="card history-item">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">${data.ip}</h6>
+                                <p class="mb-0 text-muted">
+                                    ${data.location.city}, ${data.location.country}
+                                </p>
+                            </div>
+                            <small class="text-muted">${timestamp}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            historyContainer.insertBefore(historyItem, historyContainer.firstChild);
+            
+            // Keep only last 10 history items
+            if (historyContainer.children.length > 10) {
+                historyContainer.removeChild(historyContainer.lastChild);
+            }
+        }
+
+        // Track current IP on page load
+        window.addEventListener('load', () => {
+            trackIP('8.8.8.8'); // Default to Google's DNS
+        });
+    </script>
+</body>
+</html> 

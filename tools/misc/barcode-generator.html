@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Generator - Multi-Tools</title>
+    <meta name="description" content="Generate barcodes in various formats. Free online barcode generator.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- JsBarcode Library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+</head>
+<body class="fade-in">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title text-center mb-4">
+                            <i class="fas fa-barcode text-primary me-2"></i>
+                            Barcode Generator
+                        </h1>
+                        
+                        <form id="barcodeForm" class="mb-4">
+                            <div class="mb-3">
+                                <label for="barcodeContent" class="form-label">Barcode Content</label>
+                                <input type="text" class="form-control" id="barcodeContent" placeholder="Enter text or numbers for the barcode">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="barcodeFormat" class="form-label">Barcode Format</label>
+                                <select class="form-select" id="barcodeFormat">
+                                    <option value="CODE128">Code 128</option>
+                                    <option value="EAN13">EAN-13</option>
+                                    <option value="EAN8">EAN-8</option>
+                                    <option value="UPC">UPC</option>
+                                    <option value="CODE39">Code 39</option>
+                                    <option value="ITF14">ITF-14</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="barcodeWidth" class="form-label">Width: <span id="widthValue">2</span></label>
+                                <input type="range" class="form-range" id="barcodeWidth" min="1" max="5" step="0.1" value="2">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="barcodeHeight" class="form-label">Height: <span id="heightValue">100</span>px</label>
+                                <input type="range" class="form-range" id="barcodeHeight" min="50" max="200" step="1" value="100">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="showText" checked>
+                                    <label class="form-check-label" for="showText">
+                                        Show text below barcode
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-barcode me-2"></i>Generate Barcode
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div id="barcodeResult" class="text-center" style="display: none;">
+                            <div class="mb-3">
+                                <svg id="barcode"></svg>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button id="downloadBtn" class="btn btn-success">
+                                    <i class="fas fa-download me-2"></i>Download Barcode
+                                </button>
+                                <button id="clearBtn" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i>Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        // Load header and footer
+        fetch('../../components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('../../components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+        // Update range input values
+        document.getElementById('barcodeWidth').addEventListener('input', function() {
+            document.getElementById('widthValue').textContent = this.value;
+        });
+
+        document.getElementById('barcodeHeight').addEventListener('input', function() {
+            document.getElementById('heightValue').textContent = this.value;
+        });
+
+        // Barcode Generation
+        document.getElementById('barcodeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const content = document.getElementById('barcodeContent').value;
+            const format = document.getElementById('barcodeFormat').value;
+            const width = parseFloat(document.getElementById('barcodeWidth').value);
+            const height = parseInt(document.getElementById('barcodeHeight').value);
+            const showText = document.getElementById('showText').checked;
+            
+            if (!content) {
+                alert('Please enter content for the barcode');
+                return;
+            }
+            
+            try {
+                // Generate Barcode
+                JsBarcode("#barcode", content, {
+                    format: format,
+                    width: width,
+                    height: height,
+                    displayValue: showText,
+                    fontSize: 20,
+                    margin: 10
+                });
+                
+                // Show result
+                document.getElementById('barcodeResult').style.display = 'block';
+            } catch (error) {
+                alert('Error generating barcode: ' + error.message);
+            }
+        });
+        
+        // Download Barcode
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const svg = document.getElementById('barcode');
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size to match SVG
+            canvas.width = svg.viewBox.baseVal.width;
+            canvas.height = svg.viewBox.baseVal.height;
+            
+            // Create image from SVG
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+                const link = document.createElement('a');
+                link.download = 'barcode.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+        });
+        
+        // Clear form
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            document.getElementById('barcodeForm').reset();
+            document.getElementById('barcodeResult').style.display = 'none';
+            document.getElementById('widthValue').textContent = '2';
+            document.getElementById('heightValue').textContent = '100';
+        });
+    </script>
+</body>
+</html> 

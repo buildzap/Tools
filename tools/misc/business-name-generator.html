@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Name Generator - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .name-card {
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .name-card:hover {
+            transform: translateY(-5px);
+        }
+        .domain-check {
+            font-size: 0.9rem;
+        }
+        .domain-available {
+            color: #198754;
+        }
+        .domain-taken {
+            color: #dc3545;
+        }
+        .copy-btn {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .name-card:hover .copy-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Business Name Generator</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form id="nameForm">
+                            <div class="mb-3">
+                                <label for="industry" class="form-label">Industry</label>
+                                <select class="form-select" id="industry" required>
+                                    <option value="">Select an industry</option>
+                                    <option value="tech">Technology</option>
+                                    <option value="food">Food & Restaurant</option>
+                                    <option value="health">Health & Wellness</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="creative">Creative & Design</option>
+                                    <option value="education">Education</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="realestate">Real Estate</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="keywords" class="form-label">Keywords (optional)</label>
+                                <input type="text" class="form-control" id="keywords" placeholder="Enter keywords separated by commas">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Name Style</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="modern" checked>
+                                    <label class="form-check-label" for="modern">Modern</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="professional" checked>
+                                    <label class="form-check-label" for="professional">Professional</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="creative" checked>
+                                    <label class="form-check-label" for="creative">Creative</label>
+                                </div>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Generate Names</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="results" class="row g-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const prefixes = {
+            tech: ['Tech', 'Smart', 'Digital', 'Cyber', 'Net', 'Code', 'Byte', 'Pixel', 'Logic', 'Data'],
+            food: ['Fresh', 'Tasty', 'Savor', 'Bite', 'Chef', 'Kitchen', 'Cuisine', 'Flavor', 'Spice', 'Taste'],
+            health: ['Vital', 'Well', 'Health', 'Life', 'Care', 'Balance', 'Zen', 'Pure', 'Natural', 'Fit'],
+            retail: ['Shop', 'Store', 'Market', 'Boutique', 'Style', 'Trend', 'Fashion', 'Retail', 'Brand', 'Goods'],
+            creative: ['Art', 'Design', 'Creative', 'Studio', 'Craft', 'Vision', 'Imagine', 'Dream', 'Spark', 'Inspire'],
+            education: ['Learn', 'Study', 'Academy', 'School', 'Edu', 'Knowledge', 'Brain', 'Mind', 'Wisdom', 'Teach'],
+            finance: ['Capital', 'Wealth', 'Finance', 'Money', 'Invest', 'Asset', 'Fund', 'Bank', 'Trust', 'Secure'],
+            realestate: ['Home', 'House', 'Property', 'Estate', 'Space', 'Place', 'Land', 'Build', 'Roof', 'Key']
+        };
+
+        const suffixes = {
+            tech: ['Tech', 'Systems', 'Solutions', 'Labs', 'Works', 'Hub', 'Group', 'Team', 'Studio', 'Co'],
+            food: ['Kitchen', 'Cafe', 'Bistro', 'Eats', 'Dining', 'Table', 'Plate', 'Bite', 'Taste', 'Co'],
+            health: ['Health', 'Wellness', 'Care', 'Life', 'Balance', 'Center', 'Hub', 'Group', 'Club', 'Co'],
+            retail: ['Shop', 'Store', 'Market', 'Boutique', 'Style', 'Trend', 'Fashion', 'Retail', 'Co'],
+            creative: ['Studio', 'Design', 'Creative', 'Works', 'Lab', 'Hub', 'Group', 'Team', 'Agency', 'Co'],
+            education: ['Academy', 'School', 'Institute', 'Center', 'Hub', 'Group', 'Team', 'Club', 'Co'],
+            finance: ['Capital', 'Wealth', 'Finance', 'Group', 'Partners', 'Advisors', 'Trust', 'Co'],
+            realestate: ['Homes', 'Properties', 'Estate', 'Group', 'Partners', 'Advisors', 'Co']
+        };
+
+        const modernPrefixes = ['Nova', 'Zen', 'Pulse', 'Flow', 'Spark', 'Nexus', 'Vertex', 'Prism', 'Quantum', 'Echo'];
+        const professionalPrefixes = ['Global', 'United', 'Premier', 'Elite', 'Prime', 'Superior', 'Advanced', 'Strategic', 'Optimal', 'Peak'];
+        const creativePrefixes = ['Imagine', 'Dream', 'Spark', 'Create', 'Design', 'Craft', 'Art', 'Vision', 'Inspire', 'Innovate'];
+
+        document.getElementById('nameForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateNames();
+        });
+
+        function generateNames() {
+            const industry = document.getElementById('industry').value;
+            const keywords = document.getElementById('keywords').value.split(',').map(k => k.trim()).filter(k => k);
+            const useModern = document.getElementById('modern').checked;
+            const useProfessional = document.getElementById('professional').checked;
+            const useCreative = document.getElementById('creative').checked;
+
+            let allPrefixes = [...prefixes[industry]];
+            if (useModern) allPrefixes = allPrefixes.concat(modernPrefixes);
+            if (useProfessional) allPrefixes = allPrefixes.concat(professionalPrefixes);
+            if (useCreative) allPrefixes = allPrefixes.concat(creativePrefixes);
+
+            const allSuffixes = suffixes[industry];
+            const results = [];
+
+            // Generate names with industry prefixes and suffixes
+            for (let i = 0; i < 5; i++) {
+                const prefix = allPrefixes[Math.floor(Math.random() * allPrefixes.length)];
+                const suffix = allSuffixes[Math.floor(Math.random() * allSuffixes.length)];
+                results.push(`${prefix}${suffix}`);
+            }
+
+            // Generate names with keywords if provided
+            if (keywords.length > 0) {
+                for (let i = 0; i < 5; i++) {
+                    const keyword = keywords[Math.floor(Math.random() * keywords.length)];
+                    const suffix = allSuffixes[Math.floor(Math.random() * allSuffixes.length)];
+                    results.push(`${keyword}${suffix}`);
+                }
+            }
+
+            displayResults(results);
+        }
+
+        function displayResults(names) {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+
+            names.forEach(name => {
+                const card = document.createElement('div');
+                card.className = 'col-md-6';
+                card.innerHTML = `
+                    <div class="card name-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">${name}</h5>
+                                <button class="btn btn-sm btn-outline-primary copy-btn" onclick="copyToClipboard('${name}')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="domain-check mt-2">
+                                <span class="domain-available">
+                                    <i class="fas fa-check-circle me-1"></i>${name.toLowerCase()}.com
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Name copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html> 

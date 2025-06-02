@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leap Year Checker - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .result-card {
+            transition: transform 0.2s;
+        }
+        .result-card:hover {
+            transform: translateY(-5px);
+        }
+        .history-item {
+            transition: transform 0.2s;
+        }
+        .history-item:hover {
+            transform: translateY(-2px);
+        }
+        .leap-year {
+            color: #198754;
+        }
+        .not-leap-year {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Leap Year Checker</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form id="leapYearForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="year" class="form-label">Enter Year</label>
+                                    <input type="number" class="form-control" id="year" min="1" max="9999" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="count" class="form-label">Check Multiple Years</label>
+                                    <input type="number" class="form-control" id="count" min="1" max="10" value="1" required>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-calendar-check me-2"></i>Check Years
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="results" class="mb-4"></div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Leap Year Rules</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                A year is a leap year if it is divisible by 4
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-times-circle text-danger me-2"></i>
+                                However, if the year is divisible by 100, it is NOT a leap year
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Unless the year is also divisible by 400, then it IS a leap year
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Check History</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="history" class="row g-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const leapYearForm = document.getElementById('leapYearForm');
+        const resultsContainer = document.getElementById('results');
+        const historyContainer = document.getElementById('history');
+
+        leapYearForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            checkYears();
+        });
+
+        function checkYears() {
+            const startYear = parseInt(document.getElementById('year').value);
+            const count = parseInt(document.getElementById('count').value);
+            const years = [];
+
+            for (let i = 0; i < count; i++) {
+                const year = startYear + i;
+                years.push({
+                    year: year,
+                    isLeap: isLeapYear(year)
+                });
+            }
+
+            displayResults(years);
+            addToHistory(years);
+        }
+
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+
+        function displayResults(years) {
+            resultsContainer.innerHTML = '';
+            const row = document.createElement('div');
+            row.className = 'row g-3';
+
+            years.forEach(year => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+                col.innerHTML = `
+                    <div class="card result-card">
+                        <div class="card-body">
+                            <h5 class="card-title ${year.isLeap ? 'leap-year' : 'not-leap-year'}">
+                                ${year.year}
+                                <i class="fas ${year.isLeap ? 'fa-check-circle' : 'fa-times-circle'} ms-2"></i>
+                            </h5>
+                            <p class="card-text">
+                                ${year.isLeap ? 'This is a leap year' : 'This is not a leap year'}
+                            </p>
+                            <small class="text-muted">
+                                ${year.isLeap ? 
+                                    'February has 29 days this year' : 
+                                    'February has 28 days this year'}
+                            </small>
+                        </div>
+                    </div>
+                `;
+                row.appendChild(col);
+            });
+
+            resultsContainer.appendChild(row);
+        }
+
+        function addToHistory(years) {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'col-md-6';
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const leapYears = years.filter(y => y.isLeap).length;
+            
+            historyItem.innerHTML = `
+                <div class="card history-item">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">${years.length} year${years.length > 1 ? 's' : ''} checked</h6>
+                                <p class="mb-0 text-muted">${leapYears} leap year${leapYears !== 1 ? 's' : ''} found</p>
+                            </div>
+                            <small class="text-muted">${timestamp}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            historyContainer.insertBefore(historyItem, historyContainer.firstChild);
+            
+            // Keep only last 10 history items
+            if (historyContainer.children.length > 10) {
+                historyContainer.removeChild(historyContainer.lastChild);
+            }
+        }
+    </script>
+</body>
+</html> 
