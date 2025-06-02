@@ -1,38 +1,22 @@
 <!-- Header Component -->
 <header class="bg-white shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <i class="fas fa-tools"></i> Multi-Tools
+                <i class="fas fa-tools text-primary me-2"></i>
+                Multi-Tools
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            Image Tools
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/tools/image-tools/image-to-png.html">Image to PNG</a></li>
-                            <li><a class="dropdown-item" href="/tools/image-tools/image-to-jpg.html">Image to JPG</a></li>
-                            <li><a class="dropdown-item" href="/tools/image-tools/image-resizer.html">Image Resizer</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            Text Tools
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/tools/text-tools/word-counter.html">Word Counter</a></li>
-                            <li><a class="dropdown-item" href="/tools/text-tools/case-converter.html">Case Converter</a></li>
-                            <li><a class="dropdown-item" href="/tools/text-tools/text-to-speech.html">Text to Speech</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            Calculators
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-calculator me-1"></i> Calculators
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/tools/calculators/percentage-calculator.html">Percentage Calculator</a></li>
@@ -41,22 +25,86 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            Developer Tools
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-code me-1"></i> Developer Tools
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/tools/developer-tools/json-formatter.html">JSON Formatter</a></li>
-                            <li><a class="dropdown-item" href="/tools/developer-tools/html-to-markdown.html">HTML to Markdown</a></li>
-                            <li><a class="dropdown-item" href="/tools/developer-tools/css-minifier.html">CSS Minifier</a></li>
+                            <li><a class="dropdown-item" href="/tools/developer-tools/html-formatter.html">HTML Formatter</a></li>
+                            <li><a class="dropdown-item" href="/tools/developer-tools/css-formatter.html">CSS Formatter</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-share-alt me-1"></i> Social Media Tools
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><h6 class="dropdown-header">Downloaders</h6></li>
+                            <li><a class="dropdown-item" href="/tools/social/youtube-thumbnail-downloader.html">
+                                <i class="fab fa-youtube text-danger me-2"></i>YouTube Thumbnail Downloader
+                            </a></li>
+                            <li><a class="dropdown-item" href="/tools/social/instagram-photo-downloader.html">
+                                <i class="fab fa-instagram text-primary me-2"></i>Instagram Photo Downloader
+                            </a></li>
+                            <li><a class="dropdown-item" href="/tools/social/twitter-video-downloader.html">
+                                <i class="fab fa-twitter text-info me-2"></i>Twitter Video Downloader
+                            </a></li>
+                            <li><a class="dropdown-item" href="/tools/social/facebook-video-downloader.html">
+                                <i class="fab fa-facebook text-primary me-2"></i>Facebook Video Downloader
+                            </a></li>
+                            <li><a class="dropdown-item" href="/tools/social/tiktok-video-downloader.html">
+                                <i class="fab fa-tiktok me-2"></i>TikTok Video Downloader
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Content Tools</h6></li>
+                            <li><a class="dropdown-item" href="/tools/social/youtube-tags-extractor.html">
+                                <i class="fas fa-tags text-primary me-2"></i>YouTube Tags Extractor
+                            </a></li>
+                            <li><a class="dropdown-item" href="/tools/social/hashtag-generator.html">
+                                <i class="fas fa-hashtag text-primary me-2"></i>Hashtag Generator
+                            </a></li>
+                            <li><a class="dropdown-item" href="/tools/social/social-media-post-generator.html">
+                                <i class="fas fa-pen text-primary me-2"></i>Social Media Post Generator
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Utility Tools</h6></li>
+                            <li><a class="dropdown-item" href="/tools/social/emoji-keyboard.html">
+                                <i class="fas fa-smile text-primary me-2"></i>Emoji Keyboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="/tools/social/twitter-character-counter.html">
+                                <i class="fas fa-text-width text-primary me-2"></i>Twitter Character Counter
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-image me-1"></i> Image Tools
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/tools/image-tools/image-resizer.html">Image Resizer</a></li>
+                            <li><a class="dropdown-item" href="/tools/image-tools/image-to-png.html">Image to PNG</a></li>
+                            <li><a class="dropdown-item" href="/tools/image-tools/image-to-jpg.html">Image to JPG</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-font me-1"></i> Text Tools
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/tools/text-tools/word-counter.html">Word Counter</a></li>
+                            <li><a class="dropdown-item" href="/tools/text-tools/case-converter.html">Case Converter</a></li>
+                            <li><a class="dropdown-item" href="/tools/text-tools/text-to-speech.html">Text to Speech</a></li>
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" id="searchForm">
-                    <input class="form-control me-2" type="search" placeholder="Search tools..." id="searchInput">
-                    <button class="btn btn-outline-primary" type="submit">
-                        <i class="fas fa-search"></i>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-primary me-2" id="themeToggle" data-bs-toggle="tooltip" title="Toggle theme">
+                        <i class="fas fa-sun"></i>
                     </button>
-                </form>
+                    <a href="https://github.com/yourusername/multi-tools" class="btn btn-outline-primary" target="_blank">
+                        <i class="fab fa-github me-1"></i> GitHub
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
