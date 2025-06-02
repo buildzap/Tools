@@ -1,10 +1,10 @@
 # Multi-Tools Website
 
-A comprehensive collection of 100+ free online tools for everyday tasks. Built with HTML, CSS (Bootstrap), and vanilla JavaScript.
+A comprehensive collection of free online tools for everyday tasks. Built with HTML, CSS (Bootstrap), and vanilla JavaScript.
 
 ## Features
 
-- 100+ free online tools across various categories
+- Free online tools across various categories
 - No registration required
 - Mobile-first responsive design
 - Dark mode support
