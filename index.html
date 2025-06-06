@@ -3,866 +3,836 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Tools - One-Stop Solution</title>
-    <meta name="description" content="Free online tools for everyday tasks. Convert files, calculate values, generate content, and more. No registration required.">
-    
-    <!-- Bootstrap CSS -->
+    <title>Web Tools - Free Online Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="styles/main.css" rel="stylesheet">
-    <link href="styles/theme.css" rel="stylesheet">
-    <link href="styles/hero.css" rel="stylesheet">
-    <link href="styles/animations.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/theme.css">
 </head>
-<body class="fade-in">
+<body>
     <!-- Header -->
     <div id="header"></div>
 
     <!-- Hero Section -->
-    <section class="hero py-5">
+    <section class="hero-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 col-md-12 mb-4 mb-lg-0 animate-slide-up">
-                    <h1 class="display-4 fw-bold mb-4">One-Stop Solution for Online Tools</h1>
-                    <p class="lead mb-4">All-in-one toolkit for everyday tasks — fast, free, and no sign-up needed, just gooo!</p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="#all-tools" class="btn btn-primary btn-lg animate-fade-in">
-                            <i class="fas fa-tools me-2"></i>Explore Tools
-                        </a>
-                        <a href="#popular-tools" class="btn btn-outline-primary btn-lg animate-fade-in">
-                            <i class="fas fa-star me-2"></i>Popular Tools
-                        </a>
+                <div class="col-lg-6">
+                    <h1>Your All-in-One Web Tools Platform</h1>
+                    <p class="lead">Access a comprehensive suite of free online tools for developers, designers, and everyday users.</p>
+                    <div class="hero-buttons">
+                        <a href="#tools" class="btn btn-primary btn-lg">Explore Tools</a>
+                        <a href="#popular" class="btn btn-outline-primary btn-lg">Popular Tools</a>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
-                    <div class="hero-image-container animate-float">
-                        <img src="images/hero-image.svg" alt="Multi-Tools Hero" class="img-fluid hero-image">
-                    </div>
+                <div class="col-lg-6">
+                    <img src="images/hero-image.svg" alt="Web Tools" class="img-fluid">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Popular Tools Section -->
-    <section id="popular-tools" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5 animate-fade-in">
-                <i class="fas fa-star text-warning me-2"></i>
-                Popular Tools
-            </h2>
-            <div class="row g-4">
-                <!-- Image Tools -->
-                <div class="col-md-4 animate-scale-in">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-image text-primary me-2 image-tool-icon"></i>
-                                Image Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/image-tools/image-resizer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Resize images to any dimension">
-                                    <i class="fas fa-expand text-primary"></i>
-                                    <span>Image Resizer</span>
-                                </a>
-                                <a href="tools/image-tools/image-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to PNG format">
-                                    <i class="fas fa-file-image text-primary"></i>
-                                    <span>Image to PNG</span>
-                                </a>
-                                <a href="tools/image-tools/image-to-jpg.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to JPG format">
-                                    <i class="fas fa-file-image text-primary"></i>
-                                    <span>Image to JPG</span>
-                                </a>
-                                <a href="tools/image-tools/image-compressor.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Compress images without losing quality">
-                                    <i class="fas fa-compress text-primary"></i>
-                                    <span>Image Compressor</span>
-                                </a>
-                                <a href="tools/image-tools/image-cropper.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Crop images to desired size">
-                                    <i class="fas fa-crop text-primary"></i>
-                                    <span>Image Cropper</span>
-                                </a>
-                                <a href="tools/image-tools/image-to-webp.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to WebP format">
-                                    <i class="fas fa-file-image text-primary"></i>
-                                    <span>Image to WebP</span>
-                                </a>
-                                <a href="tools/image-tools/webp-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert WebP to PNG">
-                                    <i class="fas fa-file-image text-primary"></i>
-                                    <span>WebP to PNG</span>
-                                </a>
-                                <a href="tools/image-tools/image-to-base64.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to Base64">
-                                    <i class="fas fa-code text-primary"></i>
-                                    <span>Image to Base64</span>
-                                </a>
-                                <a href="tools/image-tools/gif-maker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create GIFs from images">
-                                    <i class="fas fa-film text-primary"></i>
-                                    <span>GIF Maker</span>
-                                </a>
-                                <a href="tools/image-tools/screenshot-to-pdf.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert screenshots to PDF">
-                                    <i class="fas fa-file-pdf text-primary"></i>
-                                    <span>Screenshot to PDF</span>
-                                </a>
-                                <a href="tools/image-tools/qr-code-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate QR codes">
-                                    <i class="fas fa-qrcode text-primary"></i>
-                                    <span>QR Code Generator</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Text Tools -->
-                <div class="col-md-4 animate-scale-in" style="animation-delay: 0.2s;">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-font text-primary me-2 text-tool-icon"></i>
-                                Text Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/text-tools/word-counter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Count words, characters, and paragraphs">
-                                    <i class="fas fa-calculator text-primary"></i>
-                                    <span>Word Counter</span>
-                                </a>
-                                <a href="tools/text-tools/case-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert text case">
-                                    <i class="fas fa-font text-primary"></i>
-                                    <span>Case Converter</span>
-                                </a>
-                                <a href="tools/text-tools/text-to-speech.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert text to speech">
-                                    <i class="fas fa-volume-up text-primary"></i>
-                                    <span>Text to Speech</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Calculators -->
-                <div class="col-md-4 animate-scale-in" style="animation-delay: 0.4s;">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-calculator text-primary me-2 calculator-icon"></i>
-                                Calculators
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/calculators/percentage-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate percentages">
-                                    <i class="fas fa-percent text-primary"></i>
-                                    <span>Percentage Calculator</span>
-                                </a>
-                                <a href="tools/calculators/age-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate age">
-                                    <i class="fas fa-birthday-cake text-primary"></i>
-                                    <span>Age Calculator</span>
-                                </a>
-                                <a href="tools/calculators/bmi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate BMI">
-                                    <i class="fas fa-weight text-primary"></i>
-                                    <span>BMI Calculator</span>
-                                </a>
-                                <a href="tools/calculators/loan-emi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate loan EMI and interest">
-                                    <i class="fas fa-money-bill-wave text-primary"></i>
-                                    <span>Loan EMI Calculator</span>
-                                </a>
-                                <a href="tools/calculators/scientific-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Advanced scientific calculations">
-                                    <i class="fas fa-square-root-alt text-primary"></i>
-                                    <span>Scientific Calculator</span>
-                                </a>
-                                <a href="tools/calculators/discount-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate discounts and savings">
-                                    <i class="fas fa-tags text-primary"></i>
-                                    <span>Discount Calculator</span>
-                                </a>
-                                <a href="tools/calculators/time-zone-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different time zones">
-                                    <i class="fas fa-clock text-primary"></i>
-                                    <span>Time Zone Converter</span>
-                                </a>
-                                <a href="tools/calculators/currency-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different currencies">
-                                    <i class="fas fa-exchange-alt text-primary"></i>
-                                    <span>Currency Converter</span>
-                                </a>
-                                <a href="tools/calculators/binary-decimal-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between binary and decimal numbers">
-                                    <i class="fas fa-code text-primary"></i>
-                                    <span>Binary-Decimal Converter</span>
-                                </a>
-                                <a href="tools/calculators/tip-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate tips and split bills">
-                                    <i class="fas fa-receipt text-primary"></i>
-                                    <span>Tip Calculator</span>
-                                </a>
-                                <a href="tools/misc/countdown-timer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create countdown timers">
-                                    <i class="fas fa-hourglass-half text-primary"></i>
-                                    <span>Countdown Timer</span>
-                                </a>
-                                <a href="tools/misc/currency-exchange-rates.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check live currency exchange rates">
-                                    <i class="fas fa-money-bill-wave text-primary"></i>
-                                    <span>Currency Exchange Rates</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- All Tools Section -->
-    <section id="all-tools" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5 animate-fade-in">
-                <i class="fas fa-tools text-primary me-2"></i>
-                All Tools
-            </h2>
-            <div class="row g-4">
-                <!-- Calculators -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-calculator text-primary me-2"></i>
-                                Calculators
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/calculators/percentage-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate percentages easily">
-                                    <i class="fas fa-percent text-primary"></i>
-                                    <span>Percentage Calculator</span>
-                                </a>
-                                <a href="tools/calculators/age-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate age and important dates">
-                                    <i class="fas fa-birthday-cake text-primary"></i>
-                                    <span>Age Calculator</span>
-                                </a>
-                                <a href="tools/calculators/bmi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate BMI">
-                                    <i class="fas fa-weight text-primary"></i>
-                                    <span>BMI Calculator</span>
-                                </a>
-                                <a href="tools/calculators/loan-emi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate loan EMI and interest">
-                                    <i class="fas fa-money-bill-wave text-primary"></i>
-                                    <span>Loan EMI Calculator</span>
-                                </a>
-                                <a href="tools/calculators/scientific-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Advanced scientific calculations">
-                                    <i class="fas fa-square-root-alt text-primary"></i>
-                                    <span>Scientific Calculator</span>
-                                </a>
-                                <a href="tools/calculators/discount-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate discounts and savings">
-                                    <i class="fas fa-tags text-primary"></i>
-                                    <span>Discount Calculator</span>
-                                </a>
-                                <a href="tools/calculators/time-zone-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different time zones">
-                                    <i class="fas fa-clock text-primary"></i>
-                                    <span>Time Zone Converter</span>
-                                </a>
-                                <a href="tools/calculators/currency-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different currencies">
-                                    <i class="fas fa-exchange-alt text-primary"></i>
-                                    <span>Currency Converter</span>
-                                </a>
-                                <a href="tools/calculators/binary-decimal-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between binary and decimal numbers">
-                                    <i class="fas fa-code text-primary"></i>
-                                    <span>Binary-Decimal Converter</span>
-                                </a>
-                                <a href="tools/calculators/tip-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate tips and split bills">
-                                    <i class="fas fa-receipt text-primary"></i>
-                                    <span>Tip Calculator</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Developer Tools -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-code text-primary me-2"></i>
-                                Developer Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/developer-tools/json-formatter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Format and validate JSON data">
-                                    <i class="fas fa-code text-primary"></i>
-                                    <span>JSON Formatter</span>
-                                </a>
-                                <a href="tools/developer-tools/html-to-markdown.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert HTML to Markdown">
-                                    <i class="fab fa-markdown text-primary"></i>
-                                    <span>HTML to Markdown</span>
-                                </a>
-                                <a href="tools/developer-tools/css-minifier.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Minify CSS code">
-                                    <i class="fab fa-css3-alt text-primary"></i>
-                                    <span>CSS Minifier</span>
-                                </a>
-                                <a href="tools/developer-tools/javascript-minifier.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Minify JavaScript code">
-                                    <i class="fab fa-js text-primary"></i>
-                                    <span>JavaScript Minifier</span>
-                                </a>
-                                <a href="tools/developer-tools/sql-formatter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Format SQL queries">
-                                    <i class="fas fa-database text-primary"></i>
-                                    <span>SQL Formatter</span>
-                                </a>
-                                <a href="tools/developer-tools/htaccess-redirect-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate .htaccess redirect rules">
-                                    <i class="fas fa-random text-primary"></i>
-                                    <span>.htaccess Redirect Generator</span>
-                                </a>
-                                <a href="tools/developer-tools/markdown-to-html.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert Markdown to HTML">
-                                    <i class="fab fa-html5 text-primary"></i>
-                                    <span>Markdown to HTML</span>
-                                </a>
-                                <a href="tools/developer-tools/color-picker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Pick and convert colors">
-                                    <i class="fas fa-palette text-primary"></i>
-                                    <span>Color Picker</span>
-                                </a>
-                                <a href="tools/developer-tools/base64-encoder-decoder.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Encode and decode Base64">
-                                    <i class="fas fa-file-code text-primary"></i>
-                                    <span>Base64 Encoder/Decoder</span>
-                                </a>
-                                <a href="tools/developer-tools/ip-lookup.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Look up IP address information">
-                                    <i class="fas fa-search-location text-primary"></i>
-                                    <span>IP Lookup</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Image Tools -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-image text-primary me-2"></i>
-                                Image Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/image-tools/image-resizer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Resize images to any dimension">
-                                    <i class="fas fa-expand text-primary"></i>
-                                    <span>Image Resizer</span>
-                                </a>
-                                <a href="tools/image-tools/image-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to PNG format">
-                                    <i class="fas fa-file-image text-primary"></i>
-                                    <span>Image to PNG</span>
-                                </a>
-                                <a href="tools/image-tools/image-to-jpg.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to JPG format">
-                                    <i class="fas fa-file-image text-primary"></i>
-                                    <span>Image to JPG</span>
-                                </a>
-                                <a href="tools/image-tools/image-compressor.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Compress images without losing quality">
-                                    <i class="fas fa-compress text-primary"></i>
-                                    <span>Image Compressor</span>
-                                </a>
-                                <a href="tools/image-tools/image-cropper.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Crop images to desired size">
-                                    <i class="fas fa-crop text-primary"></i>
-                                    <span>Image Cropper</span>
-                                </a>
-                                <a href="tools/image-tools/image-to-webp.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to WebP format">
-                                    <i class="fas fa-file-image text-primary"></i>
-                                    <span>Image to WebP</span>
-                                </a>
-                                <a href="tools/image-tools/webp-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert WebP to PNG">
-                                    <i class="fas fa-file-image text-primary"></i>
-                                    <span>WebP to PNG</span>
-                                </a>
-                                <a href="tools/image-tools/image-to-base64.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to Base64">
-                                    <i class="fas fa-code text-primary"></i>
-                                    <span>Image to Base64</span>
-                                </a>
-                                <a href="tools/image-tools/gif-maker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create GIFs from images">
-                                    <i class="fas fa-film text-primary"></i>
-                                    <span>GIF Maker</span>
-                                </a>
-                                <a href="tools/image-tools/screenshot-to-pdf.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert screenshots to PDF">
-                                    <i class="fas fa-file-pdf text-primary"></i>
-                                    <span>Screenshot to PDF</span>
-                                </a>
-                                <a href="tools/image-tools/qr-code-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate QR codes">
-                                    <i class="fas fa-qrcode text-primary"></i>
-                                    <span>QR Code Generator</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Text Tools -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-font text-primary me-2"></i>
-                                Text Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/text-tools/word-counter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Count words, characters, and paragraphs">
-                                    <i class="fas fa-calculator text-primary"></i>
-                                    <span>Word Counter</span>
-                                </a>
-                                <a href="tools/text-tools/case-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert text case">
-                                    <i class="fas fa-font text-primary"></i>
-                                    <span>Case Converter</span>
-                                </a>
-                                <a href="tools/text-tools/text-to-speech.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert text to speech">
-                                    <i class="fas fa-volume-up text-primary"></i>
-                                    <span>Text to Speech</span>
-                                </a>
-                                <a href="tools/text-tools/speech-to-text.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert speech to text">
-                                    <i class="fas fa-microphone text-primary"></i>
-                                    <span>Speech to Text</span>
-                                </a>
-                                <a href="tools/text-tools/character-counter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Count characters and words">
-                                    <i class="fas fa-text-width text-primary"></i>
-                                    <span>Character Counter</span>
-                                </a>
-                                <a href="tools/text-tools/grammar-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check grammar and spelling">
-                                    <i class="fas fa-spell-check text-primary"></i>
-                                    <span>Grammar Checker</span>
-                                </a>
-                                <a href="tools/text-tools/plagiarism-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check for plagiarism">
-                                    <i class="fas fa-copy text-primary"></i>
-                                    <span>Plagiarism Checker</span>
-                                </a>
-                                <a href="tools/text-tools/url-encoder-decoder.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Encode and decode URLs">
-                                    <i class="fas fa-link text-primary"></i>
-                                    <span>URL Encoder/Decoder</span>
-                                </a>
-                                <a href="tools/text-tools/fancy-text-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate fancy text styles">
-                                    <i class="fas fa-magic text-primary"></i>
-                                    <span>Fancy Text Generator</span>
-                                </a>
-                                <a href="tools/text-tools/random-text-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random text">
-                                    <i class="fas fa-random text-primary"></i>
-                                    <span>Random Text Generator</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Social Media Tools -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-share-alt text-primary me-2"></i>
-                                Social Media Tools
-                            </h3>
-                            <div class="mb-4">
-                                <h6 class="text-primary mb-3">Downloaders</h6>
+    <!-- Main Content -->
+    <main class="container py-5">
+        <!-- Popular Tools Section -->
+        <section id="popular-tools" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5 animate-fade-in">
+                    <i class="fas fa-star text-warning me-2"></i>
+                    Popular Tools
+                </h2>
+                <div class="row g-4">
+                    <!-- Image Tools -->
+                    <div class="col-md-4 animate-scale-in">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-image text-primary me-2 image-tool-icon"></i>
+                                    Image Tools
+                                </h3>
                                 <div class="list-group list-group-flush">
-                                    <a href="tools/social/youtube-thumbnail-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download high-quality thumbnails from YouTube videos">
-                                        <i class="fab fa-youtube text-danger"></i>
-                                        <span>YouTube Thumbnail Downloader</span>
+                                    <a href="tools/image-tools/image-resizer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Resize images to any dimension">
+                                        <i class="fas fa-expand text-primary"></i>
+                                        <span>Image Resizer</span>
                                     </a>
-                                    <a href="tools/social/instagram-photo-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download photos from Instagram posts">
-                                        <i class="fab fa-instagram text-danger"></i>
-                                        <span>Instagram Photo Downloader</span>
+                                    <a href="tools/image-tools/image-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to PNG format">
+                                        <i class="fas fa-file-image text-primary"></i>
+                                        <span>Image to PNG</span>
                                     </a>
-                                    <a href="tools/social/twitter-video-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download videos from Twitter posts">
-                                        <i class="fab fa-twitter text-info"></i>
-                                        <span>Twitter Video Downloader</span>
+                                    <a href="tools/image-tools/image-to-jpg.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to JPG format">
+                                        <i class="fas fa-file-image text-primary"></i>
+                                        <span>Image to JPG</span>
                                     </a>
-                                    <a href="tools/social/facebook-video-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download videos from Facebook posts">
-                                        <i class="fab fa-facebook text-primary"></i>
-                                        <span>Facebook Video Downloader</span>
+                                    <a href="tools/image-tools/image-compressor.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Compress images without losing quality">
+                                        <i class="fas fa-compress text-primary"></i>
+                                        <span>Image Compressor</span>
                                     </a>
-                                    <a href="tools/social/tiktok-video-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download videos from TikTok posts">
-                                        <i class="fab fa-tiktok"></i>
-                                        <span>TikTok Video Downloader</span>
+                                    <a href="tools/image-tools/image-cropper.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Crop images to desired size">
+                                        <i class="fas fa-crop text-primary"></i>
+                                        <span>Image Cropper</span>
+                                    </a>
+                                    <a href="tools/image-tools/image-to-webp.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to WebP format">
+                                        <i class="fas fa-file-image text-primary"></i>
+                                        <span>Image to WebP</span>
+                                    </a>
+                                    <a href="tools/image-tools/webp-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert WebP to PNG">
+                                        <i class="fas fa-file-image text-primary"></i>
+                                        <span>WebP to PNG</span>
+                                    </a>
+                                    <a href="tools/image-tools/image-to-base64.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to Base64">
+                                        <i class="fas fa-code text-primary"></i>
+                                        <span>Image to Base64</span>
+                                    </a>
+                                    <a href="tools/image-tools/gif-maker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create GIFs from images">
+                                        <i class="fas fa-film text-primary"></i>
+                                        <span>GIF Maker</span>
+                                    </a>
+                                    <a href="tools/image-tools/screenshot-to-pdf.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert screenshots to PDF">
+                                        <i class="fas fa-file-pdf text-primary"></i>
+                                        <span>Screenshot to PDF</span>
+                                    </a>
+                                    <a href="tools/image-tools/qr-code-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate QR codes">
+                                        <i class="fas fa-qrcode text-primary"></i>
+                                        <span>QR Code Generator</span>
                                     </a>
                                 </div>
                             </div>
-                            <div class="mb-4">
-                                <h6 class="text-primary mb-3">Content Tools</h6>
+                        </div>
+                    </div>
+                    <!-- Text Tools -->
+                    <div class="col-md-4 animate-scale-in" style="animation-delay: 0.2s;">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-font text-primary me-2 text-tool-icon"></i>
+                                    Text Tools
+                                </h3>
                                 <div class="list-group list-group-flush">
-                                    <a href="tools/social/youtube-tags-extractor.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Extract tags from YouTube videos">
-                                        <i class="fas fa-tags text-success"></i>
-                                        <span>YouTube Tags Extractor</span>
+                                    <a href="tools/text-tools/word-counter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Count words, characters, and paragraphs">
+                                        <i class="fas fa-calculator text-primary"></i>
+                                        <span>Word Counter</span>
                                     </a>
-                                    <a href="tools/social/hashtag-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate trending hashtags for your posts">
+                                    <a href="tools/text-tools/case-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert text case">
+                                        <i class="fas fa-font text-primary"></i>
+                                        <span>Case Converter</span>
+                                    </a>
+                                    <a href="tools/text-tools/text-to-speech.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert text to speech">
+                                        <i class="fas fa-volume-up text-primary"></i>
+                                        <span>Text to Speech</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Calculators -->
+                    <div class="col-md-4 animate-scale-in" style="animation-delay: 0.4s;">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-calculator text-primary me-2 calculator-icon"></i>
+                                    Calculators
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/calculators/percentage-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate percentages">
+                                        <i class="fas fa-percent text-primary"></i>
+                                        <span>Percentage Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/age-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate age">
+                                        <i class="fas fa-birthday-cake text-primary"></i>
+                                        <span>Age Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/bmi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate BMI">
+                                        <i class="fas fa-weight text-primary"></i>
+                                        <span>BMI Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/loan-emi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate loan EMI and interest">
+                                        <i class="fas fa-money-bill-wave text-primary"></i>
+                                        <span>Loan EMI Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/scientific-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Advanced scientific calculations">
+                                        <i class="fas fa-square-root-alt text-primary"></i>
+                                        <span>Scientific Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/discount-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate discounts and savings">
+                                        <i class="fas fa-tags text-primary"></i>
+                                        <span>Discount Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/time-zone-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different time zones">
+                                        <i class="fas fa-clock text-primary"></i>
+                                        <span>Time Zone Converter</span>
+                                    </a>
+                                    <a href="tools/calculators/currency-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different currencies">
+                                        <i class="fas fa-exchange-alt text-primary"></i>
+                                        <span>Currency Converter</span>
+                                    </a>
+                                    <a href="tools/calculators/binary-decimal-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between binary and decimal numbers">
+                                        <i class="fas fa-code text-primary"></i>
+                                        <span>Binary-Decimal Converter</span>
+                                    </a>
+                                    <a href="tools/calculators/tip-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate tips and split bills">
+                                        <i class="fas fa-receipt text-primary"></i>
+                                        <span>Tip Calculator</span>
+                                    </a>
+                                    <a href="tools/misc/countdown-timer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create countdown timers">
+                                        <i class="fas fa-hourglass-half text-primary"></i>
+                                        <span>Countdown Timer</span>
+                                    </a>
+                                    <a href="tools/misc/currency-exchange-rates.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check live currency exchange rates">
+                                        <i class="fas fa-money-bill-wave text-primary"></i>
+                                        <span>Currency Exchange Rates</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Tools Section -->
+        <section id="all-tools" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5 animate-fade-in">
+                    <i class="fas fa-tools text-primary me-2"></i>
+                    All Tools
+                </h2>
+                <div class="row g-4">
+                    <!-- Calculators -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-calculator text-primary me-2"></i>
+                                    Calculators
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/calculators/percentage-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate percentages easily">
+                                        <i class="fas fa-percent text-primary"></i>
+                                        <span>Percentage Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/age-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate age and important dates">
+                                        <i class="fas fa-birthday-cake text-primary"></i>
+                                        <span>Age Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/bmi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate BMI">
+                                        <i class="fas fa-weight text-primary"></i>
+                                        <span>BMI Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/loan-emi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate loan EMI and interest">
+                                        <i class="fas fa-money-bill-wave text-primary"></i>
+                                        <span>Loan EMI Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/scientific-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Advanced scientific calculations">
+                                        <i class="fas fa-square-root-alt text-primary"></i>
+                                        <span>Scientific Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/discount-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate discounts and savings">
+                                        <i class="fas fa-tags text-primary"></i>
+                                        <span>Discount Calculator</span>
+                                    </a>
+                                    <a href="tools/calculators/time-zone-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different time zones">
+                                        <i class="fas fa-clock text-primary"></i>
+                                        <span>Time Zone Converter</span>
+                                    </a>
+                                    <a href="tools/calculators/currency-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different currencies">
+                                        <i class="fas fa-exchange-alt text-primary"></i>
+                                        <span>Currency Converter</span>
+                                    </a>
+                                    <a href="tools/calculators/binary-decimal-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between binary and decimal numbers">
+                                        <i class="fas fa-code text-primary"></i>
+                                        <span>Binary-Decimal Converter</span>
+                                    </a>
+                                    <a href="tools/calculators/tip-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate tips and split bills">
+                                        <i class="fas fa-receipt text-primary"></i>
+                                        <span>Tip Calculator</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Developer Tools -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-code text-primary me-2"></i>
+                                    Developer Tools
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/developer-tools/json-formatter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Format and validate JSON data">
+                                        <i class="fas fa-code text-primary"></i>
+                                        <span>JSON Formatter</span>
+                                    </a>
+                                    <a href="tools/developer-tools/html-to-markdown.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert HTML to Markdown">
+                                        <i class="fab fa-markdown text-primary"></i>
+                                        <span>HTML to Markdown</span>
+                                    </a>
+                                    <a href="tools/developer-tools/css-minifier.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Minify CSS code">
+                                        <i class="fab fa-css3-alt text-primary"></i>
+                                        <span>CSS Minifier</span>
+                                    </a>
+                                    <a href="tools/developer-tools/javascript-minifier.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Minify JavaScript code">
+                                        <i class="fab fa-js text-primary"></i>
+                                        <span>JavaScript Minifier</span>
+                                    </a>
+                                    <a href="tools/developer-tools/sql-formatter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Format SQL queries">
+                                        <i class="fas fa-database text-primary"></i>
+                                        <span>SQL Formatter</span>
+                                    </a>
+                                    <a href="tools/developer-tools/htaccess-redirect-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate .htaccess redirect rules">
+                                        <i class="fas fa-random text-primary"></i>
+                                        <span>.htaccess Redirect Generator</span>
+                                    </a>
+                                    <a href="tools/developer-tools/markdown-to-html.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert Markdown to HTML">
+                                        <i class="fab fa-html5 text-primary"></i>
+                                        <span>Markdown to HTML</span>
+                                    </a>
+                                    <a href="tools/developer-tools/color-picker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Pick and convert colors">
+                                        <i class="fas fa-palette text-primary"></i>
+                                        <span>Color Picker</span>
+                                    </a>
+                                    <a href="tools/developer-tools/base64-encoder-decoder.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Encode and decode Base64">
+                                        <i class="fas fa-file-code text-primary"></i>
+                                        <span>Base64 Encoder/Decoder</span>
+                                    </a>
+                                    <a href="tools/developer-tools/ip-lookup.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Look up IP address information">
+                                        <i class="fas fa-search-location text-primary"></i>
+                                        <span>IP Lookup</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Tools -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-image text-primary me-2"></i>
+                                    Image Tools
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/image-tools/image-resizer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Resize images to any dimension">
+                                        <i class="fas fa-expand text-primary"></i>
+                                        <span>Image Resizer</span>
+                                    </a>
+                                    <a href="tools/image-tools/image-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to PNG format">
+                                        <i class="fas fa-file-image text-primary"></i>
+                                        <span>Image to PNG</span>
+                                    </a>
+                                    <a href="tools/image-tools/image-to-jpg.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to JPG format">
+                                        <i class="fas fa-file-image text-primary"></i>
+                                        <span>Image to JPG</span>
+                                    </a>
+                                    <a href="tools/image-tools/image-compressor.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Compress images without losing quality">
+                                        <i class="fas fa-compress text-primary"></i>
+                                        <span>Image Compressor</span>
+                                    </a>
+                                    <a href="tools/image-tools/image-cropper.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Crop images to desired size">
+                                        <i class="fas fa-crop text-primary"></i>
+                                        <span>Image Cropper</span>
+                                    </a>
+                                    <a href="tools/image-tools/image-to-webp.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to WebP format">
+                                        <i class="fas fa-file-image text-primary"></i>
+                                        <span>Image to WebP</span>
+                                    </a>
+                                    <a href="tools/image-tools/webp-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert WebP to PNG">
+                                        <i class="fas fa-file-image text-primary"></i>
+                                        <span>WebP to PNG</span>
+                                    </a>
+                                    <a href="tools/image-tools/image-to-base64.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to Base64">
+                                        <i class="fas fa-code text-primary"></i>
+                                        <span>Image to Base64</span>
+                                    </a>
+                                    <a href="tools/image-tools/gif-maker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create GIFs from images">
+                                        <i class="fas fa-film text-primary"></i>
+                                        <span>GIF Maker</span>
+                                    </a>
+                                    <a href="tools/image-tools/screenshot-to-pdf.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert screenshots to PDF">
+                                        <i class="fas fa-file-pdf text-primary"></i>
+                                        <span>Screenshot to PDF</span>
+                                    </a>
+                                    <a href="tools/image-tools/qr-code-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate QR codes">
+                                        <i class="fas fa-qrcode text-primary"></i>
+                                        <span>QR Code Generator</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Tools -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-font text-primary me-2"></i>
+                                    Text Tools
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/text-tools/word-counter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Count words, characters, and paragraphs">
+                                        <i class="fas fa-calculator text-primary"></i>
+                                        <span>Word Counter</span>
+                                    </a>
+                                    <a href="tools/text-tools/case-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert text case">
+                                        <i class="fas fa-font text-primary"></i>
+                                        <span>Case Converter</span>
+                                    </a>
+                                    <a href="tools/text-tools/text-to-speech.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert text to speech">
+                                        <i class="fas fa-volume-up text-primary"></i>
+                                        <span>Text to Speech</span>
+                                    </a>
+                                    <a href="tools/text-tools/speech-to-text.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert speech to text">
+                                        <i class="fas fa-microphone text-primary"></i>
+                                        <span>Speech to Text</span>
+                                    </a>
+                                    <a href="tools/text-tools/character-counter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Count characters and words">
+                                        <i class="fas fa-text-width text-primary"></i>
+                                        <span>Character Counter</span>
+                                    </a>
+                                    <a href="tools/text-tools/grammar-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check grammar and spelling">
+                                        <i class="fas fa-spell-check text-primary"></i>
+                                        <span>Grammar Checker</span>
+                                    </a>
+                                    <a href="tools/text-tools/plagiarism-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check for plagiarism">
+                                        <i class="fas fa-copy text-primary"></i>
+                                        <span>Plagiarism Checker</span>
+                                    </a>
+                                    <a href="tools/text-tools/url-encoder-decoder.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Encode and decode URLs">
+                                        <i class="fas fa-link text-primary"></i>
+                                        <span>URL Encoder/Decoder</span>
+                                    </a>
+                                    <a href="tools/text-tools/fancy-text-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate fancy text styles">
+                                        <i class="fas fa-magic text-primary"></i>
+                                        <span>Fancy Text Generator</span>
+                                    </a>
+                                    <a href="tools/text-tools/random-text-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random text">
+                                        <i class="fas fa-random text-primary"></i>
+                                        <span>Random Text Generator</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Media Tools -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-share-alt text-primary me-2"></i>
+                                    Social Media Tools
+                                </h3>
+                                <div class="mb-4">
+                                    <h6 class="text-primary mb-3">Downloaders</h6>
+                                    <div class="list-group list-group-flush">
+                                        <a href="tools/social/youtube-thumbnail-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download high-quality thumbnails from YouTube videos">
+                                            <i class="fab fa-youtube text-danger"></i>
+                                            <span>YouTube Thumbnail Downloader</span>
+                                        </a>
+                                        <a href="tools/social/instagram-photo-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download photos from Instagram posts">
+                                            <i class="fab fa-instagram text-danger"></i>
+                                            <span>Instagram Photo Downloader</span>
+                                        </a>
+                                        <a href="tools/social/twitter-video-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download videos from Twitter posts">
+                                            <i class="fab fa-twitter text-info"></i>
+                                            <span>Twitter Video Downloader</span>
+                                        </a>
+                                        <a href="tools/social/facebook-video-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download videos from Facebook posts">
+                                            <i class="fab fa-facebook text-primary"></i>
+                                            <span>Facebook Video Downloader</span>
+                                        </a>
+                                        <a href="tools/social/tiktok-video-downloader.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Download videos from TikTok posts">
+                                            <i class="fab fa-tiktok"></i>
+                                            <span>TikTok Video Downloader</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h6 class="text-primary mb-3">Content Tools</h6>
+                                    <div class="list-group list-group-flush">
+                                        <a href="tools/social/youtube-tags-extractor.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Extract tags from YouTube videos">
+                                            <i class="fas fa-tags text-success"></i>
+                                            <span>YouTube Tags Extractor</span>
+                                        </a>
+                                        <a href="tools/social/hashtag-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate trending hashtags for your posts">
+                                            <i class="fas fa-hashtag text-primary"></i>
+                                            <span>Hashtag Generator</span>
+                                        </a>
+                                        <a href="tools/social/social-media-post-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate engaging social media posts">
+                                            <i class="fas fa-pen-fancy text-info"></i>
+                                            <span>Social Media Post Generator</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="text-primary mb-3">Utility Tools</h6>
+                                    <div class="list-group list-group-flush">
+                                        <a href="tools/social/emoji-keyboard.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Easy access to emojis for your posts">
+                                            <i class="far fa-smile text-warning"></i>
+                                            <span>Emoji Keyboard</span>
+                                        </a>
+                                        <a href="tools/social/twitter-character-counter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Count characters for Twitter posts">
+                                            <i class="fas fa-text-width text-info"></i>
+                                            <span>Twitter Character Counter</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Tools -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-shield-alt text-primary me-2"></i>
+                                    Security Tools
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/security/password-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate secure passwords">
+                                        <i class="fas fa-key text-primary"></i>
+                                        <span>Password Generator</span>
+                                    </a>
+                                    <a href="tools/security/random-string-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random strings">
+                                        <i class="fas fa-random text-primary"></i>
+                                        <span>Random String Generator</span>
+                                    </a>
+                                    <a href="tools/security/md5-hash-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate MD5 hashes">
                                         <i class="fas fa-hashtag text-primary"></i>
-                                        <span>Hashtag Generator</span>
+                                        <span>MD5 Hash Generator</span>
                                     </a>
-                                    <a href="tools/social/social-media-post-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate engaging social media posts">
-                                        <i class="fas fa-pen-fancy text-info"></i>
-                                        <span>Social Media Post Generator</span>
+                                    <a href="tools/security/sha256-hash-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate SHA256 hashes">
+                                        <i class="fas fa-hashtag text-primary"></i>
+                                        <span>SHA256 Hash Generator</span>
+                                    </a>
+                                    <a href="tools/security/url-shortener.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Shorten long URLs">
+                                        <i class="fas fa-link text-primary"></i>
+                                        <span>URL Shortener</span>
+                                    </a>
+                                    <a href="tools/security/ip-geolocation-finder.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Find IP geolocation">
+                                        <i class="fas fa-map-marker-alt text-primary"></i>
+                                        <span>IP Geolocation Finder</span>
+                                    </a>
+                                    <a href="tools/security/ssl-certificate-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check SSL certificates">
+                                        <i class="fas fa-lock text-primary"></i>
+                                        <span>SSL Certificate Checker</span>
+                                    </a>
+                                    <a href="tools/security/whois-lookup.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Look up domain WHOIS information">
+                                        <i class="fas fa-search text-primary"></i>
+                                        <span>WHOIS Lookup</span>
+                                    </a>
+                                    <a href="tools/security/http-headers-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check HTTP headers">
+                                        <i class="fas fa-server text-primary"></i>
+                                        <span>HTTP Headers Checker</span>
+                                    </a>
+                                    <a href="tools/security/privacy-policy-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate privacy policies">
+                                        <i class="fas fa-file-contract text-primary"></i>
+                                        <span>Privacy Policy Generator</span>
                                     </a>
                                 </div>
                             </div>
-                            <div>
-                                <h6 class="text-primary mb-3">Utility Tools</h6>
+                        </div>
+                    </div>
+
+                    <!-- SEO Tools -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-search text-primary me-2"></i>
+                                    Search Optimization Tools
+                                </h3>
                                 <div class="list-group list-group-flush">
-                                    <a href="tools/social/emoji-keyboard.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Easy access to emojis for your posts">
-                                        <i class="far fa-smile text-warning"></i>
-                                        <span>Emoji Keyboard</span>
+                                    <a href="tools/seo-tools/meta-tag-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate meta tags">
+                                        <i class="fas fa-tags text-primary"></i>
+                                        <span>Meta Tag Generator</span>
                                     </a>
-                                    <a href="tools/social/twitter-character-counter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Count characters for Twitter posts">
-                                        <i class="fas fa-text-width text-info"></i>
-                                        <span>Twitter Character Counter</span>
+                                    <a href="tools/seo-tools/keyword-density-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check keyword density">
+                                        <i class="fas fa-percentage text-primary"></i>
+                                        <span>Keyword Density Checker</span>
+                                    </a>
+                                    <a href="tools/seo-tools/sitemap-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate XML sitemaps">
+                                        <i class="fas fa-sitemap text-primary"></i>
+                                        <span>Sitemap Generator</span>
+                                    </a>
+                                    <a href="tools/seo-tools/robots-txt-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate robots.txt">
+                                        <i class="fas fa-robot text-primary"></i>
+                                        <span>Robots.txt Generator</span>
+                                    </a>
+                                    <a href="tools/seo-tools/google-index-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check Google indexing">
+                                        <i class="fab fa-google text-primary"></i>
+                                        <span>Google Index Checker</span>
+                                    </a>
+                                    <a href="tools/seo-tools/domain-authority-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check domain authority">
+                                        <i class="fas fa-chart-line text-primary"></i>
+                                        <span>Domain Authority Checker</span>
+                                    </a>
+                                    <a href="tools/seo-tools/backlink-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check backlinks">
+                                        <i class="fas fa-link text-primary"></i>
+                                        <span>Backlink Checker</span>
+                                    </a>
+                                    <a href="tools/seo-tools/page-speed-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check page speed">
+                                        <i class="fas fa-tachometer-alt text-primary"></i>
+                                        <span>Page Speed Checker</span>
+                                    </a>
+                                    <a href="tools/seo-tools/xml-sitemap-validator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Validate XML sitemaps">
+                                        <i class="fas fa-check-circle text-primary"></i>
+                                        <span>XML Sitemap Validator</span>
+                                    </a>
+                                    <a href="tools/seo-tools/mobile-friendly-test.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Test mobile friendliness">
+                                        <i class="fas fa-mobile-alt text-primary"></i>
+                                        <span>Mobile Friendly Test</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Tools -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-briefcase text-primary me-2"></i>
+                                    Business Tools
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/business/invoice-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate professional invoices">
+                                        <i class="fas fa-file-invoice-dollar text-primary"></i>
+                                        <span>Invoice Generator</span>
+                                    </a>
+                                    <a href="tools/business/profit-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate profit margins and ROI">
+                                        <i class="fas fa-chart-line text-primary"></i>
+                                        <span>Profit Calculator</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Converters -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-exchange-alt text-primary me-2"></i>
+                                    Converters
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/converters/length-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different length units">
+                                        <i class="fas fa-ruler text-primary"></i>
+                                        <span>Length Converter</span>
+                                    </a>
+                                    <a href="tools/converters/weight-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different weight units">
+                                        <i class="fas fa-weight text-primary"></i>
+                                        <span>Weight Converter</span>
+                                    </a>
+                                    <a href="tools/converters/speed-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different speed units">
+                                        <i class="fas fa-tachometer-alt text-primary"></i>
+                                        <span>Speed Converter</span>
+                                    </a>
+                                    <a href="tools/converters/temperature-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different temperature units">
+                                        <i class="fas fa-thermometer-half text-primary"></i>
+                                        <span>Temperature Converter</span>
+                                    </a>
+                                    <a href="tools/converters/volume-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different volume units">
+                                        <i class="fas fa-flask text-primary"></i>
+                                        <span>Volume Converter</span>
+                                    </a>
+                                    <a href="tools/converters/data-storage-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different data storage units">
+                                        <i class="fas fa-database text-primary"></i>
+                                        <span>Data Storage Converter</span>
+                                    </a>
+                                    <a href="tools/converters/energy-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different energy units">
+                                        <i class="fas fa-bolt text-primary"></i>
+                                        <span>Energy Converter</span>
+                                    </a>
+                                    <a href="tools/converters/pressure-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different pressure units">
+                                        <i class="fas fa-compress-arrows-alt text-primary"></i>
+                                        <span>Pressure Converter</span>
+                                    </a>
+                                    <a href="tools/converters/fuel-efficiency-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different fuel efficiency units">
+                                        <i class="fas fa-gas-pump text-primary"></i>
+                                        <span>Fuel Efficiency Converter</span>
+                                    </a>
+                                    <a href="tools/converters/angle-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different angle units">
+                                        <i class="fas fa-compass text-primary"></i>
+                                        <span>Angle Converter</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Miscellaneous Tools -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h3 class="card-title h5">
+                                    <i class="fas fa-tools text-primary me-2"></i>
+                                    Miscellaneous Tools
+                                </h3>
+                                <div class="list-group list-group-flush">
+                                    <a href="tools/misc/barcode-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate barcodes">
+                                        <i class="fas fa-barcode text-primary"></i>
+                                        <span>Barcode Generator</span>
+                                    </a>
+                                    <a href="tools/misc/calendar-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate calendars">
+                                        <i class="fas fa-calendar-alt text-primary"></i>
+                                        <span>Calendar Generator</span>
+                                    </a>
+                                    <a href="tools/misc/unit-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different units">
+                                        <i class="fas fa-exchange-alt text-primary"></i>
+                                        <span>Unit Converter</span>
+                                    </a>
+                                    <a href="tools/misc/random-number-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random numbers">
+                                        <i class="fas fa-dice text-primary"></i>
+                                        <span>Random Number Generator</span>
+                                    </a>
+                                    <a href="tools/misc/color-palette-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate color palettes">
+                                        <i class="fas fa-palette text-primary"></i>
+                                        <span>Color Palette Generator</span>
+                                    </a>
+                                    <a href="tools/misc/name-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random names">
+                                        <i class="fas fa-user text-primary"></i>
+                                        <span>Name Generator</span>
+                                    </a>
+                                    <a href="tools/misc/password-strength-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check password strength">
+                                        <i class="fas fa-shield-alt text-primary"></i>
+                                        <span>Password Strength Checker</span>
+                                    </a>
+                                    <a href="tools/misc/file-size-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert file sizes">
+                                        <i class="fas fa-file text-primary"></i>
+                                        <span>File Size Converter</span>
+                                    </a>
+                                    <a href="tools/misc/stopwatch.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Use a stopwatch">
+                                        <i class="fas fa-stopwatch text-primary"></i>
+                                        <span>Stopwatch</span>
+                                    </a>
+                                    <a href="tools/misc/countdown-timer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create countdown timers">
+                                        <i class="fas fa-hourglass-half text-primary"></i>
+                                        <span>Countdown Timer</span>
+                                    </a>
+                                    <a href="tools/misc/currency-exchange-rates.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check live currency exchange rates">
+                                        <i class="fas fa-money-bill-wave text-primary"></i>
+                                        <span>Currency Exchange Rates</span>
+                                    </a>
+                                    <a href="tools/misc/weather-forecast.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check weather forecasts">
+                                        <i class="fas fa-cloud-sun text-primary"></i>
+                                        <span>Weather Forecast</span>
+                                    </a>
+                                    <a href="tools/misc/calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Basic calculator">
+                                        <i class="fas fa-calculator text-primary"></i>
+                                        <span>Calculator</span>
+                                    </a>
+                                    <a href="tools/misc/note-pad.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Simple note pad">
+                                        <i class="fas fa-sticky-note text-primary"></i>
+                                        <span>Note Pad</span>
+                                    </a>
+                                    <a href="tools/misc/todo-list.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create and manage todo lists">
+                                        <i class="fas fa-tasks text-primary"></i>
+                                        <span>Todo List</span>
+                                    </a>
+                                    <a href="tools/misc/pomodoro-timer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Pomodoro technique timer">
+                                        <i class="fas fa-clock text-primary"></i>
+                                        <span>Pomodoro Timer</span>
+                                    </a>
+                                    <a href="tools/misc/word-cloud-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate word clouds">
+                                        <i class="fas fa-cloud text-primary"></i>
+                                        <span>Word Cloud Generator</span>
+                                    </a>
+                                    <a href="tools/misc/decision-maker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Make random decisions">
+                                        <i class="fas fa-random text-primary"></i>
+                                        <span>Decision Maker</span>
+                                    </a>
+                                    <a href="tools/misc/quote-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random quotes">
+                                        <i class="fas fa-quote-right text-primary"></i>
+                                        <span>Quote Generator</span>
+                                    </a>
+                                    <a href="tools/misc/recipe-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert recipe measurements">
+                                        <i class="fas fa-utensils text-primary"></i>
+                                        <span>Recipe Converter</span>
+                                    </a>
+                                    <a href="tools/misc/periodic-table.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Interactive periodic table">
+                                        <i class="fas fa-atom text-primary"></i>
+                                        <span>Periodic Table</span>
+                                    </a>
+                                    <a href="tools/misc/color-blindness-simulator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Simulate color blindness">
+                                        <i class="fas fa-eye text-primary"></i>
+                                        <span>Color Blindness Simulator</span>
+                                    </a>
+                                    <a href="tools/misc/unit-price-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate unit prices">
+                                        <i class="fas fa-tags text-primary"></i>
+                                        <span>Unit Price Calculator</span>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Security Tools -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-shield-alt text-primary me-2"></i>
-                                Security Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/security/password-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate secure passwords">
-                                    <i class="fas fa-key text-primary"></i>
-                                    <span>Password Generator</span>
-                                </a>
-                                <a href="tools/security/random-string-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random strings">
-                                    <i class="fas fa-random text-primary"></i>
-                                    <span>Random String Generator</span>
-                                </a>
-                                <a href="tools/security/md5-hash-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate MD5 hashes">
-                                    <i class="fas fa-hashtag text-primary"></i>
-                                    <span>MD5 Hash Generator</span>
-                                </a>
-                                <a href="tools/security/sha256-hash-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate SHA256 hashes">
-                                    <i class="fas fa-hashtag text-primary"></i>
-                                    <span>SHA256 Hash Generator</span>
-                                </a>
-                                <a href="tools/security/url-shortener.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Shorten long URLs">
-                                    <i class="fas fa-link text-primary"></i>
-                                    <span>URL Shortener</span>
-                                </a>
-                                <a href="tools/security/ip-geolocation-finder.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Find IP geolocation">
-                                    <i class="fas fa-map-marker-alt text-primary"></i>
-                                    <span>IP Geolocation Finder</span>
-                                </a>
-                                <a href="tools/security/ssl-certificate-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check SSL certificates">
-                                    <i class="fas fa-lock text-primary"></i>
-                                    <span>SSL Certificate Checker</span>
-                                </a>
-                                <a href="tools/security/whois-lookup.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Look up domain WHOIS information">
-                                    <i class="fas fa-search text-primary"></i>
-                                    <span>WHOIS Lookup</span>
-                                </a>
-                                <a href="tools/security/http-headers-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check HTTP headers">
-                                    <i class="fas fa-server text-primary"></i>
-                                    <span>HTTP Headers Checker</span>
-                                </a>
-                                <a href="tools/security/privacy-policy-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate privacy policies">
-                                    <i class="fas fa-file-contract text-primary"></i>
-                                    <span>Privacy Policy Generator</span>
-                                </a>
-                            </div>
+        <!-- Features Section -->
+        <section class="features-section py-5">
+            <div class="container">
+                <h2 class="text-center mb-5 animate-fade-in">
+                    <i class="fas fa-gem text-primary me-2"></i>
+                    Why Choose Multi-Tools?
+                </h2>
+                <div class="row g-4">
+                    <div class="col-md-4 animate-slide-up">
+                        <div class="text-center">
+                            <i class="fas fa-bolt feature-icon"></i>
+                            <h3 class="h5">Fast & Efficient</h3>
+                            <p class="text-muted">All tools are optimized for speed and performance.</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- SEO Tools -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-search text-primary me-2"></i>
-                                Search Optimization Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/seo-tools/meta-tag-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate meta tags">
-                                    <i class="fas fa-tags text-primary"></i>
-                                    <span>Meta Tag Generator</span>
-                                </a>
-                                <a href="tools/seo-tools/keyword-density-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check keyword density">
-                                    <i class="fas fa-percentage text-primary"></i>
-                                    <span>Keyword Density Checker</span>
-                                </a>
-                                <a href="tools/seo-tools/sitemap-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate XML sitemaps">
-                                    <i class="fas fa-sitemap text-primary"></i>
-                                    <span>Sitemap Generator</span>
-                                </a>
-                                <a href="tools/seo-tools/robots-txt-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate robots.txt">
-                                    <i class="fas fa-robot text-primary"></i>
-                                    <span>Robots.txt Generator</span>
-                                </a>
-                                <a href="tools/seo-tools/google-index-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check Google indexing">
-                                    <i class="fab fa-google text-primary"></i>
-                                    <span>Google Index Checker</span>
-                                </a>
-                                <a href="tools/seo-tools/domain-authority-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check domain authority">
-                                    <i class="fas fa-chart-line text-primary"></i>
-                                    <span>Domain Authority Checker</span>
-                                </a>
-                                <a href="tools/seo-tools/backlink-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check backlinks">
-                                    <i class="fas fa-link text-primary"></i>
-                                    <span>Backlink Checker</span>
-                                </a>
-                                <a href="tools/seo-tools/page-speed-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check page speed">
-                                    <i class="fas fa-tachometer-alt text-primary"></i>
-                                    <span>Page Speed Checker</span>
-                                </a>
-                                <a href="tools/seo-tools/xml-sitemap-validator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Validate XML sitemaps">
-                                    <i class="fas fa-check-circle text-primary"></i>
-                                    <span>XML Sitemap Validator</span>
-                                </a>
-                                <a href="tools/seo-tools/mobile-friendly-test.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Test mobile friendliness">
-                                    <i class="fas fa-mobile-alt text-primary"></i>
-                                    <span>Mobile Friendly Test</span>
-                                </a>
-                            </div>
+                    <div class="col-md-4 animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="text-center">
+                            <i class="fas fa-lock feature-icon"></i>
+                            <h3 class="h5">Secure & Private</h3>
+                            <p class="text-muted">Your data never leaves your browser.</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Business Tools -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-briefcase text-primary me-2"></i>
-                                Business Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/business/invoice-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate professional invoices">
-                                    <i class="fas fa-file-invoice-dollar text-primary"></i>
-                                    <span>Invoice Generator</span>
-                                </a>
-                                <a href="tools/business/profit-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate profit margins and ROI">
-                                    <i class="fas fa-chart-line text-primary"></i>
-                                    <span>Profit Calculator</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Converters -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-exchange-alt text-primary me-2"></i>
-                                Converters
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/converters/length-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different length units">
-                                    <i class="fas fa-ruler text-primary"></i>
-                                    <span>Length Converter</span>
-                                </a>
-                                <a href="tools/converters/weight-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different weight units">
-                                    <i class="fas fa-weight text-primary"></i>
-                                    <span>Weight Converter</span>
-                                </a>
-                                <a href="tools/converters/speed-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different speed units">
-                                    <i class="fas fa-tachometer-alt text-primary"></i>
-                                    <span>Speed Converter</span>
-                                </a>
-                                <a href="tools/converters/temperature-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different temperature units">
-                                    <i class="fas fa-thermometer-half text-primary"></i>
-                                    <span>Temperature Converter</span>
-                                </a>
-                                <a href="tools/converters/volume-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different volume units">
-                                    <i class="fas fa-flask text-primary"></i>
-                                    <span>Volume Converter</span>
-                                </a>
-                                <a href="tools/converters/data-storage-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different data storage units">
-                                    <i class="fas fa-database text-primary"></i>
-                                    <span>Data Storage Converter</span>
-                                </a>
-                                <a href="tools/converters/energy-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different energy units">
-                                    <i class="fas fa-bolt text-primary"></i>
-                                    <span>Energy Converter</span>
-                                </a>
-                                <a href="tools/converters/pressure-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different pressure units">
-                                    <i class="fas fa-compress-arrows-alt text-primary"></i>
-                                    <span>Pressure Converter</span>
-                                </a>
-                                <a href="tools/converters/fuel-efficiency-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different fuel efficiency units">
-                                    <i class="fas fa-gas-pump text-primary"></i>
-                                    <span>Fuel Efficiency Converter</span>
-                                </a>
-                                <a href="tools/converters/angle-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different angle units">
-                                    <i class="fas fa-compass text-primary"></i>
-                                    <span>Angle Converter</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Miscellaneous Tools -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title h5">
-                                <i class="fas fa-tools text-primary me-2"></i>
-                                Miscellaneous Tools
-                            </h3>
-                            <div class="list-group list-group-flush">
-                                <a href="tools/misc/barcode-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate barcodes">
-                                    <i class="fas fa-barcode text-primary"></i>
-                                    <span>Barcode Generator</span>
-                                </a>
-                                <a href="tools/misc/calendar-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate calendars">
-                                    <i class="fas fa-calendar-alt text-primary"></i>
-                                    <span>Calendar Generator</span>
-                                </a>
-                                <a href="tools/misc/unit-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different units">
-                                    <i class="fas fa-exchange-alt text-primary"></i>
-                                    <span>Unit Converter</span>
-                                </a>
-                                <a href="tools/misc/random-number-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random numbers">
-                                    <i class="fas fa-dice text-primary"></i>
-                                    <span>Random Number Generator</span>
-                                </a>
-                                <a href="tools/misc/color-palette-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate color palettes">
-                                    <i class="fas fa-palette text-primary"></i>
-                                    <span>Color Palette Generator</span>
-                                </a>
-                                <a href="tools/misc/name-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random names">
-                                    <i class="fas fa-user text-primary"></i>
-                                    <span>Name Generator</span>
-                                </a>
-                                <a href="tools/misc/password-strength-checker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check password strength">
-                                    <i class="fas fa-shield-alt text-primary"></i>
-                                    <span>Password Strength Checker</span>
-                                </a>
-                                <a href="tools/misc/file-size-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert file sizes">
-                                    <i class="fas fa-file text-primary"></i>
-                                    <span>File Size Converter</span>
-                                </a>
-                                <a href="tools/misc/stopwatch.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Use a stopwatch">
-                                    <i class="fas fa-stopwatch text-primary"></i>
-                                    <span>Stopwatch</span>
-                                </a>
-                                <a href="tools/misc/countdown-timer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create countdown timers">
-                                    <i class="fas fa-hourglass-half text-primary"></i>
-                                    <span>Countdown Timer</span>
-                                </a>
-                                <a href="tools/misc/currency-exchange-rates.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check live currency exchange rates">
-                                    <i class="fas fa-money-bill-wave text-primary"></i>
-                                    <span>Currency Exchange Rates</span>
-                                </a>
-                                <a href="tools/misc/weather-forecast.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check weather forecasts">
-                                    <i class="fas fa-cloud-sun text-primary"></i>
-                                    <span>Weather Forecast</span>
-                                </a>
-                                <a href="tools/misc/calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Basic calculator">
-                                    <i class="fas fa-calculator text-primary"></i>
-                                    <span>Calculator</span>
-                                </a>
-                                <a href="tools/misc/note-pad.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Simple note pad">
-                                    <i class="fas fa-sticky-note text-primary"></i>
-                                    <span>Note Pad</span>
-                                </a>
-                                <a href="tools/misc/todo-list.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create and manage todo lists">
-                                    <i class="fas fa-tasks text-primary"></i>
-                                    <span>Todo List</span>
-                                </a>
-                                <a href="tools/misc/pomodoro-timer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Pomodoro technique timer">
-                                    <i class="fas fa-clock text-primary"></i>
-                                    <span>Pomodoro Timer</span>
-                                </a>
-                                <a href="tools/misc/word-cloud-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate word clouds">
-                                    <i class="fas fa-cloud text-primary"></i>
-                                    <span>Word Cloud Generator</span>
-                                </a>
-                                <a href="tools/misc/decision-maker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Make random decisions">
-                                    <i class="fas fa-random text-primary"></i>
-                                    <span>Decision Maker</span>
-                                </a>
-                                <a href="tools/misc/quote-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate random quotes">
-                                    <i class="fas fa-quote-right text-primary"></i>
-                                    <span>Quote Generator</span>
-                                </a>
-                                <a href="tools/misc/recipe-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert recipe measurements">
-                                    <i class="fas fa-utensils text-primary"></i>
-                                    <span>Recipe Converter</span>
-                                </a>
-                                <a href="tools/misc/periodic-table.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Interactive periodic table">
-                                    <i class="fas fa-atom text-primary"></i>
-                                    <span>Periodic Table</span>
-                                </a>
-                                <a href="tools/misc/color-blindness-simulator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Simulate color blindness">
-                                    <i class="fas fa-eye text-primary"></i>
-                                    <span>Color Blindness Simulator</span>
-                                </a>
-                                <a href="tools/misc/unit-price-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate unit prices">
-                                    <i class="fas fa-tags text-primary"></i>
-                                    <span>Unit Price Calculator</span>
-                                </a>
-                            </div>
+                    <div class="col-md-4 animate-slide-up" style="animation-delay: 0.4s;">
+                        <div class="text-center">
+                            <i class="fas fa-mobile-alt feature-icon"></i>
+                            <h3 class="h5">Mobile Friendly</h3>
+                            <p class="text-muted">Works perfectly on all devices.</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features-section py-5">
-        <div class="container">
-            <h2 class="text-center mb-5 animate-fade-in">
-                <i class="fas fa-gem text-primary me-2"></i>
-                Why Choose Multi-Tools?
-            </h2>
-            <div class="row g-4">
-                <div class="col-md-4 animate-slide-up">
-                    <div class="text-center">
-                        <i class="fas fa-bolt feature-icon"></i>
-                        <h3 class="h5">Fast & Efficient</h3>
-                        <p class="text-muted">All tools are optimized for speed and performance.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 animate-slide-up" style="animation-delay: 0.2s;">
-                    <div class="text-center">
-                        <i class="fas fa-lock feature-icon"></i>
-                        <h3 class="h5">Secure & Private</h3>
-                        <p class="text-muted">Your data never leaves your browser.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 animate-slide-up" style="animation-delay: 0.4s;">
-                    <div class="text-center">
-                        <i class="fas fa-mobile-alt feature-icon"></i>
-                        <h3 class="h5">Mobile Friendly</h3>
-                        <p class="text-muted">Works perfectly on all devices.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
     <div id="footer"></div>
 
-    <!-- Bootstrap JS -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
     <script src="js/main.js"></script>
-    <script src="js/theme.js"></script>
     <script>
         // Load header and footer
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-
-        // Initialize tooltips
         document.addEventListener('DOMContentLoaded', function() {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-
-            // Add animation classes on scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
+            fetch('components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header').innerHTML = data;
                 });
-            });
 
-            document.querySelectorAll('.animate-fade-in, .animate-slide-up, .animate-scale-in').forEach((el) => {
-                observer.observe(el);
-            });
+            fetch('components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer').innerHTML = data;
+                });
         });
     </script>
 </body>
+</html> 
 </html> 
