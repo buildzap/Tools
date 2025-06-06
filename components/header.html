@@ -16,17 +16,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">
-                            <i class="fas fa-info-circle me-1"></i>About
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="privacy-policy.html">
                             <i class="fas fa-shield-alt me-1"></i>Privacy Policy
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="themeToggle" onclick="toggleTheme()">
+                        <a class="nav-link" href="#" id="theme-toggle" onclick="toggleTheme()">
                             <i class="fas fa-moon me-1"></i>Theme
                         </a>
                     </li>
@@ -44,7 +39,7 @@ function toggleTheme() {
     html.setAttribute('data-theme', newTheme);
     
     // Update theme icon
-    const themeIcon = document.querySelector('#themeToggle i');
+    const themeIcon = document.querySelector('#theme-toggle i');
     themeIcon.className = newTheme === 'dark' ? 'fas fa-moon me-1' : 'fas fa-sun me-1';
     
     // Save theme preference
@@ -57,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.documentElement.setAttribute('data-theme', savedTheme);
     
     // Update theme icon
-    const themeIcon = document.querySelector('#themeToggle i');
+    const themeIcon = document.querySelector('#theme-toggle i');
     themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon me-1' : 'fas fa-sun me-1';
 });
 </script> 
