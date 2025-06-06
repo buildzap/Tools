@@ -1,7 +1,7 @@
 <!-- Header Component -->
 <header class="bg-white shadow-sm">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand" href="index.html">
                 <i class="fas fa-tools text-primary me-2"></i>SoftLabsMind
             </a>
@@ -9,7 +9,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">
                             <i class="fas fa-home me-1"></i>Home
@@ -26,7 +26,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="themeToggle">
+                        <a class="nav-link" href="#" id="themeToggle" onclick="toggleTheme()">
                             <i class="fas fa-moon me-1"></i>Theme
                         </a>
                     </li>
@@ -37,28 +37,27 @@
 </header>
 
 <script>
+function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    
+    // Update theme icon
+    const themeIcon = document.querySelector('#themeToggle i');
+    themeIcon.className = newTheme === 'dark' ? 'fas fa-moon me-1' : 'fas fa-sun me-1';
+    
+    // Save theme preference
+    localStorage.setItem('theme', newTheme);
+}
+
+// Initialize theme from localStorage
 document.addEventListener('DOMContentLoaded', function() {
-    // Get the theme toggle button
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = themeToggle.querySelector('i');
-    
-    // Function to set theme
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        themeIcon.className = theme === 'dark' ? 'fas fa-moon me-1' : 'fas fa-sun me-1';
-        localStorage.setItem('theme', theme);
-    }
-    
-    // Initialize theme from localStorage or default to dark
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
     
-    // Toggle theme on click
-    themeToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        setTheme(newTheme);
-    });
+    // Update theme icon
+    const themeIcon = document.querySelector('#themeToggle i');
+    themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon me-1' : 'fas fa-sun me-1';
 });
 </script> 
