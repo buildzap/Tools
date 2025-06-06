@@ -1,0 +1,143 @@
+/* Tool Page Styles */
+.tool-content {
+    min-height: calc(100vh - 200px);
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+.tool-header {
+    margin-bottom: 3rem;
+}
+
+.tool-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, var(--text-primary), var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.tool-header .lead {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+/* Tool Interface Styles */
+.tool-interface {
+    padding: 1.5rem;
+}
+
+.tool-interface .form-control {
+    background-color: var(--surface-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.tool-interface .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+}
+
+.tool-interface .btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.tool-interface .btn-primary {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border: none;
+}
+
+.tool-interface .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+}
+
+/* Result Section */
+.result-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: var(--surface-dark);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.result-section pre {
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 0;
+}
+
+/* Tool Info Section */
+.tool-info {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.tool-info ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.tool-info li {
+    margin-bottom: 0.5rem;
+}
+
+/* Loading States */
+.loading {
+    position: relative;
+    min-height: 100px;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .tool-header h1 {
+        font-size: 2rem;
+    }
+
+    .tool-header .lead {
+        font-size: 1.1rem;
+    }
+
+    .tool-interface {
+        padding: 1rem;
+    }
+
+    .result-section {
+        padding: 1rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .tool-interface .btn,
+    .no-print {
+        display: none;
+    }
+
+    .result-section {
+        border: 1px solid #ddd;
+        background: none;
+    }
+} 

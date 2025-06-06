@@ -14,6 +14,7 @@
     <link href="styles/main.css" rel="stylesheet">
     <link href="styles/theme.css" rel="stylesheet">
     <link href="styles/hero.css" rel="stylesheet">
+    <link href="styles/animations.css" rel="stylesheet">
 </head>
 <body class="fade-in">
     <!-- Header -->
@@ -23,20 +24,20 @@
     <section class="hero py-5">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+                <div class="col-lg-6 col-md-12 mb-4 mb-lg-0 animate-slide-up">
                     <h1 class="display-4 fw-bold mb-4">One-Stop Solution for Online Tools</h1>
                     <p class="lead mb-4">All-in-one toolkit for everyday tasks — fast, free, and no sign-up needed, just gooo!</p>
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="#all-tools" class="btn btn-primary btn-lg">
+                        <a href="#all-tools" class="btn btn-primary btn-lg animate-fade-in">
                             <i class="fas fa-tools me-2"></i>Explore Tools
                         </a>
-                        <a href="#popular-tools" class="btn btn-outline-primary btn-lg">
+                        <a href="#popular-tools" class="btn btn-outline-primary btn-lg animate-fade-in">
                             <i class="fas fa-star me-2"></i>Popular Tools
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
-                    <div class="hero-image-container">
+                    <div class="hero-image-container animate-float">
                         <img src="images/hero-image.svg" alt="Multi-Tools Hero" class="img-fluid hero-image">
                     </div>
                 </div>
@@ -47,17 +48,17 @@
     <!-- Popular Tools Section -->
     <section id="popular-tools" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5">
+            <h2 class="text-center mb-5 animate-fade-in">
                 <i class="fas fa-star text-warning me-2"></i>
                 Popular Tools
             </h2>
             <div class="row g-4">
                 <!-- Image Tools -->
-                <div class="col-md-4">
+                <div class="col-md-4 animate-scale-in">
                     <div class="card h-100">
                         <div class="card-body">
                             <h3 class="card-title h5">
-                                <i class="fas fa-image text-primary me-2"></i>
+                                <i class="fas fa-image text-primary me-2 image-tool-icon"></i>
                                 Image Tools
                             </h3>
                             <div class="list-group list-group-flush">
@@ -73,16 +74,48 @@
                                     <i class="fas fa-file-image text-primary"></i>
                                     <span>Image to JPG</span>
                                 </a>
+                                <a href="tools/image-tools/image-compressor.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Compress images without losing quality">
+                                    <i class="fas fa-compress text-primary"></i>
+                                    <span>Image Compressor</span>
+                                </a>
+                                <a href="tools/image-tools/image-cropper.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Crop images to desired size">
+                                    <i class="fas fa-crop text-primary"></i>
+                                    <span>Image Cropper</span>
+                                </a>
+                                <a href="tools/image-tools/image-to-webp.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to WebP format">
+                                    <i class="fas fa-file-image text-primary"></i>
+                                    <span>Image to WebP</span>
+                                </a>
+                                <a href="tools/image-tools/webp-to-png.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert WebP to PNG">
+                                    <i class="fas fa-file-image text-primary"></i>
+                                    <span>WebP to PNG</span>
+                                </a>
+                                <a href="tools/image-tools/image-to-base64.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert images to Base64">
+                                    <i class="fas fa-code text-primary"></i>
+                                    <span>Image to Base64</span>
+                                </a>
+                                <a href="tools/image-tools/gif-maker.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create GIFs from images">
+                                    <i class="fas fa-film text-primary"></i>
+                                    <span>GIF Maker</span>
+                                </a>
+                                <a href="tools/image-tools/screenshot-to-pdf.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert screenshots to PDF">
+                                    <i class="fas fa-file-pdf text-primary"></i>
+                                    <span>Screenshot to PDF</span>
+                                </a>
+                                <a href="tools/image-tools/qr-code-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate QR codes">
+                                    <i class="fas fa-qrcode text-primary"></i>
+                                    <span>QR Code Generator</span>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Text Tools -->
-                <div class="col-md-4">
+                <div class="col-md-4 animate-scale-in" style="animation-delay: 0.2s;">
                     <div class="card h-100">
                         <div class="card-body">
                             <h3 class="card-title h5">
-                                <i class="fas fa-font text-primary me-2"></i>
+                                <i class="fas fa-font text-primary me-2 text-tool-icon"></i>
                                 Text Tools
                             </h3>
                             <div class="list-group list-group-flush">
@@ -103,11 +136,11 @@
                     </div>
                 </div>
                 <!-- Calculators -->
-                <div class="col-md-4">
+                <div class="col-md-4 animate-scale-in" style="animation-delay: 0.4s;">
                     <div class="card h-100">
                         <div class="card-body">
                             <h3 class="card-title h5">
-                                <i class="fas fa-calculator text-primary me-2"></i>
+                                <i class="fas fa-calculator text-primary me-2 calculator-icon"></i>
                                 Calculators
                             </h3>
                             <div class="list-group list-group-flush">
@@ -123,6 +156,42 @@
                                     <i class="fas fa-weight text-primary"></i>
                                     <span>BMI Calculator</span>
                                 </a>
+                                <a href="tools/calculators/loan-emi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate loan EMI and interest">
+                                    <i class="fas fa-money-bill-wave text-primary"></i>
+                                    <span>Loan EMI Calculator</span>
+                                </a>
+                                <a href="tools/calculators/scientific-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Advanced scientific calculations">
+                                    <i class="fas fa-square-root-alt text-primary"></i>
+                                    <span>Scientific Calculator</span>
+                                </a>
+                                <a href="tools/calculators/discount-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate discounts and savings">
+                                    <i class="fas fa-tags text-primary"></i>
+                                    <span>Discount Calculator</span>
+                                </a>
+                                <a href="tools/calculators/time-zone-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different time zones">
+                                    <i class="fas fa-clock text-primary"></i>
+                                    <span>Time Zone Converter</span>
+                                </a>
+                                <a href="tools/calculators/currency-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between different currencies">
+                                    <i class="fas fa-exchange-alt text-primary"></i>
+                                    <span>Currency Converter</span>
+                                </a>
+                                <a href="tools/calculators/binary-decimal-converter.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert between binary and decimal numbers">
+                                    <i class="fas fa-code text-primary"></i>
+                                    <span>Binary-Decimal Converter</span>
+                                </a>
+                                <a href="tools/calculators/tip-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate tips and split bills">
+                                    <i class="fas fa-receipt text-primary"></i>
+                                    <span>Tip Calculator</span>
+                                </a>
+                                <a href="tools/misc/countdown-timer.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Create countdown timers">
+                                    <i class="fas fa-hourglass-half text-primary"></i>
+                                    <span>Countdown Timer</span>
+                                </a>
+                                <a href="tools/misc/currency-exchange-rates.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Check live currency exchange rates">
+                                    <i class="fas fa-money-bill-wave text-primary"></i>
+                                    <span>Currency Exchange Rates</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -134,7 +203,7 @@
     <!-- All Tools Section -->
     <section id="all-tools" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5">
+            <h2 class="text-center mb-5 animate-fade-in">
                 <i class="fas fa-tools text-primary me-2"></i>
                 All Tools
             </h2>
@@ -156,7 +225,7 @@
                                     <i class="fas fa-birthday-cake text-primary"></i>
                                     <span>Age Calculator</span>
                                 </a>
-                                <a href="tools/calculators/bmi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate Body Mass Index">
+                                <a href="tools/calculators/bmi-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate BMI">
                                     <i class="fas fa-weight text-primary"></i>
                                     <span>BMI Calculator</span>
                                 </a>
@@ -295,6 +364,10 @@
                                 <a href="tools/image-tools/screenshot-to-pdf.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Convert screenshots to PDF">
                                     <i class="fas fa-file-pdf text-primary"></i>
                                     <span>Screenshot to PDF</span>
+                                </a>
+                                <a href="tools/image-tools/qr-code-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate QR codes">
+                                    <i class="fas fa-qrcode text-primary"></i>
+                                    <span>QR Code Generator</span>
                                 </a>
                             </div>
                         </div>
@@ -530,6 +603,28 @@
                     </div>
                 </div>
 
+                <!-- Business Tools -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title h5">
+                                <i class="fas fa-briefcase text-primary me-2"></i>
+                                Business Tools
+                            </h3>
+                            <div class="list-group list-group-flush">
+                                <a href="tools/business/invoice-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate professional invoices">
+                                    <i class="fas fa-file-invoice-dollar text-primary"></i>
+                                    <span>Invoice Generator</span>
+                                </a>
+                                <a href="tools/business/profit-calculator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Calculate profit margins and ROI">
+                                    <i class="fas fa-chart-line text-primary"></i>
+                                    <span>Profit Calculator</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Converters -->
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
@@ -593,10 +688,6 @@
                                 Miscellaneous Tools
                             </h3>
                             <div class="list-group list-group-flush">
-                                <a href="tools/misc/qr-code-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate QR codes">
-                                    <i class="fas fa-qrcode text-primary"></i>
-                                    <span>QR Code Generator</span>
-                                </a>
                                 <a href="tools/misc/barcode-generator.html" class="list-group-item list-group-item-action" data-bs-toggle="tooltip" title="Generate barcodes">
                                     <i class="fas fa-barcode text-primary"></i>
                                     <span>Barcode Generator</span>
@@ -700,26 +791,26 @@
     <!-- Features Section -->
     <section class="features-section py-5">
         <div class="container">
-            <h2 class="text-center mb-5">
+            <h2 class="text-center mb-5 animate-fade-in">
                 <i class="fas fa-gem text-primary me-2"></i>
                 Why Choose Multi-Tools?
             </h2>
             <div class="row g-4">
-                <div class="col-md-4">
+                <div class="col-md-4 animate-slide-up">
                     <div class="text-center">
                         <i class="fas fa-bolt feature-icon"></i>
                         <h3 class="h5">Fast & Efficient</h3>
                         <p class="text-muted">All tools are optimized for speed and performance.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 animate-slide-up" style="animation-delay: 0.2s;">
                     <div class="text-center">
                         <i class="fas fa-lock feature-icon"></i>
                         <h3 class="h5">Secure & Private</h3>
                         <p class="text-muted">Your data never leaves your browser.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 animate-slide-up" style="animation-delay: 0.4s;">
                     <div class="text-center">
                         <i class="fas fa-mobile-alt feature-icon"></i>
                         <h3 class="h5">Mobile Friendly</h3>
@@ -757,6 +848,19 @@
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Add animation classes on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.animate-fade-in, .animate-slide-up, .animate-scale-in').forEach((el) => {
+                observer.observe(el);
             });
         });
     </script>
