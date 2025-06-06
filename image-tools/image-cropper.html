@@ -144,6 +144,11 @@
                                         <p class="mb-1">Estimated Output Size: <span id="estimatedSize">0 KB</span></p>
                                     </div>
                                 </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                        <i class="fas fa-download"></i> Download Cropped Image
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -201,6 +206,7 @@
             const originalDimensions = document.getElementById('originalDimensions');
             const cropSize = document.getElementById('cropSize');
             const estimatedSize = document.getElementById('estimatedSize');
+            const downloadButton = document.getElementById('downloadButton');
 
             let cropper = null;
             let originalImage = null;
@@ -314,10 +320,22 @@
             }
 
             // Handle form submission
-            window.toolUtils.handleFormSubmit(form, function() {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
                 if (cropper) {
-                    // In a real implementation, this would process the cropped image
-                    alert('Image cropped successfully! (Demo only)');
+                    const data = cropper.getData();
+                    cropInfo.style.display = 'block';
+                    cropSize.textContent = `${Math.round(data.width)} x ${Math.round(data.height)}`;
+                    updateEstimatedSize();
+                    downloadButton.disabled = false;
+                }
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                if (cropper) {
+                    // In a real implementation, this would download the cropped image
+                    alert('Cropped image downloaded! (Demo only)');
                 }
             });
         });

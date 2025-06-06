@@ -118,6 +118,11 @@
                                         <p class="mb-1">Size Reduction: <span id="sizeReduction">0%</span></p>
                                     </div>
                                 </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                        <i class="fas fa-download"></i> Download WebP
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -175,6 +180,7 @@
             const originalFormat = document.getElementById('originalFormat');
             const webpSize = document.getElementById('webpSize');
             const sizeReduction = document.getElementById('sizeReduction');
+            const downloadButton = document.getElementById('downloadButton');
 
             let originalImage = null;
 
@@ -263,12 +269,21 @@
             }
 
             // Handle form submission
-            window.toolUtils.handleFormSubmit(form, function() {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
                 const file = imageInput.files[0];
                 if (file) {
-                    // In a real implementation, this would process the image
-                    alert('Image converted successfully! (Demo only)');
+                    // In a real implementation, this would convert the image to WebP
+                    // For demo purposes, we'll just show a success message
+                    updateWebPPreview();
+                    downloadButton.disabled = false;
                 }
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                // In a real implementation, this would download the converted WebP
+                alert('WebP file downloaded! (Demo only)');
             });
         });
     </script>
