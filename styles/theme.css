@@ -38,6 +38,10 @@
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
     --transition-base: all 0.3s ease;
     --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --primary-color: #6c5ce7;
+    --secondary-color: #a29bfe;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
 }
 
 [data-theme="dark"] {
@@ -71,6 +75,41 @@
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--surface-dark);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .list-group-item {
+    background-color: var(--surface-dark);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .list-group-item:hover {
+    background-color: #2d2d2d;
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] .feature-icon {
+    color: var(--primary-color);
 }
 
 /* Theme Transitions */
@@ -177,8 +216,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .card-body {
@@ -601,4 +640,70 @@ a:hover {
         break-inside: avoid;
         border: 1px solid #ddd;
     }
+}
+
+/* Modern Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+.lead {
+    font-weight: 300;
+    letter-spacing: 0.3px;
+}
+
+/* Smooth transitions */
+.card, .list-group-item, .btn {
+    transition: all 0.3s ease;
+}
+
+/* Enhanced hover effects */
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Modern button styles */
+.btn {
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Card enhancements */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* List group enhancements */
+.list-group-item {
+    border-radius: 8px !important;
+    margin-bottom: 4px;
+    padding: 0.8rem 1rem;
+}
+
+/* Feature section enhancements */
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 } 
