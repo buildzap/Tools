@@ -1,18 +1,19 @@
 <!-- Header Component -->
 <header class="bg-white shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <i class="fas fa-tools text-primary me-2"></i>
-                Multi-Tools
+                <i class="fas fa-tools text-primary me-2"></i>SoftLabsMind
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="about.html">
@@ -25,7 +26,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="themeToggle">
+                        <a class="nav-link" href="#" id="themeToggle" onclick="toggleTheme()">
                             <i class="fas fa-moon me-1"></i>Theme
                         </a>
                     </li>
@@ -33,4 +34,30 @@
             </div>
         </div>
     </nav>
-</header> 
+</header>
+
+<script>
+function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    
+    // Update theme icon
+    const themeIcon = document.querySelector('#themeToggle i');
+    themeIcon.className = newTheme === 'dark' ? 'fas fa-moon me-1' : 'fas fa-sun me-1';
+    
+    // Save theme preference
+    localStorage.setItem('theme', newTheme);
+}
+
+// Initialize theme from localStorage
+document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    // Update theme icon
+    const themeIcon = document.querySelector('#themeToggle i');
+    themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon me-1' : 'fas fa-sun me-1';
+});
+</script> 
