@@ -1,83 +1,21 @@
-<!-- Header -->
-<header class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <i class="fas fa-tools me-2"></i>
-            Web Tools
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/#popular-tools">
-                        <i class="fas fa-star me-1"></i>Popular
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/#all-tools">
-                        <i class="fas fa-th-large me-1"></i>All Tools
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-tools me-1"></i>Categories
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/#image-tools">Image Tools</a></li>
-                        <li><a class="dropdown-item" href="/#text-tools">Text Tools</a></li>
-                        <li><a class="dropdown-item" href="/#calculators">Calculators</a></li>
-                        <li><a class="dropdown-item" href="/#converters">Converters</a></li>
-                        <li><a class="dropdown-item" href="/#misc-tools">Misc Tools</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="d-flex align-items-center">
-                <ul class="navbar-nav me-3">
+<!-- Header Component -->
+<header class="bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tools text-primary me-2"></i>
+                Multi-Tools
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/about.html">
-                            <i class="fas fa-info-circle me-1"></i>About
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/privacy-policy.html">
-                            <i class="fas fa-shield-alt me-1"></i>Privacy Policy
-                        </a>
+                        <a class="nav-link" href="index.html">Home</a>
                     </li>
                 </ul>
-                <button class="btn btn-outline-light me-2" id="themeToggle">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <a href="https://github.com/yourusername/web-tools" class="btn btn-outline-light" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
             </div>
         </div>
-    </div>
-</header>
-
-<script>
-    // Theme toggle functionality
-    document.getElementById('themeToggle').addEventListener('click', function() {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', newTheme);
-        
-        // Update icon
-        const icon = this.querySelector('i');
-        icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-        
-        // Save preference
-        localStorage.setItem('theme', newTheme);
-    });
-
-    // Load saved theme preference
-    document.addEventListener('DOMContentLoaded', function() {
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        const icon = document.querySelector('#themeToggle i');
-        icon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-    });
-</script> 
+    </nav>
+</header> 
