@@ -26,7 +26,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-12 mb-4 mb-lg-0 animate-slide-up">
                     <h1 class="display-4 fw-bold mb-4">One-Stop Solution for Online Tools</h1>
-                    <p class="lead mb-4">All-in-one toolkit for everyday tasks — fast, free, and no sign-up needed, just gooo!</p>
+                    <p class="lead mb-4">Access a wide range of free online tools for your everyday needs. From image editing to SEO optimization, we've got you covered</p>
                     <div class="d-flex flex-wrap gap-3">
                         <a href="#all-tools" class="btn btn-primary btn-lg animate-fade-in">
                             <i class="fas fa-tools me-2"></i>Explore Tools
@@ -827,22 +827,24 @@
     <script src="js/theme.js"></script>
     <script>
         // Load header and footer
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-
-        // Initialize tooltips
         document.addEventListener('DOMContentLoaded', function() {
+            // Load header
+            fetch('components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header').innerHTML = data;
+                });
+
+            // Load footer
+            fetch('components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer').innerHTML = data;
+                });
+
+            // Initialize tooltips
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 

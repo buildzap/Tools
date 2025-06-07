@@ -1,74 +1,40 @@
-<!-- Footer Component -->
-<footer class="footer mt-auto py-4">
+<!-- Footer -->
+<footer class="bg-dark text-light py-4 mt-5">
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-4 mb-md-0">
-                <h5 class="text-primary mb-3">
-                    <i class="fas fa-tools me-2"></i>Multi-Tools
-                </h5>
-                <p class="text-muted">Your one-stop solution for online tools. Free, fast, and easy to use.</p>
-                <div class="social-links">
-                    <a href="#" class="text-muted me-3" data-bs-toggle="tooltip" title="Follow us on Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-muted me-3" data-bs-toggle="tooltip" title="Follow us on Facebook">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="#" class="text-muted me-3" data-bs-toggle="tooltip" title="Follow us on Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-muted" data-bs-toggle="tooltip" title="Star us on GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
+                <h5 class="mb-3">SoftLabsMind</h5>
+                <p class="text-muted">
+                    Free online tools for everyday tasks. Convert files, calculate values, generate content, and more.
+                </p>
+
             </div>
-            <div class="col-md-2 mb-4 mb-md-0">
-                <h6 class="text-primary mb-3">Tools</h6>
-                <ul class="list-unstyled">
-                    <li><a href="/tools/calculators" class="text-muted">Calculators</a></li>
-                    <li><a href="/tools/developer-tools" class="text-muted">Developer Tools</a></li>
-                    <li><a href="/tools/image-tools" class="text-muted">Image Tools</a></li>
-                    <li><a href="/tools/text-tools" class="text-muted">Text Tools</a></li>
-                </ul>
-            </div>
-            <div class="col-md-2 mb-4 mb-md-0">
-                <h6 class="text-primary mb-3">Social</h6>
-                <ul class="list-unstyled">
-                    <li><a href="/tools/social" class="text-muted">Social Media Tools</a></li>
-                    <li><a href="/tools/social/youtube-tools" class="text-muted">YouTube Tools</a></li>
-                    <li><a href="/tools/social/instagram-tools" class="text-muted">Instagram Tools</a></li>
-                    <li><a href="/tools/social/twitter-tools" class="text-muted">Twitter Tools</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h6 class="text-primary mb-3">Newsletter</h6>
-                <p class="text-muted">Subscribe to get updates on new tools and features.</p>
-                <form class="newsletter-form">
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Enter your email">
-                        <button class="btn btn-primary" type="submit">Subscribe</button>
-                    </div>
-                </form>
-            </div>
+
+
+
         </div>
         <hr class="my-4">
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start">
-                <p class="mb-0 text-muted">&copy; 2024 Multi-Tools. All rights reserved.</p>
+                <p class="mb-0 text-muted">&copy; 2025 SoftLabsMind. All rights reserved.</p>
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <ul class="list-inline mb-0">
-                    <li class="list-inline-item">
-                        <a href="/privacy" class="text-muted">Privacy Policy</a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="/terms" class="text-muted">Terms of Service</a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="/contact" class="text-muted">Contact</a>
-                    </li>
+                    <li class="list-inline-item"><a href="/privacy-policy.html" class="text-muted">Privacy Policy</a></li>
+                    <li class="list-inline-item"><a href="/terms-of-service.html" class="text-muted">Terms of Service</a></li>
                 </ul>
             </div>
         </div>
     </div>
-</footer> 
+</footer>
+
+<script>
+    // Newsletter form submission
+    document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        // Add your newsletter subscription logic here
+        alert('Thank you for subscribing!');
+        this.reset();
+    });
+</script> 
