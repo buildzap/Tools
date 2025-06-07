@@ -3,7 +3,7 @@
     <div class="container">
         <a class="navbar-brand" href="/">
             <i class="fas fa-tools me-2"></i>
-            Web Tools
+            SoftLabsMind
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -20,28 +20,16 @@
                         <i class="fas fa-th-large me-1"></i>All Tools
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-tools me-1"></i>Categories
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/#image-tools">Image Tools</a></li>
-                        <li><a class="dropdown-item" href="/#text-tools">Text Tools</a></li>
-                        <li><a class="dropdown-item" href="/#calculators">Calculators</a></li>
-                        <li><a class="dropdown-item" href="/#converters">Converters</a></li>
-                        <li><a class="dropdown-item" href="/#misc-tools">Misc Tools</a></li>
-                    </ul>
-                </li>
             </ul>
             <div class="d-flex align-items-center">
                 <ul class="navbar-nav me-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="/about.html">
+                        <a class="nav-link" href="/tools/about.html">
                             <i class="fas fa-info-circle me-1"></i>About
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/privacy-policy.html">
+                        <a class="nav-link" href="/tools/legal/privacy-policy.html">
                             <i class="fas fa-shield-alt me-1"></i>Privacy Policy
                         </a>
                     </li>
@@ -49,9 +37,6 @@
                 <button class="btn btn-outline-light me-2" id="themeToggle">
                     <i class="fas fa-moon"></i>
                 </button>
-                <a href="https://github.com/yourusername/web-tools" class="btn btn-outline-light" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
             </div>
         </div>
     </div>
@@ -59,25 +44,50 @@
 
 <script>
     // Theme toggle functionality
-    document.getElementById('themeToggle').addEventListener('click', function() {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', newTheme);
-        
-        // Update icon
-        const icon = this.querySelector('i');
-        icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-        
-        // Save preference
-        localStorage.setItem('theme', newTheme);
-    });
-
-    // Load saved theme preference
     document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+        
+        // Load saved theme preference
         const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        const icon = document.querySelector('#themeToggle i');
-        icon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Update theme
+            html.setAttribute('data-theme', newTheme);
+            updateThemeIcon(newTheme);
+            
+            // Save preference
+            localStorage.setItem('theme', newTheme);
+            
+            // Update navbar classes
+            updateNavbarTheme(newTheme);
+        });
+        
+        // Update theme icon
+        function updateThemeIcon(theme) {
+            icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+        
+        // Update navbar theme
+        function updateNavbarTheme(theme) {
+            const navbar = document.querySelector('.navbar');
+            if (theme === 'dark') {
+                navbar.classList.remove('navbar-light', 'bg-light');
+                navbar.classList.add('navbar-dark', 'bg-dark');
+            } else {
+                navbar.classList.remove('navbar-dark', 'bg-dark');
+                navbar.classList.add('navbar-light', 'bg-light');
+            }
+        }
+        
+        // Initial navbar theme update
+        updateNavbarTheme(savedTheme);
     });
 </script> 
