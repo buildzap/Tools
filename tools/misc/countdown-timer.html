@@ -1,1 +1,271 @@
- 
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer - Multi-Tools</title>
+    <meta name="description" content="Create and manage countdown timers for any duration. Perfect for events, cooking, workouts, and more.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        .timer-display {
+            font-size: 4rem;
+            font-weight: bold;
+            font-family: monospace;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .timer-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .timer-input {
+            max-width: 200px;
+        }
+        .timer-presets {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .timer-preset-btn {
+            min-width: 80px;
+        }
+        .timer-alert {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .timer-progress {
+            height: 10px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="text-center mb-4">
+                            <i class="fas fa-hourglass-half text-primary me-2"></i>
+                            Countdown Timer
+                        </h1>
+                        
+                        <!-- Timer Display -->
+                        <div class="timer-display" id="timerDisplay">00:00:00</div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="progress timer-progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" 
+                                 style="width: 0%" 
+                                 id="timerProgress"></div>
+                        </div>
+                        
+                        <!-- Timer Input -->
+                        <div class="row justify-content-center mb-4">
+                            <div class="col-md-6">
+                                <div class="input-group timer-input mx-auto">
+                                    <input type="number" class="form-control" id="hours" min="0" max="23" placeholder="Hours">
+                                    <input type="number" class="form-control" id="minutes" min="0" max="59" placeholder="Minutes">
+                                    <input type="number" class="form-control" id="seconds" min="0" max="59" placeholder="Seconds">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Timer Presets -->
+                        <div class="timer-presets">
+                            <button class="btn btn-outline-primary timer-preset-btn" data-minutes="1">1 Min</button>
+                            <button class="btn btn-outline-primary timer-preset-btn" data-minutes="5">5 Min</button>
+                            <button class="btn btn-outline-primary timer-preset-btn" data-minutes="10">10 Min</button>
+                            <button class="btn btn-outline-primary timer-preset-btn" data-minutes="15">15 Min</button>
+                            <button class="btn btn-outline-primary timer-preset-btn" data-minutes="30">30 Min</button>
+                            <button class="btn btn-outline-primary timer-preset-btn" data-minutes="60">1 Hour</button>
+                        </div>
+                        
+                        <!-- Timer Controls -->
+                        <div class="timer-controls">
+                            <button class="btn btn-primary" id="startBtn">
+                                <i class="fas fa-play me-2"></i>Start
+                            </button>
+                            <button class="btn btn-warning" id="pauseBtn" disabled>
+                                <i class="fas fa-pause me-2"></i>Pause
+                            </button>
+                            <button class="btn btn-danger" id="resetBtn" disabled>
+                                <i class="fas fa-redo me-2"></i>Reset
+                            </button>
+                        </div>
+                        
+                        <!-- Alert -->
+                        <div class="alert alert-success timer-alert" id="timerAlert" role="alert">
+                            <i class="fas fa-bell me-2"></i>
+                            Time's up!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        // Load header and footer
+        fetch('../../components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('../../components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+        // Timer functionality
+        let timer;
+        let totalSeconds = 0;
+        let remainingSeconds = 0;
+        let isRunning = false;
+
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerProgress = document.getElementById('timerProgress');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const timerAlert = document.getElementById('timerAlert');
+        const hoursInput = document.getElementById('hours');
+        const minutesInput = document.getElementById('minutes');
+        const secondsInput = document.getElementById('seconds');
+
+        // Format time as HH:MM:SS
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Update timer display and progress
+        function updateTimer() {
+            timerDisplay.textContent = formatTime(remainingSeconds);
+            const progress = ((totalSeconds - remainingSeconds) / totalSeconds) * 100;
+            timerProgress.style.width = `${progress}%`;
+        }
+
+        // Start timer
+        function startTimer() {
+            if (!isRunning) {
+                if (remainingSeconds === 0) {
+                    const hours = parseInt(hoursInput.value) || 0;
+                    const minutes = parseInt(minutesInput.value) || 0;
+                    const seconds = parseInt(secondsInput.value) || 0;
+                    totalSeconds = hours * 3600 + minutes * 60 + seconds;
+                    remainingSeconds = totalSeconds;
+                    
+                    if (totalSeconds === 0) {
+                        alert('Please set a time first!');
+                        return;
+                    }
+                }
+                
+                isRunning = true;
+                startBtn.disabled = true;
+                pauseBtn.disabled = false;
+                resetBtn.disabled = false;
+                
+                timer = setInterval(() => {
+                    remainingSeconds--;
+                    updateTimer();
+                    
+                    if (remainingSeconds <= 0) {
+                        clearInterval(timer);
+                        isRunning = false;
+                        timerAlert.style.display = 'block';
+                        startBtn.disabled = false;
+                        pauseBtn.disabled = true;
+                        resetBtn.disabled = false;
+                        
+                        // Play sound
+                        const audio = new Audio('../../sounds/timer-complete.mp3');
+                        audio.play().catch(() => {
+                            // Handle autoplay restrictions
+                            console.log('Audio playback failed');
+                        });
+                    }
+                }, 1000);
+            }
+        }
+
+        // Pause timer
+        function pauseTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                isRunning = false;
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+            }
+        }
+
+        // Reset timer
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            remainingSeconds = 0;
+            totalSeconds = 0;
+            updateTimer();
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            resetBtn.disabled = true;
+            timerAlert.style.display = 'none';
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startTimer);
+        pauseBtn.addEventListener('click', pauseTimer);
+        resetBtn.addEventListener('click', resetTimer);
+
+        // Preset buttons
+        document.querySelectorAll('.timer-preset-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const minutes = parseInt(button.dataset.minutes);
+                hoursInput.value = Math.floor(minutes / 60);
+                minutesInput.value = minutes % 60;
+                secondsInput.value = 0;
+            });
+        });
+
+        // Input validation
+        [hoursInput, minutesInput, secondsInput].forEach(input => {
+            input.addEventListener('input', () => {
+                const value = parseInt(input.value);
+                if (value < 0) input.value = 0;
+                if (input === hoursInput && value > 23) input.value = 23;
+                if ((input === minutesInput || input === secondsInput) && value > 59) input.value = 59;
+            });
+        });
+    </script>
+</body>
+</html> 

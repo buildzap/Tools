@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Exchange Rates - Multi-Tools</title>
+    <meta name="description" content="Check live currency exchange rates and convert between different currencies.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        .currency-card {
+            transition: transform 0.2s;
+        }
+        .currency-card:hover {
+            transform: translateY(-5px);
+        }
+        .rate-change {
+            font-size: 0.9rem;
+        }
+        .rate-change.positive {
+            color: #28a745;
+        }
+        .rate-change.negative {
+            color: #dc3545;
+        }
+        .last-updated {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .currency-flag {
+            width: 24px;
+            height: 16px;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        .refresh-btn {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .refresh-btn:hover {
+            transform: rotate(180deg);
+        }
+        .loading-spinner {
+            display: none;
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h1 class="mb-0">
+                                <i class="fas fa-money-bill-wave text-primary me-2"></i>
+                                Currency Exchange Rates
+                            </h1>
+                            <div class="d-flex align-items-center">
+                                <span class="last-updated me-3" id="lastUpdated"></span>
+                                <button class="btn btn-outline-primary refresh-btn" id="refreshBtn" title="Refresh rates">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <div class="spinner-border spinner-border-sm text-primary loading-spinner ms-2" id="loadingSpinner" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Base Currency Selection -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="baseCurrency" class="form-label">Base Currency</label>
+                                <select class="form-select" id="baseCurrency">
+                                    <option value="USD">USD - US Dollar</option>
+                                    <option value="EUR">EUR - Euro</option>
+                                    <option value="GBP">GBP - British Pound</option>
+                                    <option value="JPY">JPY - Japanese Yen</option>
+                                    <option value="AUD">AUD - Australian Dollar</option>
+                                    <option value="CAD">CAD - Canadian Dollar</option>
+                                    <option value="CHF">CHF - Swiss Franc</option>
+                                    <option value="CNY">CNY - Chinese Yuan</option>
+                                    <option value="INR">INR - Indian Rupee</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Exchange Rates Grid -->
+                        <div class="row g-4" id="ratesGrid">
+                            <!-- Rates will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        // Load header and footer
+        fetch('../../components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('../../components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+        // Currency data
+        const currencies = {
+            USD: { name: 'US Dollar', flag: 'us' },
+            EUR: { name: 'Euro', flag: 'eu' },
+            GBP: { name: 'British Pound', flag: 'gb' },
+            JPY: { name: 'Japanese Yen', flag: 'jp' },
+            AUD: { name: 'Australian Dollar', flag: 'au' },
+            CAD: { name: 'Canadian Dollar', flag: 'ca' },
+            CHF: { name: 'Swiss Franc', flag: 'ch' },
+            CNY: { name: 'Chinese Yuan', flag: 'cn' },
+            INR: { name: 'Indian Rupee', flag: 'in' }
+        };
+
+        // DOM elements
+        const baseCurrencySelect = document.getElementById('baseCurrency');
+        const ratesGrid = document.getElementById('ratesGrid');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const lastUpdatedSpan = document.getElementById('lastUpdated');
+
+        // Format number with commas and fixed decimal places
+        function formatNumber(number) {
+            return number.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 6
+            });
+        }
+
+        // Calculate rate change percentage
+        function calculateRateChange(currentRate, previousRate) {
+            if (!previousRate) return null;
+            return ((currentRate - previousRate) / previousRate) * 100;
+        }
+
+        // Format rate change
+        function formatRateChange(change) {
+            if (change === null) return '';
+            const sign = change > 0 ? '+' : '';
+            const className = change > 0 ? 'positive' : 'negative';
+            return `<span class="rate-change ${className}">${sign}${change.toFixed(2)}%</span>`;
+        }
+
+        // Create currency card
+        function createCurrencyCard(currency, rate, previousRate = null) {
+            const change = calculateRateChange(rate, previousRate);
+            return `
+                <div class="col-md-4">
+                    <div class="card currency-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="https://flagcdn.com/w40/${currencies[currency].flag}.png" 
+                                     class="currency-flag" 
+                                     alt="${currencies[currency].name} flag">
+                                <h5 class="card-title mb-0">${currency}</h5>
+                            </div>
+                            <p class="card-text mb-1">${currencies[currency].name}</p>
+                            <h3 class="mb-2">${formatNumber(rate)}</h3>
+                            ${formatRateChange(change)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update last updated timestamp
+        function updateLastUpdated() {
+            const now = new Date();
+            lastUpdatedSpan.textContent = `Last updated: ${now.toLocaleTimeString()}`;
+        }
+
+        // Fetch exchange rates
+        async function fetchRates() {
+            try {
+                loadingSpinner.style.display = 'inline-block';
+                const baseCurrency = baseCurrencySelect.value;
+                
+                // Using a more reliable API endpoint with fallback
+                const apiEndpoints = [
+                    `https://open.er-api.com/v6/latest/${baseCurrency}`,
+                    `https://api.exchangerate.host/latest?base=${baseCurrency}`,
+                    `https://api.exchangerate-api.com/v4/latest/${baseCurrency}`
+                ];
+
+                let rates = {};
+                let error = null;
+
+                // Try each API endpoint until one works
+                for (const endpoint of apiEndpoints) {
+                    try {
+                        const response = await fetch(endpoint);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        const data = await response.json();
+                        
+                        // Different APIs have different response structures
+                        if (data.rates) {
+                            rates = data.rates;
+                            break;
+                        } else if (data.conversion_rates) {
+                            rates = data.conversion_rates;
+                            break;
+                        } else {
+                            throw new Error('Invalid API response format');
+                        }
+                    } catch (e) {
+                        error = e;
+                        console.warn(`Failed to fetch from ${endpoint}:`, e);
+                        continue;
+                    }
+                }
+
+                if (Object.keys(rates).length === 0) {
+                    throw error || new Error('All API endpoints failed');
+                }
+
+                // Filter and format rates
+                const filteredRates = {};
+                for (const [currency, rate] of Object.entries(rates)) {
+                    if (currency !== baseCurrency && currencies[currency]) {
+                        filteredRates[currency] = rate;
+                    }
+                }
+
+                // Store previous rates for comparison
+                const previousRates = window.previousRates || {};
+                window.previousRates = filteredRates;
+
+                // Update rates grid
+                if (Object.keys(filteredRates).length === 0) {
+                    throw new Error('No valid rates could be fetched');
+                }
+
+                ratesGrid.innerHTML = Object.entries(filteredRates)
+                    .map(([currency, rate]) => createCurrencyCard(currency, rate, previousRates[currency]))
+                    .join('');
+
+                updateLastUpdated();
+            } catch (error) {
+                console.error('Error fetching rates:', error);
+                ratesGrid.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            <h5 class="alert-heading">Failed to fetch exchange rates</h5>
+                            <p class="mb-0">We're having trouble connecting to the exchange rate services. This might be due to:</p>
+                            <ul class="mb-2">
+                                <li>Temporary API service issues</li>
+                                <li>Network connectivity problems</li>
+                                <li>Rate limiting from the API providers</li>
+                            </ul>
+                            <p>Please try again in a few moments.</p>
+                            <hr>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-danger" onclick="fetchRatesWithRetry()">
+                                    <i class="fas fa-sync-alt me-2"></i>Try Again
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="window.location.reload()">
+                                    <i class="fas fa-redo me-2"></i>Reload Page
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // Add retry mechanism with exponential backoff
+        let retryCount = 0;
+        const maxRetries = 5;
+        const baseDelay = 1000; // 1 second
+
+        async function fetchRatesWithRetry() {
+            try {
+                await fetchRates();
+                retryCount = 0; // Reset retry count on success
+            } catch (error) {
+                if (retryCount < maxRetries) {
+                    retryCount++;
+                    const delay = baseDelay * Math.pow(2, retryCount - 1); // Exponential backoff
+                    console.log(`Retrying... Attempt ${retryCount} of ${maxRetries} (${delay}ms delay)`);
+                    
+                    // Show retry status to user
+                    const retryStatus = document.createElement('div');
+                    retryStatus.className = 'alert alert-info mt-3';
+                    retryStatus.innerHTML = `
+                        <i class="fas fa-info-circle me-2"></i>
+                        Retrying in ${delay/1000} seconds... (Attempt ${retryCount} of ${maxRetries})
+                    `;
+                    ratesGrid.parentElement.insertBefore(retryStatus, ratesGrid);
+                    
+                    setTimeout(() => {
+                        retryStatus.remove();
+                        fetchRatesWithRetry();
+                    }, delay);
+                } else {
+                    console.error('Max retries reached');
+                    retryCount = 0;
+                }
+            }
+        }
+
+        // Event listeners
+        baseCurrencySelect.addEventListener('change', fetchRatesWithRetry);
+        refreshBtn.addEventListener('click', fetchRatesWithRetry);
+
+        // Initial fetch
+        fetchRatesWithRetry();
+    </script>
+</body>
+</html> 

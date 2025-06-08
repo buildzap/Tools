@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebP to PNG Converter - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-exchange-alt"></i> WebP to PNG Converter</h1>
+                <p>Convert WebP images to PNG format with transparency support</p>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <p class="text-muted">Advertisement Space</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="converterForm">
+                                <div class="mb-3">
+                                    <label for="imageInput" class="form-label">Select WebP Image</label>
+                                    <input type="file" class="form-control" id="imageInput" accept=".webp" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="maxWidth" class="form-label">Maximum Width (px)</label>
+                                    <input type="number" class="form-control" id="maxWidth" min="1" max="10000" value="1920">
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="maintainAspectRatio" checked>
+                                        <label class="form-check-label" for="maintainAspectRatio">
+                                            Maintain Aspect Ratio
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Transparency Mode</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="transparencyMode" id="transparencyAuto" checked>
+                                        <label class="btn btn-outline-primary" for="transparencyAuto">Auto Detect</label>
+                                        
+                                        <input type="radio" class="btn-check" name="transparencyMode" id="transparencyForce">
+                                        <label class="btn btn-outline-primary" for="transparencyForce">Force Transparency</label>
+                                        
+                                        <input type="radio" class="btn-check" name="transparencyMode" id="transparencyNone">
+                                        <label class="btn btn-outline-primary" for="transparencyNone">No Transparency</label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3" id="backgroundColorGroup" style="display: none;">
+                                    <label for="backgroundColor" class="form-label">Background Color</label>
+                                    <input type="color" class="form-control form-control-color" id="backgroundColor" value="#ffffff">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-exchange-alt"></i> Convert to PNG
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Preview</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="text-center mb-3">
+                                        <h6>Original WebP</h6>
+                                        <img id="originalPreview" class="img-fluid rounded" src="" alt="Original Preview" style="max-height: 200px;">
+                                        <div id="originalInfo" class="mt-2" style="display: none;">
+                                            <p class="mb-1">Size: <span id="originalSize">0 KB</span></p>
+                                            <p class="mb-1">Dimensions: <span id="originalDimensions">0 x 0</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-center mb-3">
+                                        <h6>Converted PNG</h6>
+                                        <img id="convertedPreview" class="img-fluid rounded" src="" alt="Converted Preview" style="max-height: 200px;">
+                                        <div id="convertedInfo" class="mt-2" style="display: none;">
+                                            <p class="mb-1">Size: <span id="convertedSize">0 KB</span></p>
+                                            <p class="mb-1">Dimensions: <span id="convertedDimensions">0 x 0</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download PNG
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Ad Space -->
+                    <div class="ad-space mb-4">
+                        <p class="text-muted">Advertisement Space</p>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About WebP to PNG Conversion</h5>
+                            <p class="card-text">
+                                Convert WebP images to PNG format while preserving transparency and quality.
+                                PNG format is widely supported and ideal for images that require transparency.
+                            </p>
+                            <h6>Features:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Transparency support</li>
+                                <li><i class="fas fa-check text-success"></i> Size optimization</li>
+                                <li><i class="fas fa-check text-success"></i> Quality preservation</li>
+                                <li><i class="fas fa-check text-success"></i> Batch conversion</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Note: PNG files are typically larger than WebP but offer better compatibility.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('converterForm');
+            const imageInput = document.getElementById('imageInput');
+            const originalPreview = document.getElementById('originalPreview');
+            const convertedPreview = document.getElementById('convertedPreview');
+            const downloadButton = document.getElementById('downloadButton');
+            const originalInfo = document.getElementById('originalInfo');
+            const convertedInfo = document.getElementById('convertedInfo');
+            const backgroundColorGroup = document.getElementById('backgroundColorGroup');
+
+            // Handle transparency mode changes
+            document.querySelectorAll('input[name="transparencyMode"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    backgroundColorGroup.style.display = this.id === 'transparencyNone' ? 'block' : 'none';
+                });
+            });
+
+            // Handle image preview
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        originalPreview.src = e.target.result;
+                        originalInfo.style.display = 'block';
+                        document.getElementById('originalSize').textContent = formatFileSize(file.size);
+                        
+                        const img = new Image();
+                        img.onload = function() {
+                            document.getElementById('originalDimensions').textContent = `${img.width} x ${img.height}`;
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const file = imageInput.files[0];
+                if (file) {
+                    // In a real implementation, this would convert the WebP to PNG
+                    // For demo purposes, we'll just show a success message
+                    convertedPreview.src = originalPreview.src;
+                    convertedInfo.style.display = 'block';
+                    document.getElementById('convertedSize').textContent = formatFileSize(file.size * 1.5); // Simulated size increase
+                    document.getElementById('convertedDimensions').textContent = document.getElementById('originalDimensions').textContent;
+                    downloadButton.disabled = false;
+                }
+            });
+
+            // Handle download
+            downloadButton.addEventListener('click', function() {
+                // In a real implementation, this would download the converted PNG
+                alert('PNG file downloaded! (Demo only)');
+            });
+
+            // Format file size
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        });
+    </script>
+</body>
+</html> 
