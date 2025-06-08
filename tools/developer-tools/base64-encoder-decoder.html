@@ -1,1 +1,212 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Encoder/Decoder - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-file-code"></i> Base64 Encoder/Decoder</h1>
+                <p>Encode text to Base64 or decode Base64 to text</p>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="base64Form">
+                                <div class="mb-3">
+                                    <label for="input" class="form-label">Input Text</label>
+                                    <textarea class="form-control" id="input" rows="5" required></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Options</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="preserveLineBreaks" checked>
+                                        <label class="form-check-label" for="preserveLineBreaks">
+                                            Preserve line breaks
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="urlSafe" checked>
+                                        <label class="form-check-label" for="urlSafe">
+                                            URL-safe encoding
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" id="encodeButton">
+                                        <i class="fas fa-lock"></i> Encode to Base64
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="decodeButton">
+                                        <i class="fas fa-unlock"></i> Decode from Base64
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Result</h5>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="output" rows="5" readonly></textarea>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="copyButton" disabled>
+                                    <i class="fas fa-copy"></i> Copy to Clipboard
+                                </button>
+                                <button class="btn btn-outline-secondary" id="downloadButton" disabled>
+                                    <i class="fas fa-download"></i> Download Result
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Information Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Base64</h5>
+                            <p class="card-text">
+                                Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format.
+                            </p>
+                            <h6>Common Uses:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Embedding binary data in text</li>
+                                <li><i class="fas fa-check text-success"></i> Email attachments</li>
+                                <li><i class="fas fa-check text-success"></i> Data URLs</li>
+                                <li><i class="fas fa-check text-success"></i> Basic authentication</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Note: Base64 encoding increases data size by approximately 33%.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Tool-specific JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('input');
+            const output = document.getElementById('output');
+            const encodeButton = document.getElementById('encodeButton');
+            const decodeButton = document.getElementById('decodeButton');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+            const preserveLineBreaks = document.getElementById('preserveLineBreaks');
+            const urlSafe = document.getElementById('urlSafe');
+
+            // Encode to Base64
+            encodeButton.addEventListener('click', function() {
+                try {
+                    let text = input.value;
+                    if (!text.trim()) {
+                        throw new Error('Please enter some text to encode');
+                    }
+
+                    // Handle line breaks
+                    if (preserveLineBreaks.checked) {
+                        text = text.replace(/\n/g, '\r\n');
+                    }
+
+                    // Encode to Base64
+                    let encoded = btoa(text);
+
+                    // Handle URL-safe encoding
+                    if (urlSafe.checked) {
+                        encoded = encoded.replace(/\+/g, '-').replace(/\//g, '_');
+                    }
+
+                    output.value = encoded;
+                    copyButton.disabled = false;
+                    downloadButton.disabled = false;
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+
+            // Decode from Base64
+            decodeButton.addEventListener('click', function() {
+                try {
+                    let text = input.value;
+                    if (!text.trim()) {
+                        throw new Error('Please enter some Base64 text to decode');
+                    }
+
+                    // Handle URL-safe encoding
+                    if (urlSafe.checked) {
+                        text = text.replace(/-/g, '+').replace(/_/g, '/');
+                    }
+
+                    // Decode from Base64
+                    let decoded = atob(text);
+
+                    // Handle line breaks
+                    if (preserveLineBreaks.checked) {
+                        decoded = decoded.replace(/\r\n/g, '\n');
+                    }
+
+                    output.value = decoded;
+                    copyButton.disabled = false;
+                    downloadButton.disabled = false;
+                } catch (error) {
+                    alert('Invalid Base64 input');
+                }
+            });
+
+            // Copy to clipboard
+            copyButton.addEventListener('click', function() {
+                output.select();
+                document.execCommand('copy');
+                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+                }, 2000);
+            });
+
+            // Download result
+            downloadButton.addEventListener('click', function() {
+                const blob = new Blob([output.value], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'base64_output.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</body>
+</html> 

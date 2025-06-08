@@ -1,611 +1,1213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Builder - Multi-Tools</title>
-    <!-- Bootstrap 5 CSS -->
+    <title>Resume Builder - Free Online Resume Creator</title>
+    <meta name="description" content="Create professional resumes online with our free resume builder. Choose from multiple templates and customize your resume easily.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
     <style>
-        .resume-preview {
-            background-color: white;
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
         }
-        .resume-preview h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .resume-preview h2 {
-            font-size: 18px;
-            margin: 15px 0 10px;
-            border-bottom: 2px solid #dee2e6;
-            padding-bottom: 5px;
+
+        .tool-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
-        .resume-preview p {
-            margin-bottom: 5px;
-        }
-        .resume-preview .section {
-            margin-bottom: 20px;
-        }
-        .resume-preview .skill-tag {
-            display: inline-block;
-            background-color: #e9ecef;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin: 2px;
-            font-size: 14px;
-        }
-        .template-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .template-item {
+
+        .template-option {
             cursor: pointer;
-            border-radius: 4px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--card-bg);
+            position: relative;
             overflow: hidden;
-            transition: transform 0.2s;
         }
-        .template-item:hover {
+
+        .template-option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .template-option.active {
+            border-color: var(--primary-color);
+            background-color: rgba(13, 110, 253, 0.1);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .template-option:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 200px;
+            background-color: var(--card-bg);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .template-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .template-option:hover .template-preview img {
             transform: scale(1.05);
         }
-        .template-item img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
+
+        .template-option h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
         }
-        .template-item.selected {
-            border: 3px solid #0d6efd;
+
+        .template-option p {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 0;
         }
-        .resume-history-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-bottom: 1px solid #dee2e6;
+
+        .resume-preview {
+            background-color: white;
+            color: black;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
         }
-        .resume-history-item:last-child {
-            border-bottom: none;
+
+        .form-control, .form-select {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
         }
-        .resume-history-item img {
-            width: 100px;
-            height: 140px;
-            object-fit: cover;
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--card-bg);
+            border-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0b5ed7;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-level {
+            color: #ffc107;
+        }
+
+        .resume-modern, .resume-professional, .resume-creative {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .resume-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .resume-section {
+            margin-bottom: 2rem;
+        }
+
+        .resume-section h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .experience-item, .education-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-item {
+            background-color: var(--card-bg);
+            padding: 1rem;
             border-radius: 4px;
         }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+
+        .template-preview {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
-        .section-content {
-            margin-bottom: 15px;
+
+        .template-preview img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
         }
-        .skill-input-group {
+
+        .template-option:hover .template-preview {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .preview-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 500px;
+            background: white;
+            margin-bottom: 1rem;
+        }
+
+        #download-pdf:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .template-placeholder {
+            width: 100%;
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 15px;
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            margin-bottom: 10px;
         }
-        .skill-tags {
+
+        .template-placeholder .header {
+            height: 40px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+
+        .template-placeholder .content {
+            flex: 1;
             display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 10px;
+            flex-direction: column;
+            gap: 8px;
         }
-        .skill-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background-color: #e9ecef;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 14px;
+
+        .template-placeholder .line {
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 4px;
         }
-        .skill-tag .remove-skill {
-            cursor: pointer;
-            color: #dc3545;
+
+        .template-placeholder.modern .header {
+            background: #007bff;
+        }
+
+        .template-placeholder.professional .header {
+            background: #343a40;
+        }
+
+        .template-placeholder.creative .header {
+            background: #6f42c1;
+        }
+
+        .template-option:hover .template-placeholder {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .template-svg {
+            width: 100%;
+            height: 300px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .template-option:hover .template-svg {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .template-svg .header {
+            transition: all 0.3s ease;
+        }
+
+        .template-svg .name,
+        .template-svg .title {
+            transition: all 0.3s ease;
+        }
+
+        .template-svg .section {
+            transition: all 0.3s ease;
+        }
+
+        .template-svg .line {
+            transition: all 0.3s ease;
+        }
+
+        .template-svg.modern .header {
+            fill: url(#modernGradient);
+        }
+
+        .template-svg.professional .header {
+            fill: url(#professionalPattern);
+        }
+
+        .template-svg.creative .header {
+            fill: url(#creativeGradient);
+        }
+
+        .template-preview {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .template-option:hover .template-preview {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cartoon-character {
+            transition: all 0.3s ease;
+        }
+
+        .template-option:hover .cartoon-character {
+            transform: scale(1.1);
+        }
+
+        /* Quick Access Navigation Styles */
+        .quick-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .quick-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .quick-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .quick-nav a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .quick-nav a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .quick-nav .nav-label {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 1200px) {
+            .quick-nav {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <div class="tool-container">
+        <h1 class="text-center mb-4">Resume Builder</h1>
+        
+        <!-- Quick Access Navigation -->
+        <div class="quick-nav">
+            <div class="nav-label">Quick Access</div>
+            <ul>
+                <li><a href="#templates" class="nav-link">Templates</a></li>
+                <li><a href="#personal-info" class="nav-link">Personal Info</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#preview" class="nav-link">Preview</a></li>
+            </ul>
+        </div>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-file-alt"></i> Resume Builder</h1>
-                <p>Create professional resumes with customizable templates</p>
-            </div>
+        <!-- Template Selection -->
+        <div class="row mb-4" id="templates">
+            <div class="col-12">
+                <h2 class="section-title">Choose a Template</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="template-option" data-template="modern" role="button" tabindex="0">
+                            <div class="template-preview">
+                                <svg class="template-svg modern" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Modern Template with Cartoon Elements -->
+                                    <defs>
+                                        <linearGradient id="modernGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:1">
+                                                <animate attributeName="stop-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                                            </stop>
+                                            <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1">
+                                                <animate attributeName="stop-opacity" values="0.9;1;0.9" dur="3s" repeatCount="indefinite"/>
+                                            </stop>
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Header with Gradient -->
+                                    <rect class="header" x="0" y="0" width="300" height="100" fill="url(#modernGradient)"/>
+                                    
+                                    <!-- Cartoon Character - Modern Business Person -->
+                                    <g class="cartoon-character" transform="translate(220, 20)">
+                                        <!-- Head -->
+                                        <circle cx="0" cy="0" r="15" fill="#FFD700"/>
+                                        <!-- Body -->
+                                        <rect x="-10" y="15" width="20" height="25" fill="#FFD700"/>
+                                        <!-- Tie -->
+                                        <path d="M0 15 L-5 25 L0 35 L5 25 Z" fill="#FF6B6B"/>
+                                        <!-- Eyes -->
+                                        <circle cx="-5" cy="-3" r="2" fill="white"/>
+                                        <circle cx="5" cy="-3" r="2" fill="white"/>
+                                        <!-- Smile -->
+                                        <path d="M-5 5 Q0 10 5 5" stroke="white" fill="none" stroke-width="2"/>
+                                        <!-- Animated Elements -->
+                                        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-5; 0,0" dur="2s" repeatCount="indefinite"/>
+                                    </g>
 
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <!-- Resume Preview -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Resume Preview</h5>
-                            <div class="resume-preview" id="resumePreview">
-                                <p class="text-muted">Fill in your information to see the preview</p>
+                                    <!-- Animated Name Bar -->
+                                    <rect class="name" x="20" y="30" width="180" height="25" fill="white" rx="4">
+                                        <animate attributeName="width" values="160;180;160" dur="2s" repeatCount="indefinite"/>
+                                    </rect>
+                                    <!-- Animated Title Bar -->
+                                    <rect class="title" x="20" y="65" width="150" height="20" fill="white" rx="4" opacity="0.9">
+                                        <animate attributeName="width" values="130;150;130" dur="2s" repeatCount="indefinite"/>
+                                    </rect>
+                                    <!-- Content Sections with Modern Style -->
+                                    <rect class="section" x="20" y="120" width="260" height="35" fill="#f8f9fa" rx="4"/>
+                                    <rect class="line" x="20" y="165" width="260" height="12" fill="#e9ecef" rx="2"/>
+                                    <rect class="line" x="20" y="187" width="200" height="12" fill="#e9ecef" rx="2"/>
+                                    <rect class="section" x="20" y="209" width="260" height="35" fill="#f8f9fa" rx="4"/>
+                                    <rect class="line" x="20" y="254" width="260" height="12" fill="#e9ecef" rx="2"/>
+                                    <rect class="line" x="20" y="276" width="200" height="12" fill="#e9ecef" rx="2"/>
+                                    <rect class="section" x="20" y="298" width="260" height="35" fill="#f8f9fa" rx="4"/>
+                                    <rect class="line" x="20" y="343" width="260" height="12" fill="#e9ecef" rx="2"/>
+                                </svg>
                             </div>
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-success" id="downloadButton" disabled>
-                                    <i class="fas fa-download"></i> Download Resume
-                                </button>
-                            </div>
+                            <h4>Modern</h4>
+                            <p>Clean and contemporary design</p>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="template-option" data-template="professional" role="button" tabindex="0">
+                            <div class="template-preview">
+                                <svg class="template-svg professional" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Professional Template with Cartoon Elements -->
+                                    <defs>
+                                        <pattern id="professionalPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                                            <rect x="0" y="0" width="40" height="40" fill="#343a40"/>
+                                            <line x1="0" y1="0" x2="40" y2="40" stroke="#495057" stroke-width="1" opacity="0.1">
+                                                <animate attributeName="opacity" values="0.05;0.15;0.05" dur="4s" repeatCount="indefinite"/>
+                                            </line>
+                                        </pattern>
+                                    </defs>
+                                    <!-- Header with Pattern -->
+                                    <rect class="header" x="0" y="0" width="300" height="120" fill="url(#professionalPattern)"/>
+                                    
+                                    <!-- Cartoon Character - Professional Executive -->
+                                    <g class="cartoon-character" transform="translate(220, 30)">
+                                        <!-- Head -->
+                                        <circle cx="0" cy="0" r="15" fill="#FFD700"/>
+                                        <!-- Body -->
+                                        <rect x="-12" y="15" width="24" height="30" fill="#FFD700"/>
+                                        <!-- Tie -->
+                                        <path d="M0 15 L-8 30 L0 45 L8 30 Z" fill="#FF6B6B"/>
+                                        <!-- Eyes -->
+                                        <circle cx="-5" cy="-3" r="2" fill="white"/>
+                                        <circle cx="5" cy="-3" r="2" fill="white"/>
+                                        <!-- Serious Expression -->
+                                        <path d="M-5 5 L5 5" stroke="white" stroke-width="2"/>
+                                        <!-- Animated Elements -->
+                                        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="3s" repeatCount="indefinite"/>
+                                    </g>
 
-                    <!-- Personal Information -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Personal Information</h5>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" id="fullName" placeholder="John Doe">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Job Title</label>
-                                    <input type="text" class="form-control" id="jobTitle" placeholder="Software Engineer">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" placeholder="john@example.com">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Phone</label>
-                                    <input type="tel" class="form-control" id="phone" placeholder="+1 234 567 890">
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label class="form-label">Location</label>
-                                    <input type="text" class="form-control" id="location" placeholder="City, Country">
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <label class="form-label">Professional Summary</label>
-                                    <textarea class="form-control" id="summary" rows="3" placeholder="Brief summary of your professional background and goals"></textarea>
-                                </div>
+                                    <!-- Professional Name Section -->
+                                    <rect class="name" x="30" y="40" width="180" height="30" fill="white" rx="2">
+                                        <animate attributeName="width" values="160;180;160" dur="3s" repeatCount="indefinite"/>
+                                    </rect>
+                                    <!-- Professional Title Section -->
+                                    <rect class="title" x="30" y="80" width="140" height="25" fill="white" rx="2" opacity="0.9">
+                                        <animate attributeName="width" values="120;140;120" dur="3s" repeatCount="indefinite"/>
+                                    </rect>
+                                    <!-- Content Sections with Professional Style -->
+                                    <rect class="section" x="20" y="140" width="260" height="40" fill="#f8f9fa" rx="2"/>
+                                    <rect class="line" x="20" y="190" width="260" height="15" fill="#e9ecef" rx="2"/>
+                                    <rect class="line" x="20" y="215" width="220" height="15" fill="#e9ecef" rx="2"/>
+                                    <rect class="section" x="20" y="240" width="260" height="40" fill="#f8f9fa" rx="2"/>
+                                    <rect class="line" x="20" y="290" width="260" height="15" fill="#e9ecef" rx="2"/>
+                                    <rect class="line" x="20" y="315" width="220" height="15" fill="#e9ecef" rx="2"/>
+                                    <rect class="section" x="20" y="340" width="260" height="40" fill="#f8f9fa" rx="2"/>
+                                </svg>
                             </div>
+                            <h4>Professional</h4>
+                            <p>Traditional and formal layout</p>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="template-option" data-template="creative" role="button" tabindex="0">
+                            <div class="template-preview">
+                                <svg class="template-svg creative" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Creative Template with Cartoon Elements -->
+                                    <defs>
+                                        <linearGradient id="creativeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style="stop-color:#9C27B0;stop-opacity:1">
+                                                <animate attributeName="stop-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                                            </stop>
+                                            <stop offset="100%" style="stop-color:#6f42c1;stop-opacity:1">
+                                                <animate attributeName="stop-opacity" values="0.9;1;0.9" dur="3s" repeatCount="indefinite"/>
+                                            </stop>
+                                        </linearGradient>
+                                        <pattern id="creativePattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                            <circle cx="2" cy="2" r="1" fill="white" opacity="0.2">
+                                                <animate attributeName="opacity" values="0.1;0.3;0.1" dur="2s" repeatCount="indefinite"/>
+                                            </circle>
+                                        </pattern>
+                                    </defs>
+                                    <!-- Header with Gradient and Pattern -->
+                                    <rect class="header" x="0" y="0" width="300" height="100" fill="url(#creativeGradient)"/>
+                                    <rect x="0" y="0" width="300" height="100" fill="url(#creativePattern)"/>
+                                    
+                                    <!-- Cartoon Character - Creative Artist -->
+                                    <g class="cartoon-character" transform="translate(220, 20)">
+                                        <!-- Head -->
+                                        <circle cx="0" cy="0" r="15" fill="#FFD700"/>
+                                        <!-- Body -->
+                                        <path d="M-10 15 Q0 25 10 15 L10 40 Q0 50 -10 40 Z" fill="#FFD700"/>
+                                        <!-- Paint Palette -->
+                                        <circle cx="15" cy="25" r="8" fill="#FF6B6B"/>
+                                        <circle cx="12" cy="20" r="2" fill="white"/>
+                                        <circle cx="18" cy="30" r="2" fill="white"/>
+                                        <!-- Eyes -->
+                                        <circle cx="-5" cy="-3" r="2" fill="white"/>
+                                        <circle cx="5" cy="-3" r="2" fill="white"/>
+                                        <!-- Happy Expression -->
+                                        <path d="M-5 5 Q0 10 5 5" stroke="white" fill="none" stroke-width="2"/>
+                                        <!-- Animated Elements -->
+                                        <animateTransform attributeName="transform" type="rotate" values="0;5;0;-5;0" dur="4s" repeatCount="indefinite"/>
+                                    </g>
 
-                    <!-- Work Experience -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <div class="section-header">
-                                <h5 class="card-title mb-0">Work Experience</h5>
-                                <button class="btn btn-sm btn-primary" id="addExperience">
-                                    <i class="fas fa-plus"></i> Add Experience
-                                </button>
+                                    <!-- Creative Name Section with Rounded Corners -->
+                                    <rect class="name" x="20" y="25" width="180" height="30" fill="white" rx="15">
+                                        <animate attributeName="width" values="160;180;160" dur="2s" repeatCount="indefinite"/>
+                                    </rect>
+                                    <!-- Creative Title Section -->
+                                    <rect class="title" x="20" y="65" width="150" height="25" fill="white" rx="12" opacity="0.9">
+                                        <animate attributeName="width" values="130;150;130" dur="2s" repeatCount="indefinite"/>
+                                    </rect>
+                                    <!-- Content Sections with Creative Style -->
+                                    <rect class="section" x="20" y="120" width="260" height="45" fill="#f8f9fa" rx="10"/>
+                                    <rect class="line" x="20" y="175" width="260" height="15" fill="#e9ecef" rx="8"/>
+                                    <rect class="line" x="20" y="200" width="240" height="15" fill="#e9ecef" rx="8"/>
+                                    <rect class="section" x="20" y="225" width="260" height="45" fill="#f8f9fa" rx="10"/>
+                                    <rect class="line" x="20" y="280" width="260" height="15" fill="#e9ecef" rx="8"/>
+                                    <rect class="line" x="20" y="305" width="240" height="15" fill="#e9ecef" rx="8"/>
+                                    <rect class="section" x="20" y="330" width="260" height="45" fill="#f8f9fa" rx="10"/>
+                                </svg>
                             </div>
-                            <div id="experienceList">
-                                <!-- Experience items will be added here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Education -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <div class="section-header">
-                                <h5 class="card-title mb-0">Education</h5>
-                                <button class="btn btn-sm btn-primary" id="addEducation">
-                                    <i class="fas fa-plus"></i> Add Education
-                                </button>
-                            </div>
-                            <div id="educationList">
-                                <!-- Education items will be added here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Skills -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Skills</h5>
-                            <div class="skill-input-group">
-                                <input type="text" class="form-control" id="skillInput" placeholder="Add a skill">
-                                <button class="btn btn-primary" id="addSkill">Add</button>
-                            </div>
-                            <div class="skill-tags" id="skillTags">
-                                <!-- Skill tags will be added here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Template Selection -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Resume Templates</h5>
-                            <div class="template-grid" id="templateGrid">
-                                <!-- Templates will be populated by JavaScript -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Recent Resumes</h5>
-                            <div id="history" class="text-center text-muted">
-                                No resumes created yet
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
-
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Resume Builder</h5>
-                            <p class="card-text">
-                                Create professional resumes with customizable templates.
-                                Download and share your resume.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Professional templates</li>
-                                <li><i class="fas fa-check text-success"></i> Customizable sections</li>
-                                <li><i class="fas fa-check text-success"></i> Real-time preview</li>
-                                <li><i class="fas fa-check text-success"></i> Download options</li>
-                                <li><i class="fas fa-check text-success"></i> History tracking</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Keep your resume concise and focused on relevant achievements.</small>
-                            </div>
+                            <h4>Creative</h4>
+                            <p>Unique and eye-catching style</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
+        <!-- Resume Form -->
+        <div class="row">
+            <div class="col-md-6">
+                <form id="resumeForm">
+                    <!-- Personal Information -->
+                    <div class="card mb-4" id="personal-info">
+                        <div class="card-body">
+                            <h3 class="section-title">Personal Information</h3>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="summary" class="form-label">Professional Summary</label>
+                                <textarea class="form-control" id="summary" rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
+                    <!-- Experience -->
+                    <div class="card mb-4" id="experience">
+                        <div class="card-body">
+                            <h3 class="section-title">Experience</h3>
+                            <div id="experienceItems">
+                                <div class="experience-item mb-3">
+                                    <div class="mb-3">
+                                        <label class="form-label">Job Title</label>
+                                        <input type="text" class="form-control job-title" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Company</label>
+                                        <input type="text" class="form-control company" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" class="form-control job-location" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Start Date</label>
+                                                <input type="date" class="form-control start-date" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">End Date</label>
+                                                <input type="date" class="form-control end-date" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control job-description" rows="3" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addExperience()">Add Experience</button>
+                        </div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="card mb-4" id="education">
+                        <div class="card-body">
+                            <h3 class="section-title">Education</h3>
+                            <div id="educationItems">
+                                <div class="education-item mb-3">
+                                    <div class="mb-3">
+                                        <label class="form-label">Degree</label>
+                                        <input type="text" class="form-control degree" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">School</label>
+                                        <input type="text" class="form-control school" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" class="form-control school-location" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Graduation Date</label>
+                                                <input type="date" class="form-control graduation-date" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">GPA</label>
+                                                <input type="text" class="form-control gpa">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addEducation()">Add Education</button>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="card mb-4" id="skills">
+                        <div class="card-body">
+                            <h3 class="section-title">Skills</h3>
+                            <div id="skillItems">
+                                <div class="skill-item mb-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Skill Name</label>
+                                                <input type="text" class="form-control skill-name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Level</label>
+                                                <select class="form-select skill-level" required>
+                                                    <option value="Beginner">Beginner</option>
+                                                    <option value="Intermediate">Intermediate</option>
+                                                    <option value="Advanced">Advanced</option>
+                                                    <option value="Expert">Expert</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addSkill()">Add Skill</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Preview -->
+            <div class="col-md-6">
+                <div class="card" id="preview">
+                    <div class="card-body">
+                        <h3 class="card-title">Preview</h3>
+                        <div class="preview-container">
+                            <div id="resume-preview" class="resume-preview"></div>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <button id="download-pdf" class="btn btn-primary" disabled>
+                                <i class="fas fa-download me-2"></i>Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- html2canvas -->
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const resumePreview = document.getElementById('resumePreview');
-            const downloadButton = document.getElementById('downloadButton');
-            const templateGrid = document.getElementById('templateGrid');
-            const history = document.getElementById('history');
-            let resumeHistory = [];
-            let selectedTemplate = null;
-            let skills = [];
+        // Initialize variables
+        let selectedTemplate = 'modern'; // Default template
 
-            // Sample resume templates (in a real app, these would be loaded from a server)
-            const templates = [
-                { id: 1, name: 'Professional', url: 'https://example.com/professional.jpg' },
-                { id: 2, name: 'Modern', url: 'https://example.com/modern.jpg' },
-                { id: 3, name: 'Creative', url: 'https://example.com/creative.jpg' },
-                { id: 4, name: 'Minimal', url: 'https://example.com/minimal.jpg' }
-            ];
-
-            // Initialize template grid
-            function initializeTemplates() {
-                templateGrid.innerHTML = templates.map(template => `
-                    <div class="template-item" data-id="${template.id}">
-                        <img src="${template.url}" alt="${template.name}" title="${template.name}">
-                        <div class="text-center mt-2">${template.name}</div>
-                    </div>
-                `).join('');
-
-                // Add click handlers
-                document.querySelectorAll('.template-item').forEach(item => {
-                    item.addEventListener('click', () => selectTemplate(item.dataset.id));
-                });
+        // Quick Navigation functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize form elements
+            initializeFormElements();
+            
+            // Set initial active template
+            const defaultTemplate = document.querySelector('.template-option[data-template="modern"]');
+            if (defaultTemplate) {
+                defaultTemplate.classList.add('active');
             }
 
-            // Select template
-            function selectTemplate(id) {
-                const template = templates.find(t => t.id === parseInt(id));
-                if (!template) return;
-
-                selectedTemplate = template;
-                document.querySelectorAll('.template-item').forEach(item => {
-                    item.classList.toggle('selected', item.dataset.id === id);
-                });
-
-                updatePreview();
-                downloadButton.disabled = false;
-            }
-
-            // Add work experience
-            function addExperience() {
-                const experienceList = document.getElementById('experienceList');
-                const experienceId = Date.now();
-                const experienceHtml = `
-                    <div class="section-content" id="experience-${experienceId}">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Company</label>
-                                <input type="text" class="form-control" placeholder="Company name">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Position</label>
-                                <input type="text" class="form-control" placeholder="Job title">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Start Date</label>
-                                <input type="month" class="form-control">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">End Date</label>
-                                <input type="month" class="form-control">
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-control" rows="3" placeholder="Describe your responsibilities and achievements"></textarea>
-                            </div>
-                            <div class="col-12 text-end">
-                                <button class="btn btn-sm btn-danger" onclick="removeExperience(${experienceId})">
-                                    <i class="fas fa-trash"></i> Remove
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                experienceList.insertAdjacentHTML('beforeend', experienceHtml);
-                updatePreview();
-            }
-
-            // Remove work experience
-            window.removeExperience = function(id) {
-                const experience = document.getElementById(`experience-${id}`);
-                if (experience) {
-                    experience.remove();
+            // Add click event listeners to template options
+            const templates = document.querySelectorAll('.template-option');
+            templates.forEach(template => {
+                template.addEventListener('click', function() {
+                    templates.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedTemplate = this.getAttribute('data-template');
                     updatePreview();
-                }
-            };
-
-            // Add education
-            function addEducation() {
-                const educationList = document.getElementById('educationList');
-                const educationId = Date.now();
-                const educationHtml = `
-                    <div class="section-content" id="education-${educationId}">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">School</label>
-                                <input type="text" class="form-control" placeholder="School name">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Degree</label>
-                                <input type="text" class="form-control" placeholder="Degree name">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Start Date</label>
-                                <input type="month" class="form-control">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">End Date</label>
-                                <input type="month" class="form-control">
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-control" rows="2" placeholder="Additional information about your education"></textarea>
-                            </div>
-                            <div class="col-12 text-end">
-                                <button class="btn btn-sm btn-danger" onclick="removeEducation(${educationId})">
-                                    <i class="fas fa-trash"></i> Remove
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                educationList.insertAdjacentHTML('beforeend', educationHtml);
-                updatePreview();
-            }
-
-            // Remove education
-            window.removeEducation = function(id) {
-                const education = document.getElementById(`education-${id}`);
-                if (education) {
-                    education.remove();
-                    updatePreview();
-                }
-            };
-
-            // Add skill
-            function addSkill() {
-                const skillInput = document.getElementById('skillInput');
-                const skill = skillInput.value.trim();
-                if (skill && !skills.includes(skill)) {
-                    skills.push(skill);
-                    updateSkillTags();
-                    skillInput.value = '';
-                    updatePreview();
-                }
-            }
-
-            // Remove skill
-            function removeSkill(skill) {
-                skills = skills.filter(s => s !== skill);
-                updateSkillTags();
-                updatePreview();
-            }
-
-            // Update skill tags
-            function updateSkillTags() {
-                const skillTags = document.getElementById('skillTags');
-                skillTags.innerHTML = skills.map(skill => `
-                    <span class="skill-tag">
-                        ${skill}
-                        <i class="fas fa-times remove-skill" onclick="removeSkill('${skill}')"></i>
-                    </span>
-                `).join('');
-            }
-
-            // Update preview
-            function updatePreview() {
-                const fullName = document.getElementById('fullName').value;
-                const jobTitle = document.getElementById('jobTitle').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const location = document.getElementById('location').value;
-                const summary = document.getElementById('summary').value;
-
-                if (!fullName) {
-                    resumePreview.innerHTML = '<p class="text-muted">Fill in your information to see the preview</p>';
-                    return;
-                }
-
-                let experienceHtml = '';
-                document.querySelectorAll('[id^="experience-"]').forEach(exp => {
-                    const company = exp.querySelector('input[placeholder="Company name"]').value;
-                    const position = exp.querySelector('input[placeholder="Job title"]').value;
-                    const startDate = exp.querySelector('input[type="month"]:first-of-type').value;
-                    const endDate = exp.querySelector('input[type="month"]:last-of-type').value;
-                    const description = exp.querySelector('textarea').value;
-
-                    if (company) {
-                        experienceHtml += `
-                            <div class="section">
-                                <h3>${position}</h3>
-                                <p><strong>${company}</strong> | ${startDate} - ${endDate || 'Present'}</p>
-                                <p>${description}</p>
-                            </div>
-                        `;
-                    }
                 });
-
-                let educationHtml = '';
-                document.querySelectorAll('[id^="education-"]').forEach(edu => {
-                    const school = edu.querySelector('input[placeholder="School name"]').value;
-                    const degree = edu.querySelector('input[placeholder="Degree name"]').value;
-                    const startDate = edu.querySelector('input[type="month"]:first-of-type').value;
-                    const endDate = edu.querySelector('input[type="month"]:last-of-type').value;
-                    const description = edu.querySelector('textarea').value;
-
-                    if (school) {
-                        educationHtml += `
-                            <div class="section">
-                                <h3>${degree}</h3>
-                                <p><strong>${school}</strong> | ${startDate} - ${endDate || 'Present'}</p>
-                                <p>${description}</p>
-                            </div>
-                        `;
-                    }
-                });
-
-                resumePreview.innerHTML = `
-                    <h1>${fullName}</h1>
-                    <p>${jobTitle}</p>
-                    <p>${email} | ${phone} | ${location}</p>
-                    <p>${summary}</p>
-
-                    <h2>Work Experience</h2>
-                    ${experienceHtml || '<p>No work experience added</p>'}
-
-                    <h2>Education</h2>
-                    ${educationHtml || '<p>No education added</p>'}
-
-                    <h2>Skills</h2>
-                    <div class="skill-tags">
-                        ${skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('') || '<p>No skills added</p>'}
-                    </div>
-                `;
-            }
-
-            // Download resume
-            function downloadResume() {
-                html2canvas(resumePreview).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `resume-${Date.now()}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-
-                    // Add to history
-                    resumeHistory.unshift({
-                        name: document.getElementById('fullName').value,
-                        jobTitle: document.getElementById('jobTitle').value,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-                });
-            }
-
-            // Update history display
-            function updateHistory() {
-                if (resumeHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No resumes created yet</p>';
-                    return;
-                }
-
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Name</th>
-                                    <th>Job Title</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${resumeHistory.slice(0, 5).map(item => `
-                                    <tr>
-                                        <td>${item.timestamp}</td>
-                                        <td>${item.name}</td>
-                                        <td>${item.jobTitle}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            }
-
-            // Event listeners
-            document.getElementById('addExperience').addEventListener('click', addExperience);
-            document.getElementById('addEducation').addEventListener('click', addEducation);
-            document.getElementById('addSkill').addEventListener('click', addSkill);
-            document.getElementById('skillInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    addSkill();
-                }
-            });
-            downloadButton.addEventListener('click', downloadResume);
-
-            // Add input handlers for all fields
-            document.querySelectorAll('input, textarea').forEach(input => {
-                input.addEventListener('input', updatePreview);
             });
 
-            // Initialize
-            initializeTemplates();
+            // Add event listeners for form changes
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                element.addEventListener('change', updatePreview);
+                element.addEventListener('input', updatePreview);
+            });
+
+            // Initialize preview
+            updatePreview();
+
+            // Add event listener for download button
+            const downloadButton = document.getElementById('download-pdf');
+            if (downloadButton) {
+                downloadButton.addEventListener('click', downloadPDF);
+            }
         });
+
+        // Initialize form elements
+        function initializeFormElements() {
+            // Add event listeners for add buttons
+            const addExperienceBtn = document.getElementById('addExperience');
+            const addEducationBtn = document.getElementById('addEducation');
+            const addSkillBtn = document.getElementById('addSkill');
+
+            if (addExperienceBtn) {
+                addExperienceBtn.addEventListener('click', addExperience);
+            }
+            if (addEducationBtn) {
+                addEducationBtn.addEventListener('click', addEducation);
+            }
+            if (addSkillBtn) {
+                addSkillBtn.addEventListener('click', addSkill);
+            }
+        }
+
+        // Update preview
+        function updatePreview() {
+            const preview = document.getElementById('resume-preview');
+            if (!preview) return;
+
+            // Get all form data
+            const formData = {
+                personalInfo: {
+                    name: document.getElementById('name')?.value || '',
+                    email: document.getElementById('email')?.value || '',
+                    phone: document.getElementById('phone')?.value || '',
+                    location: document.getElementById('location')?.value || '',
+                    summary: document.getElementById('summary')?.value || ''
+                },
+                experience: Array.from(document.querySelectorAll('.experience-item')).map(item => ({
+                    title: item.querySelector('.job-title')?.value || '',
+                    company: item.querySelector('.company')?.value || '',
+                    location: item.querySelector('.job-location')?.value || '',
+                    startDate: item.querySelector('.start-date')?.value || '',
+                    endDate: item.querySelector('.end-date')?.value || '',
+                    description: item.querySelector('.job-description')?.value || ''
+                })),
+                education: Array.from(document.querySelectorAll('.education-item')).map(item => ({
+                    degree: item.querySelector('.degree')?.value || '',
+                    school: item.querySelector('.school')?.value || '',
+                    location: item.querySelector('.school-location')?.value || '',
+                    graduationDate: item.querySelector('.graduation-date')?.value || '',
+                    gpa: item.querySelector('.gpa')?.value || ''
+                })),
+                skills: Array.from(document.querySelectorAll('.skill-item')).map(item => ({
+                    name: item.querySelector('.skill-name')?.value || '',
+                    level: item.querySelector('.skill-level')?.value || 'Beginner'
+                }))
+            };
+
+            // Apply template
+            let templateHTML = '';
+            switch (selectedTemplate) {
+                case 'modern':
+                    templateHTML = generateModernTemplate(formData);
+                    break;
+                case 'professional':
+                    templateHTML = generateProfessionalTemplate(formData);
+                    break;
+                case 'creative':
+                    templateHTML = generateCreativeTemplate(formData);
+                    break;
+                default:
+                    templateHTML = generateModernTemplate(formData);
+            }
+
+            preview.innerHTML = templateHTML;
+            updateDownloadButton();
+        }
+
+        // Template generators
+        function generateModernTemplate(data) {
+            return `
+                <div class="resume-modern">
+                    <header class="resume-header">
+                        <h1>${data.personalInfo.name}</h1>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope"></i> ${data.personalInfo.email}</p>
+                            <p><i class="fas fa-phone"></i> ${data.personalInfo.phone}</p>
+                            <p><i class="fas fa-map-marker-alt"></i> ${data.personalInfo.location}</p>
+                        </div>
+                    </header>
+                    
+                    <section class="resume-section">
+                        <h2>Professional Summary</h2>
+                        <p>${data.personalInfo.summary}</p>
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Experience</h2>
+                        ${data.experience.map(exp => `
+                            <div class="experience-item">
+                                <h3>${exp.title}</h3>
+                                <h4>${exp.company} - ${exp.location}</h4>
+                                <p class="date">${exp.startDate} - ${exp.endDate}</p>
+                                <p>${exp.description}</p>
+                            </div>
+                        `).join('')}
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Education</h2>
+                        ${data.education.map(edu => `
+                            <div class="education-item">
+                                <h3>${edu.degree}</h3>
+                                <h4>${edu.school} - ${edu.location}</h4>
+                                <p class="date">Graduated: ${edu.graduationDate}</p>
+                                ${edu.gpa ? `<p>GPA: ${edu.gpa}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Skills</h2>
+                        <div class="skills-grid">
+                            ${data.skills.map(skill => `
+                                <div class="skill-item">
+                                    <h4>${skill.name}</h4>
+                                    <p class="skill-level">${skill.level}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        function generateProfessionalTemplate(data) {
+            return `
+                <div class="resume-professional">
+                    <header class="resume-header">
+                        <h1>${data.personalInfo.name}</h1>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope"></i> ${data.personalInfo.email}</p>
+                            <p><i class="fas fa-phone"></i> ${data.personalInfo.phone}</p>
+                            <p><i class="fas fa-map-marker-alt"></i> ${data.personalInfo.location}</p>
+                        </div>
+                    </header>
+                    
+                    <section class="resume-section">
+                        <h2>Professional Summary</h2>
+                        <p>${data.personalInfo.summary}</p>
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Experience</h2>
+                        ${data.experience.map(exp => `
+                            <div class="experience-item">
+                                <h3>${exp.title}</h3>
+                                <h4>${exp.company} - ${exp.location}</h4>
+                                <p class="date">${exp.startDate} - ${exp.endDate}</p>
+                                <p>${exp.description}</p>
+                            </div>
+                        `).join('')}
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Education</h2>
+                        ${data.education.map(edu => `
+                            <div class="education-item">
+                                <h3>${edu.degree}</h3>
+                                <h4>${edu.school} - ${edu.location}</h4>
+                                <p class="date">Graduated: ${edu.graduationDate}</p>
+                                ${edu.gpa ? `<p>GPA: ${edu.gpa}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Skills</h2>
+                        <div class="skills-grid">
+                            ${data.skills.map(skill => `
+                                <div class="skill-item">
+                                    <h4>${skill.name}</h4>
+                                    <p class="skill-level">${skill.level}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        function generateCreativeTemplate(data) {
+            return `
+                <div class="resume-creative">
+                    <header class="resume-header">
+                        <h1>${data.personalInfo.name}</h1>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope"></i> ${data.personalInfo.email}</p>
+                            <p><i class="fas fa-phone"></i> ${data.personalInfo.phone}</p>
+                            <p><i class="fas fa-map-marker-alt"></i> ${data.personalInfo.location}</p>
+                        </div>
+                    </header>
+                    
+                    <section class="resume-section">
+                        <h2>Professional Summary</h2>
+                        <p>${data.personalInfo.summary}</p>
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Experience</h2>
+                        ${data.experience.map(exp => `
+                            <div class="experience-item">
+                                <h3>${exp.title}</h3>
+                                <h4>${exp.company} - ${exp.location}</h4>
+                                <p class="date">${exp.startDate} - ${exp.endDate}</p>
+                                <p>${exp.description}</p>
+                            </div>
+                        `).join('')}
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Education</h2>
+                        ${data.education.map(edu => `
+                            <div class="education-item">
+                                <h3>${edu.degree}</h3>
+                                <h4>${edu.school} - ${edu.location}</h4>
+                                <p class="date">Graduated: ${edu.graduationDate}</p>
+                                ${edu.gpa ? `<p>GPA: ${edu.gpa}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </section>
+
+                    <section class="resume-section">
+                        <h2>Skills</h2>
+                        <div class="skills-grid">
+                            ${data.skills.map(skill => `
+                                <div class="skill-item">
+                                    <h4>${skill.name}</h4>
+                                    <p class="skill-level">${skill.level}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        // Add experience item
+        function addExperience() {
+            const experienceItems = document.getElementById('experienceItems');
+            const newItem = document.createElement('div');
+            newItem.className = 'experience-item mb-3';
+            newItem.innerHTML = `
+                <div class="mb-3">
+                    <label class="form-label">Job Title</label>
+                    <input type="text" class="form-control job-title" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Company</label>
+                    <input type="text" class="form-control company" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-control job-location" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control start-date" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">End Date</label>
+                            <input type="date" class="form-control end-date" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control job-description" rows="3" required></textarea>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button>
+            `;
+            experienceItems.appendChild(newItem);
+            
+            // Add event listeners to new inputs
+            newItem.querySelectorAll('input, textarea').forEach(element => {
+                element.addEventListener('change', updatePreview);
+                element.addEventListener('input', updatePreview);
+            });
+            
+            updatePreview();
+        }
+
+        // Add education item
+        function addEducation() {
+            const educationItems = document.getElementById('educationItems');
+            const newItem = document.createElement('div');
+            newItem.className = 'education-item mb-3';
+            newItem.innerHTML = `
+                <div class="mb-3">
+                    <label class="form-label">Degree</label>
+                    <input type="text" class="form-control degree" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">School</label>
+                    <input type="text" class="form-control school" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-control school-location" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Graduation Date</label>
+                            <input type="date" class="form-control graduation-date" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">GPA</label>
+                            <input type="text" class="form-control gpa">
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button>
+            `;
+            educationItems.appendChild(newItem);
+            
+            // Add event listeners to new inputs
+            newItem.querySelectorAll('input').forEach(element => {
+                element.addEventListener('change', updatePreview);
+                element.addEventListener('input', updatePreview);
+            });
+            
+            updatePreview();
+        }
+
+        // Add skill item
+        function addSkill() {
+            const skillItems = document.getElementById('skillItems');
+            const newItem = document.createElement('div');
+            newItem.className = 'skill-item mb-3';
+            newItem.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Skill Name</label>
+                            <input type="text" class="form-control skill-name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Level</label>
+                            <select class="form-select skill-level" required>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                                <option value="Expert">Expert</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button>
+            `;
+            skillItems.appendChild(newItem);
+            
+            // Add event listeners to new inputs
+            newItem.querySelectorAll('input, select').forEach(element => {
+                element.addEventListener('change', updatePreview);
+                element.addEventListener('input', updatePreview);
+            });
+            
+            updatePreview();
+        }
+
+        // Remove item (experience, education, or skill)
+        function removeItem(button) {
+            const item = button.closest('.experience-item, .education-item, .skill-item');
+            if (item) {
+                item.remove();
+                updatePreview();
+            }
+        }
+
+        // Update download button state
+        function updateDownloadButton() {
+            const downloadButton = document.getElementById('download-pdf');
+            const form = document.getElementById('resumeForm');
+            if (downloadButton && form) {
+                downloadButton.disabled = !form.checkValidity();
+            }
+        }
+
+        // Download PDF
+        function downloadPDF() {
+            const element = document.getElementById('resume-preview');
+            if (!element) return;
+
+            const opt = {
+                margin: 1,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Show loading state
+            const downloadButton = document.getElementById('download-pdf');
+            if (downloadButton) {
+                const originalText = downloadButton.innerHTML;
+                downloadButton.disabled = true;
+                downloadButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating PDF...';
+
+                html2pdf().set(opt).from(element).save().then(() => {
+                    // Restore button state
+                    downloadButton.disabled = false;
+                    downloadButton.innerHTML = originalText;
+                }).catch(error => {
+                    console.error('PDF generation failed:', error);
+                    downloadButton.disabled = false;
+                    downloadButton.innerHTML = originalText;
+                    alert('Failed to generate PDF. Please try again.');
+                });
+            } else {
+                html2pdf().set(opt).from(element).save();
+            }
+        }
     </script>
 </body>
-</html> 
+</html>
