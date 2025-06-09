@@ -10,44 +10,45 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --main-bg: #1a1a1a;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --result-bg: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --main-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --input-bg: #ffffff;
+            --result-bg: #f8f9fa;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--bs-dark) 0%, #1a1a2e 100%);
+            background-color: var(--main-bg);
+            color: var(--text-color);
             min-height: 100vh;
-        }
-
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--bs-light);
-        }
-
-        .tool-header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .tool-header p {
-            font-size: 1.1rem;
-            color: var(--bs-gray-400);
+            font-family: var(--font-family);
+            overflow-x: hidden;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.05);
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            border-radius: 8px;
             transition: transform 0.3s ease;
+            margin-bottom: 0.75rem;
         }
 
         .card:hover {
@@ -55,37 +56,87 @@
         }
 
         .card-body {
-            padding: 2rem;
+            padding: 1rem;
+        }
+
+        .form-label {
+            color: var(--text-color);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
         }
 
         .form-control, .form-select {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--bs-light);
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
         }
 
         .form-control:focus, .form-select:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #4facfe;
-            box-shadow: 0 0 0 0.25rem rgba(79, 172, 254, 0.25);
-            color: var(--bs-light);
+            background-color: var(--input-bg);
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+            color: var(--text-color);
         }
 
-        .form-label {
-            color: var(--bs-gray-400);
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+        .form-control::placeholder {
+            color: var(--text-muted);
         }
 
+        .card-text {
+            color: var(--text-color);
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        /* Calculator specific styles */
+        .result-box {
+            background-color: var(--result-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .result-box:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .result-box h4 {
+            color: var(--text-color);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .result-box p {
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .result-box .highlight {
+            color: var(--bs-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Button styling */
         .btn-primary {
             background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
             border: none;
-            border-radius: 10px;
-            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
         }
 
@@ -94,50 +145,286 @@
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
         }
 
-        #result {
-            font-size: 1.5rem;
+        /* Main container styling */
+        main.container {
+            background-color: var(--main-bg);
+            padding: 2rem 0;
+        }
+
+        /* Formula section */
+        .formula-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .formula-section:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .formula-section h5 {
+            color: var(--text-color);
+            margin-bottom: 0.75rem;
             font-weight: 600;
-            color: #4facfe;
-            padding: 1rem;
-            border-radius: 10px;
-            background: rgba(79, 172, 254, 0.1);
+            font-size: 1rem;
         }
 
-        .history-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .formula-section p {
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
         }
 
-        .alert-info {
-            background: rgba(79, 172, 254, 0.1);
-            border: 1px solid rgba(79, 172, 254, 0.2);
-            color: #4facfe;
+        /* Input group styling */
+        .input-group {
+            margin-bottom: 0.75rem;
         }
 
-        .list-unstyled li {
-            margin-bottom: 0.5rem;
-            color: var(--bs-gray-400);
+        .input-group .form-control {
+            font-size: 0.9rem;
+            padding: 0.4rem 0.6rem;
         }
 
-        .list-unstyled li i {
-            margin-right: 0.5rem;
+        .input-group-text {
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            color: var(--text-muted);
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.6rem;
+        }
+
+        /* Select styling */
+        select.form-select {
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+            font-size: 0.9rem;
+            padding: 0.4rem 0.6rem;
+            cursor: pointer;
+        }
+
+        select.form-select:focus {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: var(--bs-danger);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            padding: 0.4rem;
+            border-radius: 4px;
+            background-color: rgba(var(--bs-danger-rgb), 0.1);
+        }
+
+        .tool-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0.5rem;
+            background-color: var(--main-bg);
+            min-height: calc(100vh - 2rem);
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .tool-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--text-color);
+        }
+
+        .tool-header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
         }
 
         .card-title {
-            color: var(--bs-light);
+            color: var(--text-color);
             font-weight: 600;
             margin-bottom: 1.5rem;
         }
 
         .ad-space {
-            background: rgba(255, 255, 255, 0.05);
+            background-color: var(--card-bg);
             border-radius: 10px;
             padding: 1rem;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Result section styling */
+        #result {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-color);
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: var(--result-bg);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            margin: 0.75rem 0;
+        }
+
+        #result .text-danger {
+            color: var(--bs-danger) !important;
+        }
+
+        /* History section styling */
+        .history-section {
+            margin-top: 2rem;
+        }
+
+        .history-section h4 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .history-item {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item:hover {
+            transform: translateX(5px);
+            background-color: var(--result-bg);
+        }
+
+        .history-item .operation {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .history-item .result {
+            color: var(--bs-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Percentage visualization */
+        .percentage-bar {
+            background-color: var(--input-bg);
+            border-radius: 10px;
+            height: 20px;
+            margin: 1rem 0;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .percentage-fill {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        /* Enhanced button styling */
+        .btn-group {
+            margin-top: 1.5rem;
+        }
+
+        .btn-group .btn {
+            margin-right: 0.5rem;
+        }
+
+        .btn-secondary {
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--result-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .percentage-details {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .percentage-details h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-item .label {
+            color: var(--text-muted);
+        }
+
+        .detail-item .value {
+            color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        .chart-container {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-container h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .tool-container {
+                padding: 0.5rem;
+            }
+            
+            .card-body {
+                padding: 0.75rem;
+            }
+
+            .tool-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .tool-header p {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -388,10 +675,8 @@
 
                 history.innerHTML = calculationHistory.map(item => `
                     <div class="history-item">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>${item.calculation}</div>
-                            <small class="text-muted">${item.timestamp}</small>
-                        </div>
+                        <div class="calculation">${item.calculation}</div>
+                        <div class="timestamp">${item.timestamp}</div>
                     </div>
                 `).join('');
             }

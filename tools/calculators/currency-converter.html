@@ -9,11 +9,348 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4353202130254945"
      crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --main-bg: #1a1a1a;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --result-bg: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --main-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --input-bg: #ffffff;
+            --result-bg: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            font-family: var(--font-family);
+            overflow-x: hidden;
+        }
+
+        .tool-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0.5rem;
+            background-color: var(--main-bg);
+            min-height: calc(100vh - 2rem);
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .tool-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--text-color);
+        }
+
+        .tool-header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .form-label {
+            color: var(--text-color);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        #result {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            padding: 0.75rem;
+            border-radius: 6px;
+            background-color: var(--result-bg);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            margin: 0.5rem 0;
+        }
+
+        .currency-details {
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .currency-details h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-item .label {
+            color: var(--text-muted);
+        }
+
+        .detail-item .value {
+            color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        .chart-container {
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-container h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .tool-container {
+                padding: 0.5rem;
+            }
+            
+            .card-body {
+                padding: 0.75rem;
+            }
+
+            .tool-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .tool-header p {
+                font-size: 0.85rem;
+            }
+        }
+
+        .tool-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            background-color: var(--main-bg);
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tool-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .tool-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--input-bg);
+            border-color: var(--bs-primary);
+            color: var(--text-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        /* Result section styling */
+        #result .text-danger {
+            color: var(--bs-danger) !important;
+        }
+
+        .conversion-result {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .conversion-result:hover {
+            transform: translateX(5px);
+            background-color: var(--result-bg);
+        }
+
+        .conversion-result .amount {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .conversion-result .rate {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .conversion-result .highlight {
+            color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        /* Exchange rate section */
+        .exchange-rate {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .exchange-rate h5 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .exchange-rate p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-info {
+            background-color: var(--result-bg);
+            border: 1px solid var(--border-color);
+            color: var(--bs-primary);
+        }
+
+        /* Currency flags */
+        .currency-flag {
+            width: 24px;
+            height: 16px;
+            margin-right: 0.5rem;
+            border-radius: 2px;
+        }
+
+        /* Rate history */
+        .rate-history {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .rate-history h5 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .rate-history p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .rate-history .trend {
+            color: var(--bs-success);
+            font-weight: 500;
+        }
+
+        .rate-history .trend.down {
+            color: var(--bs-danger);
+        }
+    </style>
 </head>
 <body>
     <!-- Header will be loaded here -->

@@ -10,6 +10,174 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --main-bg: #1a1a1a;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --main-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-title {
+            color: var(--text-color);
+        }
+
+        .lead {
+            color: var(--text-muted);
+        }
+
+        .upload-area {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 2px dashed var(--border-color);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .upload-area:hover {
+            border-color: var(--bs-primary);
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+        }
+
+        .upload-area i {
+            color: var(--bs-primary);
+        }
+
+        .upload-area h4 {
+            color: var(--text-color);
+        }
+
+        .form-label {
+            color: var(--text-color);
+        }
+
+        .form-control {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            background-color: var(--card-bg);
+            border-color: var(--bs-primary);
+            color: var(--text-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .card-text {
+            color: var(--text-color);
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        /* Preview card styling */
+        .card-img-top {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-body {
+            background-color: var(--card-bg);
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--bs-primary-dark);
+            border-color: var(--bs-primary-dark);
+        }
+
+        .btn-success {
+            background-color: var(--bs-success);
+            border-color: var(--bs-success);
+        }
+
+        .btn-success:hover {
+            background-color: var(--bs-success-dark);
+            border-color: var(--bs-success-dark);
+        }
+
+        /* Main container styling */
+        main.container {
+            background-color: var(--main-bg);
+            padding: 2rem 0;
+        }
+
+        /* Card hover effect */
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        /* Cropper specific styles */
+        .cropper-container {
+            background-color: var(--card-bg);
+        }
+
+        .cropper-view-box,
+        .cropper-face {
+            border-color: var(--border-color);
+        }
+
+        .cropper-line,
+        .cropper-point {
+            background-color: var(--bs-primary);
+        }
+
+        .cropper-bg {
+            background-color: var(--card-bg);
+        }
+
+        /* Preview area */
+        #previewArea {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+        }
+
+        /* Info section */
+        #imageInfo {
+            color: var(--text-color);
+        }
+
+        #imageInfo span {
+            color: var(--bs-primary);
+            font-weight: 500;
+        }
+
         .img-container {
             max-height: 500px;
             margin-bottom: 1rem;

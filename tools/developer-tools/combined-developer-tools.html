@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Developer Tools - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- CodeMirror CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --main-bg: #1a1a1a;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --result-bg: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --main-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --input-bg: #ffffff;
+            --result-bg: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            font-family: var(--font-family);
+            overflow-x: hidden;
+        }
+
+        .tool-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: var(--main-bg);
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .tool-header p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .tool-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .tool-section:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tool-header i {
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+            color: var(--bs-primary);
+        }
+
+        .tool-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .form-label {
+            color: var(--text-color);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .result-box {
+            background-color: var(--result-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .result-box .highlight {
+            color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--text-muted);
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: var(--text-color);
+            border: none;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--bs-primary);
+            background: none;
+            border: none;
+            border-bottom: 2px solid var(--bs-primary);
+        }
+
+        .tab-content {
+            padding: 1rem 0;
+        }
+
+        .CodeMirror {
+            height: 200px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 100px;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .tool-container {
+                padding: 0.5rem;
+            }
+
+            .tool-section {
+                padding: 0.75rem;
+            }
+
+            .tool-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .tool-header p {
+                font-size: 0.9rem;
+            }
+
+            .tool-header h3 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-code"></i> Combined Developer Tools</h1>
+                <p>All your development needs in one place</p>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs" id="devToolsTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="sql-tab" data-bs-toggle="tab" data-bs-target="#sql" type="button" role="tab">
+                        <i class="fas fa-database"></i> SQL Formatter
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="markdown-tab" data-bs-toggle="tab" data-bs-target="#markdown" type="button" role="tab">
+                        <i class="fas fa-markdown"></i> Markdown to HTML
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="json-tab" data-bs-toggle="tab" data-bs-target="#json" type="button" role="tab">
+                        <i class="fas fa-code"></i> JSON Formatter
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="js-min-tab" data-bs-toggle="tab" data-bs-target="#js-min" type="button" role="tab">
+                        <i class="fab fa-js"></i> JavaScript Minifier
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="ip-tab" data-bs-toggle="tab" data-bs-target="#ip" type="button" role="tab">
+                        <i class="fas fa-network-wired"></i> IP Lookup
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="ip-track-tab" data-bs-toggle="tab" data-bs-target="#ip-track" type="button" role="tab">
+                        <i class="fas fa-map-marker-alt"></i> IP Tracker
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="html-md-tab" data-bs-toggle="tab" data-bs-target="#html-md" type="button" role="tab">
+                        <i class="fas fa-exchange-alt"></i> HTML to Markdown
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="htaccess-tab" data-bs-toggle="tab" data-bs-target="#htaccess" type="button" role="tab">
+                        <i class="fas fa-server"></i> .htaccess Generator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="css-min-tab" data-bs-toggle="tab" data-bs-target="#css-min" type="button" role="tab">
+                        <i class="fab fa-css3"></i> CSS Minifier
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="color-tab" data-bs-toggle="tab" data-bs-target="#color" type="button" role="tab">
+                        <i class="fas fa-palette"></i> Color Picker
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="base64-tab" data-bs-toggle="tab" data-bs-target="#base64" type="button" role="tab">
+                        <i class="fas fa-file-code"></i> Base64 Encoder/Decoder
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button" role="tab">
+                        <i class="fas fa-robot"></i> AI Chatbot Demo
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="devToolsTabContent">
+                <!-- SQL Formatter -->
+                <div class="tab-pane fade show active" id="sql" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-database"></i>
+                            <h3>SQL Formatter</h3>
+                        </div>
+                        <form id="sqlForm">
+                            <div class="mb-3">
+                                <label for="sqlInput" class="form-label">SQL Query</label>
+                                <textarea class="form-control" id="sqlInput" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Format SQL</button>
+                        </form>
+                        <div id="sqlResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Markdown to HTML -->
+                <div class="tab-pane fade" id="markdown" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-markdown"></i>
+                            <h3>Markdown to HTML</h3>
+                        </div>
+                        <form id="markdownForm">
+                            <div class="mb-3">
+                                <label for="markdownInput" class="form-label">Markdown Text</label>
+                                <textarea class="form-control" id="markdownInput" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Convert to HTML</button>
+                        </form>
+                        <div id="markdownResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- JSON Formatter -->
+                <div class="tab-pane fade" id="json" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-code"></i>
+                            <h3>JSON Formatter</h3>
+                        </div>
+                        <form id="jsonForm">
+                            <div class="mb-3">
+                                <label for="jsonInput" class="form-label">JSON Data</label>
+                                <textarea class="form-control" id="jsonInput" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Format JSON</button>
+                        </form>
+                        <div id="jsonResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- JavaScript Minifier -->
+                <div class="tab-pane fade" id="js-min" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fab fa-js"></i>
+                            <h3>JavaScript Minifier</h3>
+                        </div>
+                        <form id="jsMinForm">
+                            <div class="mb-3">
+                                <label for="jsInput" class="form-label">JavaScript Code</label>
+                                <textarea class="form-control" id="jsInput" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Minify JavaScript</button>
+                        </form>
+                        <div id="jsMinResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- IP Lookup -->
+                <div class="tab-pane fade" id="ip" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-network-wired"></i>
+                            <h3>IP Lookup</h3>
+                        </div>
+                        <form id="ipForm">
+                            <div class="mb-3">
+                                <label for="ipInput" class="form-label">IP Address</label>
+                                <input type="text" class="form-control" id="ipInput" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Lookup IP</button>
+                        </form>
+                        <div id="ipResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- IP Tracker -->
+                <div class="tab-pane fade" id="ip-track" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h3>IP Tracker</h3>
+                        </div>
+                        <form id="ipTrackForm">
+                            <div class="mb-3">
+                                <label for="ipTrackInput" class="form-label">IP Address</label>
+                                <input type="text" class="form-control" id="ipTrackInput" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Track IP</button>
+                        </form>
+                        <div id="ipTrackResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- HTML to Markdown -->
+                <div class="tab-pane fade" id="html-md" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-exchange-alt"></i>
+                            <h3>HTML to Markdown</h3>
+                        </div>
+                        <form id="htmlMdForm">
+                            <div class="mb-3">
+                                <label for="htmlInput" class="form-label">HTML Code</label>
+                                <textarea class="form-control" id="htmlInput" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Convert to Markdown</button>
+                        </form>
+                        <div id="htmlMdResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- .htaccess Generator -->
+                <div class="tab-pane fade" id="htaccess" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-server"></i>
+                            <h3>.htaccess Generator</h3>
+                        </div>
+                        <form id="htaccessForm">
+                            <div class="mb-3">
+                                <label for="redirectType" class="form-label">Redirect Type</label>
+                                <select class="form-select" id="redirectType" required>
+                                    <option value="301">301 (Permanent)</option>
+                                    <option value="302">302 (Temporary)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sourceUrl" class="form-label">Source URL</label>
+                                <input type="text" class="form-control" id="sourceUrl" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="targetUrl" class="form-label">Target URL</label>
+                                <input type="text" class="form-control" id="targetUrl" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Generate .htaccess</button>
+                        </form>
+                        <div id="htaccessResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- CSS Minifier -->
+                <div class="tab-pane fade" id="css-min" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fab fa-css3"></i>
+                            <h3>CSS Minifier</h3>
+                        </div>
+                        <form id="cssMinForm">
+                            <div class="mb-3">
+                                <label for="cssInput" class="form-label">CSS Code</label>
+                                <textarea class="form-control" id="cssInput" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Minify CSS</button>
+                        </form>
+                        <div id="cssMinResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Color Picker -->
+                <div class="tab-pane fade" id="color" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-palette"></i>
+                            <h3>Color Picker</h3>
+                        </div>
+                        <form id="colorForm">
+                            <div class="mb-3">
+                                <label for="colorInput" class="form-label">Color</label>
+                                <input type="color" class="form-control form-control-color" id="colorInput" required>
+                            </div>
+                            <div id="colorPreview" class="color-preview"></div>
+                            <div id="colorResult" class="result-box mt-3" style="display: none;"></div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Base64 Encoder/Decoder -->
+                <div class="tab-pane fade" id="base64" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-file-code"></i>
+                            <h3>Base64 Encoder/Decoder</h3>
+                        </div>
+                        <form id="base64Form">
+                            <div class="mb-3">
+                                <label for="base64Input" class="form-label">Input</label>
+                                <textarea class="form-control" id="base64Input" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="base64Mode" class="form-label">Mode</label>
+                                <select class="form-select" id="base64Mode" required>
+                                    <option value="encode">Encode</option>
+                                    <option value="decode">Decode</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Process</button>
+                        </form>
+                        <div id="base64Result" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- AI Chatbot Demo -->
+                <div class="tab-pane fade" id="chatbot" role="tabpanel">
+                    <div class="tool-section">
+                        <div class="tool-header">
+                            <i class="fas fa-robot"></i>
+                            <h3>AI Chatbot Demo</h3>
+                        </div>
+                        <div id="chatMessages" class="result-box mb-3" style="height: 300px; overflow-y: auto;"></div>
+                        <form id="chatbotForm">
+                            <div class="mb-3">
+                                <label for="chatInput" class="form-label">Message</label>
+                                <input type="text" class="form-control" id="chatInput" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/sql/sql.min.js"></script>
+    <!-- Marked.js for Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Turndown.js for HTML to Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.js"></script>
+    <!-- Add required libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sql-formatter@4.0.2/dist/sql-formatter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/terser@5.14.2/dist/bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clean-css@5.3.1/lib/index.min.js"></script>
+    <!-- Add additional required libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/turndown@7.1.2/dist/turndown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ipapi.co@1.0.0/dist/ipapi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pretty@2.2.3/pretty.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/hint/show-hint.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/hint/sql-hint.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/hint/javascript-hint.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/hint/html-hint.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/hint/css-hint.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/hint/show-hint.css" rel="stylesheet">
+    <!-- Custom JS -->
+    <script>
+        // Initialize CodeMirror instances with improved configuration
+        const editors = {
+            sql: CodeMirror.fromTextArea(document.getElementById('sqlInput'), {
+                mode: 'text/x-sql',
+                theme: 'dracula',
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                indentUnit: 4,
+                lineWrapping: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                hint: CodeMirror.hint.sql
+            }),
+            markdown: CodeMirror.fromTextArea(document.getElementById('markdownInput'), {
+                mode: 'markdown',
+                theme: 'dracula',
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                lineWrapping: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                hint: CodeMirror.hint.anyword
+            }),
+            json: CodeMirror.fromTextArea(document.getElementById('jsonInput'), {
+                mode: 'application/json',
+                theme: 'dracula',
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                lineWrapping: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                hint: CodeMirror.hint.json
+            }),
+            js: CodeMirror.fromTextArea(document.getElementById('jsInput'), {
+                mode: 'javascript',
+                theme: 'dracula',
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                lineWrapping: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                hint: CodeMirror.hint.javascript
+            }),
+            html: CodeMirror.fromTextArea(document.getElementById('htmlInput'), {
+                mode: 'xml',
+                theme: 'dracula',
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                lineWrapping: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                hint: CodeMirror.hint.html
+            }),
+            css: CodeMirror.fromTextArea(document.getElementById('cssInput'), {
+                mode: 'css',
+                theme: 'dracula',
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                lineWrapping: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                hint: CodeMirror.hint.css
+            })
+        };
+
+        // Add autocomplete to all editors
+        Object.values(editors).forEach(editor => {
+            editor.on('keyup', function(cm, event) {
+                if (!cm.state.completionActive && event.keyCode !== 13) {
+                    CodeMirror.commands.autocomplete(cm);
+                }
+            });
+        });
+
+        // SQL Formatter with improved functionality
+        document.getElementById('sqlForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const sql = editors.sql.getValue();
+            if (!sql) {
+                showError('sqlResult', 'Please enter some SQL');
+                return;
+            }
+
+            try {
+                showLoading('sqlResult');
+                const options = {
+                    uppercase: document.getElementById('uppercaseKeywords').checked,
+                    indent: document.getElementById('indentClauses').checked ? '  ' : '',
+                    linesBetweenQueries: document.getElementById('linesBetweenQueries').checked ? 2 : 1,
+                    denseOperators: document.getElementById('denseOperators').checked
+                };
+
+                const formattedSql = sqlFormatter.format(sql, options);
+                const analysis = analyzeQuery(sql);
+                
+                const resultDiv = document.getElementById('sqlResult');
+                resultDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h6>Formatted SQL:</h6>
+                        <pre><code class="language-sql">${formattedSql}</code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <h6>Query Analysis:</h6>
+                        ${analysis}
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${formattedSql}')">
+                            <i class="fas fa-copy"></i> Copy SQL
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadFile('${formattedSql}', 'query.sql')">
+                            <i class="fas fa-download"></i> Download SQL
+                        </button>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                hljs.highlightElement(resultDiv.querySelector('code'));
+            } catch (error) {
+                showError('sqlResult', error.message);
+            }
+        });
+
+        // Markdown to HTML with improved functionality
+        document.getElementById('markdownForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const markdown = editors.markdown.getValue();
+            if (!markdown) {
+                showError('markdownResult', 'Please enter some Markdown');
+                return;
+            }
+
+            try {
+                showLoading('markdownResult');
+                const html = marked.parse(markdown, {
+                    gfm: true,
+                    breaks: true,
+                    sanitize: true
+                });
+                const sanitizedHtml = DOMPurify.sanitize(html);
+                const prettyHtml = pretty(sanitizedHtml);
+
+                const resultDiv = document.getElementById('markdownResult');
+                resultDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h6>HTML Output:</h6>
+                        <pre><code class="language-html">${prettyHtml}</code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <h6>Preview:</h6>
+                        <div class="preview-box">${sanitizedHtml}</div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${prettyHtml}')">
+                            <i class="fas fa-copy"></i> Copy HTML
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadFile('${prettyHtml}', 'output.html')">
+                            <i class="fas fa-download"></i> Download HTML
+                        </button>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                hljs.highlightElement(resultDiv.querySelector('code'));
+            } catch (error) {
+                showError('markdownResult', error.message);
+            }
+        });
+
+        // JSON Formatter with improved functionality
+        document.getElementById('jsonForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const json = editors.json.getValue();
+            if (!json) {
+                showError('jsonResult', 'Please enter some JSON');
+                return;
+            }
+
+            try {
+                showLoading('jsonResult');
+                let parsed = JSON.parse(json);
+                
+                // Sort keys if option is checked
+                if (document.getElementById('sortKeys').checked) {
+                    parsed = sortObjectKeys(parsed);
+                }
+
+                // Remove comments if option is checked
+                if (document.getElementById('removeComments').checked) {
+                    parsed = removeComments(parsed);
+                }
+
+                const formatted = JSON.stringify(parsed, null, 2);
+                const resultDiv = document.getElementById('jsonResult');
+                resultDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h6>Formatted JSON:</h6>
+                        <pre><code class="language-json">${formatted}</code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${formatted}')">
+                            <i class="fas fa-copy"></i> Copy JSON
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadFile('${formatted}', 'data.json')">
+                            <i class="fas fa-download"></i> Download JSON
+                        </button>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                hljs.highlightElement(resultDiv.querySelector('code'));
+            } catch (error) {
+                showError('jsonResult', error.message);
+            }
+        });
+
+        // JavaScript Minifier with improved functionality
+        document.getElementById('jsMinForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const js = editors.js.getValue();
+            if (!js) {
+                showError('jsMinResult', 'Please enter some JavaScript code');
+                return;
+            }
+
+            try {
+                showLoading('jsMinResult');
+                const options = {
+                    compress: {
+                        dead_code: document.getElementById('removeDeadCode').checked,
+                        drop_console: document.getElementById('removeConsole').checked,
+                        drop_debugger: document.getElementById('removeDebugger').checked,
+                        pure_funcs: document.getElementById('removePureFuncs').checked ? ['console.log'] : []
+                    },
+                    mangle: document.getElementById('mangleNames').checked,
+                    format: {
+                        beautify: document.getElementById('beautifyOutput').checked
+                    }
+                };
+
+                const result = await Terser.minify(js, options);
+
+                const resultDiv = document.getElementById('jsMinResult');
+                resultDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h6>Minified JavaScript:</h6>
+                        <pre><code class="language-javascript">${result.code}</code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <p>Original size: ${js.length} bytes</p>
+                        <p>Minified size: ${result.code.length} bytes</p>
+                        <p>Reduction: ${Math.round((1 - result.code.length / js.length) * 100)}%</p>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${result.code}')">
+                            <i class="fas fa-copy"></i> Copy Code
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadFile('${result.code}', 'script.min.js')">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                hljs.highlightElement(resultDiv.querySelector('code'));
+            } catch (error) {
+                showError('jsMinResult', error.message);
+            }
+        });
+
+        // IP Lookup with improved functionality
+        document.getElementById('ipForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const ip = document.getElementById('ipInput').value;
+            if (!ip) {
+                showError('ipResult', 'Please enter an IP address');
+                return;
+            }
+
+            try {
+                showLoading('ipResult');
+                const data = await ipapi.location(ip);
+                
+                const resultDiv = document.getElementById('ipResult');
+                resultDiv.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tr><th>IP Address:</th><td>${data.ip}</td></tr>
+                            <tr><th>City:</th><td>${data.city}</td></tr>
+                            <tr><th>Region:</th><td>${data.region}</td></tr>
+                            <tr><th>Country:</th><td>${data.country_name}</td></tr>
+                            <tr><th>Continent:</th><td>${data.continent_code}</td></tr>
+                            <tr><th>Latitude:</th><td>${data.latitude}</td></tr>
+                            <tr><th>Longitude:</th><td>${data.longitude}</td></tr>
+                            <tr><th>Timezone:</th><td>${data.timezone}</td></tr>
+                            <tr><th>Currency:</th><td>${data.currency}</td></tr>
+                            <tr><th>ISP:</th><td>${data.org}</td></tr>
+                            <tr><th>ASN:</th><td>${data.asn}</td></tr>
+                            <tr><th>Mobile:</th><td>${data.mobile ? 'Yes' : 'No'}</td></tr>
+                            <tr><th>Proxy:</th><td>${data.proxy ? 'Yes' : 'No'}</td></tr>
+                        </table>
+                    </div>
+                    <div id="ipMap" style="height: 300px; margin-top: 1rem;"></div>
+                `;
+                resultDiv.style.display = 'block';
+
+                // Initialize map
+                const map = L.map('ipMap').setView([data.latitude, data.longitude], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                L.marker([data.latitude, data.longitude])
+                    .addTo(map)
+                    .bindPopup(`<b>${data.city}, ${data.country_name}</b>`)
+                    .openPopup();
+            } catch (error) {
+                showError('ipResult', error.message);
+            }
+        });
+
+        // IP Tracker with improved functionality
+        document.getElementById('ipTrackForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const ip = document.getElementById('ipTrackInput').value;
+            if (!ip) {
+                showError('ipTrackResult', 'Please enter an IP address');
+                return;
+            }
+
+            try {
+                showLoading('ipTrackResult');
+                const data = await ipapi.location(ip);
+                
+                const resultDiv = document.getElementById('ipTrackResult');
+                resultDiv.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tr><th>IP Address:</th><td>${data.ip}</td></tr>
+                            <tr><th>Location:</th><td>${data.city}, ${data.region}, ${data.country_name}</td></tr>
+                            <tr><th>Coordinates:</th><td>${data.latitude}, ${data.longitude}</td></tr>
+                            <tr><th>ISP:</th><td>${data.org}</td></tr>
+                            <tr><th>Timezone:</th><td>${data.timezone}</td></tr>
+                            <tr><th>ASN:</th><td>${data.asn}</td></tr>
+                            <tr><th>Mobile:</th><td>${data.mobile ? 'Yes' : 'No'}</td></tr>
+                            <tr><th>Proxy:</th><td>${data.proxy ? 'Yes' : 'No'}</td></tr>
+                        </table>
+                    </div>
+                    <div id="trackMap" style="height: 300px; margin-top: 1rem;"></div>
+                `;
+                resultDiv.style.display = 'block';
+
+                // Initialize map with tracking
+                const map = L.map('trackMap').setView([data.latitude, data.longitude], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                
+                const marker = L.marker([data.latitude, data.longitude]).addTo(map);
+                const circle = L.circle([data.latitude, data.longitude], {
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.5,
+                    radius: 5000
+                }).addTo(map);
+
+                marker.bindPopup(`<b>${data.city}, ${data.country_name}</b>`).openPopup();
+            } catch (error) {
+                showError('ipTrackResult', error.message);
+            }
+        });
+
+        // HTML to Markdown with improved functionality
+        document.getElementById('htmlMdForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const html = editors.html.getValue();
+            if (!html) {
+                showError('htmlMdResult', 'Please enter some HTML');
+                return;
+            }
+
+            try {
+                showLoading('htmlMdResult');
+                const turndownService = new TurndownService({
+                    headingStyle: document.getElementById('headingStyle').value,
+                    codeBlockStyle: document.getElementById('codeBlockStyle').value,
+                    emDelimiter: document.getElementById('emDelimiter').value,
+                    bulletListMarker: document.getElementById('bulletListMarker').value,
+                    strongDelimiter: document.getElementById('strongDelimiter').value
+                });
+
+                const markdown = turndownService.turndown(html);
+                const resultDiv = document.getElementById('htmlMdResult');
+                resultDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h6>Markdown Output:</h6>
+                        <pre><code class="language-markdown">${markdown}</code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${markdown}')">
+                            <i class="fas fa-copy"></i> Copy Markdown
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadFile('${markdown}', 'output.md')">
+                            <i class="fas fa-download"></i> Download Markdown
+                        </button>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                hljs.highlightElement(resultDiv.querySelector('code'));
+            } catch (error) {
+                showError('htmlMdResult', error.message);
+            }
+        });
+
+        // .htaccess Generator with improved functionality
+        document.getElementById('htaccessForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const type = document.getElementById('redirectType').value;
+            const source = document.getElementById('sourceUrl').value;
+            const target = document.getElementById('targetUrl').value;
+            const status = document.getElementById('statusCode').value;
+
+            if (!source || !target) {
+                showError('htaccessResult', 'Please fill in all fields');
+                return;
+            }
+
+            try {
+                const htaccess = `Redirect ${type} ${source} ${target} ${status}`;
+                const resultDiv = document.getElementById('htaccessResult');
+                resultDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h6>Generated .htaccess Rule:</h6>
+                        <pre><code>${htaccess}</code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${htaccess}')">
+                            <i class="fas fa-copy"></i> Copy Rule
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadFile('${htaccess}', '.htaccess')">
+                            <i class="fas fa-download"></i> Download .htaccess
+                        </button>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                showError('htaccessResult', error.message);
+            }
+        });
+
+        // CSS Minifier with improved functionality
+        document.getElementById('cssMinForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const css = editors.css.getValue();
+            if (!css) {
+                showError('cssMinResult', 'Please enter some CSS');
+                return;
+            }
+
+            try {
+                showLoading('cssMinResult');
+                const options = {
+                    level: {
+                        1: {
+                            all: true,
+                            normalizeUrls: document.getElementById('normalizeUrls').checked
+                        },
+                        2: {
+                            all: true,
+                            mergeMedia: document.getElementById('mergeMedia').checked,
+                            removeEmpty: document.getElementById('removeEmpty').checked
+                        }
+                    },
+                    format: {
+                        beautify: document.getElementById('beautifyOutput').checked
+                    }
+                };
+
+                const result = await new CleanCSS(options).minify(css);
+
+                const resultDiv = document.getElementById('cssMinResult');
+                resultDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h6>Minified CSS:</h6>
+                        <pre><code class="language-css">${result.styles}</code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <p>Original size: ${css.length} bytes</p>
+                        <p>Minified size: ${result.styles.length} bytes</p>
+                        <p>Reduction: ${Math.round((1 - result.styles.length / css.length) * 100)}%</p>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${result.styles}')">
+                            <i class="fas fa-copy"></i> Copy CSS
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadFile('${result.styles}', 'styles.min.css')">
+                            <i class="fas fa-download"></i> Download CSS
+                        </button>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                hljs.highlightElement(resultDiv.querySelector('code'));
+            } catch (error) {
+                showError('cssMinResult', error.message);
+            }
+        });
+
+        // Color Picker with improved functionality
+        document.getElementById('colorInput').addEventListener('input', function(e) {
+            const color = e.target.value;
+            const preview = document.getElementById('colorPreview');
+            const result = document.getElementById('colorResult');
+            
+            preview.style.backgroundColor = color;
+            
+            // Convert hex to RGB and HSL
+            const r = parseInt(color.slice(1, 3), 16);
+            const g = parseInt(color.slice(3, 5), 16);
+            const b = parseInt(color.slice(5, 7), 16);
+            const hsl = rgbToHsl(r, g, b);
+            const cmyk = rgbToCmyk(r, g, b);
+            
+            result.innerHTML = `
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr><th>HEX:</th><td>${color}</td></tr>
+                        <tr><th>RGB:</th><td>rgb(${r}, ${g}, ${b})</td></tr>
+                        <tr><th>HSL:</th><td>${hsl}</td></tr>
+                        <tr><th>CMYK:</th><td>${cmyk}</td></tr>
+                    </table>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${color}')">
+                        <i class="fas fa-copy"></i> Copy HEX
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('rgb(${r}, ${g}, ${b})')">
+                        <i class="fas fa-copy"></i> Copy RGB
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${hsl}')">
+                        <i class="fas fa-copy"></i> Copy HSL
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${cmyk}')">
+                        <i class="fas fa-copy"></i> Copy CMYK
+                    </button>
+                </div>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Base64 Encoder/Decoder with improved functionality
+        document.getElementById('base64Form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('base64Input').value;
+            const mode = document.getElementById('base64Mode').value;
+
+            if (!input) {
+                showError('base64Result', 'Please enter some text');
+                return;
+            }
+
+            try {
+                let result;
+                if (mode === 'encode') {
+                    result = btoa(unescape(encodeURIComponent(input)));
+                } else {
+                    result = decodeURIComponent(escape(atob(input)));
+                }
+
+                const resultDiv = document.getElementById('base64Result');
+                resultDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h6>${mode === 'encode' ? 'Encoded' : 'Decoded'} Result:</h6>
+                        <pre><code>${result}</code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${result}')">
+                            <i class="fas fa-copy"></i> Copy Result
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadFile('${result}', '${mode === 'encode' ? 'encoded.txt' : 'decoded.txt'}')">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                showError('base64Result', error.message);
+            }
+        });
+
+        // AI Chatbot Demo with improved functionality
+        document.getElementById('chatbotForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput').value;
+            const messagesDiv = document.getElementById('chatMessages');
+            
+            if (!input) {
+                return;
+            }
+
+            // Add user message with timestamp
+            const timestamp = new Date().toLocaleTimeString();
+            messagesDiv.innerHTML += `
+                <div class="message user-message">
+                    <div class="message-header">
+                        <strong>You</strong>
+                        <small class="text-muted">${timestamp}</small>
+                    </div>
+                    <div class="message-content">${input}</div>
+                </div>
+            `;
+            
+            // Simulate bot response with typing effect
+            setTimeout(() => {
+                const responses = [
+                    "I'm a demo chatbot. This is a placeholder response.",
+                    "I understand you're asking about " + input + ". Let me help you with that.",
+                    "That's an interesting question. Here's what I think...",
+                    "I'm still learning, but I'll try to help you with that."
+                ];
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                
+                messagesDiv.innerHTML += `
+                    <div class="message bot-message">
+                        <div class="message-header">
+                            <strong>Bot</strong>
+                            <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+                        </div>
+                        <div class="message-content">${response}</div>
+                    </div>
+                `;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 1000);
+            
+            document.getElementById('chatInput').value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+
+        // Helper functions
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Processing...</p>
+                </div>
+            `;
+            element.style.display = 'block';
+        }
+
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i> ${message}
+                </div>
+            `;
+            element.style.display = 'block';
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        function downloadFile(content, filename) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function sortObjectKeys(obj) {
+            if (obj === null || typeof obj !== 'object') {
+                return obj;
+            }
+
+            if (Array.isArray(obj)) {
+                return obj.map(sortObjectKeys);
+            }
+
+            return Object.keys(obj).sort().reduce((result, key) => {
+                result[key] = sortObjectKeys(obj[key]);
+                return result;
+            }, {});
+        }
+
+        function removeComments(obj) {
+            if (obj === null || typeof obj !== 'object') {
+                return obj;
+            }
+
+            if (Array.isArray(obj)) {
+                return obj.map(removeComments);
+            }
+
+            return Object.entries(obj).reduce((result, [key, value]) => {
+                if (!key.startsWith('_comment')) {
+                    result[key] = removeComments(value);
+                }
+                return result;
+            }, {});
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+
+                h /= 6;
+            }
+
+            return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+        }
+
+        function rgbToCmyk(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+
+            const k = 1 - Math.max(r, g, b);
+            const c = (1 - r - k) / (1 - k) || 0;
+            const m = (1 - g - k) / (1 - k) || 0;
+            const y = (1 - b - k) / (1 - k) || 0;
+
+            return `cmyk(${Math.round(c * 100)}%, ${Math.round(m * 100)}%, ${Math.round(y * 100)}%, ${Math.round(k * 100)}%)`;
+        }
+
+        function analyzeQuery(sql) {
+            const keywords = {
+                SELECT: /SELECT/i,
+                FROM: /FROM/i,
+                WHERE: /WHERE/i,
+                JOIN: /JOIN/i,
+                GROUP: /GROUP BY/i,
+                ORDER: /ORDER BY/i,
+                HAVING: /HAVING/i,
+                LIMIT: /LIMIT/i
+            };
+
+            const analysis = {
+                hasSelect: keywords.SELECT.test(sql),
+                hasFrom: keywords.FROM.test(sql),
+                hasWhere: keywords.WHERE.test(sql),
+                hasJoin: keywords.JOIN.test(sql),
+                hasGroup: keywords.GROUP.test(sql),
+                hasOrder: keywords.ORDER.test(sql),
+                hasHaving: keywords.HAVING.test(sql),
+                hasLimit: keywords.LIMIT.test(sql)
+            };
+
+            return `
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr>
+                                <th>Query Type:</th>
+                                <td>${analysis.hasSelect ? 'SELECT' : 'Unknown'}</td>
+                            </tr>
+                            <tr>
+                                <th>Clauses:</th>
+                                <td>
+                                    ${Object.entries(analysis)
+                                        .filter(([key, value]) => value)
+                                        .map(([key]) => key.replace('has', ''))
+                                        .join(', ')}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html> 

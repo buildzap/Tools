@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Calculators - Multi-Tools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Moment.js and Moment Timezone -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+    <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --main-bg: #1a1a1a;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --result-bg: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --main-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --input-bg: #ffffff;
+            --result-bg: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            font-family: var(--font-family);
+            overflow-x: hidden;
+        }
+
+        .tool-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: var(--main-bg);
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .tool-header p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .calculator-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .calculator-section:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .calculator-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calculator-header i {
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+            color: var(--bs-primary);
+        }
+
+        .calculator-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .form-label {
+            color: var(--text-color);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .result-box {
+            background-color: var(--result-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .result-box .highlight {
+            color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--text-muted);
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: var(--text-color);
+            border: none;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--bs-primary);
+            background: none;
+            border: none;
+            border-bottom: 2px solid var(--bs-primary);
+        }
+
+        .tab-content {
+            padding: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .tool-container {
+                padding: 0.5rem;
+            }
+
+            .calculator-section {
+                padding: 0.75rem;
+            }
+
+            .tool-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .tool-header p {
+                font-size: 0.9rem;
+            }
+
+            .calculator-header h3 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i class="fas fa-calculator"></i> Combined Calculators</h1>
+                <p>All your calculation needs in one place</p>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs" id="calculatorTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tip-tab" data-bs-toggle="tab" data-bs-target="#tip" type="button" role="tab">
+                        <i class="fas fa-receipt"></i> Tip Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="currency-tab" data-bs-toggle="tab" data-bs-target="#currency" type="button" role="tab">
+                        <i class="fas fa-money-bill-wave"></i> Currency Converter
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="timezone-tab" data-bs-toggle="tab" data-bs-target="#timezone" type="button" role="tab">
+                        <i class="fas fa-clock"></i> Time Zone Converter
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="age-tab" data-bs-toggle="tab" data-bs-target="#age" type="button" role="tab">
+                        <i class="fas fa-birthday-cake"></i> Age Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="percentage-tab" data-bs-toggle="tab" data-bs-target="#percentage" type="button" role="tab">
+                        <i class="fas fa-percent"></i> Percentage Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="binary-tab" data-bs-toggle="tab" data-bs-target="#binary" type="button" role="tab">
+                        <i class="fas fa-calculator"></i> Binary Converter
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="discount-tab" data-bs-toggle="tab" data-bs-target="#discount" type="button" role="tab">
+                        <i class="fas fa-tags"></i> Discount Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="leap-year-tab" data-bs-toggle="tab" data-bs-target="#leap-year" type="button" role="tab">
+                        <i class="fas fa-calendar-alt"></i> Leap Year Checker
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="bmi-tab" data-bs-toggle="tab" data-bs-target="#bmi" type="button" role="tab">
+                        <i class="fas fa-weight"></i> BMI Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="loan-emi-tab" data-bs-toggle="tab" data-bs-target="#loan-emi" type="button" role="tab">
+                        <i class="fas fa-money-check-alt"></i> Loan EMI Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="numerology-tab" data-bs-toggle="tab" data-bs-target="#numerology" type="button" role="tab">
+                        <i class="fas fa-star"></i> Name Numerology
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="scientific-tab" data-bs-toggle="tab" data-bs-target="#scientific" type="button" role="tab">
+                        <i class="fas fa-square-root-alt"></i> Scientific Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="unit-tab" data-bs-toggle="tab" data-bs-target="#unit" type="button" role="tab">
+                        <i class="fas fa-ruler"></i> Unit Converter
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="loan-tab" data-bs-toggle="tab" data-bs-target="#loan" type="button" role="tab">
+                        <i class="fas fa-hand-holding-usd"></i> Loan Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mortgage-tab" data-bs-toggle="tab" data-bs-target="#mortgage" type="button" role="tab">
+                        <i class="fas fa-home"></i> Mortgage Calculator
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="electric-bill-tab" data-bs-toggle="tab" data-bs-target="#electric-bill" type="button" role="tab">
+                        <i class="fas fa-bolt"></i> Electric Bill Calculator
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="calculatorTabContent">
+                <!-- Tip Calculator -->
+                <div class="tab-pane fade show active" id="tip" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-receipt"></i>
+                            <h3>Tip Calculator</h3>
+                        </div>
+                        <form id="tipForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="billAmount" class="form-label">Bill Amount</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="billAmount" min="0" step="0.01" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="tipPercentage" class="form-label">Tip Percentage</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="tipPercentage" min="0" max="100" value="15" required>
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="taxRate" class="form-label">Tax Rate</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="taxRate" min="0" max="100" value="0" required>
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="splitCount" class="form-label">Split Between</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="splitCount" min="1" value="1" required>
+                                            <span class="input-group-text">people</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="tipResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Currency Converter -->
+                <div class="tab-pane fade" id="currency" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <h3>Currency Converter</h3>
+                        </div>
+                        <form id="currencyForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="amount" class="form-label">Amount</label>
+                                        <input type="number" class="form-control" id="amount" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="fromCurrency" class="form-label">From</label>
+                                        <select class="form-select" id="fromCurrency" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="toCurrency" class="form-label">To</label>
+                                        <select class="form-select" id="toCurrency" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Convert</button>
+                        </form>
+                        <div id="currencyResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Time Zone Converter -->
+                <div class="tab-pane fade" id="timezone" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-clock"></i>
+                            <h3>Time Zone Converter</h3>
+                        </div>
+                        <form id="timezoneForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="dateTime" class="form-label">Date & Time</label>
+                                        <input type="datetime-local" class="form-control" id="dateTime" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="fromTimezone" class="form-label">From Timezone</label>
+                                        <select class="form-select" id="fromTimezone" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="toTimezone" class="form-label">To Timezone</label>
+                                        <select class="form-select" id="toTimezone" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Convert</button>
+                        </form>
+                        <div id="timezoneResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Age Calculator -->
+                <div class="tab-pane fade" id="age" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-birthday-cake"></i>
+                            <h3>Age Calculator</h3>
+                        </div>
+                        <form id="ageForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="birthDate" class="form-label">Birth Date</label>
+                                        <input type="date" class="form-control" id="birthDate" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="currentDate" class="form-label">Current Date</label>
+                                        <input type="date" class="form-control" id="currentDate" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="ageResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Percentage Calculator -->
+                <div class="tab-pane fade" id="percentage" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-percent"></i>
+                            <h3>Percentage Calculator</h3>
+                        </div>
+                        <form id="percentageForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="value" class="form-label">Value</label>
+                                        <input type="number" class="form-control" id="value" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="percentage" class="form-label">Percentage</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="percentage" min="0" max="100" required>
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="percentageResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Binary Converter -->
+                <div class="tab-pane fade" id="binary" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-calculator"></i>
+                            <h3>Binary Converter</h3>
+                        </div>
+                        <form id="binaryForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="number" class="form-label">Number</label>
+                                        <input type="text" class="form-control" id="number" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="base" class="form-label">Base</label>
+                                        <select class="form-select" id="base" required>
+                                            <option value="2">Binary (2)</option>
+                                            <option value="8">Octal (8)</option>
+                                            <option value="10">Decimal (10)</option>
+                                            <option value="16">Hexadecimal (16)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Convert</button>
+                        </form>
+                        <div id="binaryResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Discount Calculator -->
+                <div class="tab-pane fade" id="discount" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-tags"></i>
+                            <h3>Discount Calculator</h3>
+                        </div>
+                        <form id="discountForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="originalPrice" class="form-label">Original Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="originalPrice" min="0" step="0.01" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="discountType" class="form-label">Discount Type</label>
+                                        <select class="form-select" id="discountType" required>
+                                            <option value="percentage">Percentage</option>
+                                            <option value="fixed">Fixed Amount</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="discountValue" class="form-label">Discount Value</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="discountValue" min="0" step="0.01" required>
+                                            <span class="input-group-text" id="discountUnit">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="taxRate" class="form-label">Tax Rate</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="taxRate" min="0" max="100" value="0">
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="discountResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Leap Year Checker -->
+                <div class="tab-pane fade" id="leap-year" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h3>Leap Year Checker</h3>
+                        </div>
+                        <form id="leapYearForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="year" class="form-label">Year</label>
+                                        <input type="number" class="form-control" id="year" min="1" max="9999" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Check</button>
+                        </form>
+                        <div id="leapYearResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- BMI Calculator -->
+                <div class="tab-pane fade" id="bmi" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-weight"></i>
+                            <h3>BMI Calculator</h3>
+                        </div>
+                        <form id="bmiForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="weight" class="form-label">Weight</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="weight" min="0" step="0.1" required>
+                                            <span class="input-group-text">kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="height" class="form-label">Height</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="height" min="0" step="0.01" required>
+                                            <span class="input-group-text">m</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="bmiResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Loan EMI Calculator -->
+                <div class="tab-pane fade" id="loan-emi" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-money-check-alt"></i>
+                            <h3>Loan EMI Calculator</h3>
+                        </div>
+                        <form id="loanEmiForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="loanAmount" class="form-label">Loan Amount</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="loanAmount" min="0" step="1000" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="interestRate" class="form-label">Interest Rate</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="interestRate" min="0" max="100" step="0.1" required>
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="loanTerm" class="form-label">Loan Term</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="loanTerm" min="1" required>
+                                            <span class="input-group-text">years</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="loanEmiResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Name Numerology Calculator -->
+                <div class="tab-pane fade" id="numerology" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-star"></i>
+                            <h3>Name Numerology Calculator</h3>
+                        </div>
+                        <form id="numerologyForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="fullName" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="fullName" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="birthDate" class="form-label">Birth Date</label>
+                                        <input type="date" class="form-control" id="birthDate" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="numerologyResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Scientific Calculator -->
+                <div class="tab-pane fade" id="scientific" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-square-root-alt"></i>
+                            <h3>Scientific Calculator</h3>
+                        </div>
+                        <div class="calculator-display mb-3">
+                            <input type="text" class="form-control" id="scientificDisplay" readonly>
+                        </div>
+                        <div class="calculator-buttons">
+                            <div class="row g-2">
+                                <div class="col-3">
+                                    <button class="btn btn-secondary w-100" onclick="scientificClear()">C</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-secondary w-100" onclick="scientificBackspace()">⌫</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-secondary w-100" onclick="scientificAppend('%')">%</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-primary w-100" onclick="scientificAppend('/')">/</button>
+                                </div>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('7')">7</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('8')">8</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('9')">9</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-primary w-100" onclick="scientificAppend('*')">×</button>
+                                </div>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('4')">4</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('5')">5</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('6')">6</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-primary w-100" onclick="scientificAppend('-')">-</button>
+                                </div>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('1')">1</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('2')">2</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('3')">3</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-primary w-100" onclick="scientificAppend('+')">+</button>
+                                </div>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('0')">0</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-light w-100" onclick="scientificAppend('.')">.</button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-success w-100" onclick="scientificCalculate()">=</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unit Converter -->
+                <div class="tab-pane fade" id="unit" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-ruler"></i>
+                            <h3>Unit Converter</h3>
+                        </div>
+                        <form id="unitForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="conversionType" class="form-label">Conversion Type</label>
+                                        <select class="form-select" id="conversionType" required>
+                                            <option value="length">Length</option>
+                                            <option value="weight">Weight</option>
+                                            <option value="temperature">Temperature</option>
+                                            <option value="volume">Volume</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="fromUnit" class="form-label">From</label>
+                                        <select class="form-select" id="fromUnit" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="toUnit" class="form-label">To</label>
+                                        <select class="form-select" id="toUnit" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="value" class="form-label">Value</label>
+                                        <input type="number" class="form-control" id="value" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Convert</button>
+                        </form>
+                        <div id="unitResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Loan Calculator -->
+                <div class="tab-pane fade" id="loan" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <h3>Loan Calculator</h3>
+                        </div>
+                        <form id="loanForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="loanAmount" class="form-label">Loan Amount</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="loanAmount" min="0" step="1000" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="interestRate" class="form-label">Interest Rate</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="interestRate" min="0" max="100" step="0.1" required>
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="loanTerm" class="form-label">Loan Term</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="loanTerm" min="1" required>
+                                            <span class="input-group-text">years</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="loanResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Mortgage Calculator -->
+                <div class="tab-pane fade" id="mortgage" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-home"></i>
+                            <h3>Mortgage Calculator</h3>
+                        </div>
+                        <form id="mortgageForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="homePrice" class="form-label">Home Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="homePrice" min="0" step="1000" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="downPayment" class="form-label">Down Payment</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="downPayment" min="0" step="1000" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="interestRate" class="form-label">Interest Rate</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="interestRate" min="0" max="100" step="0.1" required>
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="loanTerm" class="form-label">Loan Term</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="loanTerm" min="1" required>
+                                            <span class="input-group-text">years</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="mortgageResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Electric Bill Calculator -->
+                <div class="tab-pane fade" id="electric-bill" role="tabpanel">
+                    <div class="calculator-section">
+                        <div class="calculator-header">
+                            <i class="fas fa-bolt"></i>
+                            <h3>Electric Bill Calculator</h3>
+                        </div>
+                        <form id="electricBillForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="kwh" class="form-label">Kilowatt Hours (kWh)</label>
+                                        <input type="number" class="form-control" id="kwh" min="0" step="0.1" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="rate" class="form-label">Rate per kWh</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="rate" min="0" step="0.01" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                        <div id="electricBillResult" class="result-box mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // Tip Calculator
+        document.getElementById('tipForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const billAmount = parseFloat(document.getElementById('billAmount').value);
+            const tipPercentage = parseFloat(document.getElementById('tipPercentage').value);
+            const taxRate = parseFloat(document.getElementById('taxRate').value);
+            const splitCount = parseInt(document.getElementById('splitCount').value);
+
+            const taxAmount = billAmount * (taxRate / 100);
+            const tipAmount = billAmount * (tipPercentage / 100);
+            const totalAmount = billAmount + taxAmount + tipAmount;
+            const amountPerPerson = totalAmount / splitCount;
+
+            const result = document.getElementById('tipResult');
+            result.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Tip Amount: <span class="highlight">$${tipAmount.toFixed(2)}</span></p>
+                        <p>Tax Amount: <span class="highlight">$${taxAmount.toFixed(2)}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>Total Amount: <span class="highlight">$${totalAmount.toFixed(2)}</span></p>
+                        <p>Amount per Person: <span class="highlight">$${amountPerPerson.toFixed(2)}</span></p>
+                    </div>
+                </div>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Currency Converter
+        const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'INR'];
+        const fromCurrency = document.getElementById('fromCurrency');
+        const toCurrency = document.getElementById('toCurrency');
+
+        currencies.forEach(currency => {
+            fromCurrency.add(new Option(currency, currency));
+            toCurrency.add(new Option(currency, currency));
+        });
+
+        document.getElementById('currencyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+
+            // Simulated exchange rate (replace with actual API call)
+            const rate = 1.2;
+            const convertedAmount = amount * rate;
+
+            const result = document.getElementById('currencyResult');
+            result.innerHTML = `
+                <p>${amount} ${from} = <span class="highlight">${convertedAmount.toFixed(2)} ${to}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Time Zone Converter
+        const timezones = moment.tz.names();
+        const fromTimezone = document.getElementById('fromTimezone');
+        const toTimezone = document.getElementById('toTimezone');
+
+        timezones.forEach(timezone => {
+            fromTimezone.add(new Option(timezone, timezone));
+            toTimezone.add(new Option(timezone, timezone));
+        });
+
+        document.getElementById('timezoneForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const dateTime = document.getElementById('dateTime').value;
+            const from = document.getElementById('fromTimezone').value;
+            const to = document.getElementById('toTimezone').value;
+
+            const convertedTime = moment.tz(dateTime, from).tz(to).format('YYYY-MM-DD HH:mm:ss');
+
+            const result = document.getElementById('timezoneResult');
+            result.innerHTML = `
+                <p>Converted Time: <span class="highlight">${convertedTime}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Age Calculator
+        document.getElementById('ageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const birthDate = new Date(document.getElementById('birthDate').value);
+            const currentDate = new Date(document.getElementById('currentDate').value);
+
+            const age = currentDate.getFullYear() - birthDate.getFullYear();
+            const monthDiff = currentDate.getMonth() - birthDate.getMonth();
+            const dayDiff = currentDate.getDate() - birthDate.getDate();
+
+            let years = age;
+            let months = monthDiff;
+            let days = dayDiff;
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                years--;
+                months = 12 + monthDiff;
+            }
+
+            if (dayDiff < 0) {
+                const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, birthDate.getDate());
+                days = Math.floor((currentDate - lastMonth) / (1000 * 60 * 60 * 24));
+            }
+
+            const result = document.getElementById('ageResult');
+            result.innerHTML = `
+                <p>Age: <span class="highlight">${years} years, ${months} months, ${days} days</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Percentage Calculator
+        document.getElementById('percentageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const value = parseFloat(document.getElementById('value').value);
+            const percentage = parseFloat(document.getElementById('percentage').value);
+
+            const result = (value * percentage) / 100;
+
+            const resultDiv = document.getElementById('percentageResult');
+            resultDiv.innerHTML = `
+                <p>${percentage}% of ${value} = <span class="highlight">${result.toFixed(2)}</span></p>
+            `;
+            resultDiv.style.display = 'block';
+        });
+
+        // Binary Converter
+        document.getElementById('binaryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const number = document.getElementById('number').value;
+            const base = document.getElementById('base').value;
+
+            const convertedNumber = parseInt(number, base).toString(10);
+
+            const result = document.getElementById('binaryResult');
+            result.innerHTML = `
+                <p>Converted Number: <span class="highlight">${convertedNumber}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Discount Calculator
+        document.getElementById('discountForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const originalPrice = parseFloat(document.getElementById('originalPrice').value);
+            const discountType = document.getElementById('discountType').value;
+            const discountValue = parseFloat(document.getElementById('discountValue').value);
+            const taxRate = parseFloat(document.getElementById('taxRate').value);
+
+            let discountedPrice;
+            let discountAmount;
+
+            if (discountType === 'percentage') {
+                discountAmount = originalPrice * (discountValue / 100);
+                discountedPrice = originalPrice - discountAmount;
+            } else {
+                discountAmount = discountValue;
+                discountedPrice = originalPrice - discountAmount;
+            }
+
+            const taxAmount = discountedPrice * (taxRate / 100);
+            const totalAmount = discountedPrice + taxAmount;
+
+            const result = document.getElementById('discountResult');
+            result.innerHTML = `
+                <p>Discount Amount: <span class="highlight">$${discountAmount.toFixed(2)}</span></p>
+                <p>Discounted Price: <span class="highlight">$${discountedPrice.toFixed(2)}</span></p>
+                <p>Tax Amount: <span class="highlight">$${taxAmount.toFixed(2)}</span></p>
+                <p>Total Amount: <span class="highlight">$${totalAmount.toFixed(2)}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Leap Year Checker
+        document.getElementById('leapYearForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const year = parseInt(document.getElementById('year').value);
+
+            const isLeapYear = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0));
+
+            const result = document.getElementById('leapYearResult');
+            result.innerHTML = `
+                <p>Is ${year} a leap year? <span class="highlight">${isLeapYear ? 'Yes' : 'No'}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // BMI Calculator
+        document.getElementById('bmiForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+
+            const bmi = weight / (height * height);
+            let category;
+
+            if (bmi < 18.5) category = 'Underweight';
+            else if (bmi < 25) category = 'Normal weight';
+            else if (bmi < 30) category = 'Overweight';
+            else category = 'Obese';
+
+            const result = document.getElementById('bmiResult');
+            result.innerHTML = `
+                <p>Your BMI: <span class="highlight">${bmi.toFixed(1)}</span></p>
+                <p>Category: <span class="highlight">${category}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Loan EMI Calculator
+        document.getElementById('loanEmiForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const loanTerm = parseInt(document.getElementById('loanTerm').value);
+
+            const monthlyRate = interestRate / 12 / 100;
+            const numberOfPayments = loanTerm * 12;
+
+            const emi = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+            const totalPayment = emi * numberOfPayments;
+            const totalInterest = totalPayment - loanAmount;
+
+            const result = document.getElementById('loanEmiResult');
+            result.innerHTML = `
+                <p>Monthly EMI: <span class="highlight">$${emi.toFixed(2)}</span></p>
+                <p>Total Payment: <span class="highlight">$${totalPayment.toFixed(2)}</span></p>
+                <p>Total Interest: <span class="highlight">$${totalInterest.toFixed(2)}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Name Numerology Calculator
+        document.getElementById('numerologyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('fullName').value;
+            const birthDate = new Date(document.getElementById('birthDate').value);
+
+            // Simple numerology calculation (for demonstration)
+            const nameNumber = fullName.split('').reduce((sum, char) => {
+                const charCode = char.toUpperCase().charCodeAt(0);
+                return sum + (charCode >= 65 && charCode <= 90 ? charCode - 64 : 0);
+            }, 0);
+
+            const birthNumber = birthDate.getDate() + birthDate.getMonth() + 1 + birthDate.getFullYear();
+
+            const result = document.getElementById('numerologyResult');
+            result.innerHTML = `
+                <p>Name Number: <span class="highlight">${nameNumber}</span></p>
+                <p>Birth Number: <span class="highlight">${birthNumber}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Scientific Calculator Functions
+        function scientificAppend(value) {
+            const display = document.getElementById('scientificDisplay');
+            display.value += value;
+        }
+
+        function scientificClear() {
+            const display = document.getElementById('scientificDisplay');
+            display.value = '';
+        }
+
+        function scientificBackspace() {
+            const display = document.getElementById('scientificDisplay');
+            display.value = display.value.slice(0, -1);
+        }
+
+        function scientificCalculate() {
+            const display = document.getElementById('scientificDisplay');
+            try {
+                display.value = eval(display.value);
+            } catch (error) {
+                display.value = 'Error';
+            }
+        }
+
+        // Unit Converter
+        const units = {
+            length: ['meter', 'kilometer', 'centimeter', 'millimeter', 'inch', 'foot', 'yard', 'mile'],
+            weight: ['kilogram', 'gram', 'milligram', 'pound', 'ounce'],
+            temperature: ['celsius', 'fahrenheit', 'kelvin'],
+            volume: ['liter', 'milliliter', 'gallon', 'quart', 'pint', 'cup']
+        };
+
+        document.getElementById('conversionType').addEventListener('change', function() {
+            const type = this.value;
+            const fromUnit = document.getElementById('fromUnit');
+            const toUnit = document.getElementById('toUnit');
+            
+            fromUnit.innerHTML = '';
+            toUnit.innerHTML = '';
+            
+            units[type].forEach(unit => {
+                fromUnit.add(new Option(unit, unit));
+                toUnit.add(new Option(unit, unit));
+            });
+        });
+
+        document.getElementById('unitForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const value = parseFloat(document.getElementById('value').value);
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+            const type = document.getElementById('conversionType').value;
+
+            // Simple conversion (for demonstration)
+            const result = value * 1.5; // This is just a placeholder conversion
+
+            const resultDiv = document.getElementById('unitResult');
+            resultDiv.innerHTML = `
+                <p>${value} ${fromUnit} = <span class="highlight">${result.toFixed(2)} ${toUnit}</span></p>
+            `;
+            resultDiv.style.display = 'block';
+        });
+
+        // Loan Calculator
+        document.getElementById('loanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const loanTerm = parseInt(document.getElementById('loanTerm').value);
+
+            const monthlyRate = interestRate / 12 / 100;
+            const numberOfPayments = loanTerm * 12;
+
+            const monthlyPayment = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+            const totalPayment = monthlyPayment * numberOfPayments;
+            const totalInterest = totalPayment - loanAmount;
+
+            const result = document.getElementById('loanResult');
+            result.innerHTML = `
+                <p>Monthly Payment: <span class="highlight">$${monthlyPayment.toFixed(2)}</span></p>
+                <p>Total Payment: <span class="highlight">$${totalPayment.toFixed(2)}</span></p>
+                <p>Total Interest: <span class="highlight">$${totalInterest.toFixed(2)}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Mortgage Calculator
+        document.getElementById('mortgageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const homePrice = parseFloat(document.getElementById('homePrice').value);
+            const downPayment = parseFloat(document.getElementById('downPayment').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const loanTerm = parseInt(document.getElementById('loanTerm').value);
+
+            const loanAmount = homePrice - downPayment;
+            const monthlyRate = interestRate / 12 / 100;
+            const numberOfPayments = loanTerm * 12;
+
+            const monthlyPayment = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+            const totalPayment = monthlyPayment * numberOfPayments;
+            const totalInterest = totalPayment - loanAmount;
+
+            const result = document.getElementById('mortgageResult');
+            result.innerHTML = `
+                <p>Loan Amount: <span class="highlight">$${loanAmount.toFixed(2)}</span></p>
+                <p>Monthly Payment: <span class="highlight">$${monthlyPayment.toFixed(2)}</span></p>
+                <p>Total Payment: <span class="highlight">$${totalPayment.toFixed(2)}</span></p>
+                <p>Total Interest: <span class="highlight">$${totalInterest.toFixed(2)}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+
+        // Electric Bill Calculator
+        document.getElementById('electricBillForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const kwh = parseFloat(document.getElementById('kwh').value);
+            const rate = parseFloat(document.getElementById('rate').value);
+
+            const totalCost = kwh * rate;
+
+            const result = document.getElementById('electricBillResult');
+            result.innerHTML = `
+                <p>Total Cost: <span class="highlight">$${totalCost.toFixed(2)}</span></p>
+            `;
+            result.style.display = 'block';
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,299 @@
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --main-bg: #1a1a1a;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --result-bg: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --main-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --input-bg: #ffffff;
+            --result-bg: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            font-family: var(--font-family);
+            overflow-x: hidden;
+        }
+
+        .tool-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: var(--main-bg);
+            min-height: calc(100vh - 2rem);
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .tool-header p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: var(--text-color);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--input-bg);
+            border-color: var(--bs-primary);
+            color: var(--text-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        /* Result section styling */
+        #result {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-color);
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: var(--result-bg);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            margin: 0.75rem 0;
+        }
+
+        #result .text-danger {
+            color: var(--bs-danger) !important;
+        }
+
+        .conversion-details {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .conversion-details h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-item .label {
+            color: var(--text-muted);
+        }
+
+        .detail-item .value {
+            color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        .chart-container {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-container h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+        }
+
+        /* Conversion history section */
+        .conversion-history {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .conversion-history h5 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item .from {
+            color: var(--text-muted);
+        }
+
+        .history-item .to {
+            color: var(--bs-primary);
+            font-weight: 500;
+        }
+
+        .alert-info {
+            background-color: var(--result-bg);
+            border: 1px solid var(--border-color);
+            color: var(--bs-primary);
+        }
+
+        /* Category selection styling */
+        .category-select {
+            margin-bottom: 1.5rem;
+        }
+
+        .category-select .form-select {
+            font-size: 1.1rem;
+            padding: 0.75rem 1rem;
+        }
+
+        /* Unit selection styling */
+        .unit-select {
+            margin-bottom: 1rem;
+        }
+
+        .unit-select .form-select {
+            font-size: 1rem;
+            padding: 0.75rem 1rem;
+        }
+
+        /* Input field styling */
+        .input-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-field .form-control {
+            font-size: 1.1rem;
+            padding: 0.75rem 1rem;
+        }
+
+        /* Formula display */
+        .formula-display {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .tool-container {
+                padding: 0.75rem;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+
+            .tool-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .tool-header p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+// ... existing code ... 
