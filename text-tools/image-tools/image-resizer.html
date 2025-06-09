@@ -10,6 +10,173 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="/styles/main.css" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --main-bg: #1a1a1a;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --main-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .tool-container {
+            background-color: var(--main-bg);
+        }
+
+        .tool-header h1 {
+            color: var(--text-color);
+        }
+
+        .tool-header p {
+            color: var(--text-muted);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-title {
+            color: var(--text-color);
+        }
+
+        .form-label {
+            color: var(--text-color);
+        }
+
+        .form-control {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            background-color: var(--card-bg);
+            border-color: var(--bs-primary);
+            color: var(--text-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-check-label {
+            color: var(--text-color);
+        }
+
+        .btn-outline-primary {
+            color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--bs-primary);
+            color: #fff;
+        }
+
+        .btn-check:checked + .btn-outline-primary {
+            background-color: var(--bs-primary);
+            color: #fff;
+        }
+
+        .form-range {
+            background-color: var(--card-bg);
+        }
+
+        .form-range::-webkit-slider-thumb {
+            background: var(--bs-primary);
+        }
+
+        .form-range::-moz-range-thumb {
+            background: var(--bs-primary);
+        }
+
+        .form-range::-ms-thumb {
+            background: var(--bs-primary);
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        small {
+            color: var(--text-muted);
+        }
+
+        #preview {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        #preview img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .ad-space {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+        }
+
+        .list-unstyled li {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .list-unstyled i {
+            margin-right: 0.5rem;
+        }
+
+        /* Card hover effect */
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--bs-primary-dark);
+            border-color: var(--bs-primary-dark);
+        }
+
+        /* Preview section styling */
+        #imageInfo p {
+            color: var(--text-color);
+        }
+
+        #imageInfo span {
+            color: var(--bs-primary);
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
     <!-- Header will be loaded here -->

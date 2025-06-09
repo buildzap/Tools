@@ -14,23 +14,162 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
-        .name-card {
-            transition: transform 0.2s;
-            cursor: pointer;
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+            --name-card-bg: #f8f9fa;
+            --name-card-border: #dee2e6;
+            --name-card-shadow: rgba(0, 0, 0, 0.1);
+            --name-card-hover: #e9ecef;
         }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --input-bg: #2d2d2d;
+            --border-color: #404040;
+            --name-card-bg: #2d2d2d;
+            --name-card-border: #404040;
+            --name-card-shadow: rgba(0, 0, 0, 0.3);
+            --name-card-hover: #3d3d3d;
+        }
+
+        .name-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: var(--name-card-bg);
+            border: 1px solid var(--name-card-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            box-shadow: 0 2px 4px var(--name-card-shadow);
+        }
+
         .name-card:hover {
             transform: translateY(-2px);
+            background: var(--name-card-hover);
+            box-shadow: 0 4px 8px var(--name-card-shadow);
         }
+
         .name-list {
             max-height: 400px;
             overflow-y: auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
         }
+
         .copy-btn {
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
         }
+
         .name-card:hover .copy-btn {
             opacity: 1;
+        }
+
+        .copy-btn:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            background: var(--hover-bg);
+        }
+
+        .form-label {
+            color: var(--text-primary);
+        }
+
+        .form-control, .form-select {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: var(--input-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: 0 4px 15px var(--card-shadow);
+        }
+
+        .card-body {
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+            color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            color: var(--text-primary);
+        }
+
+        /* Custom scrollbar for dark theme */
+        [data-theme="dark"] ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 4px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .name-card {
+                padding: 0.75rem;
+            }
+            .copy-btn {
+                opacity: 1;
+            }
+            .name-list {
+                max-height: 300px;
+            }
         }
     </style>
 </head>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,205 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+            --alert-info-bg: #cff4fc;
+            --alert-info-border: #b6effb;
+            --alert-info-text: #055160;
+            --table-bg: #ffffff;
+            --table-border: #dee2e6;
+            --table-striped-bg: #f8f9fa;
+            --code-bg: #f8f9fa;
+            --code-border: #dee2e6;
+            --code-text: #212529;
+            --body-bg: #f8f9fa;
+            --form-text: #6c757d;
+            --link-color: #0d6efd;
+            --link-hover: #0a58ca;
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --input-bg: #2d2d2d;
+            --border-color: #404040;
+            --alert-info-bg: #1a3a5f;
+            --alert-info-border: #2d5a8e;
+            --alert-info-text: #75b798;
+            --table-bg: #2d2d2d;
+            --table-border: #404040;
+            --table-striped-bg: #3d3d3d;
+            --code-bg: #2d2d2d;
+            --code-border: #404040;
+            --code-text: #ffffff;
+            --body-bg: #1a1a1a;
+            --form-text: #b0b0b0;
+            --link-color: #4dabf7;
+            --link-hover: #74c0fc;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            color: var(--text-primary);
+        }
+
+        .tool-container {
+            color: var(--text-primary);
+        }
+
+        .tool-header h1 {
+            color: var(--text-primary);
+        }
+
+        .tool-header p {
+            color: var(--text-secondary);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: 0 4px 15px var(--card-shadow);
+        }
+
+        .card-body {
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .form-label {
+            color: var(--text-primary);
+        }
+
+        .form-text {
+            color: var(--form-text);
+        }
+
+        .form-control, .form-select {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: var(--input-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-check-label {
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+            color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-secondary {
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .alert-info {
+            background-color: var(--alert-info-bg);
+            border-color: var(--alert-info-border);
+            color: var(--alert-info-text);
+        }
+
+        .table {
+            color: var(--text-primary);
+            background-color: var(--table-bg);
+            border-color: var(--table-border);
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: var(--table-striped-bg);
+        }
+
+        .table > :not(caption) > * > * {
+            border-bottom-color: var(--table-border);
+        }
+
+        .text-muted {
+            color: var(--text-secondary) !important;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            color: var(--code-text);
+        }
+
+        a {
+            color: var(--link-color);
+        }
+
+        a:hover {
+            color: var(--link-hover);
+        }
+
+        .robots-preview {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        .directive {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .path {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header will be loaded here -->

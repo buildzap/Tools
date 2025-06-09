@@ -14,30 +14,91 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+            --timer-bg: #f8f9fa;
+            --timer-border: #dee2e6;
+            --timer-text: #212529;
+            --timer-shadow: rgba(0, 0, 0, 0.1);
+            --lap-hover: rgba(0, 0, 0, 0.05);
+            --best-lap: rgba(40, 167, 69, 0.1);
+            --worst-lap: rgba(220, 53, 69, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --input-bg: #2d2d2d;
+            --border-color: #404040;
+            --timer-bg: #2d2d2d;
+            --timer-border: #404040;
+            --timer-text: #ffffff;
+            --timer-shadow: rgba(0, 0, 0, 0.3);
+            --lap-hover: rgba(255, 255, 255, 0.05);
+            --best-lap: rgba(40, 167, 69, 0.2);
+            --worst-lap: rgba(220, 53, 69, 0.2);
+        }
+
         .time-display {
             font-family: 'Courier New', monospace;
             font-size: 3rem;
             font-weight: bold;
+            color: var(--timer-text);
+            background: var(--timer-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--timer-border);
+            box-shadow: 0 4px 15px var(--timer-shadow);
+            transition: all 0.3s ease;
         }
+
         .lap-time {
             font-family: 'Courier New', monospace;
+            color: var(--text-primary);
         }
+
         .lap-list {
             max-height: 300px;
             overflow-y: auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
         }
+
         .lap-item {
             transition: background-color 0.2s;
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
         }
+
         .lap-item:hover {
-            background-color: rgba(0,0,0,0.05);
+            background-color: var(--lap-hover);
         }
+
         .lap-item.best {
-            background-color: rgba(40, 167, 69, 0.1);
+            background-color: var(--best-lap);
         }
+
         .lap-item.worst {
-            background-color: rgba(220, 53, 69, 0.1);
+            background-color: var(--worst-lap);
         }
+
         .control-btn {
             width: 60px;
             height: 60px;
@@ -47,12 +108,70 @@
             justify-content: center;
             font-size: 1.5rem;
             transition: all 0.3s;
+            color: var(--text-primary);
         }
+
         .control-btn:hover {
             transform: scale(1.1);
         }
+
         .control-btn:active {
             transform: scale(0.95);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: 0 4px 15px var(--card-shadow);
+        }
+
+        .card-body {
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .btn-outline-danger {
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .btn-outline-danger:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Custom scrollbar for dark theme */
+        [data-theme="dark"] ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 4px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .time-display {
+                font-size: 2.5rem;
+            }
+            .control-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>

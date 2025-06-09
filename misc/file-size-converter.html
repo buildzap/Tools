@@ -14,26 +14,152 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+            --result-bg: #f8f9fa;
+            --result-border: #dee2e6;
+            --result-shadow: rgba(0, 0, 0, 0.1);
+            --history-hover: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --input-bg: #2d2d2d;
+            --border-color: #404040;
+            --result-bg: #2d2d2d;
+            --result-border: #404040;
+            --result-shadow: rgba(0, 0, 0, 0.3);
+            --history-hover: rgba(255, 255, 255, 0.05);
+        }
+
         .result-card {
             transition: all 0.3s;
+            background: var(--result-bg);
+            border: 1px solid var(--result-border);
+            color: var(--text-primary);
         }
+
         .result-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px var(--result-shadow);
         }
+
         .unit-select {
             min-width: 120px;
         }
+
         .conversion-history {
             max-height: 300px;
             overflow-y: auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
         }
+
         .history-item {
             cursor: pointer;
             transition: background-color 0.2s;
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
         }
+
         .history-item:hover {
-            background-color: rgba(0,0,0,0.05);
+            background-color: var(--history-hover);
+        }
+
+        .form-label {
+            color: var(--text-primary);
+        }
+
+        .form-control, .form-select {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: var(--input-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: 0 4px 15px var(--card-shadow);
+        }
+
+        .card-body {
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .text-muted {
+            color: var(--text-secondary) !important;
+        }
+
+        .btn-outline-primary {
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Custom scrollbar for dark theme */
+        [data-theme="dark"] ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 4px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .unit-select {
+                min-width: 100px;
+            }
+            .result-card {
+                margin-bottom: 1rem;
+            }
         }
     </style>
 </head>

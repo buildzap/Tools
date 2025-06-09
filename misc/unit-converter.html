@@ -13,6 +13,110 @@
     <!-- Custom CSS -->
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+            --alert-bg: #d1e7dd;
+            --alert-border: #badbcc;
+            --alert-text: #0f5132;
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --input-bg: #2d2d2d;
+            --border-color: #404040;
+            --alert-bg: #1e3a2f;
+            --alert-border: #2d5a4a;
+            --alert-text: #75b798;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: 0 4px 15px var(--card-shadow);
+        }
+
+        .card-body {
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .form-label {
+            color: var(--text-primary);
+        }
+
+        .form-control, .form-select {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: var(--input-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+            color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-secondary {
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .alert-success {
+            background-color: var(--alert-bg);
+            border-color: var(--alert-border);
+            color: var(--alert-text);
+        }
+
+        .alert-heading {
+            color: var(--alert-text);
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
 </head>
 <body class="fade-in">
     <!-- Header -->

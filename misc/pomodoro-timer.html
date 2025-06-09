@@ -14,65 +14,172 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --progress-bg: #e9ecef;
+            --progress-fill: #0d6efd;
+            --circle-bg: #ffffff;
+            --settings-border: #dee2e6;
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --progress-bg: #404040;
+            --progress-fill: #0d6efd;
+            --circle-bg: #2d2d2d;
+            --settings-border: #404040;
+        }
+
         .timer-display {
             font-size: 4rem;
             font-weight: bold;
             text-align: center;
             margin: 2rem 0;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
         }
+
         .timer-controls {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin-bottom: 2rem;
         }
+
         .timer-mode {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin-bottom: 2rem;
         }
+
         .timer-mode button {
             min-width: 100px;
+            color: var(--text-primary);
+            border-color: var(--card-border);
         }
+
         .timer-mode button.active {
-            background-color: #0d6efd;
+            background-color: var(--accent-color);
             color: white;
+            border-color: var(--accent-color);
         }
+
         .progress-container {
             width: 200px;
             height: 200px;
             margin: 0 auto;
             position: relative;
         }
+
         .progress-circle {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: conic-gradient(#0d6efd 0%, #e9ecef 0%);
+            background: conic-gradient(var(--progress-fill) 0%, var(--progress-bg) 0%);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
         }
+
         .progress-circle::before {
             content: '';
             position: absolute;
             width: 80%;
             height: 80%;
             border-radius: 50%;
-            background-color: white;
+            background-color: var(--circle-bg);
         }
+
         .timer-settings {
             margin-top: 2rem;
             padding-top: 2rem;
-            border-top: 1px solid #dee2e6;
+            border-top: 1px solid var(--settings-border);
         }
+
         .timer-settings label {
             font-weight: 500;
+            color: var(--text-primary);
         }
+
         .timer-settings input {
             max-width: 100px;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border-color: var(--card-border);
+        }
+
+        .timer-settings input:focus {
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border-color: var(--accent-color);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .btn {
+            color: var(--text-primary);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--card-border);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-color);
+        }
+
+        /* Custom scrollbar for dark theme */
+        [data-theme="dark"] ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 4px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Animation for timer */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .timer-running .timer-display {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
