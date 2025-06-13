@@ -4,336 +4,351 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Zone Converter - Multi-Tools</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
-    <!-- Moment.js and Moment Timezone -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+    <style>
+        :root {
+            --dark-bg: #1a1a1a;
+            --darker-bg: #141414;
+            --card-bg: #242424;
+            --hover-bg: #2d2d2d;
+            --border-color: #333;
+            --text-primary: #fff;
+            --text-secondary: #b3b3b3;
+            --accent-color: #4f46e5;
+            --accent-hover: #4338ca;
+            --success-color: #22c55e;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .converter-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .time-card {
+            background: var(--darker-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s;
+        }
+
+        .time-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .form-control, .form-select {
+            background-color: var(--darker-bg);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+            border-radius: 8px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--darker-bg);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+
+        .quick-zone-btn {
+            background-color: var(--darker-bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            margin: 0.25rem;
+            transition: all 0.2s;
+        }
+
+        .quick-zone-btn:hover {
+            background-color: var(--hover-bg);
+            color: var(--text-primary);
+            border-color: var(--accent-color);
+        }
+
+        .quick-zone-btn.active {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .world-clock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .conversion-display {
+            background: linear-gradient(145deg, var(--darker-bg), var(--card-bg));
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .time-arrow {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .swap-btn {
+            background: var(--accent-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .swap-btn:hover {
+            background: var(--accent-hover);
+            transform: rotate(180deg);
+        }
+
+        .current-time {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .timezone-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .refresh-icon {
+            color: var(--success-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .world-clock-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <div class="converter-wrapper">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-globe-americas me-2"></i>
+            World Time Converter
+        </h1>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-globe"></i> Time Zone Converter</h1>
-                <p>Convert times between different time zones and view world clocks</p>
+        <!-- Main Converter Card -->
+        <div class="main-card">
+            <div class="row align-items-center">
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label class="form-label">From Time Zone</label>
+                        <select class="form-select" id="fromTimeZone"></select>
+                    </div>
+                </div>
+                <div class="col-md-2 text-center my-2">
+                    <button class="swap-btn" id="swapBtn">
+                        <i class="fas fa-exchange-alt text-white"></i>
+                    </button>
+                </div>
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label class="form-label">To Time Zone</label>
+                        <select class="form-select" id="toTimeZone"></select>
+                    </div>
+                </div>
             </div>
 
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="converterForm">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="fromDateTime" class="form-label">Date & Time</label>
-                                            <input type="datetime-local" class="form-control" id="fromDateTime" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="fromTimeZone" class="form-label">From Time Zone</label>
-                                            <select class="form-select" id="fromTimeZone" required>
-                                                <!-- Time zones will be populated by JavaScript -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="toDateTime" class="form-label">Converted Date & Time</label>
-                                            <input type="datetime-local" class="form-control" id="toDateTime" readonly>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="toTimeZone" class="form-label">To Time Zone</label>
-                                            <select class="form-select" id="toTimeZone" required>
-                                                <!-- Time zones will be populated by JavaScript -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Additional Options</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="autoUpdate">
-                                        <label class="form-check-label" for="autoUpdate">
-                                            Auto-update every minute
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-primary" id="convertButton">
-                                        <i class="fas fa-sync-alt"></i> Convert
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary" id="swapButton">
-                                        <i class="fas fa-exchange-alt"></i> Swap Time Zones
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- World Clocks Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">World Clocks</h5>
-                            <div class="row" id="worldClocks">
-                                <!-- World clocks will be populated by JavaScript -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Time Difference Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Time Difference</h5>
-                            <div id="timeDifference" class="text-center text-muted">
-                                Select time zones to see the difference
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion History</h5>
-                            <div id="history" class="text-center text-muted">
-                                No conversions yet
-                            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Date & Time</label>
+                        <div class="input-group">
+                            <input type="datetime-local" class="form-control" id="dateTime">
+                            <button class="btn btn-outline-secondary" id="nowBtn">Now</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
+            <!-- Quick Access Zones -->
+            <div class="quick-zones d-flex flex-wrap justify-content-center mt-3">
+                <button class="quick-zone-btn" data-zone="Asia/Kolkata">India</button>
+                <button class="quick-zone-btn" data-zone="UTC">UTC</button>
+                <button class="quick-zone-btn" data-zone="America/New_York">New York</button>
+                <button class="quick-zone-btn" data-zone="Europe/London">London</button>
+                <button class="quick-zone-btn" data-zone="Asia/Dubai">Dubai</button>
+                <button class="quick-zone-btn" data-zone="Asia/Singapore">Singapore</button>
+                <button class="quick-zone-btn" data-zone="Asia/Tokyo">Tokyo</button>
+                <button class="quick-zone-btn" data-zone="Australia/Sydney">Sydney</button>
+            </div>
 
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Time Zone Converter</h5>
-                            <p class="card-text">
-                                Convert times between different time zones and
-                                view world clocks in real-time.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
-                                <li><i class="fas fa-check text-success"></i> World clocks</li>
-                                <li><i class="fas fa-check text-success"></i> Time difference calculator</li>
-                                <li><i class="fas fa-check text-success"></i> Auto-update option</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between time zones.</small>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Conversion Result -->
+            <div class="conversion-display" id="result">
+                <div class="text-center text-secondary">
+                    Select time zones to see conversion
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
+        <!-- World Clocks -->
+        <div class="main-card">
+            <h4 class="mb-3">
+                <i class="fas fa-clock me-2"></i>
+                Major Cities Time
+                <small class="float-end text-secondary">
+                    <i class="fas fa-sync-alt refresh-icon" id="refreshIcon"></i>
+                    Auto updates every minute
+                </small>
+            </h4>
+            <div class="world-clock-grid" id="worldClocks"></div>
+        </div>
+    </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fromDateTime = document.getElementById('fromDateTime');
-            const toDateTime = document.getElementById('toDateTime');
-            const fromTimeZone = document.getElementById('fromTimeZone');
-            const toTimeZone = document.getElementById('toTimeZone');
-            const convertButton = document.getElementById('convertButton');
-            const swapButton = document.getElementById('swapButton');
-            const autoUpdate = document.getElementById('autoUpdate');
-            const timeDifference = document.getElementById('timeDifference');
-            const history = document.getElementById('history');
-            const worldClocks = document.getElementById('worldClocks');
-            let conversionHistory = [];
-            let updateInterval = null;
+            const elements = {
+                dateTime: document.getElementById('dateTime'),
+                fromZone: document.getElementById('fromTimeZone'),
+                toZone: document.getElementById('toTimeZone'),
+                result: document.getElementById('result'),
+                worldClocks: document.getElementById('worldClocks'),
+                swapBtn: document.getElementById('swapBtn'),
+                nowBtn: document.getElementById('nowBtn'),
+                refreshIcon: document.getElementById('refreshIcon')
+            };
 
-            // Popular time zones
-            const popularTimeZones = [
-                'UTC',
-                'America/New_York',
-                'America/Los_Angeles',
-                'Europe/London',
-                'Europe/Paris',
-                'Asia/Tokyo',
-                'Asia/Shanghai',
-                'Australia/Sydney',
-                'Pacific/Auckland'
+            const majorZones = [
+                { zone: 'Asia/Kolkata', city: 'India' },
+                { zone: 'UTC', city: 'UTC' },
+                { zone: 'America/New_York', city: 'New York' },
+                { zone: 'America/Los_Angeles', city: 'Los Angeles' },
+                { zone: 'Europe/London', city: 'London' },
+                { zone: 'Europe/Paris', city: 'Paris' },
+                { zone: 'Asia/Dubai', city: 'Dubai' },
+                { zone: 'Asia/Singapore', city: 'Singapore' },
+                { zone: 'Asia/Tokyo', city: 'Tokyo' },
+                { zone: 'Asia/Shanghai', city: 'Shanghai' },
+                { zone: 'Australia/Sydney', city: 'Sydney' },
+                { zone: 'Pacific/Auckland', city: 'Auckland' }
             ];
 
-            // Populate time zone selectors
-            function populateTimeZones() {
-                const timeZones = moment.tz.names();
-                const options = timeZones.map(zone => {
+            function initTimeZones() {
+                const zones = moment.tz.names().map(zone => {
                     const offset = moment.tz(zone).format('Z');
-                    const label = `${zone} (UTC${offset})`;
-                    return `<option value="${zone}" ${popularTimeZones.includes(zone) ? 'selected' : ''}>${label}</option>`;
-                });
-
-                fromTimeZone.innerHTML = options.join('');
-                toTimeZone.innerHTML = options.join('');
+                    return `<option value="${zone}">${zone.replace('_', ' ')} (UTC${offset})</option>`;
+                }).join('');
+                elements.fromZone.innerHTML = elements.toZone.innerHTML = zones;
+                elements.fromZone.value = moment.tz.guess();
+                elements.toZone.value = 'UTC';
             }
 
-            // Set initial date and time
-            function setInitialDateTime() {
-                const now = moment();
-                fromDateTime.value = now.format('YYYY-MM-DDTHH:mm');
-                convertTime();
-            }
-
-            // Convert time
-            function convertTime() {
+            function updateConversion() {
                 try {
-                    const fromMoment = moment.tz(fromDateTime.value, fromTimeZone.value);
-                    const toMoment = fromMoment.clone().tz(toTimeZone.value);
+                    const time = moment.tz(elements.dateTime.value, elements.fromZone.value);
+                    const converted = time.clone().tz(elements.toZone.value);
+                    const diff = converted.utcOffset() - time.utcOffset();
+                    const hours = Math.abs(Math.floor(diff / 60));
+                    const mins = Math.abs(diff % 60);
                     
-                    toDateTime.value = toMoment.format('YYYY-MM-DDTHH:mm');
-                    
-                    // Update time difference
-                    const diff = moment.duration(toMoment.diff(fromMoment));
-                    const hours = Math.abs(diff.hours());
-                    const minutes = Math.abs(diff.minutes());
-                    const direction = diff.asMinutes() >= 0 ? 'ahead' : 'behind';
-                    
-                    timeDifference.innerHTML = `
-                        <div class="alert alert-info">
-                            <h4 class="alert-heading">Time Difference</h4>
-                            <p class="mb-0">
-                                ${toTimeZone.value} is ${hours} hours and ${minutes} minutes ${direction} of ${fromTimeZone.value}
-                            </p>
+                    elements.result.innerHTML = `
+                        <div class="current-time">${time.format('HH:mm')}</div>
+                        <div class="timezone-label mb-3">${time.format('dddd, MMMM D, YYYY')} in ${elements.fromZone.value.split('/').pop().replace('_', ' ')}</div>
+                        <div class="time-arrow">
+                            <i class="fas fa-arrow-down"></i>
+                            <small class="d-block">${diff >= 0 ? '+' : '-'}${hours}:${mins.toString().padStart(2, '0')} hours</small>
                         </div>
+                        <div class="current-time">${converted.format('HH:mm')}</div>
+                        <div class="timezone-label">${converted.format('dddd, MMMM D, YYYY')} in ${elements.toZone.value.split('/').pop().replace('_', ' ')}</div>
                     `;
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        fromDateTime: fromMoment.format(),
-                        fromTimeZone: fromTimeZone.value,
-                        toDateTime: toMoment.format(),
-                        toTimeZone: toTimeZone.value,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
                 } catch (error) {
-                    timeDifference.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
+                    elements.result.innerHTML = '<div class="text-danger">Invalid date/time</div>';
                 }
             }
 
-            // Update world clocks
             function updateWorldClocks() {
                 const now = moment();
-                worldClocks.innerHTML = popularTimeZones.map(zone => {
+                elements.worldClocks.innerHTML = majorZones.map(({zone, city}) => {
                     const time = now.tz(zone);
                     return `
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <h6 class="card-title">${zone.split('/').pop().replace('_', ' ')}</h6>
-                                    <p class="card-text">
-                                        <span class="h4">${time.format('HH:mm')}</span><br>
-                                        <small class="text-muted">${time.format('ddd, MMM D')}</small>
-                                    </p>
+                        <div class="time-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-0">${city}</h5>
+                                    <small class="text-secondary">${zone}</small>
+                                </div>
+                                <div class="text-end">
+                                    <div class="current-time">${time.format('HH:mm')}</div>
+                                    <small class="text-secondary">${time.format('ddd, MMM D')}</small>
                                 </div>
                             </div>
                         </div>
                     `;
                 }).join('');
+                
+                elements.refreshIcon.style.opacity = '1';
+                setTimeout(() => elements.refreshIcon.style.opacity = '0.5', 500);
             }
 
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
-                    return;
-                }
+            // Event Listeners
+            elements.swapBtn.onclick = () => {
+                [elements.fromZone.value, elements.toZone.value] = 
+                [elements.toZone.value, elements.fromZone.value];
+                updateConversion();
+            };
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${moment(conv.fromDateTime).format('MMM D, YYYY HH:mm')} ${conv.fromTimeZone}</td>
-                                        <td>${moment(conv.toDateTime).format('MMM D, YYYY HH:mm')} ${conv.toTimeZone}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            }
+            elements.nowBtn.onclick = () => {
+                elements.dateTime.value = moment().format('YYYY-MM-DDTHH:mm');
+                updateConversion();
+            };
 
-            // Swap time zones
-            swapButton.addEventListener('click', function() {
-                const tempTimeZone = fromTimeZone.value;
-                fromTimeZone.value = toTimeZone.value;
-                toTimeZone.value = tempTimeZone;
-                convertTime();
+            document.querySelectorAll('.quick-zone-btn').forEach(btn => {
+                btn.onclick = (e) => {
+                    document.querySelectorAll('.quick-zone-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    elements.toZone.value = btn.dataset.zone;
+                    updateConversion();
+                };
             });
 
-            // Auto-update toggle
-            autoUpdate.addEventListener('change', function() {
-                if (this.checked) {
-                    updateInterval = setInterval(() => {
-                        convertTime();
-                        updateWorldClocks();
-                    }, 60000);
-                } else {
-                    clearInterval(updateInterval);
-                }
+            [elements.dateTime, elements.fromZone, elements.toZone].forEach(el => {
+                el.onchange = updateConversion;
             });
-
-            // Event listeners
-            convertButton.addEventListener('click', convertTime);
-            fromDateTime.addEventListener('change', convertTime);
-            fromTimeZone.addEventListener('change', convertTime);
-            toTimeZone.addEventListener('change', convertTime);
 
             // Initialize
-            populateTimeZones();
-            setInitialDateTime();
+            elements.dateTime.value = moment().format('YYYY-MM-DDTHH:mm');
+            initTimeZones();
+            updateConversion();
             updateWorldClocks();
-            setInterval(updateWorldClocks, 1000);
+            setInterval(updateWorldClocks, 60000);
         });
     </script>
 </body>
-</html> 
+</html>
