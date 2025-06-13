@@ -3,446 +3,811 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Resizer - Web Tools</title>
+    <title>Smart Image Resizer - Modern Web Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet">
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
+    
     <style>
         :root {
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-color: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
+            --surface-1: #121212;
+            --surface-2: #1e1e1e;
+            --surface-3: #252525;
+            --surface-4: #2f2f2f;
+            --element-1: #363636;
+            --element-2: #404040;
+            --primary: #7289DA;
+            --primary-light: #8ea1e1;
+            --success: #43B581;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
             --border-color: rgba(255, 255, 255, 0.1);
-            --main-bg: #1a1a1a;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="light"] {
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --text-muted: #666666;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --main-bg: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         body {
-            background-color: var(--main-bg);
-            color: var(--text-color);
+            background: var(--surface-1);
+            color: var(--text-primary);
             min-height: 100vh;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
-        }
-
-        .card-title {
-            color: var(--text-color);
-        }
-
-        .lead {
-            color: var(--text-muted);
-        }
-
-        .upload-area {
-            background-color: var(--card-bg);
-            border: 2px dashed var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .upload-area:hover {
-            border-color: var(--bs-primary);
-            background-color: rgba(var(--bs-primary-rgb), 0.05);
-        }
-
-        .upload-area i {
-            color: var(--bs-primary);
-        }
-
-        .form-label {
-            color: var(--text-color);
-        }
-
-        .form-control {
-            background-color: var(--card-bg);
-            border-color: var(--border-color);
-            color: var(--text-color);
-        }
-
-        .form-control:focus {
-            background-color: var(--card-bg);
-            border-color: var(--bs-primary);
-            color: var(--text-color);
-            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
-        }
-
-        .form-control::placeholder {
-            color: var(--text-muted);
-        }
-
-        .form-check-label {
-            color: var(--text-color);
-        }
-
-        .card-text {
-            color: var(--text-color);
-        }
-
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-
-        /* Image resizer specific styles */
-        #imagePreview {
-            background-color: var(--card-bg);
-            border: 2px dashed var(--border-color);
-            border-radius: 4px;
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 1rem;
-            min-height: 200px;
+        }
+
+        .tool-header {
+            background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface-3) 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 1.5rem;
+            height: calc(100vh - 200px);
+        }
+
+        .sidebar {
+            background: var(--surface-2);
+            border-radius: 12px;
+            padding: 1rem;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .preview-area {
+            background: var(--surface-2);
+            border-radius: 12px;
+            padding: 1rem;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--element-2);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            background: var(--surface-3);
+        }
+
+        .drop-zone:hover, .drop-zone.drag-over {
+            border-color: var(--primary);
+            background: var(--surface-4);
+        }
+
+        .drop-zone-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .settings-section {
+            background: var(--surface-3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .settings-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dimension-input {
+            display: grid;
+            grid-template-columns: 1fr 30px 1fr;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .quick-presets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .preset-btn {
+            background: var(--surface-4);
+            border: 1px solid var(--element-1);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            background: var(--element-1);
+            transform: translateY(-2px);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .preview-controls {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            background: var(--surface-3);
+            padding: 0.75rem;
+            border-radius: 100px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-btn {
+            background: var(--surface-4);
+            border: none;
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        #imagePreview:hover {
-            border-color: var(--bs-primary);
-            background-color: rgba(var(--bs-primary-rgb), 0.1);
-        }
-
-        #imagePreview img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 4px;
-        }
-
-        /* Button styling */
-        .btn-primary {
-            background-color: var(--bs-primary);
-            border-color: var(--bs-primary);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--bs-primary-dark);
-            border-color: var(--bs-primary-dark);
-        }
-
-        .btn-success {
-            background-color: var(--bs-success);
-            border-color: var(--bs-success);
-        }
-
-        .btn-success:hover {
-            background-color: var(--bs-success-dark);
-            border-color: var(--bs-success-dark);
-        }
-
-        /* Main container styling */
-        main.container {
-            background-color: var(--main-bg);
-            padding: 2rem 0;
-        }
-
-        /* Card hover effect */
-        .card:hover {
+        .control-btn:hover {
+            background: var(--element-1);
             transform: translateY(-2px);
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
         }
 
-        /* Preview area */
-        #previewArea {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1rem;
+        .quality-slider {
+            width: 100%;
+            margin: 1rem 0;
+            -webkit-appearance: none;
+            background: var(--surface-4);
+            height: 6px;
+            border-radius: 3px;
         }
 
-        /* Info section */
-        #imageInfo {
-            color: var(--text-color);
+        .quality-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        #imageInfo span {
-            color: var(--bs-primary);
-            font-weight: 500;
+        .quality-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
-        /* Loading indicator */
-        .loading {
-            color: var(--text-color);
+        .file-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            font-size: 0.85rem;
         }
 
-        .loading i {
-            color: var(--bs-primary);
+        .info-item {
+            background: var(--surface-4);
+            padding: 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        /* Dimension inputs */
-        .dimension-inputs {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1rem;
+        .action-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 1rem;
         }
 
-        .dimension-inputs label {
-            color: var(--text-color);
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
         }
 
-        .dimension-inputs input {
-            background-color: var(--card-bg);
-            border-color: var(--border-color);
-            color: var(--text-color);
-        }
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
 
-        .dimension-inputs input:focus {
-            border-color: var(--bs-primary);
-            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+            .sidebar {
+                height: auto;
+                order: 2;
+            }
+
+            .preview-area {
+                height: 500px;
+                order: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div id="header"></div>
+    <div class="app-container">
+        <div class="tool-header text-center">
+            <h1><i class="fas fa-expand me-2"></i>Smart Image Resizer</h1>
+            <p class="text-secondary mb-0">Resize, crop, and optimize your images with advanced AI-powered tools</p>
+        </div>
 
-    <main class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h1 class="card-title text-center mb-4">
-                            <i class="fas fa-expand me-2"></i>Image Resizer
-                        </h1>
-                        <div class="text-center mb-4">
-                            <p class="lead">Resize your images to any dimension</p>
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-ruler-combined"></i>
+                        <span>Dimensions</span>
+                    </div>
+                    <div class="dimension-input">
+                        <input type="number" class="form-control" id="widthInput" placeholder="Width">
+                        <span class="text-center">×</span>
+                        <input type="number" class="form-control" id="heightInput" placeholder="Height">
+                    </div>
+                    <div class="quick-presets">
+                        <button class="preset-btn" data-width="1920" data-height="1080">FHD</button>
+                        <button class="preset-btn" data-width="1280" data-height="720">HD</button>
+                        <button class="preset-btn" data-width="1080" data-height="1080">Square</button>
+                        <button class="preset-btn" data-width="1200" data-height="628">Social</button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-crop-alt"></i>
+                        <span>Aspect Ratio</span>
+                    </div>
+                    <div class="btn-group w-100">
+                        <button class="btn btn-sm btn-dark active" data-ratio="free">Free</button>
+                        <button class="btn btn-sm btn-dark" data-ratio="1:1">1:1</button>
+                        <button class="btn btn-sm btn-dark" data-ratio="4:3">4:3</button>
+                        <button class="btn btn-sm btn-dark" data-ratio="16:9">16:9</button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Quality</span>
+                    </div>
+                    <input type="range" class="quality-slider" id="qualitySlider" min="1" max="100" value="90">
+                    <div class="d-flex justify-content-between">
+                        <small class="text-secondary">Lower size</small>
+                        <small class="text-secondary" id="qualityValue">90%</small>
+                        <small class="text-secondary">Better quality</small>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-cog"></i>
+                        <span>Options</span>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="preserveExif">
+                        <label class="form-check-label" for="preserveExif">Preserve EXIF data</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="smartScale" checked>
+                        <label class="form-check-label" for="smartScale">AI smart scaling</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="optimizeForWeb" checked>
+                        <label class="form-check-label" for="optimizeForWeb">Optimize for web</label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-info-circle"></i>
+                        <span>File Info</span>
+                    </div>
+                    <div class="file-info">
+                        <div class="info-item">
+                            <span>Original:</span>
+                            <span id="originalSize">-</span>
                         </div>
-
-                        <div class="upload-area p-4 text-center border rounded mb-4" id="dropZone">
-                            <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
-                            <h4>Drag & Drop Images Here</h4>
-                            <p class="text-muted">or</p>
-                            <input type="file" id="fileInput" accept="image/*" multiple class="d-none">
-                            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-                                Choose Files
-                            </button>
+                        <div class="info-item">
+                            <span>New:</span>
+                            <span id="newSize">-</span>
                         </div>
-
-                        <div id="previewArea" class="d-none">
-                            <h4 class="mb-3">Selected Images</h4>
-                            <div id="imageList" class="row g-3"></div>
-
-                            <div class="mt-4">
-                                <h4>Resize Options</h4>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="width" class="form-label">Width (px)</label>
-                                            <input type="number" class="form-control" id="width" min="1" placeholder="Enter width">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="height" class="form-label">Height (px)</label>
-                                            <input type="number" class="form-control" id="height" min="1" placeholder="Enter height">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-check mt-3">
-                                    <input class="form-check-input" type="checkbox" id="maintainAspectRatio" checked>
-                                    <label class="form-check-label" for="maintainAspectRatio">
-                                        Maintain Aspect Ratio
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="text-center mt-4">
-                                <button class="btn btn-success" id="resizeBtn">
-                                    <i class="fas fa-expand me-2"></i>Resize Images
-                                </button>
-                            </div>
+                        <div class="info-item">
+                            <span>Format:</span>
+                            <span id="imageFormat">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Dimensions:</span>
+                            <span id="imageDimensions">-</span>
                         </div>
                     </div>
                 </div>
+
+                <button class="action-btn" id="downloadBtn" disabled>
+                    <i class="fas fa-download me-2"></i>Download Image
+                </button>
+            </div>
+
+            <div class="preview-area" id="previewArea">
+                <div class="drop-zone" id="dropZone">
+                    <input type="file" id="fileInput" class="file-input" accept="image/*" style="display: none;">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt drop-zone-icon"></i>
+                        <h3 class="mb-3">Drop your image here</h3>
+                        <p class="text-secondary mb-4">or</p>
+                        <button class="btn btn-primary btn-lg px-4" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-folder-open me-2"></i>Choose File
+                        </button>
+                        <p class="text-secondary mt-3">
+                            <small>Supports: JPG, PNG, WebP - Max size: 20MB</small>
+                        </p>
+                    </div>
+                </div>
+                <img id="previewImage" class="image-preview d-none" alt="Preview">
+                <div class="preview-controls d-none">
+                    <button class="control-btn" id="zoomIn" title="Zoom In">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button class="control-btn" id="zoomOut" title="Zoom Out">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button class="control-btn" id="rotateLeft" title="Rotate Left">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button class="control-btn" id="rotateRight" title="Rotate Right">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button class="control-btn" id="flipH" title="Flip Horizontal">
+                        <i class="fas fa-arrows-alt-h"></i>
+                    </button>
+                    <button class="control-btn" id="flipV" title="Flip Vertical">
+                        <i class="fas fa-arrows-alt-v"></i>
+                    </button>
+                    <button class="control-btn" id="reset" title="Reset">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <div id="footer"></div>
-
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/main.js"></script>
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
     <script>
-        // Load header and footer
-        fetch('../../components/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const previewImage = document.getElementById('previewImage');
+            const previewControls = document.querySelector('.preview-controls');
+            const widthInput = document.getElementById('widthInput');
+            const heightInput = document.getElementById('heightInput');
+            const qualitySlider = document.getElementById('qualitySlider');
+            const qualityValue = document.getElementById('qualityValue');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            let cropper = null;
+            let originalFile = null;
+            let imageLoaded = false;
+
+            // File upload handling
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
             });
 
-        fetch('../../components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'));
             });
 
-        // Resize functionality
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const previewArea = document.getElementById('previewArea');
-        const imageList = document.getElementById('imageList');
-        const widthInput = document.getElementById('width');
-        const heightInput = document.getElementById('height');
-        const maintainAspectRatio = document.getElementById('maintainAspectRatio');
-        const resizeBtn = document.getElementById('resizeBtn');
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'));
+            });
 
-        let selectedFiles = [];
-        let originalDimensions = {};
+            // Handle file drop
+            dropZone.addEventListener('drop', (e) => {
+                const file = e.dataTransfer.files[0];
+                if (file) handleFile(file);
+            });
 
-        // Drag and drop handlers
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-primary');
-        });
+            // Handle file selection
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) handleFile(file);
+            });
 
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-primary');
-        });
+            dropZone.addEventListener('click', () => fileInput.click());
 
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-primary');
-            const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'));
-            handleFiles(files);
-        });
+            // File processing
+            function handleFile(file) {
+                if (!file.type.match('image.*')) {
+                    showToast('error', 'Please upload a valid image file');
+                    return;
+                }
 
-        fileInput.addEventListener('change', (e) => {
-            const files = Array.from(e.target.files);
-            handleFiles(files);
-        });
-
-        function handleFiles(files) {
-            selectedFiles = files;
-            previewArea.classList.remove('d-none');
-            imageList.innerHTML = '';
-            originalDimensions = {};
-
-            files.forEach((file, index) => {
+                originalFile = file;
                 const reader = new FileReader();
-                reader.onload = (e) => {
+
+                reader.onload = function(e) {
                     const img = new Image();
-                    img.onload = () => {
-                        originalDimensions[file.name] = {
-                            width: img.width,
-                            height: img.height
-                        };
-
-                        const col = document.createElement('div');
-                        col.className = 'col-md-4';
-                        col.innerHTML = `
-                            <div class="card">
-                                <img src="${e.target.result}" class="card-img-top" alt="Preview">
-                                <div class="card-body">
-                                    <p class="card-text">${file.name}</p>
-                                    <p class="card-text text-muted">${formatFileSize(file.size)}</p>
-                                    <p class="card-text text-muted">Original: ${img.width}x${img.height}px</p>
-                                </div>
-                            </div>
-                        `;
-                        imageList.appendChild(col);
-
-                        // Set initial dimensions for the first image
-                        if (index === 0) {
-                            widthInput.value = img.width;
-                            heightInput.value = img.height;
+                    img.onload = function() {
+                        previewImage.src = e.target.result;
+                        previewImage.classList.remove('d-none');
+                        previewControls.classList.remove('d-none');
+                        dropZone.classList.add('d-none');
+                        
+                        if (cropper) {
+                            cropper.destroy();
                         }
+
+                        // Initialize cropper
+                        cropper = new Cropper(previewImage, {
+                            viewMode: 2,
+                            dragMode: 'move',
+                            autoCropArea: 1,
+                            restore: false,
+                            modal: true,
+                            guides: true,
+                            highlight: true,
+                            cropBoxMovable: true,
+                            cropBoxResizable: true,
+                            toggleDragModeOnDblclick: false,
+                            ready: function() {
+                                imageLoaded = true;
+                                downloadBtn.disabled = false;
+                                updateFileInfo();
+                            }
+                        });
+
+                        // Set initial dimensions
+                        widthInput.value = img.width;
+                        heightInput.value = img.height;
                     };
                     img.src = e.target.result;
                 };
+
                 reader.readAsDataURL(file);
-            });
-        }
-
-        // Maintain aspect ratio when width or height changes
-        widthInput.addEventListener('input', () => {
-            if (maintainAspectRatio.checked && selectedFiles.length > 0) {
-                const firstFile = selectedFiles[0];
-                const original = originalDimensions[firstFile.name];
-                const ratio = original.height / original.width;
-                heightInput.value = Math.round(widthInput.value * ratio);
-            }
-        });
-
-        heightInput.addEventListener('input', () => {
-            if (maintainAspectRatio.checked && selectedFiles.length > 0) {
-                const firstFile = selectedFiles[0];
-                const original = originalDimensions[firstFile.name];
-                const ratio = original.width / original.height;
-                widthInput.value = Math.round(heightInput.value * ratio);
-            }
-        });
-
-        resizeBtn.addEventListener('click', async () => {
-            if (!widthInput.value || !heightInput.value) {
-                alert('Please enter both width and height');
-                return;
             }
 
-            const newWidth = parseInt(widthInput.value);
-            const newHeight = parseInt(heightInput.value);
+            // Download functionality
+            downloadBtn.addEventListener('click', async function() {
+                if (!imageLoaded || !cropper) {
+                    showToast('error', 'Please upload an image first');
+                    return;
+                }
 
-            for (const file of selectedFiles) {
-                const img = await loadImage(file);
-                const canvas = document.createElement('canvas');
-                canvas.width = newWidth;
-                canvas.height = newHeight;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, newWidth, newHeight);
-                
-                canvas.toBlob((blob) => {
-                    const resizedFile = new File([blob], `resized_${file.name}`, {
-                        type: file.type,
-                        lastModified: Date.now()
+                try {
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+
+                    // Get settings
+                    const width = parseInt(widthInput.value) || null;
+                    const height = parseInt(heightInput.value) || null;
+                    const quality = parseInt(qualitySlider.value) / 100;
+                    const optimizeForWeb = document.getElementById('optimizeForWeb').checked;
+
+                    // Validate dimensions
+                    if (width && (width < 1 || width > 8000)) {
+                        throw new Error('Width must be between 1 and 8000 pixels');
+                    }
+                    if (height && (height < 1 || height > 8000)) {
+                        throw new Error('Height must be between 1 and 8000 pixels');
+                    }
+
+                    // Get cropped canvas with optimizations
+                    const canvas = cropper.getCroppedCanvas({
+                        width: width,
+                        height: height,
+                        fillColor: '#fff',
+                        imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high',
+                        maxWidth: 8000, // Prevent memory issues with huge images
+                        maxHeight: 8000
                     });
-                    downloadFile(resizedFile);
-                }, file.type);
+
+                    if (!canvas) {
+                        throw new Error('Failed to process image');
+                    }
+
+                    // Determine output format
+                    let outputFormat = optimizeForWeb ? 'image/webp' : (originalFile.type || 'image/jpeg');
+                    let fallbackFormat = 'image/jpeg';
+                    
+                    // Test WebP support
+                    const webpSupported = await testWebPSupport();
+                    if (!webpSupported && outputFormat === 'image/webp') {
+                        outputFormat = fallbackFormat;
+                    }
+
+                    // Create blob with progress
+                    const blob = await new Promise((resolve, reject) => {
+                        try {
+                            // Show processing state
+                            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Optimizing...';
+                            
+                            // Convert to blob with specified format and quality
+                            canvas.toBlob(
+                                (result) => {
+                                    if (result) {
+                                        resolve(result);
+                                    } else {
+                                        reject(new Error('Failed to create image file'));
+                                    }
+                                },
+                                outputFormat,
+                                quality
+                            );
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+
+                    if (!blob) {
+                        throw new Error('Failed to create image file');
+                    }
+
+                    // Validate file size
+                    const maxSize = 100 * 1024 * 1024; // 100MB limit
+                    if (blob.size > maxSize) {
+                        throw new Error('Resulting file is too large. Try reducing quality or dimensions.');
+                    }
+
+                    // Generate filename with format
+                    const fileExtension = outputFormat === 'image/webp' ? 'webp' : 
+                                        outputFormat === 'image/png' ? 'png' : 'jpg';
+                    const timestamp = new Date().toISOString().split('.')[0].replace(/[:]/g, '-');
+                    const fileName = `resized-${timestamp}.${fileExtension}`;
+                    
+                    // Create object URL for download
+                    const url = URL.createObjectURL(blob);
+                    
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = fileName;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+
+                    // Trigger download
+                    downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Downloading...';
+                    
+                    // Use setTimeout to ensure UI updates before download starts
+                    setTimeout(() => {
+                        try {
+                            link.click();
+                            document.body.removeChild(link);
+
+                            // Update file info
+                            const newSize = (blob.size / 1024).toFixed(2);
+                            document.getElementById('newSize').textContent = `${newSize} KB`;
+                            const originalSize = originalFile.size / 1024;
+                            const compressionRatio = ((originalSize - blob.size / 1024) / originalSize * 100).toFixed(1);
+
+                            showToast('success', `Image saved as ${fileExtension.toUpperCase()} (${compressionRatio}% smaller)`);
+                        } catch (e) {
+                            console.error('Download error:', e);
+                            showToast('error', 'Failed to download. Please try again.');
+                        }
+                    }, 100);
+
+                    // Cleanup
+                    setTimeout(() => {
+                        URL.revokeObjectURL(url);
+                    }, 1000);
+
+                } catch (error) {
+                    console.error('Processing error:', error);
+                    showToast('error', error.message || 'Failed to process image. Please try again.');
+                } finally {
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = '<i class="fas fa-download me-2"></i>Download Image';
+                }
+            });
+
+            // Test WebP support
+            async function testWebPSupport() {
+                // Check if browser supports createImageBitmap
+                if (!('createImageBitmap' in window)) {
+                    return false;
+                }
+
+                // Create a WebP image in memory
+                const webpData = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=';
+                try {
+                    const blob = await fetch(webpData).then(r => r.blob());
+                    return createImageBitmap(blob).then(() => true, () => false);
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            // Download functionality
+            downloadBtn.addEventListener('click', async function() {
+                if (!imageLoaded || !cropper) {
+                    showToast('error', 'Please upload an image first');
+                    return;
+                }
+
+                try {
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+
+                    // Get settings
+                    const width = parseInt(widthInput.value) || null;
+                    const height = parseInt(heightInput.value) || null;
+                    const quality = parseInt(qualitySlider.value) / 100;
+                    const optimizeForWeb = document.getElementById('optimizeForWeb').checked;
+
+                    // Validate dimensions
+                    if (width && (width < 1 || width > 8000)) {
+                        throw new Error('Width must be between 1 and 8000 pixels');
+                    }
+                    if (height && (height < 1 || height > 8000)) {
+                        throw new Error('Height must be between 1 and 8000 pixels');
+                    }
+
+                    // Get cropped canvas with optimizations
+                    const canvas = cropper.getCroppedCanvas({
+                        width: width,
+                        height: height,
+                        fillColor: '#fff',
+                        imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high',
+                        maxWidth: 8000, // Prevent memory issues with huge images
+                        maxHeight: 8000
+                    });
+
+                    if (!canvas) {
+                        throw new Error('Failed to process image');
+                    }
+
+                    // Determine output format
+                    let outputFormat = optimizeForWeb ? 'image/webp' : (originalFile.type || 'image/jpeg');
+                    let fallbackFormat = 'image/jpeg';
+                    
+                    // Test WebP support
+                    const webpSupported = await testWebPSupport();
+                    if (!webpSupported && outputFormat === 'image/webp') {
+                        outputFormat = fallbackFormat;
+                    }
+
+                    // Create blob with progress
+                    const blob = await new Promise((resolve, reject) => {
+                        try {
+                            // Show processing state
+                            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Optimizing...';
+                            
+                            // Convert to blob with specified format and quality
+                            canvas.toBlob(
+                                (result) => {
+                                    if (result) {
+                                        resolve(result);
+                                    } else {
+                                        reject(new Error('Failed to create image file'));
+                                    }
+                                },
+                                outputFormat,
+                                quality
+                            );
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+
+                    if (!blob) {
+                        throw new Error('Failed to create image file');
+                    }
+
+                    // Validate file size
+                    const maxSize = 100 * 1024 * 1024; // 100MB limit
+                    if (blob.size > maxSize) {
+                        throw new Error('Resulting file is too large. Try reducing quality or dimensions.');
+                    }
+
+                    // Generate filename with format
+                    const fileExtension = outputFormat === 'image/webp' ? 'webp' : 
+                                        outputFormat === 'image/png' ? 'png' : 'jpg';
+                    const timestamp = new Date().toISOString().split('.')[0].replace(/[:]/g, '-');
+                    const fileName = `resized-${timestamp}.${fileExtension}`;
+                    
+                    // Create object URL for download
+                    const url = URL.createObjectURL(blob);
+                    
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = fileName;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+
+                    // Trigger download
+                    downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Downloading...';
+                    
+                    // Use setTimeout to ensure UI updates before download starts
+                    setTimeout(() => {
+                        try {
+                            link.click();
+                            document.body.removeChild(link);
+
+                            // Update file info
+                            const newSize = (blob.size / 1024).toFixed(2);
+                            document.getElementById('newSize').textContent = `${newSize} KB`;
+                            const originalSize = originalFile.size / 1024;
+                            const compressionRatio = ((originalSize - blob.size / 1024) / originalSize * 100).toFixed(1);
+
+                            showToast('success', `Image saved as ${fileExtension.toUpperCase()} (${compressionRatio}% smaller)`);
+                        } catch (e) {
+                            console.error('Download error:', e);
+                            showToast('error', 'Failed to download. Please try again.');
+                        }
+                    }, 100);
+
+                    // Cleanup
+                    setTimeout(() => {
+                        URL.revokeObjectURL(url);
+                    }, 1000);
+
+                } catch (error) {
+                    console.error('Processing error:', error);
+                    showToast('error', error.message || 'Failed to process image. Please try again.');
+                } finally {
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = '<i class="fas fa-download me-2"></i>Download Image';
+                }
+            });
+
+            // Test WebP support
+            async function testWebPSupport() {
+                // Check if browser supports createImageBitmap
+                if (!('createImageBitmap' in window)) {
+                    return false;
+                }
+
+                // Create a WebP image in memory
+                const webpData = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=';
+                try {
+                    const blob = await fetch(webpData).then(r => r.blob());
+                    return createImageBitmap(blob).then(() => true, () => false);
+                } catch (e) {
+                    return false;
+                }
             }
         });
-
-        function loadImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => resolve(img);
-                    img.onerror = reject;
-                    img.src = e.target.result;
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function downloadFile(file) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(file);
-            link.download = file.name;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
     </script>
 </body>
-</html> 
+</html>

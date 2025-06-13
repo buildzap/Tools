@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,766 +19,253 @@
             --hover-bg: #f8f9fa;
             --input-bg: #ffffff;
             --border-color: #dee2e6;
-            --range-track: #dee2e6;
-            --range-thumb: #0d6efd;
+            --converter-grid-gap: 1.5rem;
+            --card-highlight: rgba(13, 110, 253, 0.1);
         }
+
         [data-theme="dark"] {
             --card-bg: #2d2d2d;
             --card-border: #404040;
             --card-shadow: rgba(0, 0, 0, 0.2);
             --text-primary: #ffffff;
             --text-secondary: #b0b0b0;
-            --accent-color: #0d6efd;
+            --accent-color: #3d8bfd;
             --hover-bg: #3d3d3d;
-            --input-bg: #2d2d2d;
+            --input-bg: #232323;
             --border-color: #404040;
-            --range-track: #404040;
-            --range-thumb: #0d6efd;
+            --card-highlight: rgba(61, 139, 253, 0.1);
         }
+
         body {
             background-color: var(--card-bg);
             color: var(--text-primary);
             min-height: 100vh;
         }
+
         .tool-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0.5rem;
-            background-color: var(--card-bg);
+            padding: 2rem 1rem;
         }
+
         .tool-header {
             text-align: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 3rem;
         }
+
         .tool-header h1 {
-            font-size: 1.5rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 0.2rem;
+            margin-bottom: 1rem;
             color: var(--text-primary);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .tool-header p {
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
-            margin-bottom: 0.2rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .card {
+
+        .converter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--converter-grid-gap);
+            padding: 1rem 0;
+        }
+
+        .converter-card {
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
-            box-shadow: 0 1px 3px var(--card-shadow);
-            border-radius: 6px;
+            box-shadow: 0 8px 25px var(--card-shadow);
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .converter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px var(--card-shadow);
+        }
+
+        .converter-link {
+            text-decoration: none;
+            color: var(--text-primary);
+            display: block;
+            padding: 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .converter-link:hover {
+            background-color: var(--card-highlight);
+            color: var(--text-primary);
+        }
+
+        .converter-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .converter-title {
+            font-size: 1.25rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
         }
-        .card-body {
-            padding: 0.5rem;
-            color: var(--text-primary);
-        }
-        .card-title {
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-        .form-label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-            font-size: 0.85rem;
-        }
-        .form-control, .form-select {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
-            height: auto;
-        }
-        .form-control:focus, .form-select:focus {
-            background: var(--input-bg);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
-            color: var(--text-primary);
-        }
-        .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 4px;
-            padding: 0.3rem 0.8rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #fff;
-        }
-        .btn-outline-secondary {
+
+        .converter-description {
             color: var(--text-secondary);
-            border-color: var(--border-color);
-            border-radius: 4px;
             font-size: 0.9rem;
-            padding: 0.3rem 0.8rem;
-        }
-        #results {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            padding: 0.3rem;
-            border-radius: 4px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 0.2rem 0;
-        }
-        .conversion-result {
-            background-color: var(--card-bg);
-            border-radius: 4px;
-            padding: 0.3rem;
-            margin-bottom: 0.2rem;
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
-        }
-        .conversion-result .value {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.1rem;
-        }
-        .conversion-result .unit {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-        .compact-table {
-            font-size: 0.8rem;
             margin-bottom: 0;
         }
-        .compact-table th, .compact-table td {
-            padding: 0.2rem 0.3rem;
-        }
-        .info-card .card-body {
-            padding: 0.5rem;
-        }
-        .info-card .card-text {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-        .info-card .list-unstyled {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-        .alert {
-            padding: 0.3rem 0.5rem;
-            margin-bottom: 0.3rem;
-            font-size: 0.85rem;
-        }
-        .input-group {
-            margin-bottom: 0.3rem;
-        }
-        .input-group-text {
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
-        }
-        .row {
-            margin-bottom: 0.3rem;
-        }
-        .col-md-6 {
-            padding: 0 0.3rem;
-        }
-        .mb-3 {
-            margin-bottom: 0.3rem !important;
-        }
-        .mt-3 {
-            margin-top: 0.3rem !important;
-        }
-        .mt-2 {
-            margin-top: 0.2rem !important;
-        }
-        .py-2 {
-            padding-top: 0.2rem !important;
-            padding-bottom: 0.2rem !important;
-        }
-        .gx-2 {
-            --bs-gutter-x: 0.3rem;
-        }
-        .gy-1 {
-            --bs-gutter-y: 0.2rem;
-        }
-        .nav-tabs {
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 0.5rem;
-        }
-        .nav-tabs .nav-link {
-            color: var(--text-secondary);
-            border: none;
-            padding: 0.3rem 0.8rem;
-            font-size: 0.9rem;
-            border-radius: 4px 4px 0 0;
-        }
-        .nav-tabs .nav-link.active {
+
+        .category-title {
             color: var(--accent-color);
-            background-color: var(--card-bg);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--accent-color);
         }
-        .nav-tabs .nav-link:hover {
-            color: var(--text-primary);
-            background-color: var(--hover-bg);
+
+        @media (max-width: 768px) {
+            .converter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tool-header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <!-- Include header -->
+    <div include-html="../../components/header.html"></div>
 
-    <!-- Main Content -->
-    <main class="container-fluid py-2">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-exchange-alt"></i> Combined Converters</h1>
-                <p>Convert between different units of measurement</p>
+    <div class="tool-container">
+        <div class="tool-header">
+            <h1><i class="fas fa-exchange-alt me-2"></i>Combined Converters</h1>
+            <p>Access all converters in one place. Convert between different units of measurement with our modern, easy-to-use tools.</p>
+        </div>
+
+        <h2 class="category-title">Measurement Converters</h2>
+        <div class="converter-grid">
+            <div class="converter-card">
+                <a href="length-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-ruler"></i>
+                    </div>
+                    <h3 class="converter-title">Length Converter</h3>
+                    <p class="converter-description">Convert between meters, feet, inches, kilometers, and more</p>
+                </a>
             </div>
 
-            <div class="row">
-                <!-- Left Column: Converter Tabs -->
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <ul class="nav nav-tabs" id="converterTabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="length-tab" data-bs-toggle="tab" data-bs-target="#length" type="button" role="tab">
-                                        <i class="fas fa-ruler"></i> Length
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="weight-tab" data-bs-toggle="tab" data-bs-target="#weight" type="button" role="tab">
-                                        <i class="fas fa-weight"></i> Weight
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="volume-tab" data-bs-toggle="tab" data-bs-target="#volume" type="button" role="tab">
-                                        <i class="fas fa-flask"></i> Volume
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="temperature-tab" data-bs-toggle="tab" data-bs-target="#temperature" type="button" role="tab">
-                                        <i class="fas fa-thermometer-half"></i> Temperature
-                                    </button>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content" id="converterTabsContent">
-                                <!-- Length Converter -->
-                                <div class="tab-pane fade show active" id="length" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="lengthFromValue" class="form-label">From</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="lengthFromValue" step="any" required>
-                                                    <select class="form-select" id="lengthFromUnit" style="max-width: 150px;">
-                                                        <option value="m" selected>m</option>
-                                                        <option value="km">km</option>
-                                                        <option value="cm">cm</option>
-                                                        <option value="mm">mm</option>
-                                                        <option value="in">in</option>
-                                                        <option value="ft">ft</option>
-                                                        <option value="yd">yd</option>
-                                                        <option value="mi">mi</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="lengthToValue" class="form-label">To</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="lengthToValue" readonly>
-                                                    <select class="form-select" id="lengthToUnit" style="max-width: 150px;">
-                                                        <option value="m">m</option>
-                                                        <option value="km">km</option>
-                                                        <option value="cm">cm</option>
-                                                        <option value="mm">mm</option>
-                                                        <option value="in" selected>in</option>
-                                                        <option value="ft">ft</option>
-                                                        <option value="yd">yd</option>
-                                                        <option value="mi">mi</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-primary" id="lengthConvertButton">
-                                            <i class="fas fa-sync-alt"></i> Convert
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary" id="lengthSwapButton">
-                                            <i class="fas fa-exchange-alt"></i> Swap
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Weight Converter -->
-                                <div class="tab-pane fade" id="weight" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="weightFromValue" class="form-label">From</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="weightFromValue" step="any" required>
-                                                    <select class="form-select" id="weightFromUnit" style="max-width: 150px;">
-                                                        <option value="kg" selected>kg</option>
-                                                        <option value="g">g</option>
-                                                        <option value="mg">mg</option>
-                                                        <option value="lb">lb</option>
-                                                        <option value="oz">oz</option>
-                                                        <option value="st">st</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="weightToValue" class="form-label">To</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="weightToValue" readonly>
-                                                    <select class="form-select" id="weightToUnit" style="max-width: 150px;">
-                                                        <option value="kg">kg</option>
-                                                        <option value="g">g</option>
-                                                        <option value="mg">mg</option>
-                                                        <option value="lb" selected>lb</option>
-                                                        <option value="oz">oz</option>
-                                                        <option value="st">st</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-primary" id="weightConvertButton">
-                                            <i class="fas fa-sync-alt"></i> Convert
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary" id="weightSwapButton">
-                                            <i class="fas fa-exchange-alt"></i> Swap
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Volume Converter -->
-                                <div class="tab-pane fade" id="volume" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="volumeFromValue" class="form-label">From</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="volumeFromValue" step="any" required>
-                                                    <select class="form-select" id="volumeFromUnit" style="max-width: 150px;">
-                                                        <option value="ml" selected>ml</option>
-                                                        <option value="l">l</option>
-                                                        <option value="m3">m³</option>
-                                                        <option value="gal">gal</option>
-                                                        <option value="qt">qt</option>
-                                                        <option value="pt">pt</option>
-                                                        <option value="floz">fl oz</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="volumeToValue" class="form-label">To</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="volumeToValue" readonly>
-                                                    <select class="form-select" id="volumeToUnit" style="max-width: 150px;">
-                                                        <option value="ml">ml</option>
-                                                        <option value="l" selected>l</option>
-                                                        <option value="m3">m³</option>
-                                                        <option value="gal">gal</option>
-                                                        <option value="qt">qt</option>
-                                                        <option value="pt">pt</option>
-                                                        <option value="floz">fl oz</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-primary" id="volumeConvertButton">
-                                            <i class="fas fa-sync-alt"></i> Convert
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary" id="volumeSwapButton">
-                                            <i class="fas fa-exchange-alt"></i> Swap
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Temperature Converter -->
-                                <div class="tab-pane fade" id="temperature" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="tempFromValue" class="form-label">From</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="tempFromValue" step="any" required>
-                                                    <select class="form-select" id="tempFromUnit" style="max-width: 150px;">
-                                                        <option value="C" selected>°C</option>
-                                                        <option value="F">°F</option>
-                                                        <option value="K">K</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="tempToValue" class="form-label">To</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="tempToValue" readonly>
-                                                    <select class="form-select" id="tempToUnit" style="max-width: 150px;">
-                                                        <option value="C">°C</option>
-                                                        <option value="F" selected>°F</option>
-                                                        <option value="K">K</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-primary" id="tempConvertButton">
-                                            <i class="fas fa-sync-alt"></i> Convert
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary" id="tempSwapButton">
-                                            <i class="fas fa-exchange-alt"></i> Swap
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="converter-card">
+                <a href="weight-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-weight"></i>
                     </div>
+                    <h3 class="converter-title">Weight Converter</h3>
+                    <p class="converter-description">Convert between kilograms, pounds, ounces, and other weight units</p>
+                </a>
+            </div>
 
-                    <!-- Results Section -->
-                    <div class="card">
-                        <div class="card-body py-2">
-                            <h5 class="card-title mb-2">Result</h5>
-                            <div id="results" class="text-center text-muted small">
-                                Select a converter and enter a value
-                            </div>
-                        </div>
+            <div class="converter-card">
+                <a href="volume-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-cube"></i>
                     </div>
-                </div>
+                    <h3 class="converter-title">Volume Converter</h3>
+                    <p class="converter-description">Convert between liters, gallons, cubic meters, and more</p>
+                </a>
+            </div>
 
-                <!-- Right Column: Information -->
-                <div class="col-md-4">
-                    <div class="card info-card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Combined Converters</h5>
-                            <p class="card-text">
-                                Convert between different units of measurement including length, weight, volume, and temperature.
-                            </p>
-                            <h6 class="mb-2">Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple converters</li>
-                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
-                                <li><i class="fas fa-check text-success"></i> Easy unit switching</li>
-                                <li><i class="fas fa-check text-success"></i> Compact layout</li>
-                            </ul>
-                            <div class="alert alert-info mt-2">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between units.</small>
-                            </div>
-                        </div>
+            <div class="converter-card">
+                <a href="temperature-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-temperature-high"></i>
                     </div>
-                </div>
+                    <h3 class="converter-title">Temperature Converter</h3>
+                    <p class="converter-description">Convert between Celsius, Fahrenheit, and Kelvin</p>
+                </a>
             </div>
         </div>
-    </main>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
+        <h2 class="category-title">Technical Converters</h2>
+        <div class="converter-grid">
+            <div class="converter-card">
+                <a href="data-storage-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="converter-title">Data Storage Converter</h3>
+                    <p class="converter-description">Convert between bytes, kilobytes, megabytes, and more</p>
+                </a>
+            </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
+            <div class="converter-card">
+                <a href="speed-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="converter-title">Speed Converter</h3>
+                    <p class="converter-description">Convert between mph, km/h, m/s, and knots</p>
+                </a>
+            </div>
+
+            <div class="converter-card">
+                <a href="angle-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-circle-notch"></i>
+                    </div>
+                    <h3 class="converter-title">Angle Converter</h3>
+                    <p class="converter-description">Convert between degrees, radians, and gradians</p>
+                </a>
+            </div>
+
+            <div class="converter-card">
+                <a href="pressure-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-compress-alt"></i>
+                    </div>
+                    <h3 class="converter-title">Pressure Converter</h3>
+                    <p class="converter-description">Convert between pascal, bar, psi, and more</p>
+                </a>
+            </div>
+        </div>
+
+        <h2 class="category-title">Energy & Efficiency</h2>
+        <div class="converter-grid">
+            <div class="converter-card">
+                <a href="energy-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="converter-title">Energy Converter</h3>
+                    <p class="converter-description">Convert between joules, calories, kilowatt-hours, and more</p>
+                </a>
+            </div>
+
+            <div class="converter-card">
+                <a href="fuel-efficiency-converter.html" class="converter-link">
+                    <div class="converter-icon">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <h3 class="converter-title">Fuel Efficiency Converter</h3>
+                    <p class="converter-description">Convert between km/L, mpg, and L/100km</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include footer -->
+    <div include-html="../../components/footer.html"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Length conversion factors (to meters)
-            const lengthFactors = {
-                'm': 1,
-                'km': 1000,
-                'cm': 0.01,
-                'mm': 0.001,
-                'in': 0.0254,
-                'ft': 0.3048,
-                'yd': 0.9144,
-                'mi': 1609.344
-            };
-
-            // Weight conversion factors (to kg)
-            const weightFactors = {
-                'kg': 1,
-                'g': 0.001,
-                'mg': 0.000001,
-                'lb': 0.45359237,
-                'oz': 0.028349523125,
-                'st': 6.35029318
-            };
-
-            // Volume conversion factors (to ml)
-            const volumeFactors = {
-                'ml': 1,
-                'l': 1000,
-                'm3': 1000000,
-                'gal': 3785.41,
-                'qt': 946.353,
-                'pt': 473.176,
-                'floz': 29.5735
-            };
-
-            // Format number
-            function formatNumber(number) {
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 6
-                }).format(number);
-            }
-
-            // Length converter
-            const lengthFromValue = document.getElementById('lengthFromValue');
-            const lengthToValue = document.getElementById('lengthToValue');
-            const lengthFromUnit = document.getElementById('lengthFromUnit');
-            const lengthToUnit = document.getElementById('lengthToUnit');
-            const lengthConvertButton = document.getElementById('lengthConvertButton');
-            const lengthSwapButton = document.getElementById('lengthSwapButton');
-
-            function convertLength() {
-                try {
-                    const value = parseFloat(lengthFromValue.value);
-                    const from = lengthFromUnit.value;
-                    const to = lengthToUnit.value;
-
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    const meters = value * lengthFactors[from];
-                    const result = meters / lengthFactors[to];
-
-                    lengthToValue.value = formatNumber(result);
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Length Conversion</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-                } catch (error) {
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
-            }
-
-            function swapLength() {
-                const tempValue = lengthFromValue.value;
-                const tempUnit = lengthFromUnit.value;
-                lengthFromValue.value = lengthToValue.value;
-                lengthFromUnit.value = lengthToUnit.value;
-                lengthToValue.value = tempValue;
-                lengthToUnit.value = tempUnit;
-                convertLength();
-            }
-
-            lengthConvertButton.addEventListener('click', convertLength);
-            lengthSwapButton.addEventListener('click', swapLength);
-            lengthFromValue.addEventListener('input', convertLength);
-            lengthFromUnit.addEventListener('change', convertLength);
-            lengthToUnit.addEventListener('change', convertLength);
-
-            // Weight converter
-            const weightFromValue = document.getElementById('weightFromValue');
-            const weightToValue = document.getElementById('weightToValue');
-            const weightFromUnit = document.getElementById('weightFromUnit');
-            const weightToUnit = document.getElementById('weightToUnit');
-            const weightConvertButton = document.getElementById('weightConvertButton');
-            const weightSwapButton = document.getElementById('weightSwapButton');
-
-            function convertWeight() {
-                try {
-                    const value = parseFloat(weightFromValue.value);
-                    const from = weightFromUnit.value;
-                    const to = weightToUnit.value;
-
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    const kg = value * weightFactors[from];
-                    const result = kg / weightFactors[to];
-
-                    weightToValue.value = formatNumber(result);
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Weight Conversion</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-                } catch (error) {
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
-            }
-
-            function swapWeight() {
-                const tempValue = weightFromValue.value;
-                const tempUnit = weightFromUnit.value;
-                weightFromValue.value = weightToValue.value;
-                weightFromUnit.value = weightToUnit.value;
-                weightToValue.value = tempValue;
-                weightToUnit.value = tempUnit;
-                convertWeight();
-            }
-
-            weightConvertButton.addEventListener('click', convertWeight);
-            weightSwapButton.addEventListener('click', swapWeight);
-            weightFromValue.addEventListener('input', convertWeight);
-            weightFromUnit.addEventListener('change', convertWeight);
-            weightToUnit.addEventListener('change', convertWeight);
-
-            // Volume converter
-            const volumeFromValue = document.getElementById('volumeFromValue');
-            const volumeToValue = document.getElementById('volumeToValue');
-            const volumeFromUnit = document.getElementById('volumeFromUnit');
-            const volumeToUnit = document.getElementById('volumeToUnit');
-            const volumeConvertButton = document.getElementById('volumeConvertButton');
-            const volumeSwapButton = document.getElementById('volumeSwapButton');
-
-            function convertVolume() {
-                try {
-                    const value = parseFloat(volumeFromValue.value);
-                    const from = volumeFromUnit.value;
-                    const to = volumeToUnit.value;
-
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    const ml = value * volumeFactors[from];
-                    const result = ml / volumeFactors[to];
-
-                    volumeToValue.value = formatNumber(result);
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Volume Conversion</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-                } catch (error) {
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
-            }
-
-            function swapVolume() {
-                const tempValue = volumeFromValue.value;
-                const tempUnit = volumeFromUnit.value;
-                volumeFromValue.value = volumeToValue.value;
-                volumeFromUnit.value = volumeToUnit.value;
-                volumeToValue.value = tempValue;
-                volumeToUnit.value = tempUnit;
-                convertVolume();
-            }
-
-            volumeConvertButton.addEventListener('click', convertVolume);
-            volumeSwapButton.addEventListener('click', swapVolume);
-            volumeFromValue.addEventListener('input', convertVolume);
-            volumeFromUnit.addEventListener('change', convertVolume);
-            volumeToUnit.addEventListener('change', convertVolume);
-
-            // Temperature converter
-            const tempFromValue = document.getElementById('tempFromValue');
-            const tempToValue = document.getElementById('tempToValue');
-            const tempFromUnit = document.getElementById('tempFromUnit');
-            const tempToUnit = document.getElementById('tempToUnit');
-            const tempConvertButton = document.getElementById('tempConvertButton');
-            const tempSwapButton = document.getElementById('tempSwapButton');
-
-            function convertTemperature() {
-                try {
-                    const value = parseFloat(tempFromValue.value);
-                    const from = tempFromUnit.value;
-                    const to = tempToUnit.value;
-
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    let result;
-                    if (from === 'C') {
-                        if (to === 'F') {
-                            result = (value * 9/5) + 32;
-                        } else if (to === 'K') {
-                            result = value + 273.15;
-                        }
-                    } else if (from === 'F') {
-                        if (to === 'C') {
-                            result = (value - 32) * 5/9;
-                        } else if (to === 'K') {
-                            result = (value - 32) * 5/9 + 273.15;
-                        }
-                    } else if (from === 'K') {
-                        if (to === 'C') {
-                            result = value - 273.15;
-                        } else if (to === 'F') {
-                            result = (value - 273.15) * 9/5 + 32;
-                        }
-                    }
-
-                    tempToValue.value = formatNumber(result);
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Temperature Conversion</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)}°${from} = ${formatNumber(result)}°${to}
-                            </p>
-                        </div>
-                    `;
-                } catch (error) {
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
-            }
-
-            function swapTemperature() {
-                const tempValue = tempFromValue.value;
-                const tempUnit = tempFromUnit.value;
-                tempFromValue.value = tempToValue.value;
-                tempFromUnit.value = tempToUnit.value;
-                tempToValue.value = tempValue;
-                tempToUnit.value = tempUnit;
-                convertTemperature();
-            }
-
-            tempConvertButton.addEventListener('click', convertTemperature);
-            tempSwapButton.addEventListener('click', swapTemperature);
-            tempFromValue.addEventListener('input', convertTemperature);
-            tempFromUnit.addEventListener('change', convertTemperature);
-            tempToUnit.addEventListener('change', convertTemperature);
-        });
-    </script>
+    <!-- Include HTML Handler -->
+    <script src="../../js/main.js"></script>
 </body>
-</html> 
+</html>

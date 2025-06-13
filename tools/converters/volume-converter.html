@@ -1,503 +1,452 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volume Converter - Free Online Tools</title>
-    <!-- Bootstrap 5 CSS -->
+    <title>Volume Converter - Multi-Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="../../styles/main.css" rel="stylesheet">
-    <link href="../../styles/theme.css" rel="stylesheet">
     <style>
         :root {
-            --card-bg: #ffffff;
-            --card-border: #dee2e6;
-            --card-shadow: rgba(0, 0, 0, 0.075);
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --accent-color: #0d6efd;
-            --hover-bg: #f8f9fa;
-            --input-bg: #ffffff;
-            --border-color: #dee2e6;
-            --range-track: #dee2e6;
-            --range-thumb: #0d6efd;
-        }
-        [data-theme="dark"] {
-            --card-bg: #2d2d2d;
-            --card-border: #404040;
-            --card-shadow: rgba(0, 0, 0, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent-color: #0d6efd;
-            --hover-bg: #3d3d3d;
-            --input-bg: #2d2d2d;
+            --primary-dark: #1a1a1a;
+            --secondary-dark: #2d2d2d;
+            --accent-color: #00796b;
+            --text-color: #e0e0e0;
+            --text-bright: #ffffff;
+            --text-muted: #a0a0a0;
             --border-color: #404040;
-            --range-track: #404040;
-            --range-thumb: #0d6efd;
+            --input-bg: #242424;
+            --card-hover: #353535;
+            --success-color: #4caf50;
         }
+
         body {
-            background-color: var(--card-bg);
-            color: var(--text-primary);
+            background-color: var(--primary-dark);
+            color: var(--text-bright);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.5rem;
-            background-color: var(--card-bg);
-        }
-        .tool-header {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-        .tool-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.2rem;
-            color: var(--text-primary);
-        }
-        .tool-header p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.2rem;
-        }
+
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            box-shadow: 0 1px 3px var(--card-shadow);
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
-        }
-        .card-body {
-            padding: 0.5rem;
-            color: var(--text-primary);
-        }
-        .card-title {
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-        .form-label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-            font-size: 0.85rem;
-        }
-        .form-control, .form-select {
-            background: var(--input-bg);
+            background-color: var(--secondary-dark);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
-            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
-        .form-control:focus, .form-select:focus {
-            background: var(--input-bg);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
-            color: var(--text-primary);
+
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
         }
-        .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 4px;
-            padding: 0.3rem 0.8rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #fff;
-        }
-        .btn-outline-secondary {
-            color: var(--text-secondary);
-            border-color: var(--border-color);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            padding: 0.3rem 0.8rem;
-        }
-        #results {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            padding: 0.3rem;
-            border-radius: 4px;
+
+        .form-control, .form-select {
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 0.2rem 0;
+            color: var(--text-bright);
+            border-radius: 8px;
         }
-        .conversion-result {
-            background-color: var(--card-bg);
-            border-radius: 4px;
-            padding: 0.3rem;
-            margin-bottom: 0.2rem;
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--input-bg);
+            border-color: var(--accent-color);
+            color: var(--text-bright);
+            box-shadow: 0 0 0 0.2rem rgba(0, 121, 107, 0.25);
         }
-        .conversion-result .value {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.1rem;
+
+        .form-select option {
+            background-color: var(--input-bg);
+            color: var(--text-bright);
         }
-        .conversion-result .unit {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-        .compact-table {
-            font-size: 0.8rem;
-            margin-bottom: 0;
-        }
-        .compact-table th, .compact-table td {
-            padding: 0.2rem 0.3rem;
-        }
-        .info-card .card-body {
-            padding: 0.5rem;
-        }
-        .info-card .card-text {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-        .info-card .list-unstyled {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-        .alert {
-            padding: 0.3rem 0.5rem;
-            margin-bottom: 0.3rem;
-            font-size: 0.85rem;
-        }
-        .input-group {
-            margin-bottom: 0.3rem;
-        }
+
         .input-group-text {
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
+            background-color: var(--secondary-dark);
+            border-color: var(--border-color);
+            color: var(--text-bright);
         }
-        .row {
-            margin-bottom: 0.3rem;
+
+        .volume-visual {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
-        .col-md-6 {
-            padding: 0 0.3rem;
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate 10s infinite linear;
         }
-        .mb-3 {
-            margin-bottom: 0.3rem !important;
+
+        .cube-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--accent-color);
+            background-color: rgba(0, 121, 107, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-bright);
         }
-        .mt-3 {
-            margin-top: 0.3rem !important;
+
+        .front  { transform: rotateY(0deg)   translateZ(50px); }
+        .back   { transform: rotateY(180deg) translateZ(50px); }
+        .right  { transform: rotateY(90deg)  translateZ(50px); }
+        .left   { transform: rotateY(-90deg) translateZ(50px); }
+        .top    { transform: rotateX(90deg)  translateZ(50px); }
+        .bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+        @keyframes rotate {
+            from { transform: rotateX(0) rotateY(0); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
         }
-        .mt-2 {
-            margin-top: 0.2rem !important;
+
+        .quick-convert {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .py-2 {
-            padding-top: 0.2rem !important;
-            padding-bottom: 0.2rem !important;
+
+        .quick-convert:hover {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            transform: translateY(-2px);
         }
-        .gx-2 {
-            --bs-gutter-x: 0.3rem;
+
+        .result-box {
+            background-color: var(--input-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
         }
-        .gy-1 {
-            --bs-gutter-y: 0.2rem;
+
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-bright);
+        }
+
+        .volume-info {
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .volume-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .volume-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .volume-info-label {
+            color: var(--text-muted);
+        }
+
+        .volume-info-value {
+            color: var(--accent-color);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        .category-badge {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
-
-    <!-- Main Content -->
-    <main class="container-fluid py-2">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-flask"></i> Volume Converter</h1>
-                <p>Convert between different volume units</p>
-            </div>
-
-            <div class="row">
-                <!-- Left Column: Input and Results -->
-                <div class="col-md-8">
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Volume Converter</h1>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card p-4">
                     <div class="row">
-                        <!-- Input Form -->
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form id="converterForm">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="fromValue" class="form-label">From</label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" id="fromValue" step="any" required>
-                                                        <select class="form-select" id="fromUnit" style="max-width: 150px;">
-                                                            <option value="ml" selected>ml</option>
-                                                            <option value="l">l</option>
-                                                            <option value="m3">m³</option>
-                                                            <option value="gal">gal</option>
-                                                            <option value="qt">qt</option>
-                                                            <option value="pt">pt</option>
-                                                            <option value="floz">fl oz</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="toValue" class="form-label">To</label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" id="toValue" readonly>
-                                                        <select class="form-select" id="toUnit" style="max-width: 150px;">
-                                                            <option value="ml">ml</option>
-                                                            <option value="l" selected>l</option>
-                                                            <option value="m3">m³</option>
-                                                            <option value="gal">gal</option>
-                                                            <option value="qt">qt</option>
-                                                            <option value="pt">pt</option>
-                                                            <option value="floz">fl oz</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-primary" id="convertButton">
-                                                <i class="fas fa-sync-alt"></i> Convert
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" id="swapButton">
-                                                <i class="fas fa-exchange-alt"></i> Swap
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">From</label>
+                            <select class="form-select mb-3" id="fromUnit">
+                                <optgroup label="Metric">
+                                    <option value="cubic-meter">Cubic Meter (m³)</option>
+                                    <option value="cubic-centimeter">Cubic Centimeter (cm³)</option>
+                                    <option value="cubic-millimeter">Cubic Millimeter (mm³)</option>
+                                    <option value="liter" selected>Liter (L)</option>
+                                    <option value="milliliter">Milliliter (mL)</option>
+                                </optgroup>
+                                <optgroup label="Imperial/US">
+                                    <option value="cubic-foot">Cubic Foot (ft³)</option>
+                                    <option value="cubic-inch">Cubic Inch (in³)</option>
+                                    <option value="gallon">Gallon (gal)</option>
+                                    <option value="quart">Quart (qt)</option>
+                                    <option value="pint">Pint (pt)</option>
+                                    <option value="cup">Cup (cup)</option>
+                                    <option value="fluid-ounce">Fluid Ounce (fl oz)</option>
+                                </optgroup>
+                                <optgroup label="Industry">
+                                    <option value="barrel">Oil Barrel (bbl)</option>
+                                    <option value="cubic-yard">Cubic Yard (yd³)</option>
+                                </optgroup>
+                            </select>
+                            
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fromValue" placeholder="Enter volume">
+                                <span class="input-group-text" id="fromUnitLabel">L</span>
                             </div>
-                        </div>
 
-                        <!-- Results and Common Conversions Side by Side -->
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">Result</h5>
-                                    <div id="results" class="text-center text-muted small">
-                                        Enter a value to convert
-                                    </div>
+                            <div class="volume-visual mt-4">
+                                <div class="cube" id="volumeCube">
+                                    <div class="cube-face front"></div>
+                                    <div class="cube-face back"></div>
+                                    <div class="cube-face right"></div>
+                                    <div class="cube-face left"></div>
+                                    <div class="cube-face top"></div>
+                                    <div class="cube-face bottom"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">Common</h5>
-                                    <div id="commonConversions" class="row gx-2 gy-1 text-center text-muted small">
-                                        <!-- Will be populated by JavaScript -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">To</label>
+                            <select class="form-select mb-3" id="toUnit">
+                                <optgroup label="Metric">
+                                    <option value="cubic-meter">Cubic Meter (m³)</option>
+                                    <option value="cubic-centimeter">Cubic Centimeter (cm³)</option>
+                                    <option value="cubic-millimeter">Cubic Millimeter (mm³)</option>
+                                    <option value="liter">Liter (L)</option>
+                                    <option value="milliliter" selected>Milliliter (mL)</option>
+                                </optgroup>
+                                <optgroup label="Imperial/US">
+                                    <option value="cubic-foot">Cubic Foot (ft³)</option>
+                                    <option value="cubic-inch">Cubic Inch (in³)</option>
+                                    <option value="gallon">Gallon (gal)</option>
+                                    <option value="quart">Quart (qt)</option>
+                                    <option value="pint">Pint (pt)</option>
+                                    <option value="cup">Cup (cup)</option>
+                                    <option value="fluid-ounce">Fluid Ounce (fl oz)</option>
+                                </optgroup>
+                                <optgroup label="Industry">
+                                    <option value="barrel">Oil Barrel (bbl)</option>
+                                    <option value="cubic-yard">Cubic Yard (yd³)</option>
+                                </optgroup>
+                            </select>
 
-                        <!-- History Section -->
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">History</h5>
-                                    <div id="history" class="text-center text-muted small">
-                                        No conversions yet
-                                    </div>
+                            <div class="result-box">
+                                <span id="result" class="result-value">0</span>
+                                <span id="toUnitLabel">mL</span>
+                                <button class="copy-btn" id="copyResult">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <div class="volume-info">
+                                <div class="volume-info-item">
+                                    <span class="volume-info-label">Equivalent to</span>
+                                    <span class="volume-info-value" id="equivalentInfo">-</span>
+                                </div>
+                                <div class="volume-info-item">
+                                    <span class="volume-info-label">Category</span>
+                                    <span class="volume-info-value" id="categoryInfo">-</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Right Column: Information -->
-                <div class="col-md-4">
-                    <div class="card info-card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Volume Converter</h5>
-                            <p class="card-text">
-                                Convert between different volume units including Milliliters (ml), Liters (l), Cubic Meters (m³), Gallons (gal), Quarts (qt), Pints (pt), and Fluid Ounces (fl oz).
-                            </p>
-                            <h6 class="mb-2">Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple units</li>
-                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
-                                <li><i class="fas fa-check text-success"></i> Common conversions</li>
-                                <li><i class="fas fa-check text-success"></i> Conversion history</li>
-                            </ul>
-                            <div class="alert alert-info mt-2">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between units.</small>
-                            </div>
+                    <div class="quick-converts mt-4">
+                        <h5 class="mb-3">Quick Conversions</h5>
+                        <div class="d-flex flex-wrap">
+                            <button class="quick-convert" data-value="1" data-from="liter" data-to="milliliter">
+                                1L to mL
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="gallon" data-to="liter">
+                                1gal to L
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="cubic-meter" data-to="liter">
+                                1m³ to L
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="cup" data-to="milliliter">
+                                1cup to mL
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fromValue = document.getElementById('fromValue');
-            const toValue = document.getElementById('toValue');
             const fromUnit = document.getElementById('fromUnit');
             const toUnit = document.getElementById('toUnit');
-            const convertButton = document.getElementById('convertButton');
-            const swapButton = document.getElementById('swapButton');
-            const results = document.getElementById('results');
-            const commonConversions = document.getElementById('commonConversions');
-            const history = document.getElementById('history');
-            let conversionHistory = [];
+            const fromValue = document.getElementById('fromValue');
+            const result = document.getElementById('result');
+            const fromUnitLabel = document.getElementById('fromUnitLabel');
+            const toUnitLabel = document.getElementById('toUnitLabel');
+            const copyResult = document.getElementById('copyResult');
+            const equivalentInfo = document.getElementById('equivalentInfo');
+            const categoryInfo = document.getElementById('categoryInfo');
+            const volumeCube = document.getElementById('volumeCube');
 
-            // Volume conversion factors (to ml)
-            const conversionFactors = {
-                'ml': 1,
-                'l': 1000,
-                'm3': 1000000,
-                'gal': 3785.41,
-                'qt': 946.353,
-                'pt': 473.176,
-                'floz': 29.5735
+            // Conversion factors (to liters)
+            const conversions = {
+                'cubic-meter': 1000,
+                'cubic-centimeter': 0.001,
+                'cubic-millimeter': 0.000001,
+                'liter': 1,
+                'milliliter': 0.001,
+                'cubic-foot': 28.3168,
+                'cubic-inch': 0.0163871,
+                'gallon': 3.78541,
+                'quart': 0.946353,
+                'pint': 0.473176,
+                'cup': 0.24,
+                'fluid-ounce': 0.0295735,
+                'barrel': 158.987,
+                'cubic-yard': 764.555
             };
 
-            // Convert volume
-            function convertVolume() {
-                try {
-                    const value = parseFloat(fromValue.value);
-                    const from = fromUnit.value;
-                    const to = toUnit.value;
+            // Common volume equivalents
+            const equivalents = {
+                'tiny': { max: 0.005, text: 'Teaspoon' },
+                'small': { max: 0.25, text: 'Cup' },
+                'medium': { max: 2, text: 'Bottle' },
+                'large': { max: 20, text: 'Bucket' },
+                'huge': { max: 1000, text: 'Bathtub' },
+                'enormous': { max: Infinity, text: 'Swimming Pool' }
+            };
 
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
+            function updateLabels() {
+                const fromUnitText = fromUnit.options[fromUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                const toUnitText = toUnit.options[toUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                fromUnitLabel.textContent = fromUnitText;
+                toUnitLabel.textContent = toUnitText;
+            }
+
+            function getEquivalent(liters) {
+                for (const [size, data] of Object.entries(equivalents)) {
+                    if (liters <= data.max) {
+                        return data.text;
                     }
-
-                    // Convert to ml first
-                    const ml = value * conversionFactors[from];
-                    
-                    // Convert from ml to target unit
-                    const result = ml / conversionFactors[to];
-
-                    // Update result
-                    toValue.value = formatNumber(result);
-
-                    // Update results display
-                    results.innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Conversion Result</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-
-                    // Update common conversions
-                    updateCommonConversions(value, from);
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        fromValue: value,
-                        fromUnit: from,
-                        toValue: result,
-                        toUnit: to,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    results.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
                 }
+                return equivalents.enormous.text;
             }
 
-            // Format number
-            function formatNumber(number) {
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 6
-                }).format(number);
+            function updateVolumeVisual(value) {
+                // Scale the cube based on the input value (logarithmically)
+                const scale = Math.min(2, Math.max(0.5, Math.log10(value + 1) / 2));
+                volumeCube.style.transform = `scale3d(${scale}, ${scale}, ${scale})`;
             }
 
-            // Update common conversions
-            function updateCommonConversions(value, fromUnit) {
-                const commonUnits = ['ml', 'l', 'gal', 'qt'];
-                const ml = value * conversionFactors[fromUnit];
-
-                const conversions = commonUnits.map(unit => {
-                    const result = ml / conversionFactors[unit];
-                    return `
-                        <div class="col-6 col-md-4 conversion-result p-1 mb-1">
-                            <span class="value">${formatNumber(result)}</span>
-                            <span class="unit">${unit}</span>
-                        </div>
-                    `;
-                }).join('');
-
-                commonConversions.innerHTML = conversions;
-            }
-
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
+            function convert() {
+                if (!fromValue.value) {
+                    result.textContent = '0';
+                    equivalentInfo.textContent = '-';
+                    updateVolumeVisual(0);
                     return;
                 }
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm compact-table">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${formatNumber(conv.fromValue)} ${conv.fromUnit}</td>
-                                        <td>${formatNumber(conv.toValue)} ${conv.toUnit}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+                const input = parseFloat(fromValue.value);
+                const fromFactor = conversions[fromUnit.value];
+                const toFactor = conversions[toUnit.value];
+                
+                const liters = input * fromFactor;
+                const converted = liters / toFactor;
+
+                // Format the result based on the magnitude
+                let formattedResult;
+                if (Math.abs(converted) >= 1e9) {
+                    formattedResult = converted.toExponential(6);
+                } else if (Math.abs(converted) < 0.000001) {
+                    formattedResult = converted.toExponential(6);
+                } else {
+                    formattedResult = converted.toPrecision(7);
+                }
+
+                result.textContent = formattedResult;
+                equivalentInfo.textContent = `≈ 1 ${getEquivalent(liters)}`;
+                updateVolumeVisual(liters);
+
+                // Update category info
+                const category = fromUnit.options[fromUnit.selectedIndex].parentNode.label;
+                categoryInfo.innerHTML = `${category} <span class="category-badge">${fromUnitLabel.textContent}</span>`;
             }
 
-            // Swap units
-            function swapUnits() {
-                const tempValue = fromValue.value;
-                const tempUnit = fromUnit.value;
-                fromValue.value = toValue.value;
-                fromUnit.value = toUnit.value;
-                toValue.value = tempValue;
-                toUnit.value = tempUnit;
-                convertVolume();
-            }
+            // Event Listeners
+            fromUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
 
-            // Event listeners
-            convertButton.addEventListener('click', convertVolume);
-            swapButton.addEventListener('click', swapUnits);
-            fromValue.addEventListener('input', convertVolume);
-            fromUnit.addEventListener('change', convertVolume);
-            toUnit.addEventListener('change', convertVolume);
+            toUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
+
+            fromValue.addEventListener('input', convert);
+
+            copyResult.addEventListener('click', () => {
+                navigator.clipboard.writeText(result.textContent).then(() => {
+                    const icon = copyResult.querySelector('i');
+                    icon.className = 'fas fa-check';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-copy';
+                    }, 1500);
+                });
+            });
+
+            // Quick convert buttons
+            document.querySelectorAll('.quick-convert').forEach(button => {
+                button.addEventListener('click', () => {
+                    fromValue.value = button.dataset.value;
+                    fromUnit.value = button.dataset.from;
+                    toUnit.value = button.dataset.to;
+                    updateLabels();
+                    convert();
+                });
+            });
+
+            // Initialize
+            updateLabels();
         });
     </script>
 </body>
-</html> 
+</html>

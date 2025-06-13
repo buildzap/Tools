@@ -1,451 +1,284 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Age Calculator - Multi-Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="../../styles/main.css" rel="stylesheet">
-    <link href="../../styles/theme.css" rel="stylesheet">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4353202130254945"
-     crossorigin="anonymous"></script>
-    <script async custom-element="amp-auto-ads"
-        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
-</script>
     <style>
         :root {
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-color: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --main-bg: #1a1a1a;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --result-bg: rgba(255, 255, 255, 0.1);
-            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-
-        [data-theme="light"] {
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --text-muted: #666666;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --main-bg: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --input-bg: #ffffff;
-            --result-bg: #f8f9fa;
+            --dark-bg: #121212;
+            --darker-bg: #0a0a0a;
+            --card-bg: #1e1e1e;
+            --hover-bg: #2d2d2d;
+            --border-color: #333;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-muted: #808080;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #7c3aed;
+            --success-color: #22c55e;
         }
 
         body {
-            background-color: var(--main-bg);
-            color: var(--text-color);
-            min-height: 100vh;
-            font-family: var(--font-family);
-            overflow-x: hidden;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
-        .tool-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0.5rem;
-            background-color: var(--main-bg);
-            min-height: calc(100vh - 2rem);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .tool-header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-            color: var(--text-color);
-        }
-
-        .tool-header p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0;
-        }
-
-        .card {
-            background-color: var(--card-bg);
+        .calculator-card {
+            background: var(--card-bg);
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .form-control {
+            background-color: var(--darker-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
             border-radius: 8px;
-            transition: transform 0.3s ease;
-            margin-bottom: 0.75rem;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-body {
-            padding: 1rem;
-        }
-
-        .card-title {
-            color: var(--text-color);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .form-label {
-            color: var(--text-color);
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-
-        .form-control, .form-select {
-            background-color: var(--input-bg);
-            border-color: var(--border-color);
-            color: var(--text-color);
-            border-radius: 6px;
-            padding: 0.4rem 0.6rem;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            padding: 0.75rem 1rem;
         }
 
         .form-control:focus {
-            background-color: var(--input-bg);
-            border-color: var(--bs-primary);
-            color: var(--text-color);
-            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
-        }
-
-        .form-control::placeholder {
-            color: var(--text-muted);
+            background-color: var(--darker-bg);
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(145deg, var(--accent-primary), var(--accent-secondary));
             border: none;
-            border-radius: 6px;
-            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
 
-        /* Result section styling */
-        #result {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-color);
-            padding: 0.75rem;
-            border-radius: 6px;
-            background-color: var(--result-bg);
-            border: 1px solid var(--border-color);
+        .age-result {
+            background: linear-gradient(145deg, var(--card-bg), var(--darker-bg));
+            border-radius: 12px;
+            padding: 2rem;
             text-align: center;
-            margin: 0.5rem 0;
-        }
-
-        #result .text-danger {
-            color: var(--bs-danger) !important;
-        }
-
-        .result-item {
-            background-color: var(--card-bg);
-            border-radius: 6px;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
             border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
+            margin: 1.5rem 0;
         }
 
-        .result-item:hover {
-            transform: translateX(5px);
-            background-color: var(--result-bg);
-        }
-
-        .result-item .label {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .result-item .value {
-            color: var(--text-color);
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .result-item .highlight {
-            color: var(--bs-primary);
-            font-weight: 600;
-        }
-
-        /* Info section */
-        .info-section {
-            background-color: var(--card-bg);
-            border-radius: 6px;
-            padding: 0.75rem;
-            margin-top: 0.75rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .info-section h5 {
-            color: var(--text-color);
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-        }
-
-        .info-section p {
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-
-        .alert-info {
-            background-color: var(--result-bg);
-            border: 1px solid var(--border-color);
-            color: var(--bs-primary);
-        }
-
-        /* List styling */
-        .list-unstyled li {
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-        }
-
-        .list-unstyled li i {
-            margin-right: 0.5rem;
-            color: var(--bs-success);
-        }
-
-        .age-details {
-            background-color: var(--card-bg);
-            border-radius: 6px;
-            padding: 0.75rem;
-            margin-top: 0.75rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .age-details h4 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.4rem;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-color);
-            font-size: 0.9rem;
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-item .label {
-            color: var(--text-muted);
-        }
-
-        .detail-item .value {
-            color: var(--bs-primary);
-            font-weight: 600;
-        }
-
-        .chart-container {
-            background-color: var(--card-bg);
+        .metric-card {
+            background: var(--darker-bg);
             border-radius: 8px;
             padding: 1rem;
-            margin-top: 1rem;
+            text-align: center;
             border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
         }
 
-        .chart-container h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.75rem;
-            color: var(--text-color);
+        .metric-card:hover {
+            background: var(--hover-bg);
+            transform: translateY(-2px);
         }
 
-        @media (max-width: 768px) {
-            .tool-container {
-                padding: 0.5rem;
-            }
-            
-            .card-body {
-                padding: 0.75rem;
-            }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-primary);
+            margin-bottom: 0.25rem;
+        }
 
-            .tool-header h1 {
-                font-size: 1.5rem;
-            }
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
 
-            .tool-header p {
-                font-size: 0.85rem;
-            }
+        .next-birthday {
+            background: linear-gradient(145deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
         }
     </style>
 </head>
 <body>
-    <amp-auto-ads type="adsense"
-        data-ad-client="ca-pub-4353202130254945">
-</amp-auto-ads>
-    <!-- Header -->
-    <div id="header"></div>
-
-    <main class="container py-5">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-birthday-cake me-2"></i>Age Calculator</h1>
-                <p>Calculate your exact age and important dates</p>
-            </div>
-
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <form id="ageForm">
-                                <div class="mb-4">
-                                    <label for="birthDate" class="form-label">Birth Date</label>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="calculator-card">
+                    <h2 class="mb-4">Age Calculator</h2>
+                    
+                    <!-- Calculator Form -->
+                    <form id="ageForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Birth Date</label>
                                     <input type="date" class="form-control" id="birthDate" required>
                                 </div>
-
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-calculator me-2"></i>Calculate Age
-                                    </button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Calculate To (optional)</label>
+                                    <input type="date" class="form-control" id="toDate">
                                 </div>
-                            </form>
-
-                            <div id="ageResult" class="age-result d-none">
-                                <div class="age-value" id="exactAge"></div>
-                                <div class="age-details" id="ageDetails"></div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Next Birthday Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Next Birthday</h5>
-                            <div id="nextBirthday" class="age-details">
-                                Enter your birth date to see when your next birthday is
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                Calculate Age
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Results Section -->
+                    <div id="ageResult" class="age-result" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="metric-card">
+                                    <div class="metric-value" id="years">0</div>
+                                    <div class="metric-label">Years</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="metric-card">
+                                    <div class="metric-value" id="months">0</div>
+                                    <div class="metric-label">Months</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="metric-card">
+                                    <div class="metric-value" id="days">0</div>
+                                    <div class="metric-label">Days</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="col-md-4">
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Age Calculator</h5>
-                            <p class="card-text text-muted">
-                                Calculate your exact age, including years, months, and days.
-                                Also find out when your next birthday is.
-                            </p>
-                            <h6 class="text-light mb-3">Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Exact age calculation</li>
-                                <li><i class="fas fa-check text-success"></i> Years, months, and days</li>
-                                <li><i class="fas fa-check text-success"></i> Next birthday countdown</li>
-                                <li><i class="fas fa-check text-success"></i> Important dates</li>
-                            </ul>
-                            <div class="alert alert-info mt-4">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <small>Tip: You can also calculate the age difference between two dates.</small>
+                        <div class="next-birthday" id="nextBirthday"></div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <div class="metric-card">
+                                    <div class="metric-value" id="totalMonths">0</div>
+                                    <div class="metric-label">Total Months</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="metric-card">
+                                    <div class="metric-value" id="totalWeeks">0</div>
+                                    <div class="metric-label">Total Weeks</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="metric-card">
+                                    <div class="metric-value" id="totalDays">0</div>
+                                    <div class="metric-label">Total Days</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <div id="footer"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/main.js"></script>
     <script>
-        // Load header and footer
-        fetch('../../components/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('../../components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-
         document.addEventListener('DOMContentLoaded', function() {
-            const ageForm = document.getElementById('ageForm');
+            const form = document.getElementById('ageForm');
+            const birthDate = document.getElementById('birthDate');
+            const toDate = document.getElementById('toDate');
             const ageResult = document.getElementById('ageResult');
-            const exactAge = document.getElementById('exactAge');
-            const ageDetails = document.getElementById('ageDetails');
-            const nextBirthday = document.getElementById('nextBirthday');
 
-            ageForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const birthDate = new Date(document.getElementById('birthDate').value);
-                const today = new Date();
-
-                if (birthDate > today) {
-                    alert('Birth date cannot be in the future');
-                    return;
-                }
-
-                // Calculate age
-                let years = today.getFullYear() - birthDate.getFullYear();
-                let months = today.getMonth() - birthDate.getMonth();
-                let days = today.getDate() - birthDate.getDate();
+            function calculateAge(birth, target) {
+                const birthDate = new Date(birth);
+                const targetDate = target ? new Date(target) : new Date();
+                
+                let years = targetDate.getFullYear() - birthDate.getFullYear();
+                let months = targetDate.getMonth() - birthDate.getMonth();
+                let days = targetDate.getDate() - birthDate.getDate();
 
                 if (days < 0) {
                     months--;
-                    days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+                    const lastMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 0);
+                    days += lastMonth.getDate();
                 }
+
                 if (months < 0) {
                     years--;
                     months += 12;
                 }
 
+                const totalDays = Math.floor((targetDate - birthDate) / (1000 * 60 * 60 * 24));
+                const totalWeeks = Math.floor(totalDays / 7);
+                const totalMonths = years * 12 + months;
+
                 // Calculate next birthday
-                const nextBirthdayDate = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
-                if (nextBirthdayDate < today) {
-                    nextBirthdayDate.setFullYear(today.getFullYear() + 1);
+                let nextBirthday = new Date(targetDate.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+                if (nextBirthday < targetDate) {
+                    nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
                 }
+                const daysUntilBirthday = Math.ceil((nextBirthday - targetDate) / (1000 * 60 * 60 * 24));
 
-                const daysUntilBirthday = Math.ceil((nextBirthdayDate - today) / (1000 * 60 * 60 * 24));
+                return {
+                    years,
+                    months,
+                    days,
+                    totalMonths,
+                    totalWeeks,
+                    totalDays,
+                    daysUntilBirthday
+                };
+            }
 
-                // Update results
-                exactAge.textContent = `${years} years, ${months} months, ${days} days`;
-                ageDetails.innerHTML = `
-                    <div><strong>Born on:</strong> ${birthDate.toLocaleDateString()}</div>
-                    <div><strong>Age in days:</strong> ${Math.floor((today - birthDate) / (1000 * 60 * 60 * 24))}</div>
-                    <div><strong>Age in months:</strong> ${years * 12 + months}</div>
-                `;
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const age = calculateAge(birthDate.value, toDate.value);
+                
+                document.getElementById('years').textContent = age.years;
+                document.getElementById('months').textContent = age.months;
+                document.getElementById('days').textContent = age.days;
+                document.getElementById('totalMonths').textContent = age.totalMonths;
+                document.getElementById('totalWeeks').textContent = age.totalWeeks;
+                document.getElementById('totalDays').textContent = age.totalDays;
+                document.getElementById('nextBirthday').textContent = 
+                    `Next birthday in ${age.daysUntilBirthday} days`;
 
-                nextBirthday.innerHTML = `
-                    <div><strong>Next birthday:</strong> ${nextBirthdayDate.toLocaleDateString()}</div>
-                    <div><strong>Days until next birthday:</strong> ${daysUntilBirthday}</div>
-                `;
-
-                ageResult.classList.remove('d-none');
+                ageResult.style.display = 'block';
+                ageResult.classList.add('animate-fade-in');
             });
+
+            // Set max date as today
+            const today = new Date().toISOString().split('T')[0];
+            birthDate.max = today;
+            toDate.max = today;
         });
     </script>
 </body>
-</html> 
+</html>

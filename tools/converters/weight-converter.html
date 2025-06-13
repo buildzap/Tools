@@ -1,494 +1,454 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weight Converter - Free Online Tools</title>
+    <title>Weight Converter - Multi-Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../../styles/main.css" rel="stylesheet">
-    <link href="../../styles/theme.css" rel="stylesheet">
     <style>
         :root {
-            --card-bg: #ffffff;
-            --card-border: #dee2e6;
-            --card-shadow: rgba(0, 0, 0, 0.075);
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --accent-color: #0d6efd;
-            --hover-bg: #f8f9fa;
-            --input-bg: #ffffff;
-            --border-color: #dee2e6;
-            --range-track: #dee2e6;
-            --range-thumb: #0d6efd;
-        }
-
-        [data-theme="dark"] {
-            --card-bg: #2d2d2d;
-            --card-border: #404040;
-            --card-shadow: rgba(0, 0, 0, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent-color: #0d6efd;
-            --hover-bg: #3d3d3d;
-            --input-bg: #2d2d2d;
+            --primary-dark: #1a1a1a;
+            --secondary-dark: #2d2d2d;
+            --accent-color: #ff5722;
+            --text-color: #e0e0e0;
+            --text-bright: #ffffff;
+            --text-muted: #a0a0a0;
             --border-color: #404040;
-            --range-track: #404040;
-            --range-thumb: #0d6efd;
+            --input-bg: #242424;
+            --card-hover: #353535;
+            --success-color: #4caf50;
         }
 
         body {
-            background-color: var(--card-bg);
-            color: var(--text-primary);
+            background-color: var(--primary-dark);
+            color: var(--text-bright);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
 
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.5rem;
-            background-color: var(--card-bg);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .tool-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.2rem;
-            color: var(--text-primary);
-        }
-
-        .tool-header p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.2rem;
-        }
-
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            box-shadow: 0 1px 3px var(--card-shadow);
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
+            background-color: var(--secondary-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
-        .card-body {
-            padding: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .card-title {
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .form-label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-            font-size: 0.85rem;
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
         }
 
         .form-control, .form-select {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
-            height: auto;
+            color: var(--text-bright);
+            border-radius: 8px;
         }
 
         .form-control:focus, .form-select:focus {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
-            color: var(--text-primary);
+            color: var(--text-bright);
+            box-shadow: 0 0 0 0.2rem rgba(255, 87, 34, 0.25);
         }
 
-        .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 4px;
-            padding: 0.3rem 0.8rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #fff;
+        .form-control::placeholder {
+            color: var(--text-muted);
         }
 
-        .btn-outline-secondary {
-            color: var(--text-secondary);
-            border-color: var(--border-color);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            padding: 0.3rem 0.8rem;
-        }
-
-        #results {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            padding: 0.3rem;
-            border-radius: 4px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 0.2rem 0;
-        }
-
-        .conversion-result {
-            background-color: var(--card-bg);
-            border-radius: 4px;
-            padding: 0.3rem;
-            margin-bottom: 0.2rem;
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
-        }
-
-        .conversion-result .value {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.1rem;
-        }
-
-        .conversion-result .unit {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        .compact-table {
-            font-size: 0.8rem;
-            margin-bottom: 0;
-        }
-
-        .compact-table th, .compact-table td {
-            padding: 0.2rem 0.3rem;
-        }
-
-        .info-card .card-body {
         .input-group-text {
-            background-color: var(--input-bg);
+            background-color: var(--secondary-dark);
             border-color: var(--border-color);
-            color: var(--text-secondary);
-            border-radius: 10px;
-            font-weight: 500;
+            color: var(--text-bright);
         }
 
-        .error-message {
-            color: var(--bs-danger);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            padding: 0.5rem;
+        .weight-scale {
+            width: 200px;
+            height: 10px;
+            background: linear-gradient(to right, var(--accent-color), var(--text-bright));
             border-radius: 5px;
-            background-color: rgba(var(--bs-danger-rgb), 0.1);
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .weight-indicator {
+            width: 20px;
+            height: 20px;
+            background-color: var(--text-bright);
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            position: absolute;
+            top: -5px;
+            transform: translateX(-50%);
+            transition: left 0.3s ease;
+        }
+
+        .quick-convert {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-convert:hover {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            transform: translateY(-2px);
+        }
+
+        .result-box {
+            background-color: var(--input-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-bright);
+        }
+
+        .weight-comparison {
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-item:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-icon {
+            width: 30px;
+            color: var(--accent-color);
+            margin-right: 10px;
+        }
+
+        .comparison-text {
+            flex-grow: 1;
+            color: var(--text-color);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        .weight-animation {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .weight-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-badge {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Weight Converter</h1>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">From</label>
+                            <select class="form-select mb-3" id="fromUnit">
+                                <optgroup label="Metric">
+                                    <option value="tonne">Tonne (t)</option>
+                                    <option value="kilogram" selected>Kilogram (kg)</option>
+                                    <option value="gram">Gram (g)</option>
+                                    <option value="milligram">Milligram (mg)</option>
+                                    <option value="microgram">Microgram (μg)</option>
+                                </optgroup>
+                                <optgroup label="Imperial/US">
+                                    <option value="pound">Pound (lb)</option>
+                                    <option value="ounce">Ounce (oz)</option>
+                                    <option value="stone">Stone (st)</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="carat">Carat (ct)</option>
+                                    <option value="atomic-mass-unit">Atomic Mass Unit (amu)</option>
+                                </optgroup>
+                            </select>
+                            
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fromValue" placeholder="Enter weight">
+                                <span class="input-group-text" id="fromUnitLabel">kg</span>
+                            </div>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-weight-hanging"></i> Weight Converter</h1>
-                <p>Convert between different units of weight measurement</p>
-            </div>
-
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="converterForm">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="fromValue" class="form-label">From</label>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" id="fromValue" step="any" required>
-                                                <select class="form-select" id="fromUnit" style="max-width: 150px;">
-                                                    <option value="mg">Milligrams (mg)</option>
-                                                    <option value="g">Grams (g)</option>
-                                                    <option value="kg" selected>Kilograms (kg)</option>
-                                                    <option value="t">Metric Tons (t)</option>
-                                                    <option value="oz">Ounces (oz)</option>
-                                                    <option value="lb">Pounds (lb)</option>
-                                                    <option value="st">Stones (st)</option>
-                                                    <option value="ton">US Tons (ton)</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="toValue" class="form-label">To</label>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" id="toValue" readonly>
-                                                <select class="form-select" id="toUnit" style="max-width: 150px;">
-                                                    <option value="mg">Milligrams (mg)</option>
-                                                    <option value="g">Grams (g)</option>
-                                                    <option value="kg">Kilograms (kg)</option>
-                                                    <option value="t">Metric Tons (t)</option>
-                                                    <option value="oz" selected>Ounces (oz)</option>
-                                                    <option value="lb">Pounds (lb)</option>
-                                                    <option value="st">Stones (st)</option>
-                                                    <option value="ton">US Tons (ton)</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-primary" id="convertButton">
-                                        <i class="fas fa-sync-alt"></i> Convert
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary" id="swapButton">
-                                        <i class="fas fa-exchange-alt"></i> Swap Units
-                                    </button>
-                                </div>
-                            </form>
+                            <div class="weight-animation">
+                                <i class="fas fa-weight-hanging weight-icon"></i>
+                            </div>
                         </div>
-                    </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">To</label>
+                            <select class="form-select mb-3" id="toUnit">
+                                <optgroup label="Metric">
+                                    <option value="tonne">Tonne (t)</option>
+                                    <option value="kilogram">Kilogram (kg)</option>
+                                    <option value="gram" selected>Gram (g)</option>
+                                    <option value="milligram">Milligram (mg)</option>
+                                    <option value="microgram">Microgram (μg)</option>
+                                </optgroup>
+                                <optgroup label="Imperial/US">
+                                    <option value="pound">Pound (lb)</option>
+                                    <option value="ounce">Ounce (oz)</option>
+                                    <option value="stone">Stone (st)</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="carat">Carat (ct)</option>
+                                    <option value="atomic-mass-unit">Atomic Mass Unit (amu)</option>
+                                </optgroup>
+                            </select>
 
-                    <!-- Results Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion Results</h5>
-                            <div id="results" class="text-center text-muted">
-                                Enter a value to convert
+                            <div class="result-box">
+                                <span id="result" class="result-value">0</span>
+                                <span id="toUnitLabel">g</span>
+                                <button class="copy-btn" id="copyResult">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <div class="weight-scale">
+                                <div class="weight-indicator" id="weightIndicator"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Common Conversions Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Common Conversions</h5>
-                            <div id="commonConversions" class="text-center text-muted">
-                                <!-- Will be populated by JavaScript -->
-                            </div>
+                    <div class="quick-converts mt-4">
+                        <h5 class="mb-3">Quick Conversions</h5>
+                        <div class="d-flex flex-wrap">
+                            <button class="quick-convert" data-value="1" data-from="kilogram" data-to="pound">
+                                1kg to lb
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="pound" data-to="kilogram">
+                                1lb to kg
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="stone" data-to="kilogram">
+                                1st to kg
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="ounce" data-to="gram">
+                                1oz to g
+                            </button>
                         </div>
                     </div>
 
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion History</h5>
-                            <div id="history" class="text-center text-muted">
-                                No conversions yet
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
-
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Weight Converter</h5>
-                            <p class="card-text">
-                                Convert between different units of weight measurement,
-                                including metric and imperial units.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple units</li>
-                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
-                                <li><i class="fas fa-check text-success"></i> Common conversions</li>
-                                <li><i class="fas fa-check text-success"></i> Conversion history</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between units.</small>
-                            </div>
+                    <div class="weight-comparison mt-4">
+                        <h5 class="mb-3">Weight Comparisons</h5>
+                        <div id="comparisons">
+                            <!-- Comparisons will be added here dynamically -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fromValue = document.getElementById('fromValue');
-            const toValue = document.getElementById('toValue');
             const fromUnit = document.getElementById('fromUnit');
             const toUnit = document.getElementById('toUnit');
-            const convertButton = document.getElementById('convertButton');
-            const swapButton = document.getElementById('swapButton');
-            const results = document.getElementById('results');
-            const commonConversions = document.getElementById('commonConversions');
-            const history = document.getElementById('history');
-            let conversionHistory = [];
+            const fromValue = document.getElementById('fromValue');
+            const result = document.getElementById('result');
+            const fromUnitLabel = document.getElementById('fromUnitLabel');
+            const toUnitLabel = document.getElementById('toUnitLabel');
+            const copyResult = document.getElementById('copyResult');
+            const weightIndicator = document.getElementById('weightIndicator');
+            const comparisons = document.getElementById('comparisons');
 
-            // Conversion factors to kilograms
-            const conversionFactors = {
-                'mg': 0.000001,
-                'g': 0.001,
-                'kg': 1,
-                't': 1000,
-                'oz': 0.0283495,
-                'lb': 0.453592,
-                'st': 6.35029,
-                'ton': 907.185
+            // Conversion factors (to kilograms)
+            const conversions = {
+                'tonne': 1000,
+                'kilogram': 1,
+                'gram': 0.001,
+                'milligram': 0.000001,
+                'microgram': 0.000000001,
+                'pound': 0.453592,
+                'ounce': 0.0283495,
+                'stone': 6.35029,
+                'carat': 0.0002,
+                'atomic-mass-unit': 1.660539067e-27
             };
 
-            // Format number
-            function formatNumber(number) {
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 6
-                }).format(number);
+            // Weight references for comparison
+            const weightReferences = [
+                { icon: 'feather', name: 'Average Feather', weight: 0.0082, unit: 'g' },
+                { icon: 'paper', name: 'Sheet of Paper', weight: 4.5, unit: 'g' },
+                { icon: 'apple', name: 'Average Apple', weight: 0.195, unit: 'kg' },
+                { icon: 'cat', name: 'House Cat', weight: 4.5, unit: 'kg' },
+                { icon: 'human', name: 'Average Adult', weight: 70, unit: 'kg' },
+                { icon: 'car', name: 'Car', weight: 1.5, unit: 't' }
+            ];
+
+            function updateLabels() {
+                const fromUnitText = fromUnit.options[fromUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                const toUnitText = toUnit.options[toUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                fromUnitLabel.textContent = fromUnitText;
+                toUnitLabel.textContent = toUnitText;
             }
 
-            // Convert weight
-            function convertWeight() {
-                try {
-                    const value = parseFloat(fromValue.value);
-                    const from = fromUnit.value;
-                    const to = toUnit.value;
-
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    // Convert to kilograms first, then to target unit
-                    const kilograms = value * conversionFactors[from];
-                    const result = kilograms / conversionFactors[to];
-
-                    // Update result
-                    toValue.value = formatNumber(result);
-
-                    // Update results display
-                    results.innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Conversion Result</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-
-                    // Update common conversions
-                    updateCommonConversions(value, from);
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        fromValue: value,
-                        fromUnit: from,
-                        toValue: result,
-                        toUnit: to,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    results.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
+            function getIcon(referenceWeight) {
+                const icons = {
+                    'feather': 'fas fa-feather',
+                    'paper': 'fas fa-file',
+                    'apple': 'fas fa-apple-alt',
+                    'cat': 'fas fa-cat',
+                    'human': 'fas fa-user',
+                    'car': 'fas fa-car'
+                };
+                return icons[referenceWeight.icon] || 'fas fa-weight-hanging';
             }
 
-            // Update common conversions
-            function updateCommonConversions(value, fromUnit) {
-                const commonUnits = ['kg', 'lb', 'oz', 'st'];
-                const kilograms = value * conversionFactors[fromUnit];
-                
-                const conversions = commonUnits.map(unit => {
-                    const result = kilograms / conversionFactors[unit];
-                    return `
-                        <div class="mb-2">
-                            <strong>${formatNumber(value)} ${fromUnit}</strong> = 
-                            <strong>${formatNumber(result)} ${unit}</strong>
-                        </div>
+            function updateComparisons(weightInKg) {
+                comparisons.innerHTML = '';
+                weightReferences.forEach(ref => {
+                    const refWeightInKg = ref.unit === 'g' ? ref.weight / 1000 :
+                                        ref.unit === 't' ? ref.weight * 1000 : ref.weight;
+                    const ratio = weightInKg / refWeightInKg;
+                    const comparison = document.createElement('div');
+                    comparison.className = 'comparison-item';
+                    comparison.innerHTML = `
+                        <i class="${getIcon(ref)} comparison-icon"></i>
+                        <span class="comparison-text">
+                            ${ratio < 0.01 ? '< 1/100 of' :
+                              ratio > 100 ? '> 100x' :
+                              ratio > 1 ? `${ratio.toFixed(1)}x` :
+                              `${(1/ratio).toFixed(1)}th of`} ${ref.name}
+                        </span>
                     `;
-                }).join('');
-
-                commonConversions.innerHTML = conversions;
+                    comparisons.appendChild(comparison);
+                });
             }
 
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
+            function convert() {
+                if (!fromValue.value) {
+                    result.textContent = '0';
+                    weightIndicator.style.left = '0%';
+                    updateComparisons(0);
                     return;
                 }
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${formatNumber(conv.fromValue)} ${conv.fromUnit}</td>
-                                        <td>${formatNumber(conv.toValue)} ${conv.toUnit}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+                const input = parseFloat(fromValue.value);
+                const fromFactor = conversions[fromUnit.value];
+                const toFactor = conversions[toUnit.value];
+                
+                const kg = input * fromFactor;
+                const converted = kg / toFactor;
+
+                // Format the result based on the magnitude
+                let formattedResult;
+                if (Math.abs(converted) >= 1e9) {
+                    formattedResult = converted.toExponential(6);
+                } else if (Math.abs(converted) < 0.000001) {
+                    formattedResult = converted.toExponential(6);
+                } else {
+                    formattedResult = converted.toPrecision(7);
+                }
+
+                result.textContent = formattedResult;
+                
+                // Update weight indicator position (logarithmic scale)
+                const position = Math.min(100, Math.max(0, (Math.log10(kg) + 5) * 10));
+                weightIndicator.style.left = `${position}%`;
+
+                // Update comparisons
+                updateComparisons(kg);
             }
 
-            // Swap units
-            function swapUnits() {
-                const tempValue = fromValue.value;
-                const tempUnit = fromUnit.value;
-                fromValue.value = toValue.value;
-                fromUnit.value = toUnit.value;
-                toValue.value = tempValue;
-                toUnit.value = tempUnit;
-                convertWeight();
-            }
+            // Event Listeners
+            fromUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
 
-            // Event listeners
-            convertButton.addEventListener('click', convertWeight);
-            swapButton.addEventListener('click', swapUnits);
-            fromValue.addEventListener('input', convertWeight);
-            fromUnit.addEventListener('change', convertWeight);
-            toUnit.addEventListener('change', convertWeight);
+            toUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
+
+            fromValue.addEventListener('input', convert);
+
+            copyResult.addEventListener('click', () => {
+                navigator.clipboard.writeText(result.textContent).then(() => {
+                    const icon = copyResult.querySelector('i');
+                    icon.className = 'fas fa-check';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-copy';
+                    }, 1500);
+                });
+            });
+
+            // Quick convert buttons
+            document.querySelectorAll('.quick-convert').forEach(button => {
+                button.addEventListener('click', () => {
+                    fromValue.value = button.dataset.value;
+                    fromUnit.value = button.dataset.from;
+                    toUnit.value = button.dataset.to;
+                    updateLabels();
+                    convert();
+                });
+            });
+
+            // Initialize
+            updateLabels();
+            updateComparisons(0);
         });
     </script>
 </body>
-</html> 
+</html>

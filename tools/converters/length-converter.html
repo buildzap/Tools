@@ -1,582 +1,437 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Length Converter - Free Online Tools</title>
+    <title>Length Converter - Multi-Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../../styles/main.css" rel="stylesheet">
-    <link href="../../styles/theme.css" rel="stylesheet">
     <style>
         :root {
-            --card-bg: #ffffff;
-            --card-border: #dee2e6;
-            --card-shadow: rgba(0, 0, 0, 0.075);
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --accent-color: #0d6efd;
-            --hover-bg: #f8f9fa;
-            --input-bg: #ffffff;
-            --border-color: #dee2e6;
-            --range-track: #dee2e6;
-            --range-thumb: #0d6efd;
-        }
-
-        [data-theme="dark"] {
-            --card-bg: #2d2d2d;
-            --card-border: #404040;
-            --card-shadow: rgba(0, 0, 0, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent-color: #0d6efd;
-            --hover-bg: #3d3d3d;
-            --input-bg: #2d2d2d;
+            --primary-dark: #1a1a1a;
+            --secondary-dark: #2d2d2d;
+            --accent-color: #7c4dff;
+            --text-color: #e0e0e0;
+            --text-bright: #ffffff;
+            --text-muted: #a0a0a0;
             --border-color: #404040;
-            --range-track: #404040;
-            --range-thumb: #0d6efd;
+            --input-bg: #242424;
+            --card-hover: #353535;
         }
 
         body {
-            background-color: var(--card-bg);
-            color: var(--text-primary);
+            background-color: var(--primary-dark);
+            color: var(--text-bright);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
 
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-            background-color: var(--card-bg);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .tool-header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .tool-header p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-        }
-
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            box-shadow: 0 4px 15px var(--card-shadow);
+            background-color: var(--secondary-dark);
+            border: 1px solid var(--border-color);
             border-radius: 15px;
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
         .card:hover {
             transform: translateY(-5px);
-        }
-
-        .card-body {
-            padding: 2rem;
-            color: var(--text-primary);
-        }
-
-        .card-title {
-            color: var(--text-primary);
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+            background-color: var(--card-hover);
         }
 
         .form-control, .form-select {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            transition: all 0.3s ease;
+            color: var(--text-bright);
+            border-radius: 8px;
         }
 
         .form-control:focus, .form-select:focus {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-            color: var(--text-primary);
+            color: var(--text-bright);
+            box-shadow: 0 0 0 0.2rem rgba(124, 77, 255, 0.25);
         }
 
         .form-control::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 10px;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            color: var(--text-primary);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
-        }
-
-        .btn-outline-secondary {
-            color: var(--text-secondary);
-            border-color: var(--border-color);
-        }
-
-        .btn-outline-secondary:hover {
-            background: var(--hover-bg);
-            color: var(--text-primary);
-            border-color: var(--border-color);
-        }
-
-        #result {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            padding: 1.5rem;
-            border-radius: 10px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 1rem 0;
-            transition: all 0.3s ease;
-        }
-
-        .conversion-result {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 1.25rem;
-            margin-bottom: 0.75rem;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .conversion-result:hover {
-            transform: translateX(5px);
-            background-color: var(--hover-bg);
-        }
-
-        .conversion-result .value {
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .conversion-result .unit {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group .form-control {
-            font-size: 1.1rem;
-            padding: 0.75rem 1rem;
+            color: var(--text-muted);
         }
 
         .input-group-text {
-            background-color: var(--input-bg);
+            background-color: var(--secondary-dark);
             border-color: var(--border-color);
-            color: var(--text-secondary);
-            border-radius: 10px;
-            font-weight: 500;
-        }
-
-        .error-message {
-            color: var(--bs-danger);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 5px;
-            background-color: rgba(var(--bs-danger-rgb), 0.1);
-        }
-
-        /* Conversion history section */
-        .conversion-history {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 1.25rem;
-            margin-top: 1rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .conversion-history h5 {
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .history-item:last-child {
-            border-bottom: none;
-        }
-
-        .history-item .from {
-            color: var(--text-secondary);
-        }
-
-        .history-item .to {
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-
-        /* Formula display */
-        .formula-display {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-top: 1rem;
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .tool-container {
-                padding: 1rem;
-            }
-
-            .card-body {
-                padding: 1.5rem;
-            }
-
-            .conversion-result {
-                margin-bottom: 0.5rem;
-            }
-
-            .history-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-
-            .history-item .to {
-                font-size: 1.2rem;
-            }
-        }
-
-        /* Additional styles for better layout */
-        .converter-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .conversion-card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .conversion-card .card-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .conversion-card .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .conversion-card .btn-group {
-            margin-top: auto;
-        }
-
-        .result-section {
-            margin-top: 2rem;
-        }
-
-        .history-section {
-            margin-top: 2rem;
-        }
-
-        .formula-section {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .formula-section pre {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            color: var(--text-bright);
         }
 
         .quick-convert {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .quick-convert .btn {
-            width: 100%;
-            text-align: left;
-            padding: 0.75rem 1rem;
-            background-color: var(--card-bg);
+            background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .quick-convert .btn:hover {
-            background-color: var(--hover-bg);
+        .quick-convert:hover {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
             transform: translateY(-2px);
         }
 
-        @media (max-width: 768px) {
-            .converter-container {
-                grid-template-columns: 1fr;
-            }
+        .result-box {
+            background-color: var(--input-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
+        }
 
-            .quick-convert {
-                grid-template-columns: 1fr;
-            }
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-bright);
+        }
+
+        .visual-ruler {
+            height: 60px;
+            background: linear-gradient(to right, var(--accent-color), var(--text-bright));
+            border-radius: 8px;
+            position: relative;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .ruler-marker {
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            background-color: var(--text-bright);
+            transition: left 0.3s ease;
+        }
+
+        .ruler-label {
+            position: absolute;
+            bottom: 5px;
+            transform: translateX(-50%);
+            color: var(--text-bright);
+            font-size: 0.8rem;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .conversion-history {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .history-item:hover {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+        }
+
+        .form-select option {
+            background-color: var(--input-bg);
+            color: var(--text-bright);
+        }
+
+        .category-title {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: var(--input-bg);
+            border-radius: 4px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
 <body>
-    <div class="tool-container">
-        <div class="tool-header">
-            <h1>Length Converter</h1>
-            <p>Convert between different units of length measurement</p>
-        </div>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Length Converter</h1>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">From</label>
+                            <select class="form-select mb-3" id="fromUnit">
+                                <optgroup label="Metric">
+                                    <option value="kilometer">Kilometer (km)</option>
+                                    <option value="meter" selected>Meter (m)</option>
+                                    <option value="centimeter">Centimeter (cm)</option>
+                                    <option value="millimeter">Millimeter (mm)</option>
+                                    <option value="micrometer">Micrometer (μm)</option>
+                                    <option value="nanometer">Nanometer (nm)</option>
+                                </optgroup>
+                                <optgroup label="Imperial/US">
+                                    <option value="mile">Mile (mi)</option>
+                                    <option value="yard">Yard (yd)</option>
+                                    <option value="foot">Foot (ft)</option>
+                                    <option value="inch">Inch (in)</option>
+                                </optgroup>
+                                <optgroup label="Maritime">
+                                    <option value="nautical-mile">Nautical Mile (nmi)</option>
+                                    <option value="fathom">Fathom (ftm)</option>
+                                </optgroup>
+                                <optgroup label="Astronomical">
+                                    <option value="light-year">Light Year (ly)</option>
+                                    <option value="astronomical-unit">Astronomical Unit (AU)</option>
+                                    <option value="parsec">Parsec (pc)</option>
+                                </optgroup>
+                            </select>
+                            
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fromValue" placeholder="Enter value">
+                                <span class="input-group-text" id="fromUnitLabel">m</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">To</label>
+                            <select class="form-select mb-3" id="toUnit">
+                                <optgroup label="Metric">
+                                    <option value="kilometer">Kilometer (km)</option>
+                                    <option value="meter">Meter (m)</option>
+                                    <option value="centimeter" selected>Centimeter (cm)</option>
+                                    <option value="millimeter">Millimeter (mm)</option>
+                                    <option value="micrometer">Micrometer (μm)</option>
+                                    <option value="nanometer">Nanometer (nm)</option>
+                                </optgroup>
+                                <optgroup label="Imperial/US">
+                                    <option value="mile">Mile (mi)</option>
+                                    <option value="yard">Yard (yd)</option>
+                                    <option value="foot">Foot (ft)</option>
+                                    <option value="inch">Inch (in)</option>
+                                </optgroup>
+                                <optgroup label="Maritime">
+                                    <option value="nautical-mile">Nautical Mile (nmi)</option>
+                                    <option value="fathom">Fathom (ftm)</option>
+                                </optgroup>
+                                <optgroup label="Astronomical">
+                                    <option value="light-year">Light Year (ly)</option>
+                                    <option value="astronomical-unit">Astronomical Unit (AU)</option>
+                                    <option value="parsec">Parsec (pc)</option>
+                                </optgroup>
+                            </select>
 
-        <!-- Quick Convert Section -->
-        <div class="quick-convert">
-            <button class="btn" onclick="quickConvert('km', 'miles')">
-                <i class="fas fa-exchange-alt me-2"></i>Kilometers to Miles
-            </button>
-            <button class="btn" onclick="quickConvert('m', 'feet')">
-                <i class="fas fa-exchange-alt me-2"></i>Meters to Feet
-            </button>
-            <button class="btn" onclick="quickConvert('cm', 'inches')">
-                <i class="fas fa-exchange-alt me-2"></i>Centimeters to Inches
-            </button>
-            <button class="btn" onclick="quickConvert('mm', 'cm')">
-                <i class="fas fa-exchange-alt me-2"></i>Millimeters to Centimeters
-            </button>
-        </div>
-
-        <!-- Main Converter -->
-        <div class="converter-container">
-            <div class="card conversion-card">
-                <div class="card-body">
-                    <h5 class="card-title">Convert Length</h5>
-                    <div class="form-group">
-                        <label for="fromValue" class="form-label">Value</label>
-                        <input type="number" class="form-control" id="fromValue" placeholder="Enter value">
-                    </div>
-                    <div class="form-group">
-                        <label for="fromUnit" class="form-label">From Unit</label>
-                        <select class="form-select" id="fromUnit">
-                            <option value="mm">Millimeters (mm)</option>
-                            <option value="cm">Centimeters (cm)</option>
-                            <option value="m">Meters (m)</option>
-                            <option value="km">Kilometers (km)</option>
-                            <option value="inches">Inches (in)</option>
-                            <option value="feet">Feet (ft)</option>
-                            <option value="yards">Yards (yd)</option>
-                            <option value="miles">Miles (mi)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="toUnit" class="form-label">To Unit</label>
-                        <select class="form-select" id="toUnit">
-                            <option value="mm">Millimeters (mm)</option>
-                            <option value="cm">Centimeters (cm)</option>
-                            <option value="m">Meters (m)</option>
-                            <option value="km">Kilometers (km)</option>
-                            <option value="inches">Inches (in)</option>
-                            <option value="feet">Feet (ft)</option>
-                            <option value="yards">Yards (yd)</option>
-                            <option value="miles">Miles (mi)</option>
-                        </select>
-                    </div>
-                    <div class="btn-group mt-3">
-                        <button class="btn btn-primary" onclick="convert()">
-                            <i class="fas fa-exchange-alt me-2"></i>Convert
-                        </button>
-                        <button class="btn btn-secondary" onclick="clearInputs()">
-                            <i class="fas fa-undo me-2"></i>Clear
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Result Section -->
-            <div class="card conversion-card">
-                <div class="card-body">
-                    <h5 class="card-title">Result</h5>
-                    <div id="result" class="text-center">
-                        <div class="conversion-result">
-                            <div class="value">0</div>
-                            <div class="unit">Select units and enter value</div>
+                            <div class="result-box">
+                                <span id="result" class="result-value">0</span>
+                                <span id="toUnitLabel">cm</span>
+                                <button class="copy-btn" id="copyResult">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="formula-section">
-                        <h6 class="mb-2">Formula</h6>
-                        <pre id="formula">Select units to see conversion formula</pre>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- History Section -->
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Recent Conversions</h5>
-                <div id="history" class="conversion-history">
-                    <div class="text-center text-muted">No recent conversions</div>
+                    <div class="visual-ruler mt-4" id="visualRuler">
+                        <div class="ruler-marker" id="rulerMarker"></div>
+                    </div>
+
+                    <div class="quick-converts mt-4">
+                        <h5 class="mb-3">Quick Conversions</h5>
+                        <div class="d-flex flex-wrap">
+                            <button class="quick-convert" data-value="1" data-from="meter" data-to="centimeter">
+                                1m to cm
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="kilometer" data-to="meter">
+                                1km to m
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="mile" data-to="kilometer">
+                                1mi to km
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="foot" data-to="meter">
+                                1ft to m
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="inch" data-to="centimeter">
+                                1in to cm
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h5 class="mb-3">Conversion History</h5>
+                        <div class="conversion-history" id="conversionHistory">
+                            <!-- History items will be added here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const conversionRates = {
-            mm: 1,
-            cm: 10,
-            m: 1000,
-            km: 1000000,
-            inches: 25.4,
-            feet: 304.8,
-            yards: 914.4,
-            miles: 1609344
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+            const fromUnit = document.getElementById('fromUnit');
+            const toUnit = document.getElementById('toUnit');
+            const fromValue = document.getElementById('fromValue');
+            const result = document.getElementById('result');
+            const fromUnitLabel = document.getElementById('fromUnitLabel');
+            const toUnitLabel = document.getElementById('toUnitLabel');
+            const copyResult = document.getElementById('copyResult');
+            const conversionHistory = document.getElementById('conversionHistory');
+            const rulerMarker = document.getElementById('rulerMarker');
 
-        const unitNames = {
-            mm: 'Millimeters',
-            cm: 'Centimeters',
-            m: 'Meters',
-            km: 'Kilometers',
-            inches: 'Inches',
-            feet: 'Feet',
-            yards: 'Yards',
-            miles: 'Miles'
-        };
+            // Conversion factors (to meters)
+            const conversions = {
+                'kilometer': 1000,
+                'meter': 1,
+                'centimeter': 0.01,
+                'millimeter': 0.001,
+                'micrometer': 0.000001,
+                'nanometer': 0.000000001,
+                'mile': 1609.344,
+                'yard': 0.9144,
+                'foot': 0.3048,
+                'inch': 0.0254,
+                'nautical-mile': 1852,
+                'fathom': 1.8288,
+                'light-year': 9.461e15,
+                'astronomical-unit': 1.496e11,
+                'parsec': 3.086e16
+            };
 
-        function convert() {
-            const fromValue = parseFloat(document.getElementById('fromValue').value);
-            const fromUnit = document.getElementById('fromUnit').value;
-            const toUnit = document.getElementById('toUnit').value;
-
-            if (isNaN(fromValue)) {
-                showError('Please enter a valid number');
-                return;
+            function updateLabels() {
+                const fromUnitText = fromUnit.options[fromUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                const toUnitText = toUnit.options[toUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                fromUnitLabel.textContent = fromUnitText;
+                toUnitLabel.textContent = toUnitText;
             }
 
-            const result = (fromValue * conversionRates[fromUnit]) / conversionRates[toUnit];
-            displayResult(result, fromValue, fromUnit, toUnit);
-            updateFormula(fromUnit, toUnit);
-            addToHistory(fromValue, fromUnit, result, toUnit);
-        }
+            function convert() {
+                if (!fromValue.value) {
+                    result.textContent = '0';
+                    return;
+                }
 
-        function displayResult(result, fromValue, fromUnit, toUnit) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `
-                <div class="conversion-result">
-                    <div class="value">${result.toFixed(4)}</div>
-                    <div class="unit">${unitNames[toUnit]}</div>
-                </div>
-            `;
-        }
+                const input = parseFloat(fromValue.value);
+                const fromFactor = conversions[fromUnit.value];
+                const toFactor = conversions[toUnit.value];
+                
+                const meters = input * fromFactor;
+                const converted = meters / toFactor;
 
-        function updateFormula(fromUnit, toUnit) {
-            const formulaDiv = document.getElementById('formula');
-            const fromRate = conversionRates[fromUnit];
-            const toRate = conversionRates[toUnit];
-            formulaDiv.textContent = `(${fromUnit} × ${fromRate}) ÷ ${toRate} = ${toUnit}`;
-        }
+                // Format the result based on the magnitude
+                let formattedResult;
+                if (Math.abs(converted) >= 1e9) {
+                    formattedResult = converted.toExponential(6);
+                } else if (Math.abs(converted) < 0.000001) {
+                    formattedResult = converted.toExponential(6);
+                } else {
+                    formattedResult = converted.toPrecision(7);
+                }
 
-        function addToHistory(fromValue, fromUnit, result, toUnit) {
-            const historyDiv = document.getElementById('history');
-            const historyItem = document.createElement('div');
-            historyItem.className = 'history-item';
-            historyItem.innerHTML = `
-                <span class="from">${fromValue} ${fromUnit}</span>
-                <span class="to">${result.toFixed(4)} ${toUnit}</span>
-            `;
-            
-            if (historyDiv.firstChild && historyDiv.firstChild.className === 'text-center') {
-                historyDiv.innerHTML = '';
+                result.textContent = formattedResult;
+                
+                // Update visual ruler
+                updateRuler(input, converted);
+                
+                // Add to history
+                addToHistory(input, fromUnit.value, converted, toUnit.value);
             }
-            
-            historyDiv.insertBefore(historyItem, historyDiv.firstChild);
-            
-            if (historyDiv.children.length > 5) {
-                historyDiv.removeChild(historyDiv.lastChild);
+
+            function updateRuler(fromVal, toVal) {
+                // Calculate position (0-100%)
+                let position;
+                if (fromVal === 0) {
+                    position = 0;
+                } else {
+                    position = Math.min(100, Math.max(0, (Math.log10(toVal) + 10) * 5));
+                }
+                rulerMarker.style.left = `${position}%`;
             }
-        }
 
-        function showError(message) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `
-                <div class="conversion-result">
-                    <div class="value text-danger">${message}</div>
-                </div>
-            `;
-        }
+            function addToHistory(fromVal, fromUnit, toVal, toUnit) {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    ${fromVal} ${fromUnit} = ${toVal} ${toUnit}
+                    <small class="text-muted ms-2">${new Date().toLocaleTimeString()}</small>
+                `;
+                
+                historyItem.addEventListener('click', () => {
+                    fromValue.value = fromVal;
+                    document.getElementById('fromUnit').value = fromUnit;
+                    document.getElementById('toUnit').value = toUnit;
+                    convert();
+                });
 
-        function clearInputs() {
-            document.getElementById('fromValue').value = '';
-            document.getElementById('result').innerHTML = `
-                <div class="conversion-result">
-                    <div class="value">0</div>
-                    <div class="unit">Select units and enter value</div>
-                </div>
-            `;
-            document.getElementById('formula').textContent = 'Select units to see conversion formula';
-        }
+                conversionHistory.insertBefore(historyItem, conversionHistory.firstChild);
+                
+                // Keep only last 10 items
+                if (conversionHistory.children.length > 10) {
+                    conversionHistory.removeChild(conversionHistory.lastChild);
+                }
+            }
 
-        function quickConvert(fromUnit, toUnit) {
-            document.getElementById('fromUnit').value = fromUnit;
-            document.getElementById('toUnit').value = toUnit;
-            document.getElementById('fromValue').focus();
-        }
-
-        // Add event listeners for Enter key
-        document.getElementById('fromValue').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
+            // Event Listeners
+            fromUnit.addEventListener('change', () => {
+                updateLabels();
                 convert();
-            }
-        });
+            });
 
-        // Initialize tooltips
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+            toUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
+
+            fromValue.addEventListener('input', convert);
+
+            copyResult.addEventListener('click', () => {
+                navigator.clipboard.writeText(result.textContent).then(() => {
+                    const icon = copyResult.querySelector('i');
+                    icon.className = 'fas fa-check';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-copy';
+                    }, 1500);
+                });
+            });
+
+            // Quick convert buttons
+            document.querySelectorAll('.quick-convert').forEach(button => {
+                button.addEventListener('click', () => {
+                    fromValue.value = button.dataset.value;
+                    fromUnit.value = button.dataset.from;
+                    toUnit.value = button.dataset.to;
+                    updateLabels();
+                    convert();
+                });
+            });
+
+            // Initialize
+            updateLabels();
         });
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

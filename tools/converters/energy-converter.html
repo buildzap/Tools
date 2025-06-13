@@ -1,538 +1,505 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Energy Converter - Free Online Tools</title>
+    <title>Energy Converter - Multi-Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../../styles/main.css" rel="stylesheet">
-    <link href="../../styles/theme.css" rel="stylesheet">
     <style>
         :root {
-            --card-bg: #ffffff;
-            --card-border: #dee2e6;
-            --card-shadow: rgba(0, 0, 0, 0.075);
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --accent-color: #0d6efd;
-            --hover-bg: #f8f9fa;
-            --input-bg: #ffffff;
-            --border-color: #dee2e6;
-            --range-track: #dee2e6;
-            --range-thumb: #0d6efd;
-        }
-
-        [data-theme="dark"] {
-            --card-bg: #2d2d2d;
-            --card-border: #404040;
-            --card-shadow: rgba(0, 0, 0, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent-color: #0d6efd;
-            --hover-bg: #3d3d3d;
-            --input-bg: #2d2d2d;
+            --primary-dark: #1a1a1a;
+            --secondary-dark: #2d2d2d;
+            --accent-color: #ffc107;
+            --text-color: #e0e0e0;
+            --text-bright: #ffffff;
+            --text-muted: #a0a0a0;
             --border-color: #404040;
-            --range-track: #404040;
-            --range-thumb: #0d6efd;
+            --input-bg: #242424;
+            --card-hover: #353535;
+            --success-color: #4caf50;
+            --energy-glow: rgba(255, 193, 7, 0.2);
         }
 
         body {
-            background-color: var(--card-bg);
-            color: var(--text-primary);
+            background-color: var(--primary-dark);
+            color: var(--text-bright);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
 
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.5rem;
-            background-color: var(--card-bg);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .tool-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.2rem;
-            color: var(--text-primary);
-        }
-
-        .tool-header p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.2rem;
-        }
-
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            box-shadow: 0 1px 3px var(--card-shadow);
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
+            background-color: var(--secondary-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
-        .card-body {
-            padding: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .card-title {
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .form-label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-            font-size: 0.85rem;
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
         }
 
         .form-control, .form-select {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
-            height: auto;
+            color: var(--text-bright);
+            border-radius: 8px;
         }
 
         .form-control:focus, .form-select:focus {
-            background: var(--input-bg);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
-            color: var(--text-primary);
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 4px;
-            padding: 0.3rem 0.8rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #fff;
-        }
-
-        .btn-outline-secondary {
-            color: var(--text-secondary);
-            border-color: var(--border-color);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            padding: 0.3rem 0.8rem;
-        }
-
-        #results {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            padding: 0.3rem;
-            border-radius: 4px;
             background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 0.2rem 0;
+            border-color: var(--accent-color);
+            color: var(--text-bright);
+            box-shadow: 0 0 0 0.2rem var(--energy-glow);
         }
 
-        .conversion-result {
-            background-color: var(--card-bg);
-            border-radius: 4px;
-            padding: 0.3rem;
-            margin-bottom: 0.2rem;
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
-        }
-
-        .conversion-result .value {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.1rem;
-        }
-
-        .conversion-result .unit {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        .compact-table {
-            font-size: 0.8rem;
-            margin-bottom: 0;
-        }
-
-        .compact-table th, .compact-table td {
-            padding: 0.2rem 0.3rem;
-        }
-
-        .info-card .card-body {
-            padding: 0.5rem;
-        }
-
-        .info-card .card-text {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .info-card .list-unstyled {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .alert {
-            padding: 0.3rem 0.5rem;
-            margin-bottom: 0.3rem;
-            font-size: 0.85rem;
-        }
-
-        .input-group {
-            margin-bottom: 0.3rem;
+        .form-select option {
+            background-color: var(--input-bg);
+            color: var(--text-bright);
         }
 
         .input-group-text {
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
+            background-color: var(--secondary-dark);
+            border-color: var(--border-color);
+            color: var(--text-bright);
         }
 
-        .row {
-            margin-bottom: 0.3rem;
+        .energy-visual {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            position: relative;
         }
 
-        .col-md-6 {
-            padding: 0 0.3rem;
+        .energy-sphere {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, var(--accent-color), transparent);
+            border-radius: 50%;
+            position: relative;
+            animation: pulse-glow 2s infinite;
+            box-shadow: 0 0 20px var(--energy-glow);
         }
 
-        .mb-3 {
-            margin-bottom: 0.3rem !important;
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
-        .mt-3 {
-            margin-top: 0.3rem !important;
+        .energy-sparks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
         }
 
-        .mt-2 {
-            margin-top: 0.2rem !important;
+        .spark {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: var(--accent-color);
+            opacity: 0;
+            transform-origin: center bottom;
+            animation: spark 1.5s infinite;
         }
 
-        .py-2 {
-            padding-top: 0.2rem !important;
-            padding-bottom: 0.2rem !important;
+        @keyframes spark {
+            0% { transform: rotate(0deg) translateY(0); opacity: 1; }
+            100% { transform: rotate(360deg) translateY(-50px); opacity: 0; }
         }
 
-        .gx-2 {
-            --bs-gutter-x: 0.3rem;
+        .quick-convert {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .gy-1 {
-            --bs-gutter-y: 0.2rem;
+        .quick-convert:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .result-box {
+            background-color: var(--input-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-bright);
+        }
+
+        .energy-info {
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            width: 30px;
+            color: var(--accent-color);
+            margin-right: 10px;
+        }
+
+        .info-text {
+            flex-grow: 1;
+            color: var(--text-color);
+        }
+
+        .info-value {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            animation: pulse 2s infinite;
+            text-shadow: 0 0 10px var(--energy-glow);
+        }
+
+        .category-badge {
+            background-color: var(--accent-color);
+            color: var(--primary-dark);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        /* Energy scale visualization */
+        .energy-scale {
+            height: 60px;
+            background: linear-gradient(to right, 
+                #ff1744, /* Low energy */
+                var(--accent-color), /* Medium energy */
+                #00e676 /* High energy */
+            );
+            border-radius: 8px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scale-marker {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background-color: var(--text-bright);
+            transform: translateX(-50%);
+            transition: left 0.3s ease;
+        }
+
+        .scale-label {
+            position: absolute;
+            bottom: -25px;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div id="header-placeholder"></div>
-
-    <!-- Main Content -->
-    <main class="container-fluid py-2">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-bolt"></i> Energy Converter</h1>
-                <p>Convert between different energy units</p>
-            </div>
-
-            <div class="row">
-                <!-- Left Column: Input and Results -->
-                <div class="col-md-8">
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Energy Converter</h1>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card p-4">
                     <div class="row">
-                        <!-- Input Form -->
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form id="converterForm">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="fromValue" class="form-label">From</label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" id="fromValue" step="any" required>
-                                                        <select class="form-select" id="fromUnit" style="max-width: 150px;">
-                                                            <option value="j" selected>J</option>
-                                                            <option value="kj">kJ</option>
-                                                            <option value="cal">cal</option>
-                                                            <option value="kcal">kcal</option>
-                                                            <option value="wh">Wh</option>
-                                                            <option value="kwh">kWh</option>
-                                                            <option value="ev">eV</option>
-                                                            <option value="kev">keV</option>
-                                                            <option value="mev">MeV</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="toValue" class="form-label">To</label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" id="toValue" readonly>
-                                                        <select class="form-select" id="toUnit" style="max-width: 150px;">
-                                                            <option value="j">J</option>
-                                                            <option value="kj">kJ</option>
-                                                            <option value="cal">cal</option>
-                                                            <option value="kcal" selected>kcal</option>
-                                                            <option value="wh">Wh</option>
-                                                            <option value="kwh">kWh</option>
-                                                            <option value="ev">eV</option>
-                                                            <option value="kev">keV</option>
-                                                            <option value="mev">MeV</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-primary" id="convertButton">
-                                                <i class="fas fa-sync-alt"></i> Convert
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" id="swapButton">
-                                                <i class="fas fa-exchange-alt"></i> Swap
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">From</label>
+                            <select class="form-select mb-3" id="fromUnit">
+                                <optgroup label="SI Units">
+                                    <option value="joule" selected>Joule (J)</option>
+                                    <option value="kilojoule">Kilojoule (kJ)</option>
+                                    <option value="megajoule">Megajoule (MJ)</option>
+                                    <option value="gigajoule">Gigajoule (GJ)</option>
+                                </optgroup>
+                                <optgroup label="Calories">
+                                    <option value="calorie">Calorie (cal)</option>
+                                    <option value="kilocalorie">Kilocalorie (kcal)</option>
+                                </optgroup>
+                                <optgroup label="Electrical">
+                                    <option value="watt-hour">Watt-hour (Wh)</option>
+                                    <option value="kilowatt-hour">Kilowatt-hour (kWh)</option>
+                                    <option value="megawatt-hour">Megawatt-hour (MWh)</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="btu">British Thermal Unit (BTU)</option>
+                                    <option value="electron-volt">Electron Volt (eV)</option>
+                                    <option value="therm">Therm</option>
+                                </optgroup>
+                            </select>
+                            
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fromValue" placeholder="Enter energy value">
+                                <span class="input-group-text" id="fromUnitLabel">J</span>
                             </div>
-                        </div>
 
-                        <!-- Results and Common Conversions Side by Side -->
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">Result</h5>
-                                    <div id="results" class="text-center text-muted small">
-                                        Enter a value to convert
-                                    </div>
+                            <div class="energy-visual">
+                                <div class="energy-sphere">
+                                    <div class="energy-sparks"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">Common</h5>
-                                    <div id="commonConversions" class="row gx-2 gy-1 text-center text-muted small">
-                                        <!-- Will be populated by JavaScript -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">To</label>
+                            <select class="form-select mb-3" id="toUnit">
+                                <optgroup label="SI Units">
+                                    <option value="joule">Joule (J)</option>
+                                    <option value="kilojoule" selected>Kilojoule (kJ)</option>
+                                    <option value="megajoule">Megajoule (MJ)</option>
+                                    <option value="gigajoule">Gigajoule (GJ)</option>
+                                </optgroup>
+                                <optgroup label="Calories">
+                                    <option value="calorie">Calorie (cal)</option>
+                                    <option value="kilocalorie">Kilocalorie (kcal)</option>
+                                </optgroup>
+                                <optgroup label="Electrical">
+                                    <option value="watt-hour">Watt-hour (Wh)</option>
+                                    <option value="kilowatt-hour">Kilowatt-hour (kWh)</option>
+                                    <option value="megawatt-hour">Megawatt-hour (MWh)</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="btu">British Thermal Unit (BTU)</option>
+                                    <option value="electron-volt">Electron Volt (eV)</option>
+                                    <option value="therm">Therm</option>
+                                </optgroup>
+                            </select>
 
-                        <!-- History Section -->
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">History</h5>
-                                    <div id="history" class="text-center text-muted small">
-                                        No conversions yet
-                                    </div>
-                                </div>
+                            <div class="result-box">
+                                <span id="result" class="result-value">0</span>
+                                <span id="toUnitLabel">kJ</span>
+                                <button class="copy-btn" id="copyResult">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <div class="energy-scale">
+                                <div class="scale-marker" id="energyMarker"></div>
+                                <div class="scale-label" style="left: 0%">Low</div>
+                                <div class="scale-label" style="left: 50%">Medium</div>
+                                <div class="scale-label" style="left: 100%">High</div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Right Column: Information -->
-                <div class="col-md-4">
-                    <div class="card info-card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Energy Converter</h5>
-                            <p class="card-text">
-                                Convert between different energy units including Joules (J), Kilojoules (kJ), Calories (cal), Kilocalories (kcal), Watt-hours (Wh), Kilowatt-hours (kWh), and Electron Volts (eV).
-                            </p>
-                            <h6 class="mb-2">Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple units</li>
-                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
-                                <li><i class="fas fa-check text-success"></i> Common conversions</li>
-                                <li><i class="fas fa-check text-success"></i> Conversion history</li>
-                            </ul>
-                            <div class="alert alert-info mt-2">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between units.</small>
-                            </div>
+                    <div class="quick-converts mt-4">
+                        <h5 class="mb-3">Quick Conversions</h5>
+                        <div class="d-flex flex-wrap">
+                            <button class="quick-convert" data-value="1" data-from="joule" data-to="calorie">
+                                1J to cal
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="kilocalorie" data-to="kilojoule">
+                                1kcal to kJ
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="kilowatt-hour" data-to="megajoule">
+                                1kWh to MJ
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="btu" data-to="joule">
+                                1BTU to J
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="energy-info mt-4">
+                        <h5 class="mb-3">Energy Examples</h5>
+                        <div id="energyExamples">
+                            <!-- Energy examples will be added here dynamically -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fromValue = document.getElementById('fromValue');
-            const toValue = document.getElementById('toValue');
             const fromUnit = document.getElementById('fromUnit');
             const toUnit = document.getElementById('toUnit');
-            const convertButton = document.getElementById('convertButton');
-            const swapButton = document.getElementById('swapButton');
-            const results = document.getElementById('results');
-            const commonConversions = document.getElementById('commonConversions');
-            const history = document.getElementById('history');
-            let conversionHistory = [];
+            const fromValue = document.getElementById('fromValue');
+            const result = document.getElementById('result');
+            const fromUnitLabel = document.getElementById('fromUnitLabel');
+            const toUnitLabel = document.getElementById('toUnitLabel');
+            const copyResult = document.getElementById('copyResult');
+            const energyMarker = document.getElementById('energyMarker');
+            const energyExamples = document.getElementById('energyExamples');
 
-            // Energy conversion factors (to Joules)
-            const conversionFactors = {
-                'j': 1,
-                'kj': 1000,
-                'cal': 4.184,
-                'kcal': 4184,
-                'wh': 3600,
-                'kwh': 3600000,
-                'ev': 1.602176634e-19,
-                'kev': 1.602176634e-16,
-                'mev': 1.602176634e-13
+            // Conversion factors (to Joules)
+            const conversions = {
+                'joule': 1,
+                'kilojoule': 1000,
+                'megajoule': 1000000,
+                'gigajoule': 1000000000,
+                'calorie': 4.184,
+                'kilocalorie': 4184,
+                'watt-hour': 3600,
+                'kilowatt-hour': 3600000,
+                'megawatt-hour': 3600000000,
+                'btu': 1055.06,
+                'electron-volt': 1.602176634e-19,
+                'therm': 105505585.257348
             };
 
-            // Convert energy
-            function convertEnergy() {
-                try {
-                    const value = parseFloat(fromValue.value);
-                    const from = fromUnit.value;
-                    const to = toUnit.value;
+            // Energy examples with icons and descriptions
+            const energyExamplesList = [
+                { icon: 'bolt', name: 'LED Light (1 hour)', energy: 0.01, unit: 'kWh' },
+                { icon: 'mobile', name: 'Phone Charge', energy: 0.005, unit: 'kWh' },
+                { icon: 'tv', name: 'TV (4 hours)', energy: 0.4, unit: 'kWh' },
+                { icon: 'temperature-high', name: 'Air Conditioner (1 hour)', energy: 1.5, unit: 'kWh' },
+                { icon: 'car', name: 'Electric Car (100 km)', energy: 15, unit: 'kWh' },
+                { icon: 'home', name: 'Daily Home Usage', energy: 30, unit: 'kWh' }
+            ];
 
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    // Convert to Joules first
-                    const joules = value * conversionFactors[from];
-                    
-                    // Convert from Joules to target unit
-                    const result = joules / conversionFactors[to];
-
-                    // Update result
-                    toValue.value = formatNumber(result);
-
-                    // Update results display
-                    results.innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Conversion Result</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-
-                    // Update common conversions
-                    updateCommonConversions(value, from);
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        fromValue: value,
-                        fromUnit: from,
-                        toValue: result,
-                        toUnit: to,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    results.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
+            function createSparks() {
+                const sparksContainer = document.querySelector('.energy-sparks');
+                sparksContainer.innerHTML = '';
+                for (let i = 0; i < 8; i++) {
+                    const spark = document.createElement('div');
+                    spark.className = 'spark';
+                    spark.style.left = `${Math.random() * 100}%`;
+                    spark.style.animationDelay = `${Math.random() * 2}s`;
+                    sparksContainer.appendChild(spark);
                 }
             }
 
-            // Format number
-            function formatNumber(number) {
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 6
-                }).format(number);
+            function updateLabels() {
+                const fromUnitText = fromUnit.options[fromUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                const toUnitText = toUnit.options[toUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                fromUnitLabel.textContent = fromUnitText;
+                toUnitLabel.textContent = toUnitText;
             }
 
-            // Update common conversions
-            function updateCommonConversions(value, fromUnit) {
-                const commonUnits = ['j', 'kj', 'cal', 'kcal', 'wh', 'kwh'];
-                const joules = value * conversionFactors[fromUnit];
-
-                const conversions = commonUnits.map(unit => {
-                    const result = joules / conversionFactors[unit];
-                    return `
-                        <div class="col-6 col-md-4 conversion-result p-1 mb-1">
-                            <span class="value">${formatNumber(result)}</span>
-                            <span class="unit">${unit}</span>
-                        </div>
+            function updateEnergyExamples() {
+                energyExamples.innerHTML = '';
+                energyExamplesList.forEach(example => {
+                    const exampleEl = document.createElement('div');
+                    exampleEl.className = 'info-item';
+                    exampleEl.innerHTML = `
+                        <i class="fas fa-${example.icon} info-icon"></i>
+                        <span class="info-text">${example.name}</span>
+                        <span class="info-value">${example.energy} ${example.unit}</span>
                     `;
-                }).join('');
-
-                commonConversions.innerHTML = conversions;
+                    energyExamples.appendChild(exampleEl);
+                });
             }
 
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
+            function convert() {
+                if (!fromValue.value) {
+                    result.textContent = '0';
+                    energyMarker.style.left = '0%';
                     return;
                 }
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm compact-table">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${formatNumber(conv.fromValue)} ${conv.fromUnit}</td>
-                                        <td>${formatNumber(conv.toValue)} ${conv.toUnit}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+                const input = parseFloat(fromValue.value);
+                const fromFactor = conversions[fromUnit.value];
+                const toFactor = conversions[toUnit.value];
+                
+                const joules = input * fromFactor;
+                const converted = joules / toFactor;
+
+                // Format the result based on the magnitude
+                let formattedResult;
+                if (Math.abs(converted) >= 1e9) {
+                    formattedResult = converted.toExponential(6);
+                } else if (Math.abs(converted) < 0.000001) {
+                    formattedResult = converted.toExponential(6);
+                } else {
+                    formattedResult = converted.toPrecision(7);
+                }
+
+                result.textContent = formattedResult;
+                
+                // Update energy marker position (logarithmic scale)
+                const position = Math.min(100, Math.max(0, (Math.log10(joules) + 5) * 10));
+                energyMarker.style.left = `${position}%`;
             }
 
-            // Swap units
-            function swapUnits() {
-                const tempValue = fromValue.value;
-                const tempUnit = fromUnit.value;
-                fromValue.value = toValue.value;
-                fromUnit.value = toUnit.value;
-                toValue.value = tempValue;
-                toUnit.value = tempUnit;
-                convertEnergy();
-            }
+            // Event Listeners
+            fromUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
 
-            // Event listeners
-            convertButton.addEventListener('click', convertEnergy);
-            swapButton.addEventListener('click', swapUnits);
-            fromValue.addEventListener('input', convertEnergy);
-            fromUnit.addEventListener('change', convertEnergy);
-            toUnit.addEventListener('change', convertEnergy);
+            toUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
+
+            fromValue.addEventListener('input', convert);
+
+            copyResult.addEventListener('click', () => {
+                navigator.clipboard.writeText(result.textContent).then(() => {
+                    const icon = copyResult.querySelector('i');
+                    icon.className = 'fas fa-check';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-copy';
+                    }, 1500);
+                });
+            });
+
+            // Quick convert buttons
+            document.querySelectorAll('.quick-convert').forEach(button => {
+                button.addEventListener('click', () => {
+                    fromValue.value = button.dataset.value;
+                    fromUnit.value = button.dataset.from;
+                    toUnit.value = button.dataset.to;
+                    updateLabels();
+                    convert();
+                });
+            });
+
+            // Initialize
+            createSparks();
+            setInterval(createSparks, 2000);
+            updateLabels();
+            updateEnergyExamples();
         });
     </script>
 </body>

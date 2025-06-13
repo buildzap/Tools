@@ -1,159 +1,176 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to Base64 Converter - Web Tools</title>
+    <title>Image to Base64 Converter - Free Online Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <div id="header"></div>
+    <!-- Header will be loaded here -->
+    <div id="header-placeholder"></div>
 
-    <main class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h1 class="card-title text-center mb-4">
-                            <i class="fas fa-code me-2"></i>Image to Base64 Converter
-                        </h1>
-                        <div class="text-center mb-4">
-                            <p class="lead">Convert images to Base64 encoded strings</p>
+    <!-- Main Content -->
+    <main class="container-fluid py-2">
+        <div class="row">
+            <!-- Left Sidebar Ad -->
+            <div class="col-lg-2 d-none d-lg-block">
+                <div class="ad-container sidebar">
+                    <div>
+                        <div class="ad-label">Advertisement</div>
+                        <!-- Google AdSense Code -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                             data-ad-slot="XXXXXXXXXX"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <div class="tool-container">
+                    <div class="tool-header">
+                        <h1><i class="fas fa-image"></i> Image to Base64 Converter</h1>
+                        <p>Convert your images to Base64 encoded strings</p>
+                    </div>
+
+                    <!-- Top Ad -->
+                    <div class="ad-container">
+                        <div>
+                            <div class="ad-label">Advertisement</div>
+                            <!-- Google AdSense Code -->
+                            <ins class="adsbygoogle"
+                                 style="display:block"
+                                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                                 data-ad-slot="XXXXXXXXXX"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
+                            <script>
+                                 (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
                         </div>
+                    </div>
 
-                        <div class="upload-area p-4 text-center border rounded mb-4" id="dropZone">
-                            <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
-                            <h4>Drag & Drop Images Here</h4>
-                            <p class="text-muted">or</p>
-                            <input type="file" id="fileInput" accept="image/*" multiple class="d-none">
-                            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-                                Choose Files
-                            </button>
-                        </div>
+                    <!-- Tool Content -->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="card-title text-center mb-4">
+                                        <i class="fas fa-code me-2"></i>Image to Base64 Converter
+                                    </h1>
+                                    <div class="text-center mb-4">
+                                        <p class="lead">Convert images to Base64 encoded strings</p>
+                                    </div>
 
-                        <div id="previewArea" class="d-none">
-                            <h4 class="mb-3">Selected Images</h4>
-                            <div id="imageList" class="row g-3"></div>
+                                    <div class="upload-area p-4 text-center border rounded mb-4" id="dropZone">
+                                        <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                        <h4>Drag & Drop Images Here</h4>
+                                        <p class="text-muted">or</p>
+                                        <input type="file" id="fileInput" accept="image/*" multiple class="d-none">
+                                        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                            Choose Files
+                                        </button>
+                                    </div>
 
-                            <div class="mt-4">
-                                <h4>Base64 Output</h4>
-                                <div class="form-group">
-                                    <textarea id="base64Output" class="form-control" rows="5" readonly></textarea>
-                                </div>
-                                <div class="text-center mt-3">
-                                    <button class="btn btn-success" id="copyBtn">
-                                        <i class="fas fa-copy me-2"></i>Copy to Clipboard
-                                    </button>
+                                    <div id="previewArea" class="d-none">
+                                        <h4 class="mb-3">Selected Images</h4>
+                                        <div id="imageList" class="row g-3"></div>
+
+                                        <div class="mt-4">
+                                            <h4>Base64 Output</h4>
+                                            <div class="form-group">
+                                                <textarea id="base64Output" class="form-control" rows="5" readonly></textarea>
+                                            </div>
+                                            <div class="text-center mt-3">
+                                                <button class="btn btn-success" id="copyBtn">
+                                                    <i class="fas fa-copy me-2"></i>Copy to Clipboard
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <!-- Side Ad -->
+                            <div class="ad-container">
+                                <div>
+                                    <div class="ad-label">Advertisement</div>
+                                    <!-- Google AdSense Code -->
+                                    <ins class="adsbygoogle"
+                                         style="display:block"
+                                         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                                         data-ad-slot="XXXXXXXXXX"
+                                         data-ad-format="auto"
+                                         data-full-width-responsive="true"></ins>
+                                    <script>
+                                         (adsbygoogle = window.adsbygoogle || []).push({});
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Ad -->
+                    <div class="ad-container footer">
+                        <div>
+                            <div class="ad-label">Advertisement</div>
+                            <!-- Google AdSense Code -->
+                            <ins class="adsbygoogle"
+                                 style="display:block"
+                                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                                 data-ad-slot="XXXXXXXXXX"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
+                            <script>
+                                 (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar Ad -->
+            <div class="col-lg-2 d-none d-lg-block">
+                <div class="ad-container sidebar">
+                    <div>
+                        <div class="ad-label">Advertisement</div>
+                        <!-- Google AdSense Code -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                             data-ad-slot="XXXXXXXXXX"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <div id="footer"></div>
+    <!-- Footer will be loaded here -->
+    <div id="footer-placeholder"></div>
 
+    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/main.js"></script>
-    <script>
-        // Load header and footer
-        fetch('../../components/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('../../components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-
-        // Conversion functionality
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const previewArea = document.getElementById('previewArea');
-        const imageList = document.getElementById('imageList');
-        const base64Output = document.getElementById('base64Output');
-        const copyBtn = document.getElementById('copyBtn');
-
-        let selectedFiles = [];
-
-        // Drag and drop handlers
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-primary');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-primary');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-primary');
-            const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'));
-            handleFiles(files);
-        });
-
-        fileInput.addEventListener('change', (e) => {
-            const files = Array.from(e.target.files);
-            handleFiles(files);
-        });
-
-        function handleFiles(files) {
-            selectedFiles = files;
-            previewArea.classList.remove('d-none');
-            imageList.innerHTML = '';
-            base64Output.value = '';
-
-            files.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const col = document.createElement('div');
-                    col.className = 'col-md-4';
-                    col.innerHTML = `
-                        <div class="card">
-                            <img src="${e.target.result}" class="card-img-top" alt="Preview">
-                            <div class="card-body">
-                                <p class="card-text">${file.name}</p>
-                                <p class="card-text text-muted">${formatFileSize(file.size)}</p>
-                            </div>
-                        </div>
-                    `;
-                    imageList.appendChild(col);
-
-                    // Add Base64 string to output
-                    const base64String = e.target.result;
-                    base64Output.value += `// ${file.name}\n${base64String}\n\n`;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        copyBtn.addEventListener('click', () => {
-            base64Output.select();
-            document.execCommand('copy');
-            copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
-            setTimeout(() => {
-                copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy to Clipboard';
-            }, 2000);
-        });
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-    </script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+            crossorigin="anonymous"></script>
 </body>
 </html> 

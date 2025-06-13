@@ -1,531 +1,538 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Storage Converter - Free Online Tools</title>
+    <title>Data Storage Converter - Multi-Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../../styles/main.css" rel="stylesheet">
-    <link href="../../styles/theme.css" rel="stylesheet">
     <style>
         :root {
-            --card-bg: #ffffff;
-            --card-border: #dee2e6;
-            --card-shadow: rgba(0, 0, 0, 0.075);
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --accent-color: #0d6efd;
-            --hover-bg: #f8f9fa;
-            --input-bg: #ffffff;
-            --border-color: #dee2e6;
-            --range-track: #dee2e6;
-            --range-thumb: #0d6efd;
-        }
-
-        [data-theme="dark"] {
-            --card-bg: #2d2d2d;
-            --card-border: #404040;
-            --card-shadow: rgba(0, 0, 0, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent-color: #0d6efd;
-            --hover-bg: #3d3d3d;
-            --input-bg: #2d2d2d;
+            --primary-dark: #1a1a1a;
+            --secondary-dark: #2d2d2d;
+            --accent-color: #03a9f4;
+            --text-color: #e0e0e0;
+            --text-bright: #ffffff;
+            --text-muted: #a0a0a0;
             --border-color: #404040;
-            --range-track: #404040;
-            --range-thumb: #0d6efd;
+            --input-bg: #242424;
+            --card-hover: #353535;
+            --chart-color-1: #03a9f4;
+            --chart-color-2: #00bcd4;
+            --chart-color-3: #009688;
+            --chart-color-4: #4caf50;
         }
 
         body {
-            background-color: var(--card-bg);
-            color: var(--text-primary);
+            background-color: var(--primary-dark);
+            color: var(--text-bright);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
 
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.5rem;
-            background-color: var(--card-bg);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .tool-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.2rem;
-            color: var(--text-primary);
-        }
-
-        .tool-header p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.2rem;
-        }
-
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            box-shadow: 0 1px 3px var(--card-shadow);
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
+            background-color: var(--secondary-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
-        .card-body {
-            padding: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .card-title {
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .form-label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-            font-size: 0.85rem;
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
         }
 
         .form-control, .form-select {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
-            height: auto;
+            color: var(--text-bright);
+            border-radius: 8px;
         }
 
         .form-control:focus, .form-select:focus {
-            background: var(--input-bg);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
-            color: var(--text-primary);
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 4px;
-            padding: 0.3rem 0.8rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #fff;
-        }
-
-        .btn-outline-secondary {
-            color: var(--text-secondary);
-            border-color: var(--border-color);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            padding: 0.3rem 0.8rem;
-        }
-
-        #results {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            padding: 0.3rem;
-            border-radius: 4px;
             background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 0.2rem 0;
+            border-color: var(--accent-color);
+            color: var(--text-bright);
+            box-shadow: 0 0 0 0.2rem rgba(3, 169, 244, 0.25);
         }
 
-        .conversion-result {
-            background-color: var(--card-bg);
-            border-radius: 4px;
-            padding: 0.3rem;
-            margin-bottom: 0.2rem;
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
-        }
-
-        .conversion-result .value {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.1rem;
-        }
-
-        .conversion-result .unit {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        .compact-table {
-            font-size: 0.8rem;
-            margin-bottom: 0;
-        }
-
-        .compact-table th, .compact-table td {
-            padding: 0.2rem 0.3rem;
-        }
-
-        .info-card .card-body {
-            padding: 0.5rem;
-        }
-
-        .info-card .card-text {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .info-card .list-unstyled {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .alert {
-            padding: 0.3rem 0.5rem;
-            margin-bottom: 0.3rem;
-            font-size: 0.85rem;
-        }
-
-        .input-group {
-            margin-bottom: 0.3rem;
+        .form-select option {
+            background-color: var(--input-bg);
+            color: var(--text-bright);
         }
 
         .input-group-text {
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
+            background-color: var(--secondary-dark);
+            border-color: var(--border-color);
+            color: var(--text-bright);
         }
 
-        .row {
-            margin-bottom: 0.3rem;
+        .storage-visual {
+            width: 100%;
+            height: 100px;
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            position: relative;
+            margin: 20px 0;
+            overflow: hidden;
         }
 
-        .col-md-6 {
-            padding: 0 0.3rem;
+        .storage-bar {
+            height: 100%;
+            background: linear-gradient(45deg, 
+                var(--chart-color-1),
+                var(--chart-color-2),
+                var(--chart-color-3),
+                var(--chart-color-4)
+            );
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
         }
 
-        .mb-3 {
-            margin-bottom: 0.3rem !important;
+        .storage-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-bright);
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
-        .mt-3 {
-            margin-top: 0.3rem !important;
+        .quick-convert {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .mt-2 {
-            margin-top: 0.2rem !important;
+        .quick-convert:hover {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            transform: translateY(-2px);
         }
 
-        .py-2 {
-            padding-top: 0.2rem !important;
-            padding-bottom: 0.2rem !important;
+        .result-box {
+            background-color: var(--input-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
         }
 
-        .gx-2 {
-            --bs-gutter-x: 0.3rem;
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
         }
 
-        .gy-1 {
-            --bs-gutter-y: 0.2rem;
+        .copy-btn:hover {
+            color: var(--text-bright);
+        }
+
+        .file-examples {
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-item:hover {
+            background-color: var(--card-hover);
+        }
+
+        .file-icon {
+            color: var(--accent-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .file-text {
+            flex-grow: 1;
+            color: var(--text-color);
+        }
+
+        .file-size {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        .storage-blocks {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+        }
+
+        .storage-block {
+            flex: 1;
+            aspect-ratio: 1;
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .storage-block.active {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            transform: scale(1.05);
+        }
+
+        .category-badge {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+
+        /* Binary representation */
+        .binary-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 20px 0;
+        }
+
+        .binary-digit {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--input-bg);
+            border-radius: 4px;
+            color: var(--text-muted);
+            font-family: monospace;
+            transition: all 0.3s ease;
+        }
+
+        .binary-digit.active {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
-
-    <!-- Main Content -->
-    <main class="container-fluid py-2">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-database"></i> Data Storage Converter</h1>
-                <p>Convert between different data storage units</p>
-            </div>
-
-            <div class="row">
-                <!-- Left Column: Input and Results -->
-                <div class="col-md-8">
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Data Storage Converter</h1>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card p-4">
                     <div class="row">
-                        <!-- Input Form -->
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form id="converterForm">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="fromValue" class="form-label">From</label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" id="fromValue" step="any" required>
-                                                        <select class="form-select" id="fromUnit" style="max-width: 150px;">
-                                                            <option value="B" selected>B</option>
-                                                            <option value="KB">KB</option>
-                                                            <option value="MB">MB</option>
-                                                            <option value="GB">GB</option>
-                                                            <option value="TB">TB</option>
-                                                            <option value="PB">PB</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="toValue" class="form-label">To</label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" id="toValue" readonly>
-                                                        <select class="form-select" id="toUnit" style="max-width: 150px;">
-                                                            <option value="B">B</option>
-                                                            <option value="KB">KB</option>
-                                                            <option value="MB" selected>MB</option>
-                                                            <option value="GB">GB</option>
-                                                            <option value="TB">TB</option>
-                                                            <option value="PB">PB</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-primary" id="convertButton">
-                                                <i class="fas fa-sync-alt"></i> Convert
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" id="swapButton">
-                                                <i class="fas fa-exchange-alt"></i> Swap
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">From</label>
+                            <select class="form-select mb-3" id="fromUnit">
+                                <optgroup label="Bytes">
+                                    <option value="b">Bit (b)</option>
+                                    <option value="B" selected>Byte (B)</option>
+                                    <option value="KB">Kilobyte (KB)</option>
+                                    <option value="MB">Megabyte (MB)</option>
+                                    <option value="GB">Gigabyte (GB)</option>
+                                    <option value="TB">Terabyte (TB)</option>
+                                    <option value="PB">Petabyte (PB)</option>
+                                </optgroup>
+                                <optgroup label="Binary">
+                                    <option value="KiB">Kibibyte (KiB)</option>
+                                    <option value="MiB">Mebibyte (MiB)</option>
+                                    <option value="GiB">Gibibyte (GiB)</option>
+                                    <option value="TiB">Tebibyte (TiB)</option>
+                                    <option value="PiB">Pebibyte (PiB)</option>
+                                </optgroup>
+                            </select>
+                            
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fromValue" placeholder="Enter size">
+                                <span class="input-group-text" id="fromUnitLabel">B</span>
                             </div>
-                        </div>
 
-                        <!-- Results and Common Conversions Side by Side -->
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">Result</h5>
-                                    <div id="results" class="text-center text-muted small">
-                                        Enter a value to convert
-                                    </div>
-                                </div>
+                            <div class="binary-display" id="binaryDisplay">
+                                <!-- Binary digits will be added here -->
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">Common</h5>
-                                    <div id="commonConversions" class="row gx-2 gy-1 text-center text-muted small">
-                                        <!-- Will be populated by JavaScript -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">To</label>
+                            <select class="form-select mb-3" id="toUnit">
+                                <optgroup label="Bytes">
+                                    <option value="b">Bit (b)</option>
+                                    <option value="B">Byte (B)</option>
+                                    <option value="KB">Kilobyte (KB)</option>
+                                    <option value="MB" selected>Megabyte (MB)</option>
+                                    <option value="GB">Gigabyte (GB)</option>
+                                    <option value="TB">Terabyte (TB)</option>
+                                    <option value="PB">Petabyte (PB)</option>
+                                </optgroup>
+                                <optgroup label="Binary">
+                                    <option value="KiB">Kibibyte (KiB)</option>
+                                    <option value="MiB">Mebibyte (MiB)</option>
+                                    <option value="GiB">Gibibyte (GiB)</option>
+                                    <option value="TiB">Tebibyte (TiB)</option>
+                                    <option value="PiB">Pebibyte (PiB)</option>
+                                </optgroup>
+                            </select>
 
-                        <!-- History Section -->
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">History</h5>
-                                    <div id="history" class="text-center text-muted small">
-                                        No conversions yet
-                                    </div>
+                            <div class="result-box">
+                                <span id="result" class="result-value">0</span>
+                                <span id="toUnitLabel">MB</span>
+                                <button class="copy-btn" id="copyResult">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <div class="storage-visual">
+                                <div class="storage-bar" id="storageBar">
+                                    <div class="storage-label" id="storageLabel">0%</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Right Column: Information -->
-                <div class="col-md-4">
-                    <div class="card info-card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Data Storage Converter</h5>
-                            <p class="card-text">
-                                Convert between different data storage units including Bytes (B), Kilobytes (KB), Megabytes (MB), Gigabytes (GB), Terabytes (TB), and Petabytes (PB).
-                            </p>
-                            <h6 class="mb-2">Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple units</li>
-                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
-                                <li><i class="fas fa-check text-success"></i> Common conversions</li>
-                                <li><i class="fas fa-check text-success"></i> Conversion history</li>
-                            </ul>
-                            <div class="alert alert-info mt-2">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between units.</small>
+                    <div class="storage-blocks" id="storageBlocks">
+                        <div class="storage-block">bit</div>
+                        <div class="storage-block">byte</div>
+                        <div class="storage-block">KB</div>
+                        <div class="storage-block">MB</div>
+                        <div class="storage-block">GB</div>
+                        <div class="storage-block">TB</div>
+                        <div class="storage-block">PB</div>
+                    </div>
+
+                    <div class="quick-converts mt-4">
+                        <h5 class="mb-3">Quick Conversions</h5>
+                        <div class="d-flex flex-wrap">
+                            <button class="quick-convert" data-value="1" data-from="GB" data-to="MB">
+                                1 GB to MB
+                            </button>
+                            <button class="quick-convert" data-value="1024" data-from="MB" data-to="GB">
+                                1024 MB to GB
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="TB" data-to="GB">
+                                1 TB to GB
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="GiB" data-to="GB">
+                                1 GiB to GB
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="file-examples mt-4">
+                        <h5 class="mb-3">Common File Sizes</h5>
+                        <div id="fileExamples">
+                            <div class="file-item">
+                                <i class="fas fa-file-text file-icon"></i>
+                                <span class="file-text">Text Document (1 page)</span>
+                                <span class="file-size">4 KB</span>
+                            </div>
+                            <div class="file-item">
+                                <i class="fas fa-file-image file-icon"></i>
+                                <span class="file-text">High-Resolution Photo</span>
+                                <span class="file-size">5 MB</span>
+                            </div>
+                            <div class="file-item">
+                                <i class="fas fa-file-video file-icon"></i>
+                                <span class="file-text">1-Hour HD Video</span>
+                                <span class="file-size">2 GB</span>
+                            </div>
+                            <div class="file-item">
+                                <i class="fas fa-gamepad file-icon"></i>
+                                <span class="file-text">Modern Video Game</span>
+                                <span class="file-size">100 GB</span>
+                            </div>
+                            <div class="file-item">
+                                <i class="fas fa-database file-icon"></i>
+                                <span class="file-text">Enterprise Database</span>
+                                <span class="file-size">1 TB</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fromValue = document.getElementById('fromValue');
-            const toValue = document.getElementById('toValue');
             const fromUnit = document.getElementById('fromUnit');
             const toUnit = document.getElementById('toUnit');
-            const convertButton = document.getElementById('convertButton');
-            const swapButton = document.getElementById('swapButton');
-            const results = document.getElementById('results');
-            const commonConversions = document.getElementById('commonConversions');
-            const history = document.getElementById('history');
-            let conversionHistory = [];
+            const fromValue = document.getElementById('fromValue');
+            const result = document.getElementById('result');
+            const fromUnitLabel = document.getElementById('fromUnitLabel');
+            const toUnitLabel = document.getElementById('toUnitLabel');
+            const copyResult = document.getElementById('copyResult');
+            const storageBar = document.getElementById('storageBar');
+            const storageLabel = document.getElementById('storageLabel');
+            const storageBlocks = document.getElementById('storageBlocks');
+            const binaryDisplay = document.getElementById('binaryDisplay');
 
-            // Data storage conversion factors (to bytes)
-            const conversionFactors = {
+            // Create binary display
+            for (let i = 0; i < 8; i++) {
+                const digit = document.createElement('div');
+                digit.className = 'binary-digit';
+                digit.textContent = '0';
+                binaryDisplay.appendChild(digit);
+            }
+
+            // Conversion factors (to bytes)
+            const conversions = {
+                'b': 1/8,
                 'B': 1,
-                'KB': 1024,
-                'MB': 1024 * 1024,
-                'GB': 1024 * 1024 * 1024,
-                'TB': 1024 * 1024 * 1024 * 1024,
-                'PB': 1024 * 1024 * 1024 * 1024 * 1024
+                'KB': 1000,
+                'MB': 1000000,
+                'GB': 1000000000,
+                'TB': 1000000000000,
+                'PB': 1000000000000000,
+                'KiB': 1024,
+                'MiB': 1048576,
+                'GiB': 1073741824,
+                'TiB': 1099511627776,
+                'PiB': 1125899906842624
             };
 
-            // Convert data storage
-            function convertDataStorage() {
-                try {
-                    const value = parseFloat(fromValue.value);
-                    const from = fromUnit.value;
-                    const to = toUnit.value;
+            function updateLabels() {
+                const fromUnitText = fromUnit.options[fromUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                const toUnitText = toUnit.options[toUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                fromUnitLabel.textContent = fromUnitText;
+                toUnitLabel.textContent = toUnitText;
+            }
 
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    // Convert to bytes first
-                    const bytes = value * conversionFactors[from];
-                    
-                    // Convert from bytes to target unit
-                    const result = bytes / conversionFactors[to];
-
-                    // Update result
-                    toValue.value = formatNumber(result);
-
-                    // Update results display
-                    results.innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Conversion Result</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-
-                    // Update common conversions
-                    updateCommonConversions(value, from);
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        fromValue: value,
-                        fromUnit: from,
-                        toValue: result,
-                        toUnit: to,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    results.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
+            function updateBinaryDisplay(bytes) {
+                const binary = Math.floor(bytes).toString(2).padStart(8, '0');
+                const digits = binaryDisplay.getElementsByClassName('binary-digit');
+                for (let i = 0; i < 8; i++) {
+                    digits[i].textContent = binary[i];
+                    digits[i].classList.toggle('active', binary[i] === '1');
                 }
             }
 
-            // Format number
-            function formatNumber(number) {
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 6
-                }).format(number);
+            function updateStorageVisual(bytes) {
+                // Calculate percentage based on logarithmic scale
+                const maxBytes = 1125899906842624; // 1 PiB
+                const percentage = Math.min(100, Math.max(0, 
+                    (Math.log10(bytes + 1) / Math.log10(maxBytes)) * 100
+                ));
+                storageBar.style.width = `${percentage}%`;
+                storageLabel.textContent = `${percentage.toFixed(1)}%`;
+
+                // Update storage blocks
+                const blocks = storageBlocks.getElementsByClassName('storage-block');
+                const sizes = ['b', 'B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+                sizes.forEach((size, index) => {
+                    blocks[index].classList.toggle('active', 
+                        bytes >= conversions[size] && bytes < (conversions[sizes[index + 1]] || Infinity)
+                    );
+                });
             }
 
-            // Update common conversions
-            function updateCommonConversions(value, fromUnit) {
-                const commonUnits = ['B', 'KB', 'MB', 'GB'];
-                const bytes = value * conversionFactors[fromUnit];
-
-                const conversions = commonUnits.map(unit => {
-                    const result = bytes / conversionFactors[unit];
-                    return `
-                        <div class="col-6 col-md-4 conversion-result p-1 mb-1">
-                            <span class="value">${formatNumber(result)}</span>
-                            <span class="unit">${unit}</span>
-                        </div>
-                    `;
-                }).join('');
-
-                commonConversions.innerHTML = conversions;
-            }
-
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
+            function convert() {
+                if (!fromValue.value) {
+                    result.textContent = '0';
+                    updateStorageVisual(0);
+                    updateBinaryDisplay(0);
                     return;
                 }
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm compact-table">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${formatNumber(conv.fromValue)} ${conv.fromUnit}</td>
-                                        <td>${formatNumber(conv.toValue)} ${conv.toUnit}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+                const input = parseFloat(fromValue.value);
+                const fromFactor = conversions[fromUnit.value];
+                const toFactor = conversions[toUnit.value];
+                
+                const bytes = input * fromFactor;
+                const converted = bytes / toFactor;
+
+                // Format the result based on the magnitude
+                let formattedResult;
+                if (Math.abs(converted) >= 1e9) {
+                    formattedResult = converted.toExponential(6);
+                } else if (Math.abs(converted) < 0.000001) {
+                    formattedResult = converted.toExponential(6);
+                } else {
+                    formattedResult = converted.toPrecision(7);
+                }
+
+                result.textContent = formattedResult;
+                updateStorageVisual(bytes);
+                updateBinaryDisplay(bytes);
             }
 
-            // Swap units
-            function swapUnits() {
-                const tempValue = fromValue.value;
-                const tempUnit = fromUnit.value;
-                fromValue.value = toValue.value;
-                fromUnit.value = toUnit.value;
-                toValue.value = tempValue;
-                toUnit.value = tempUnit;
-                convertDataStorage();
-            }
+            // Event Listeners
+            fromUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
 
-            // Event listeners
-            convertButton.addEventListener('click', convertDataStorage);
-            swapButton.addEventListener('click', swapUnits);
-            fromValue.addEventListener('input', convertDataStorage);
-            fromUnit.addEventListener('change', convertDataStorage);
-            toUnit.addEventListener('change', convertDataStorage);
+            toUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
+
+            fromValue.addEventListener('input', convert);
+
+            copyResult.addEventListener('click', () => {
+                navigator.clipboard.writeText(result.textContent).then(() => {
+                    const icon = copyResult.querySelector('i');
+                    icon.className = 'fas fa-check';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-copy';
+                    }, 1500);
+                });
+            });
+
+            // Quick convert buttons
+            document.querySelectorAll('.quick-convert').forEach(button => {
+                button.addEventListener('click', () => {
+                    fromValue.value = button.dataset.value;
+                    fromUnit.value = button.dataset.from;
+                    toUnit.value = button.dataset.to;
+                    updateLabels();
+                    convert();
+                });
+            });
+
+            // Initialize
+            updateLabels();
         });
     </script>
 </body>
-</html> 
+</html>

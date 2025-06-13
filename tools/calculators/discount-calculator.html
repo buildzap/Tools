@@ -4,519 +4,268 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discount Calculator - Multi-Tools</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4353202130254945"
-     crossorigin="anonymous"></script>
     <style>
         :root {
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-color: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --main-bg: #1a1a1a;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --result-bg: rgba(255, 255, 255, 0.1);
-            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-
-        [data-theme="light"] {
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --text-muted: #666666;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --main-bg: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --input-bg: #ffffff;
-            --result-bg: #f8f9fa;
+            --dark-bg: #121212;
+            --darker-bg: #0a0a0a;
+            --card-bg: #1e1e1e;
+            --hover-bg: #2d2d2d;
+            --border-color: #333;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-muted: #808080;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #7c3aed;
+            --success-color: #22c55e;
+            --danger-color: #ef4444;
         }
 
         body {
-            background-color: var(--main-bg);
-            color: var(--text-color);
-            min-height: 100vh;
-            font-family: var(--font-family);
-            overflow-x: hidden;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            background-color: var(--main-bg);
-            min-height: calc(100vh - 2rem);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .tool-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        .tool-header p {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 0;
-        }
-
-        .card {
-            background-color: var(--card-bg);
+        .calculator-card {
+            background: var(--card-bg);
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            transition: transform 0.3s ease;
-            margin-bottom: 1rem;
-        }
-
-        .card-body {
             padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease;
         }
 
-        .form-label {
-            color: var(--text-color);
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            font-size: 0.95rem;
+        .calculator-card:hover {
+            transform: translateY(-2px);
         }
 
-        .form-control, .form-select {
-            background-color: var(--input-bg);
-            border-color: var(--border-color);
-            color: var(--text-color);
+        .form-control {
+            background-color: var(--darker-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
             border-radius: 8px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
+            padding: 0.75rem 1rem;
         }
 
-        .input-group-text {
-            background-color: var(--input-bg);
-            border-color: var(--border-color);
-            color: var(--text-muted);
-        }
-
-        .form-check-label {
-            color: var(--text-color);
+        .form-control:focus {
+            background-color: var(--darker-bg);
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(145deg, var(--accent-primary), var(--accent-secondary));
             border: none;
             border-radius: 8px;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1.5rem;
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
-        .card-title {
-            color: var(--text-color);
-            font-size: 1.25rem;
-            font-weight: 600;
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .discount-result {
+            background: linear-gradient(145deg, var(--card-bg), var(--darker-bg));
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            margin: 1.5rem 0;
+        }
+
+        .result-card {
+            background: var(--darker-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
             margin-bottom: 1rem;
+            transition: all 0.2s ease;
         }
 
-        .alert-success {
-            background-color: rgba(25, 135, 84, 0.1);
-            border-color: rgba(25, 135, 84, 0.2);
-            color: var(--text-color);
+        .result-card:hover {
+            background: var(--hover-bg);
+            transform: translateY(-2px);
         }
 
-        .alert-success h4 {
-            color: #198754;
-            font-weight: 600;
-        }
-
-        .alert-info {
-            background-color: var(--result-bg);
-            border-color: var(--border-color);
-            color: var(--text-muted);
-        }
-
-        .list-unstyled li {
-            color: var(--text-color);
+        .result-value {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
         }
 
-        .list-unstyled li i {
-            color: #198754;
-            margin-right: 0.5rem;
+        .result-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
-        .history-item {
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-color);
+        .savings-badge {
+            background: var(--success-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 1rem;
         }
 
-        .history-item:last-child {
-            border-bottom: none;
+        .quick-discount {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            background: var(--darker-bg);
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .history-item:hover {
-            background-color: var(--result-bg);
+        .quick-discount:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            border-color: var(--accent-primary);
         }
 
-        @media (max-width: 768px) {
-            .tool-container {
-                padding: 0.75rem;
-            }
-            
-            .card-body {
-                padding: 1rem;
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            .tool-header h1 {
-                font-size: 1.75rem;
-            }
-
-            .tool-header p {
-                font-size: 0.9rem;
-            }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
-
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-tags"></i> Discount Calculator</h1>
-                <p>Calculate discounts, final prices, and savings</p>
-            </div>
-
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="calculatorForm">
-                                <div class="mb-3">
-                                    <label for="originalPrice" class="form-label">Original Price</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="originalPrice" min="0" step="0.01" required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Discount Type</label>
-                                    <select class="form-select" id="discountType">
-                                        <option value="percentage">Percentage Discount</option>
-                                        <option value="fixed">Fixed Amount Discount</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3" id="percentageGroup">
-                                    <label for="discountPercentage" class="form-label">Discount Percentage</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="discountPercentage" min="0" max="100" step="0.01">
-                                        <span class="input-group-text">%</span>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 d-none" id="fixedGroup">
-                                    <label for="discountAmount" class="form-label">Discount Amount</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="discountAmount" min="0" step="0.01">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Additional Options</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="includeTax">
-                                        <label class="form-check-label" for="includeTax">
-                                            Include Tax Calculation
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 d-none" id="taxGroup">
-                                    <label for="taxRate" class="form-label">Tax Rate</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="taxRate" min="0" max="100" step="0.01">
-                                        <span class="input-group-text">%</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-primary" id="calculateButton">
-                                        <i class="fas fa-calculator"></i> Calculate
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="calculator-card">
+                    <h2 class="mb-4">Discount Calculator</h2>
+                    
+                    <!-- Quick Discount Buttons -->
+                    <div class="text-center mb-4">
+                        <div class="quick-discount" data-discount="10">10% OFF</div>
+                        <div class="quick-discount" data-discount="20">20% OFF</div>
+                        <div class="quick-discount" data-discount="25">25% OFF</div>
+                        <div class="quick-discount" data-discount="50">50% OFF</div>
+                        <div class="quick-discount" data-discount="75">75% OFF</div>
                     </div>
+
+                    <!-- Calculator Form -->
+                    <form id="discountForm">
+                        <div class="mb-3">
+                            <label class="form-label">Original Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="originalPrice" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Discount Percentage</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="discountPercentage" min="0" max="100" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                Calculate Discount
+                            </button>
+                        </div>
+                    </form>
 
                     <!-- Results Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Price Breakdown</h5>
-                            <div id="result" class="text-center text-muted">
-                                Enter values to calculate
+                    <div id="discountResult" class="discount-result" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="result-card">
+                                    <div class="result-value" id="discountAmount">$0.00</div>
+                                    <div class="result-label">You Save</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="result-card">
+                                    <div class="result-value" id="finalPrice">$0.00</div>
+                                    <div class="result-label">Final Price</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Chart Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Price Distribution</h5>
-                            <canvas id="priceChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Calculation History</h5>
-                            <div id="history" class="text-center text-muted">
-                                No calculations yet
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
-
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Discount Calculator</h5>
-                            <p class="card-text">
-                                Calculate discounts, final prices, and savings
-                                with tax options.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Percentage discounts</li>
-                                <li><i class="fas fa-check text-success"></i> Fixed amount discounts</li>
-                                <li><i class="fas fa-check text-success"></i> Tax calculations</li>
-                                <li><i class="fas fa-check text-success"></i> Price breakdown chart</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the tax option to calculate final prices including tax.</small>
-                            </div>
+                        <div class="savings-badge" id="savingsPercentage">
+                            You save 0%
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const discountType = document.getElementById('discountType');
-            const percentageGroup = document.getElementById('percentageGroup');
-            const fixedGroup = document.getElementById('fixedGroup');
-            const includeTax = document.getElementById('includeTax');
-            const taxGroup = document.getElementById('taxGroup');
-            const calculateButton = document.getElementById('calculateButton');
-            const result = document.getElementById('result');
-            const history = document.getElementById('history');
-            let priceChart = null;
-            let calculationHistory = [];
+            const form = document.getElementById('discountForm');
+            const originalPrice = document.getElementById('originalPrice');
+            const discountPercentage = document.getElementById('discountPercentage');
+            const discountResult = document.getElementById('discountResult');
+            const discountAmountEl = document.getElementById('discountAmount');
+            const finalPriceEl = document.getElementById('finalPrice');
+            const savingsPercentageEl = document.getElementById('savingsPercentage');
 
-            // Show/hide discount type inputs
-            discountType.addEventListener('change', function() {
-                if (this.value === 'percentage') {
-                    percentageGroup.classList.remove('d-none');
-                    fixedGroup.classList.add('d-none');
-                } else {
-                    percentageGroup.classList.add('d-none');
-                    fixedGroup.classList.remove('d-none');
-                }
-            });
-
-            // Show/hide tax inputs
-            includeTax.addEventListener('change', function() {
-                taxGroup.classList.toggle('d-none', !this.checked);
-            });
-
-            // Calculate discount
-            calculateButton.addEventListener('click', function() {
-                try {
-                    const originalPrice = parseFloat(document.getElementById('originalPrice').value);
-                    const type = discountType.value;
-                    let discountAmount, finalPrice, savings;
-
-                    if (isNaN(originalPrice) || originalPrice <= 0) {
-                        throw new Error('Please enter a valid original price');
-                    }
-
-                    // Calculate discount
-                    if (type === 'percentage') {
-                        const percentage = parseFloat(document.getElementById('discountPercentage').value);
-                        if (isNaN(percentage) || percentage < 0 || percentage > 100) {
-                            throw new Error('Please enter a valid discount percentage');
-                        }
-                        discountAmount = originalPrice * (percentage / 100);
-                    } else {
-                        discountAmount = parseFloat(document.getElementById('discountAmount').value);
-                        if (isNaN(discountAmount) || discountAmount < 0 || discountAmount > originalPrice) {
-                            throw new Error('Please enter a valid discount amount');
-                        }
-                    }
-
-                    // Calculate final price and savings
-                    finalPrice = originalPrice - discountAmount;
-                    savings = discountAmount;
-
-                    // Add tax if enabled
-                    let taxAmount = 0;
-                    if (includeTax.checked) {
-                        const taxRate = parseFloat(document.getElementById('taxRate').value);
-                        if (isNaN(taxRate) || taxRate < 0) {
-                            throw new Error('Please enter a valid tax rate');
-                        }
-                        taxAmount = finalPrice * (taxRate / 100);
-                        finalPrice += taxAmount;
-                    }
-
-                    // Update result
-                    result.innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Final Price: $${finalPrice.toFixed(2)}</h4>
-                            <p class="mb-0">
-                                Original Price: $${originalPrice.toFixed(2)}<br>
-                                Discount Amount: $${discountAmount.toFixed(2)}<br>
-                                ${includeTax.checked ? `Tax Amount: $${taxAmount.toFixed(2)}<br>` : ''}
-                                Total Savings: $${savings.toFixed(2)}
-                            </p>
-                        </div>
-                    `;
-
-                    // Update chart
-                    updatePriceChart(originalPrice, discountAmount, taxAmount);
-
-                    // Add to history
-                    calculationHistory.unshift({
-                        originalPrice: originalPrice,
-                        discountAmount: discountAmount,
-                        finalPrice: finalPrice,
-                        taxAmount: taxAmount,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    result.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
-            });
-
-            // Update price chart
-            function updatePriceChart(originalPrice, discountAmount, taxAmount) {
-                const ctx = document.getElementById('priceChart').getContext('2d');
+            function calculateDiscount(price, percentage) {
+                const discountAmount = (price * percentage) / 100;
+                const finalPrice = price - discountAmount;
                 
-                if (priceChart) {
-                    priceChart.destroy();
-                }
-
-                const data = {
-                    labels: ['Discount', 'Final Price'],
-                    datasets: [{
-                        data: [discountAmount, originalPrice - discountAmount],
-                        backgroundColor: ['#dc3545', '#28a745']
-                    }]
+                return {
+                    discountAmount,
+                    finalPrice,
+                    percentage
                 };
+            }
 
-                if (taxAmount > 0) {
-                    data.labels.push('Tax');
-                    data.datasets[0].data.push(taxAmount);
-                    data.datasets[0].backgroundColor.push('#ffc107');
+            function updateResults(results) {
+                discountAmountEl.textContent = `$${results.discountAmount.toFixed(2)}`;
+                finalPriceEl.textContent = `$${results.finalPrice.toFixed(2)}`;
+                savingsPercentageEl.textContent = `You save ${results.percentage}%`;
+                
+                discountResult.style.display = 'block';
+                discountResult.classList.add('animate-fade-in');
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const price = parseFloat(originalPrice.value);
+                const percentage = parseFloat(discountPercentage.value);
+                
+                if (price > 0 && percentage >= 0 && percentage <= 100) {
+                    const results = calculateDiscount(price, percentage);
+                    updateResults(results);
                 }
+            });
 
-                priceChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: data,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
+            // Quick discount buttons
+            document.querySelectorAll('.quick-discount').forEach(button => {
+                button.addEventListener('click', function() {
+                    const discount = this.dataset.discount;
+                    discountPercentage.value = discount;
+                    if (originalPrice.value) {
+                        form.dispatchEvent(new Event('submit'));
                     }
                 });
-            }
-
-            // Update history display
-            function updateHistory() {
-                if (calculationHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No calculations yet</p>';
-                    return;
-                }
-
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Original</th>
-                                    <th>Discount</th>
-                                    <th>Final</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${calculationHistory.slice(0, 5).map(calc => `
-                                    <tr>
-                                        <td>${calc.timestamp}</td>
-                                        <td>$${calc.originalPrice.toFixed(2)}</td>
-                                        <td>$${calc.discountAmount.toFixed(2)}</td>
-                                        <td>$${calc.finalPrice.toFixed(2)}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            }
+            });
         });
     </script>
 </body>
-</html> 
+</html>

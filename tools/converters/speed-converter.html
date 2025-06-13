@@ -1,530 +1,526 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speed Converter - Free Online Tools</title>
+    <title>Speed Converter - Multi-Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../../styles/main.css" rel="stylesheet">
-    <link href="../../styles/theme.css" rel="stylesheet">
     <style>
         :root {
-            --card-bg: #ffffff;
-            --card-border: #dee2e6;
-            --card-shadow: rgba(0, 0, 0, 0.075);
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --accent-color: #0d6efd;
-            --hover-bg: #f8f9fa;
-            --input-bg: #ffffff;
-            --border-color: #dee2e6;
-            --range-track: #dee2e6;
-            --range-thumb: #0d6efd;
-        }
-
-        [data-theme="dark"] {
-            --card-bg: #2d2d2d;
-            --card-border: #404040;
-            --card-shadow: rgba(0, 0, 0, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent-color: #0d6efd;
-            --hover-bg: #3d3d3d;
-            --input-bg: #2d2d2d;
+            --primary-dark: #1a1a1a;
+            --secondary-dark: #2d2d2d;
+            --accent-color: #f50057;
+            --text-color: #e0e0e0;
+            --text-bright: #ffffff;
+            --text-muted: #a0a0a0;
             --border-color: #404040;
-            --range-track: #404040;
-            --range-thumb: #0d6efd;
+            --input-bg: #242424;
+            --card-hover: #353535;
+            --slow-color: #4caf50;
+            --fast-color: #f50057;
         }
 
         body {
-            background-color: var(--card-bg);
-            color: var(--text-primary);
+            background-color: var(--primary-dark);
+            color: var(--text-bright);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
 
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.5rem;
-            background-color: var(--card-bg);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .tool-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.2rem;
-            color: var(--text-primary);
-        }
-
-        .tool-header p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.2rem;
-        }
-
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            box-shadow: 0 1px 3px var(--card-shadow);
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
+            background-color: var(--secondary-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
-        .card-body {
-            padding: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .card-title {
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .form-label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-            font-size: 0.85rem;
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
         }
 
         .form-control, .form-select {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
-            height: auto;
+            color: var(--text-bright);
+            border-radius: 8px;
         }
 
         .form-control:focus, .form-select:focus {
-            background: var(--input-bg);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
-            color: var(--text-primary);
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 4px;
-            padding: 0.3rem 0.8rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #fff;
-        }
-
-        .btn-outline-secondary {
-            color: var(--text-secondary);
-            border-color: var(--border-color);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            padding: 0.3rem 0.8rem;
-        }
-
-        #results {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            padding: 0.3rem;
-            border-radius: 4px;
             background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 0.2rem 0;
+            border-color: var(--accent-color);
+            color: var(--text-bright);
+            box-shadow: 0 0 0 0.2rem rgba(245, 0, 87, 0.25);
         }
 
-        .conversion-result {
-            background-color: var(--card-bg);
-            border-radius: 4px;
-            padding: 0.3rem;
-            margin-bottom: 0.2rem;
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
-        }
-
-        .conversion-result .value {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.1rem;
-        }
-
-        .conversion-result .unit {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        .compact-table {
-            font-size: 0.8rem;
-            margin-bottom: 0;
-        }
-
-        .compact-table th, .compact-table td {
-            padding: 0.2rem 0.3rem;
-        }
-
-        .info-card .card-body {
-            padding: 0.5rem;
-        }
-
-        .info-card .card-text {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .info-card .list-unstyled {
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .alert {
-            padding: 0.3rem 0.5rem;
-            margin-bottom: 0.3rem;
-            font-size: 0.85rem;
-        }
-
-        .input-group {
-            margin-bottom: 0.3rem;
+        .form-select option {
+            background-color: var(--input-bg);
+            color: var(--text-bright);
         }
 
         .input-group-text {
-            padding: 0.3rem 0.5rem;
-            font-size: 0.9rem;
+            background-color: var(--secondary-dark);
+            border-color: var(--border-color);
+            color: var(--text-bright);
         }
 
-        .row {
-            margin-bottom: 0.3rem;
+        .speed-visual {
+            width: 100%;
+            height: 80px;
+            position: relative;
+            margin: 20px 0;
+            overflow: hidden;
+            background-color: var(--input-bg);
+            border-radius: 8px;
         }
 
-        .col-md-6 {
-            padding: 0 0.3rem;
+        .speed-object {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: left 0.3s ease;
+            font-size: 2rem;
+            color: var(--accent-color);
         }
 
-        .mb-3 {
-            margin-bottom: 0.3rem !important;
+        @keyframes moveRightToLeft {
+            0% { left: -50px; }
+            100% { left: calc(100% + 50px); }
         }
 
-        .mt-3 {
-            margin-top: 0.3rem !important;
+        .speed-track {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--slow-color), var(--fast-color));
+            position: relative;
+            margin: 20px 0;
+            border-radius: 2px;
         }
 
-        .mt-2 {
-            margin-top: 0.2rem !important;
+        .speed-indicator {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--text-bright);
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: left 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        .py-2 {
-            padding-top: 0.2rem !important;
-            padding-bottom: 0.2rem !important;
+        .quick-convert {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .gx-2 {
-            --bs-gutter-x: 0.3rem;
+        .quick-convert:hover {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            transform: translateY(-2px);
         }
 
-        .gy-1 {
-            --bs-gutter-y: 0.2rem;
+        .result-box {
+            background-color: var(--input-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-bright);
+        }
+
+        .speed-comparison {
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-item:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-item:hover {
+            background-color: var(--card-hover);
+        }
+
+        .comparison-icon {
+            color: var(--accent-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .comparison-text {
+            flex-grow: 1;
+            color: var(--text-color);
+        }
+
+        .comparison-value {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        .speed-range {
+            position: relative;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .range-label {
+            position: absolute;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .range-start { left: 0; }
+        .range-middle { left: 50%; transform: translateX(-50%); }
+        .range-end { right: 0; }
+
+        .perspective-track {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, 
+                transparent 0%,
+                var(--border-color) 50%,
+                transparent 100%
+            );
+            position: relative;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            margin: 20px 0;
+        }
+
+        .track-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: rotateX(60deg);
+        }
+
+        .track-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: var(--border-color);
+            animation: moveLine 2s linear infinite;
+        }
+
+        @keyframes moveLine {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(100%); }
+        }
+
+        .category-badge {
+            background-color: var(--accent-color);
+            color: var(--text-bright);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
-
-    <!-- Main Content -->
-    <main class="container-fluid py-2">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-tachometer-alt"></i> Speed Converter</h1>
-                <p>Convert between different units of speed measurement</p>
-            </div>
-
-            <div class="row">
-                <!-- Left Column: Input and Results -->
-                <div class="col-md-8">
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Speed Converter</h1>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card p-4">
                     <div class="row">
-                        <!-- Input Form -->
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form id="converterForm">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="fromValue" class="form-label">From</label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" id="fromValue" step="any" required>
-                                                        <select class="form-select" id="fromUnit" style="max-width: 150px;">
-                                                            <option value="mps">m/s</option>
-                                                            <option value="kph" selected>km/h</option>
-                                                            <option value="mph">mph</option>
-                                                            <option value="fps">ft/s</option>
-                                                            <option value="knots">knots</option>
-                                                            <option value="mach">Mach</option>
-                                                            <option value="c">c</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="toValue" class="form-label">To</label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" id="toValue" readonly>
-                                                        <select class="form-select" id="toUnit" style="max-width: 150px;">
-                                                            <option value="mps">m/s</option>
-                                                            <option value="kph">km/h</option>
-                                                            <option value="mph" selected>mph</option>
-                                                            <option value="fps">ft/s</option>
-                                                            <option value="knots">knots</option>
-                                                            <option value="mach">Mach</option>
-                                                            <option value="c">c</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-primary" id="convertButton">
-                                                <i class="fas fa-sync-alt"></i> Convert
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" id="swapButton">
-                                                <i class="fas fa-exchange-alt"></i> Swap
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">From</label>
+                            <select class="form-select mb-3" id="fromUnit">
+                                <optgroup label="Metric">
+                                    <option value="mps" selected>Meters per Second (m/s)</option>
+                                    <option value="kph">Kilometers per Hour (km/h)</option>
+                                    <option value="kmps">Kilometers per Second (km/s)</option>
+                                </optgroup>
+                                <optgroup label="Imperial/US">
+                                    <option value="mph">Miles per Hour (mph)</option>
+                                    <option value="fps">Feet per Second (ft/s)</option>
+                                    <option value="knot">Knots (kn)</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="mach">Mach Number</option>
+                                    <option value="lightspeed">Speed of Light (c)</option>
+                                </optgroup>
+                            </select>
+                            
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fromValue" placeholder="Enter speed value">
+                                <span class="input-group-text" id="fromUnitLabel">m/s</span>
                             </div>
-                        </div>
 
-                        <!-- Results and Common Conversions Side by Side -->
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">Result</h5>
-                                    <div id="results" class="text-center text-muted small">
-                                        Enter a value to convert
-                                    </div>
-                                </div>
+                            <div class="perspective-track">
+                                <div class="track-lines" id="trackLines"></div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">Common</h5>
-                                    <div id="commonConversions" class="row gx-2 gy-1 text-center text-muted small">
-                                        <!-- Will be populated by JavaScript -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">To</label>
+                            <select class="form-select mb-3" id="toUnit">
+                                <optgroup label="Metric">
+                                    <option value="mps">Meters per Second (m/s)</option>
+                                    <option value="kph" selected>Kilometers per Hour (km/h)</option>
+                                    <option value="kmps">Kilometers per Second (km/s)</option>
+                                </optgroup>
+                                <optgroup label="Imperial/US">
+                                    <option value="mph">Miles per Hour (mph)</option>
+                                    <option value="fps">Feet per Second (ft/s)</option>
+                                    <option value="knot">Knots (kn)</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="mach">Mach Number</option>
+                                    <option value="lightspeed">Speed of Light (c)</option>
+                                </optgroup>
+                            </select>
 
-                        <!-- History Section -->
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body py-2">
-                                    <h5 class="card-title mb-2">History</h5>
-                                    <div id="history" class="text-center text-muted small">
-                                        No conversions yet
-                                    </div>
-                                </div>
+                            <div class="result-box">
+                                <span id="result" class="result-value">0</span>
+                                <span id="toUnitLabel">km/h</span>
+                                <button class="copy-btn" id="copyResult">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <div class="speed-track">
+                                <div class="speed-indicator" id="speedIndicator"></div>
+                                <div class="range-label range-start">Slow</div>
+                                <div class="range-label range-middle">Medium</div>
+                                <div class="range-label range-end">Fast</div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Right Column: Information -->
-                <div class="col-md-4">
-                    <div class="card info-card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Speed Converter</h5>
-                            <p class="card-text">
-                                Convert between different units of speed measurement,
-                                including metric, imperial, and specialized units.
-                            </p>
-                            <h6 class="mb-2">Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple units</li>
-                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
-                                <li><i class="fas fa-check text-success"></i> Common conversions</li>
-                                <li><i class="fas fa-check text-success"></i> Conversion history</li>
-                            </ul>
-                            <div class="alert alert-info mt-2">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between units.</small>
+                    <div class="speed-visual">
+                        <i class="fas fa-car speed-object" id="speedObject"></i>
+                    </div>
+
+                    <div class="quick-converts mt-4">
+                        <h5 class="mb-3">Quick Conversions</h5>
+                        <div class="d-flex flex-wrap">
+                            <button class="quick-convert" data-value="1" data-from="mps" data-to="kph">
+                                1 m/s to km/h
+                            </button>
+                            <button class="quick-convert" data-value="60" data-from="mph" data-to="kph">
+                                60 mph to km/h
+                            </button>
+                            <button class="quick-convert" data-value="1" data-from="mach" data-to="kph">
+                                Mach 1 to km/h
+                            </button>
+                            <button class="quick-convert" data-value="100" data-from="knot" data-to="kph">
+                                100 knots to km/h
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="speed-comparison mt-4">
+                        <h5 class="mb-3">Speed Comparisons</h5>
+                        <div id="speedExamples">
+                            <div class="comparison-item">
+                                <i class="fas fa-walking comparison-icon"></i>
+                                <span class="comparison-text">Average Walking Speed</span>
+                                <span class="comparison-value">5 km/h</span>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="fas fa-bicycle comparison-icon"></i>
+                                <span class="comparison-text">Typical Cycling Speed</span>
+                                <span class="comparison-value">20 km/h</span>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="fas fa-car comparison-icon"></i>
+                                <span class="comparison-text">Highway Speed Limit</span>
+                                <span class="comparison-value">120 km/h</span>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="fas fa-plane comparison-icon"></i>
+                                <span class="comparison-text">Commercial Aircraft Cruising Speed</span>
+                                <span class="comparison-value">900 km/h</span>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="fas fa-rocket comparison-icon"></i>
+                                <span class="comparison-text">Space Shuttle Orbital Speed</span>
+                                <span class="comparison-value">27,700 km/h</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fromValue = document.getElementById('fromValue');
-            const toValue = document.getElementById('toValue');
             const fromUnit = document.getElementById('fromUnit');
             const toUnit = document.getElementById('toUnit');
-            const convertButton = document.getElementById('convertButton');
-            const swapButton = document.getElementById('swapButton');
-            const results = document.getElementById('results');
-            const commonConversions = document.getElementById('commonConversions');
-            const history = document.getElementById('history');
-            let conversionHistory = [];
+            const fromValue = document.getElementById('fromValue');
+            const result = document.getElementById('result');
+            const fromUnitLabel = document.getElementById('fromUnitLabel');
+            const toUnitLabel = document.getElementById('toUnitLabel');
+            const copyResult = document.getElementById('copyResult');
+            const speedIndicator = document.getElementById('speedIndicator');
+            const speedObject = document.getElementById('speedObject');
+            const trackLines = document.getElementById('trackLines');
 
-            // Conversion factors to meters per second
-            const conversionFactors = {
+            // Create track lines
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElement('div');
+                line.className = 'track-line';
+                line.style.top = `${i * 25}%`;
+                line.style.animationDelay = `${i * 0.4}s`;
+                trackLines.appendChild(line);
+            }
+
+            // Conversion factors (to m/s)
+            const conversions = {
                 'mps': 1,
-                'kph': 0.277778,
+                'kph': 1/3.6,
+                'kmps': 1000,
                 'mph': 0.44704,
                 'fps': 0.3048,
-                'knots': 0.514444,
-                'mach': 340.3,
-                'c': 299792458
+                'knot': 0.514444,
+                'mach': 343, // at sea level, 20°C
+                'lightspeed': 299792458
             };
 
-            // Format number
-            function formatNumber(number) {
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 6
-                }).format(number);
+            // Speed icons based on magnitude
+            const speedIcons = [
+                { max: 5, icon: 'fa-walking' },
+                { max: 20, icon: 'fa-bicycle' },
+                { max: 200, icon: 'fa-car' },
+                { max: 1000, icon: 'fa-plane' },
+                { max: Infinity, icon: 'fa-rocket' }
+            ];
+
+            function updateLabels() {
+                const fromUnitText = fromUnit.options[fromUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                const toUnitText = toUnit.options[toUnit.selectedIndex].text.match(/\((.*?)\)/)[1];
+                fromUnitLabel.textContent = fromUnitText;
+                toUnitLabel.textContent = toUnitText;
             }
 
-            // Convert speed
-            function convertSpeed() {
-                try {
-                    const value = parseFloat(fromValue.value);
-                    const from = fromUnit.value;
-                    const to = toUnit.value;
+            function updateSpeedVisual(mps) {
+                // Update speed indicator position
+                const position = Math.min(100, Math.max(0, (Math.log10(mps + 1) / Math.log10(1000)) * 100));
+                speedIndicator.style.left = `${position}%`;
 
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    // Convert to meters per second first, then to target unit
-                    const metersPerSecond = value * conversionFactors[from];
-                    const result = metersPerSecond / conversionFactors[to];
-
-                    // Update result
-                    toValue.value = formatNumber(result);
-
-                    // Update results display
-                    results.innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Conversion Result</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-
-                    // Update common conversions
-                    updateCommonConversions(value, from);
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        fromValue: value,
-                        fromUnit: from,
-                        toValue: result,
-                        toUnit: to,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    results.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
+                // Update speed object icon and animation
+                const icon = speedIcons.find(s => mps <= s.max)?.icon || 'fa-rocket';
+                speedObject.className = `fas ${icon} speed-object`;
+                
+                // Adjust animation duration based on speed
+                const duration = Math.max(0.5, Math.min(5, 10 / (Math.log10(mps + 1))));
+                speedObject.style.animation = `moveRightToLeft ${duration}s linear infinite`;
             }
 
-            // Update common conversions
-            function updateCommonConversions(value, fromUnit) {
-                const commonUnits = ['kph', 'mph', 'mps', 'knots'];
-                const metersPerSecond = value * conversionFactors[fromUnit];
-                const conversions = commonUnits.map(unit => {
-                    const result = metersPerSecond / conversionFactors[unit];
-                    return `
-                        <div class="col-6 col-md-3 conversion-result p-1 mb-1">
-                            <span class="value">${formatNumber(result)}</span>
-                            <span class="unit">${unit}</span>
-                        </div>
-                    `;
-                }).join('');
-                commonConversions.innerHTML = conversions;
-            }
-
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
+            function convert() {
+                if (!fromValue.value) {
+                    result.textContent = '0';
+                    updateSpeedVisual(0);
                     return;
                 }
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm compact-table">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${formatNumber(conv.fromValue)} ${conv.fromUnit}</td>
-                                        <td>${formatNumber(conv.toValue)} ${conv.toUnit}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+
+                const input = parseFloat(fromValue.value);
+                const fromFactor = conversions[fromUnit.value];
+                const toFactor = conversions[toUnit.value];
+                
+                const mps = input * fromFactor;
+                const converted = mps / toFactor;
+
+                // Format the result based on the magnitude
+                let formattedResult;
+                if (Math.abs(converted) >= 1e9) {
+                    formattedResult = converted.toExponential(6);
+                } else if (Math.abs(converted) < 0.000001) {
+                    formattedResult = converted.toExponential(6);
+                } else {
+                    formattedResult = converted.toPrecision(7);
+                }
+
+                result.textContent = formattedResult;
+                updateSpeedVisual(mps);
             }
 
-            // Swap units
-            function swapUnits() {
-                const tempValue = fromValue.value;
-                const tempUnit = fromUnit.value;
-                fromValue.value = toValue.value;
-                fromUnit.value = toUnit.value;
-                toValue.value = tempValue;
-                toUnit.value = tempUnit;
-                convertSpeed();
-            }
+            // Event Listeners
+            fromUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
 
-            // Event listeners
-            convertButton.addEventListener('click', convertSpeed);
-            swapButton.addEventListener('click', swapUnits);
-            fromValue.addEventListener('input', convertSpeed);
-            fromUnit.addEventListener('change', convertSpeed);
-            toUnit.addEventListener('change', convertSpeed);
+            toUnit.addEventListener('change', () => {
+                updateLabels();
+                convert();
+            });
+
+            fromValue.addEventListener('input', convert);
+
+            copyResult.addEventListener('click', () => {
+                navigator.clipboard.writeText(result.textContent).then(() => {
+                    const icon = copyResult.querySelector('i');
+                    icon.className = 'fas fa-check';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-copy';
+                    }, 1500);
+                });
+            });
+
+            // Quick convert buttons
+            document.querySelectorAll('.quick-convert').forEach(button => {
+                button.addEventListener('click', () => {
+                    fromValue.value = button.dataset.value;
+                    fromUnit.value = button.dataset.from;
+                    toUnit.value = button.dataset.to;
+                    updateLabels();
+                    convert();
+                });
+            });
+
+            // Initialize
+            updateLabels();
         });
     </script>
 </body>
-</html> 
+</html>

@@ -3,760 +3,357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currency Converter - Multi-Tools</title>
-    <!-- Bootstrap 5 CSS -->
+    <title>Indian Currency Converter - Multi-Tools</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="../../styles/main.css" rel="stylesheet">
-    <link href="../../styles/theme.css" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4353202130254945"
-     crossorigin="anonymous"></script>
     <style>
         :root {
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-color: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --main-bg: #1a1a1a;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --result-bg: rgba(255, 255, 255, 0.1);
-            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-
-        [data-theme="light"] {
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --text-muted: #666666;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --main-bg: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --input-bg: #ffffff;
-            --result-bg: #f8f9fa;
+            --dark-bg: #121212;
+            --darker-bg: #0a0a0a;
+            --card-bg: #1e1e1e;
+            --hover-bg: #2d2d2d;
+            --border-color: #333;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-muted: #808080;
+            --accent-primary: #ff6b6b;
+            --accent-secondary: #ff8787;
+            --indian-orange: #FF9933;
+            --indian-green: #138808;
         }
 
         body {
-            background-color: var(--main-bg);
-            color: var(--text-color);
-            min-height: 100vh;
-            font-family: var(--font-family);
-            overflow-x: hidden;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
-        .tool-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0.5rem;
-            background-color: var(--main-bg);
-            min-height: calc(100vh - 2rem);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .tool-header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-            color: var(--text-color);
-        }
-
-        .tool-header p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0;
-        }
-
-        .card {
-            background-color: var(--card-bg);
+        .calculator-card {
+            background: var(--card-bg);
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-            margin-bottom: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease;
         }
 
-        .card-body {
-            padding: 1rem;
-        }
-
-        .form-label {
-            color: var(--text-color);
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
+        .calculator-card:hover {
+            transform: translateY(-2px);
         }
 
         .form-control, .form-select {
-            background-color: var(--input-bg);
-            border-color: var(--border-color);
-            color: var(--text-color);
-            border-radius: 6px;
-            padding: 0.4rem 0.6rem;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
-            border: none;
-            border-radius: 6px;
-            padding: 0.4rem 0.8rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        #result {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-color);
-            padding: 0.75rem;
-            border-radius: 6px;
-            background-color: var(--result-bg);
+            background-color: var(--darker-bg);
             border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 0.5rem 0;
-        }
-
-        .currency-details {
-            background-color: var(--card-bg);
-            border-radius: 6px;
-            padding: 0.75rem;
-            margin-top: 0.75rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .currency-details h4 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.4rem;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-color);
-            font-size: 0.9rem;
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-item .label {
-            color: var(--text-muted);
-        }
-
-        .detail-item .value {
-            color: var(--bs-primary);
-            font-weight: 600;
-        }
-
-        .chart-container {
-            background-color: var(--card-bg);
-            border-radius: 6px;
-            padding: 0.75rem;
-            margin-top: 0.75rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .chart-container h4 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        @media (max-width: 768px) {
-            .tool-container {
-                padding: 0.5rem;
-            }
-            
-            .card-body {
-                padding: 0.75rem;
-            }
-
-            .tool-header h1 {
-                font-size: 1.5rem;
-            }
-
-            .tool-header p {
-                font-size: 0.85rem;
-            }
-        }
-
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-            background-color: var(--main-bg);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .tool-header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-color);
-        }
-
-        .tool-header p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-title {
-            color: var(--text-color);
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
         }
 
         .form-control:focus, .form-select:focus {
-            background-color: var(--input-bg);
-            border-color: var(--bs-primary);
-            color: var(--text-color);
-            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+            background-color: var(--darker-bg);
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
         }
 
-        .form-control::placeholder {
-            color: var(--text-muted);
+        .btn-primary {
+            background: linear-gradient(145deg, var(--indian-orange), var(--accent-primary));
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
         .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .conversion-card {
+            background: var(--darker-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .conversion-card:hover {
+            background: var(--hover-bg);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
         }
 
-        /* Result section styling */
-        #result .text-danger {
-            color: var(--bs-danger) !important;
-        }
-
-        .conversion-result {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 1.25rem;
-            margin-bottom: 0.75rem;
+        .quick-convert {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
             border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            background: var(--darker-bg);
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .conversion-result:hover {
-            transform: translateX(5px);
-            background-color: var(--result-bg);
+        .quick-convert:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            border-color: var(--accent-primary);
         }
 
-        .conversion-result .amount {
-            color: var(--text-color);
-            font-size: 1.5rem;
-            font-weight: 600;
+        .result-box {
+            background: linear-gradient(145deg, var(--card-bg), var(--darker-bg));
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            margin: 1.5rem 0;
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--indian-green);
             margin-bottom: 0.5rem;
         }
 
-        .conversion-result .rate {
-            color: var(--text-muted);
-            font-size: 0.875rem;
+        .result-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
         }
 
-        .conversion-result .highlight {
-            color: var(--bs-primary);
-            font-weight: 600;
-        }
-
-        /* Exchange rate section */
-        .exchange-rate {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 1.25rem;
-            margin-top: 1rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .exchange-rate h5 {
-            color: var(--text-color);
-            margin-bottom: 1rem;
-        }
-
-        .exchange-rate p {
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
-
-        .alert-info {
-            background-color: var(--result-bg);
-            border: 1px solid var(--border-color);
-            color: var(--bs-primary);
-        }
-
-        /* Currency flags */
         .currency-flag {
             width: 24px;
-            height: 16px;
-            margin-right: 0.5rem;
-            border-radius: 2px;
+            height: 24px;
+            margin-right: 8px;
+            border-radius: 4px;
         }
 
-        /* Rate history */
-        .rate-history {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 1.25rem;
+        .exchange-rate-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-align: center;
             margin-top: 1rem;
-            border: 1px solid var(--border-color);
         }
 
-        .rate-history h5 {
-            color: var(--text-color);
-            margin-bottom: 1rem;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .rate-history p {
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        .rate-history .trend {
-            color: var(--bs-success);
-            font-weight: 500;
-        }
-
-        .rate-history .trend.down {
-            color: var(--bs-danger);
+        .indian-flag-colors {
+            background: linear-gradient(to bottom, 
+                var(--indian-orange) 33%, 
+                white 33% 66%, 
+                var(--indian-green) 66%);
+            height: 4px;
+            width: 100%;
+            margin: 1rem 0;
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="calculator-card">
+                    <h2 class="mb-3">₹ Indian Currency Converter</h2>
+                    <div class="indian-flag-colors"></div>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-exchange-alt"></i> Currency Converter</h1>
-                <p>Convert currencies with real-time exchange rates</p>
-            </div>
-
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="converterForm">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="fromAmount" class="form-label">Amount</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text" id="fromCurrencySymbol">$</span>
-                                                <input type="number" class="form-control" id="fromAmount" min="0" step="0.01" required>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="fromCurrency" class="form-label">From Currency</label>
-                                            <select class="form-select" id="fromCurrency" required>
-                                                <option value="USD">USD - US Dollar</option>
-                                                <option value="EUR">EUR - Euro</option>
-                                                <option value="GBP">GBP - British Pound</option>
-                                                <option value="JPY">JPY - Japanese Yen</option>
-                                                <option value="AUD">AUD - Australian Dollar</option>
-                                                <option value="CAD">CAD - Canadian Dollar</option>
-                                                <option value="CHF">CHF - Swiss Franc</option>
-                                                <option value="CNY">CNY - Chinese Yuan</option>
-                                                <option value="INR">INR - Indian Rupee</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="toAmount" class="form-label">Converted Amount</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text" id="toCurrencySymbol">€</span>
-                                                <input type="text" class="form-control" id="toAmount" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="toCurrency" class="form-label">To Currency</label>
-                                            <select class="form-select" id="toCurrency" required>
-                                                <option value="EUR">EUR - Euro</option>
-                                                <option value="USD">USD - US Dollar</option>
-                                                <option value="GBP">GBP - British Pound</option>
-                                                <option value="JPY">JPY - Japanese Yen</option>
-                                                <option value="AUD">AUD - Australian Dollar</option>
-                                                <option value="CAD">CAD - Canadian Dollar</option>
-                                                <option value="CHF">CHF - Swiss Franc</option>
-                                                <option value="CNY">CNY - Chinese Yuan</option>
-                                                <option value="INR">INR - Indian Rupee</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Additional Options</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="autoUpdate">
-                                        <label class="form-check-label" for="autoUpdate">
-                                            Auto-update rates every 5 minutes
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-primary" id="convertButton">
-                                        <i class="fas fa-sync-alt"></i> Convert
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary" id="swapButton">
-                                        <i class="fas fa-exchange-alt"></i> Swap Currencies
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                    <!-- Quick Convert Buttons -->
+                    <div class="text-center mb-4">
+                        <div class="quick-convert" data-currency="USD">USD</div>
+                        <div class="quick-convert" data-currency="EUR">EUR</div>
+                        <div class="quick-convert" data-currency="GBP">GBP</div>
+                        <div class="quick-convert" data-currency="AED">AED</div>
+                        <div class="quick-convert" data-currency="SGD">SGD</div>
                     </div>
+
+                    <!-- Calculator Form -->
+                    <form id="currencyForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">From Currency</label>
+                                    <select class="form-select" id="fromCurrency">
+                                        <option value="INR" selected>Indian Rupee (INR)</option>
+                                        <option value="USD">US Dollar (USD)</option>
+                                        <option value="EUR">Euro (EUR)</option>
+                                        <option value="GBP">British Pound (GBP)</option>
+                                        <option value="AED">UAE Dirham (AED)</option>
+                                        <option value="SGD">Singapore Dollar (SGD)</option>
+                                        <option value="AUD">Australian Dollar (AUD)</option>
+                                        <option value="CAD">Canadian Dollar (CAD)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">To Currency</label>
+                                    <select class="form-select" id="toCurrency">
+                                        <option value="USD" selected>US Dollar (USD)</option>
+                                        <option value="INR">Indian Rupee (INR)</option>
+                                        <option value="EUR">Euro (EUR)</option>
+                                        <option value="GBP">British Pound (GBP)</option>
+                                        <option value="AED">UAE Dirham (AED)</option>
+                                        <option value="SGD">Singapore Dollar (SGD)</option>
+                                        <option value="AUD">Australian Dollar (AUD)</option>
+                                        <option value="CAD">Canadian Dollar (CAD)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="currencySymbol">₹</span>
+                                <input type="number" class="form-control" id="amount" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                Convert Currency
+                            </button>
+                        </div>
+                    </form>
 
                     <!-- Results Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Exchange Rate Information</h5>
-                            <div id="result" class="text-center text-muted">
-                                Enter amount to convert
+                    <div id="resultBox" class="result-box" style="display: none;">
+                        <div class="result-value" id="convertedAmount">₹0.00</div>
+                        <div class="result-text" id="conversionText">
+                            Converting...
+                        </div>
+                        <div class="exchange-rate-info" id="exchangeRate">
+                            1 INR = 0.00 USD
+                        </div>
+                    </div>
+
+                    <!-- Common Conversions -->
+                    <div id="commonConversions">
+                        <h5 class="mt-4 mb-3">Common Conversions</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="conversion-card">
+                                    <h6>1000 INR</h6>
+                                    <div id="thousand"></div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Chart Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Rate History (Last 7 Days)</h5>
-                            <canvas id="rateChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion History</h5>
-                            <div id="history" class="text-center text-muted">
-                                No conversions yet
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
-
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Currency Converter</h5>
-                            <p class="card-text">
-                                Convert between different currencies using
-                                real-time exchange rates.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Real-time rates</li>
-                                <li><i class="fas fa-check text-success"></i> Multiple currencies</li>
-                                <li><i class="fas fa-check text-success"></i> Rate history chart</li>
-                                <li><i class="fas fa-check text-success"></i> Auto-update option</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between currencies.</small>
+                            <div class="col-md-6">
+                                <div class="conversion-card">
+                                    <h6>10000 INR</h6>
+                                    <div id="tenThousand"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fromAmount = document.getElementById('fromAmount');
-            const toAmount = document.getElementById('toAmount');
+            const form = document.getElementById('currencyForm');
             const fromCurrency = document.getElementById('fromCurrency');
             const toCurrency = document.getElementById('toCurrency');
-            const fromCurrencySymbol = document.getElementById('fromCurrencySymbol');
-            const toCurrencySymbol = document.getElementById('toCurrencySymbol');
-            const convertButton = document.getElementById('convertButton');
-            const swapButton = document.getElementById('swapButton');
-            const autoUpdate = document.getElementById('autoUpdate');
-            const result = document.getElementById('result');
-            const history = document.getElementById('history');
-            let rateChart = null;
-            let conversionHistory = [];
-            let updateInterval = null;
+            const amount = document.getElementById('amount');
+            const resultBox = document.getElementById('resultBox');
+            const convertedAmount = document.getElementById('convertedAmount');
+            const conversionText = document.getElementById('conversionText');
+            const exchangeRate = document.getElementById('exchangeRate');
+            const currencySymbol = document.getElementById('currencySymbol');
 
-            // Currency symbols mapping
-            const currencySymbols = {
-                'USD': '$',
-                'EUR': '€',
-                'GBP': '£',
-                'JPY': '¥',
-                'AUD': 'A$',
-                'CAD': 'C$',
-                'CHF': 'Fr',
-                'CNY': '¥',
-                'INR': '₹'
+            // Example exchange rates (In real application, these would come from an API)
+            const exchangeRates = {
+                INR: { USD: 0.012, EUR: 0.011, GBP: 0.0095, AED: 0.044, SGD: 0.016, AUD: 0.018, CAD: 0.016 },
+                USD: { INR: 83.25, EUR: 0.92, GBP: 0.79, AED: 3.67, SGD: 1.34, AUD: 1.52, CAD: 1.35 },
+                EUR: { INR: 90.50, USD: 1.09, GBP: 0.86, AED: 4.00, SGD: 1.46, AUD: 1.65, CAD: 1.47 },
+                GBP: { INR: 105.26, USD: 1.26, EUR: 1.16, AED: 4.65, SGD: 1.70, AUD: 1.92, CAD: 1.71 },
+                AED: { INR: 22.68, USD: 0.27, EUR: 0.25, GBP: 0.22, SGD: 0.37, AUD: 0.41, CAD: 0.37 },
+                SGD: { INR: 62.11, USD: 0.75, EUR: 0.69, GBP: 0.59, AED: 2.74, AUD: 1.13, CAD: 1.01 },
+                AUD: { INR: 54.95, USD: 0.66, EUR: 0.61, GBP: 0.52, AED: 2.42, SGD: 0.88, CAD: 0.89 },
+                CAD: { INR: 61.67, USD: 0.74, EUR: 0.68, GBP: 0.58, AED: 2.72, SGD: 0.99, AUD: 1.12 }
             };
 
-            // Update currency symbols
-            function updateCurrencySymbols() {
-                fromCurrencySymbol.textContent = currencySymbols[fromCurrency.value];
-                toCurrencySymbol.textContent = currencySymbols[toCurrency.value];
+            function getExchangeRate(from, to) {
+                if (from === to) return 1;
+                return exchangeRates[from][to];
             }
 
-            fromCurrency.addEventListener('change', updateCurrencySymbols);
-            toCurrency.addEventListener('change', updateCurrencySymbols);
-
-            // Swap currencies
-            swapButton.addEventListener('click', function() {
-                const tempCurrency = fromCurrency.value;
-                fromCurrency.value = toCurrency.value;
-                toCurrency.value = tempCurrency;
-                updateCurrencySymbols();
-                convertCurrency();
-            });
-
-            // Auto-update toggle
-            autoUpdate.addEventListener('change', function() {
-                if (this.checked) {
-                    updateInterval = setInterval(convertCurrency, 5 * 60 * 1000);
-                } else {
-                    clearInterval(updateInterval);
-                }
-            });
-
-            // Convert currency
-            async function convertCurrency() {
-                try {
-                    const amount = parseFloat(fromAmount.value);
-                    if (isNaN(amount) || amount < 0) {
-                        throw new Error('Please enter a valid amount');
-                    }
-
-                    // Fetch live exchange rate
-                    const rate = await getExchangeRate(fromCurrency.value, toCurrency.value);
-                    const convertedAmount = amount * rate;
-
-                    // Update result
-                    toAmount.value = convertedAmount.toFixed(2);
-                    result.innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Exchange Rate: 1 ${fromCurrency.value} = ${rate.toFixed(4)} ${toCurrency.value}</h4>
-                            <p class="mb-0">
-                                Last updated: ${new Date().toLocaleString()}<br>
-                                ${amount.toFixed(2)} ${fromCurrency.value} = ${convertedAmount.toFixed(2)} ${toCurrency.value}
-                            </p>
-                        </div>
-                    `;
-
-                    // Update chart
-                    updateRateChart(fromCurrency.value, toCurrency.value);
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        fromAmount: amount,
-                        fromCurrency: fromCurrency.value,
-                        toAmount: convertedAmount,
-                        toCurrency: toCurrency.value,
-                        rate: rate,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    result.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
+            function updateCurrencySymbol() {
+                const symbols = {
+                    INR: '₹', USD: '$', EUR: '€', GBP: '£', 
+                    AED: 'AED', SGD: 'S$', AUD: 'A$', CAD: 'C$'
+                };
+                currencySymbol.textContent = symbols[fromCurrency.value] || fromCurrency.value;
             }
 
-            // Get live exchange rate from API
-            async function getExchangeRate(from, to) {
-                try {
-                    // First try to get from cache
-                    const cacheKey = `${from}_${to}`;
-                    const cachedRate = localStorage.getItem(cacheKey);
-                    const cacheTime = localStorage.getItem(`${cacheKey}_time`);
-                    
-                    // If we have a cached rate that's less than 1 hour old, use it
-                    if (cachedRate && cacheTime) {
-                        const cacheAge = Date.now() - parseInt(cacheTime);
-                        if (cacheAge < 3600000) { // 1 hour in milliseconds
-                            return parseFloat(cachedRate);
-                        }
-                    }
-
-                    // If no cache or cache expired, fetch from API
-                    const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${from}`);
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch exchange rate');
-                    }
-                    
-                    const data = await response.json();
-                    const rate = data.rates[to];
-                    
-                    if (!rate) {
-                        throw new Error('Exchange rate not available');
-                    }
-
-                    // Cache the rate
-                    localStorage.setItem(cacheKey, rate.toString());
-                    localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
-
-                    return rate;
-                } catch (error) {
-                    console.error('Error fetching exchange rate:', error);
-                    throw new Error('Failed to get exchange rate. Please try again later.');
-                }
+            function convert(amount, from, to) {
+                const rate = getExchangeRate(from, to);
+                return amount * rate;
             }
 
-            // Update rate chart with historical data
-            async function updateRateChart(from, to) {
-                const ctx = document.getElementById('rateChart').getContext('2d');
+            function formatCurrency(amount, currency) {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: currency
+                }).format(amount);
+            }
+
+            function updateCommonConversions() {
+                const to = toCurrency.value;
+                document.getElementById('thousand').textContent = 
+                    formatCurrency(convert(1000, 'INR', to), to);
+                document.getElementById('tenThousand').textContent = 
+                    formatCurrency(convert(10000, 'INR', to), to);
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
                 
-                if (rateChart) {
-                    rateChart.destroy();
-                }
-
-                try {
-                    // Get current rate
-                    const currentRate = await getExchangeRate(from, to);
+                const amountValue = parseFloat(amount.value);
+                const from = fromCurrency.value;
+                const to = toCurrency.value;
+                
+                if (amountValue > 0) {
+                    const converted = convert(amountValue, from, to);
+                    const rate = getExchangeRate(from, to);
                     
-                    // Generate dates for the last 7 days
-                    const dates = Array.from({length: 7}, (_, i) => {
-                        const date = new Date();
-                        date.setDate(date.getDate() - i);
-                        return date.toLocaleDateString();
-                    }).reverse();
+                    convertedAmount.textContent = formatCurrency(converted, to);
+                    conversionText.textContent = `${formatCurrency(amountValue, from)} = ${formatCurrency(converted, to)}`;
+                    exchangeRate.textContent = `1 ${from} = ${rate.toFixed(4)} ${to}`;
+                    
+                    resultBox.style.display = 'block';
+                    resultBox.classList.add('animate-fade-in');
 
-                    // For historical data, we'll use the current rate with small variations
-                    // In a production environment, you would fetch historical data from an API
-                    const rates = dates.map(() => currentRate * (1 + (Math.random() - 0.5) * 0.02));
-
-                    rateChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: dates,
-                            datasets: [{
-                                label: `${from} to ${to} Exchange Rate`,
-                                data: rates,
-                                borderColor: '#0d6efd',
-                                tension: 0.1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom'
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: false
-                                }
-                            }
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error updating chart:', error);
+                    updateCommonConversions();
                 }
-            }
+            });
 
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
-                    return;
-                }
+            // Quick convert buttons
+            document.querySelectorAll('.quick-convert').forEach(button => {
+                button.addEventListener('click', function() {
+                    toCurrency.value = this.dataset.currency;
+                    if (amount.value) {
+                        form.dispatchEvent(new Event('submit'));
+                    }
+                });
+            });
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th>Rate</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${conv.fromAmount.toFixed(2)} ${conv.fromCurrency}</td>
-                                        <td>${conv.toAmount.toFixed(2)} ${conv.toCurrency}</td>
-                                        <td>${conv.rate.toFixed(4)}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            }
+            // Update currency symbol when from currency changes
+            fromCurrency.addEventListener('change', updateCurrencySymbol);
 
-            // Event listeners
-            convertButton.addEventListener('click', convertCurrency);
-            fromAmount.addEventListener('input', convertCurrency);
-            fromCurrency.addEventListener('change', convertCurrency);
-            toCurrency.addEventListener('change', convertCurrency);
-
-            // Initial conversion
-            updateCurrencySymbols();
+            // Initialize
+            updateCurrencySymbol();
+            updateCommonConversions();
         });
     </script>
 </body>
-</html> 
+</html>

@@ -3,531 +3,454 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binary to Decimal Converter - Multi-Tools</title>
+    <title>Number System Converter - Multi-Tools</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
-    <!-- Highlight.js for syntax highlighting -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4353202130254945"
-     crossorigin="anonymous"></script>
     <style>
         :root {
-            --card-bg: rgba(255, 255, 255, 0.05);
+            --primary-dark: #1a1a1a;
+            --secondary-dark: #2d2d2d;
+            --accent-color: #4CAF50;
             --text-color: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --main-bg: #1a1a1a;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --result-bg: rgba(255, 255, 255, 0.1);
-            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-
-        [data-theme="light"] {
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --text-muted: #666666;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --main-bg: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --input-bg: #ffffff;
-            --result-bg: #f8f9fa;
+            --border-color: #404040;
         }
 
         body {
-            background-color: var(--main-bg);
+            background-color: var(--primary-dark);
             color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-            font-family: var(--font-family);
-            overflow-x: hidden;
-        }
-
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            background-color: var(--main-bg);
-            min-height: calc(100vh - 2rem);
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .tool-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        .tool-header p {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .card {
-            background-color: var(--card-bg);
+            background-color: var(--secondary-dark);
             border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
-            margin-bottom: 1rem;
         }
 
-        .card-body {
-            padding: 1.5rem;
+        .card:hover {
+            transform: translateY(-5px);
         }
 
-        .form-label {
-            color: var(--text-color);
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            font-size: 0.95rem;
-        }
-
-        .form-control, .form-select {
-            background-color: var(--input-bg);
-            border-color: var(--border-color);
+        .form-control {
+            background-color: var(--primary-dark);
+            border: 1px solid var(--border-color);
             color: var(--text-color);
             border-radius: 8px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
         }
 
-        .form-text {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        .form-check-label {
+        .form-control:focus {
+            background-color: var(--primary-dark);
+            border-color: var(--accent-color);
             color: var(--text-color);
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            background-color: var(--accent-color);
             border: none;
             border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-weight: 600;
-            font-size: 0.95rem;
             transition: all 0.3s ease;
         }
 
-        .btn-outline-secondary {
-            color: var(--text-color);
-            border-color: var(--border-color);
+        .btn-primary:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
         }
 
-        .btn-outline-secondary:hover {
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            border-color: var(--border-color);
+        .binary-digit {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            margin: 2px;
+            border-radius: 5px;
+            background-color: var(--primary-dark);
+            transition: all 0.3s ease;
         }
 
-        .card-title {
-            color: var(--text-color);
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
+        .binary-digit.active {
+            background-color: var(--accent-color);
+            transform: scale(1.1);
         }
 
-        code {
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            padding: 0.5rem;
-            border-radius: 4px;
-            font-family: 'Fira Code', monospace;
+        .result-box {
+            background-color: var(--primary-dark);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
         }
 
-        .alert-info {
-            background-color: var(--result-bg);
-            border-color: var(--border-color);
-            color: var(--text-muted);
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
         }
 
-        .list-unstyled li {
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
+        .copy-btn:hover {
+            color: #45a049;
         }
 
-        .list-unstyled li i {
-            color: #198754;
-            margin-right: 0.5rem;
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .history-item {
-            padding: 0.75rem;
+        .error-message.show {
+            opacity: 1;
+        }
+
+        .nav-tabs {
             border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-tabs .nav-link {
             color: var(--text-color);
+            border: none;
+            border-bottom: 2px solid transparent;
         }
 
-        .history-item:last-child {
-            border-bottom: none;
+        .nav-tabs .nav-link:hover {
+            border-color: transparent;
+            color: var(--accent-color);
         }
 
-        .history-item:hover {
-            background-color: var(--result-bg);
-        }
-
-        @media (max-width: 768px) {
-            .tool-container {
-                padding: 0.75rem;
-            }
-            
-            .card-body {
-                padding: 1rem;
-            }
-
-            .tool-header h1 {
-                font-size: 1.75rem;
-            }
-
-            .tool-header p {
-                font-size: 0.9rem;
-            }
+        .nav-tabs .nav-link.active {
+            background-color: transparent;
+            border-bottom: 2px solid var(--accent-color);
+            color: var(--accent-color);
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Number System Converter</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <ul class="nav nav-tabs mb-4" id="converterTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="binary-tab" data-bs-toggle="tab" href="#binary" role="tab">Binary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="decimal-tab" data-bs-toggle="tab" href="#decimal" role="tab">Decimal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="hex-tab" data-bs-toggle="tab" href="#hex" role="tab">Hexadecimal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="octal-tab" data-bs-toggle="tab" href="#octal" role="tab">Octal</a>
+                        </li>
+                    </ul>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-calculator"></i> Binary to Decimal Converter</h1>
-                <p>Convert between binary, decimal, hexadecimal, and octal number systems</p>
-            </div>
-
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="converterForm">
-                                <div class="mb-3">
-                                    <label for="inputNumber" class="form-label">Input Number</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="inputNumber" required>
-                                        <select class="form-select" id="inputBase" style="max-width: 150px;">
-                                            <option value="2">Binary (Base-2)</option>
-                                            <option value="8">Octal (Base-8)</option>
-                                            <option value="10" selected>Decimal (Base-10)</option>
-                                            <option value="16">Hexadecimal (Base-16)</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-text">Enter a valid number in the selected base</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Additional Options</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showSteps">
-                                        <label class="form-check-label" for="showSteps">
-                                            Show conversion steps
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-primary" id="convertButton">
-                                        <i class="fas fa-sync-alt"></i> Convert
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary" id="clearButton">
-                                        <i class="fas fa-eraser"></i> Clear
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Results Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion Results</h5>
-                            <div id="results" class="text-center text-muted">
-                                Enter a number to convert
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="binary" role="tabpanel">
+                            <div class="mb-4">
+                                <label class="form-label">Enter Binary Number</label>
+                                <input type="text" class="form-control" id="binaryInput" placeholder="e.g. 1010">
+                                <div class="error-message" id="binaryError">Please enter a valid binary number (0s and 1s only)</div>
+                            </div>
+                            <div id="binaryVisualizer" class="mb-4 text-center"></div>
+                            <div class="result-box mb-3">
+                                <label>Decimal:</label>
+                                <span id="binaryToDecimal">0</span>
+                                <button class="copy-btn" data-target="binaryToDecimal">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-box mb-3">
+                                <label>Hexadecimal:</label>
+                                <span id="binaryToHex">0</span>
+                                <button class="copy-btn" data-target="binaryToHex">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-box">
+                                <label>Octal:</label>
+                                <span id="binaryToOctal">0</span>
+                                <button class="copy-btn" data-target="binaryToOctal">
+                                    <i class="fas fa-copy"></i>
+                                </button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Steps Section -->
-                    <div class="card mt-4 d-none" id="stepsCard">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion Steps</h5>
-                            <div id="steps" class="text-muted">
-                                <!-- Steps will be populated by JavaScript -->
+                        <div class="tab-pane fade" id="decimal" role="tabpanel">
+                            <div class="mb-4">
+                                <label class="form-label">Enter Decimal Number</label>
+                                <input type="number" class="form-control" id="decimalInput" placeholder="e.g. 42">
+                                <div class="error-message" id="decimalError">Please enter a valid decimal number</div>
+                            </div>
+                            <div class="result-box mb-3">
+                                <label>Binary:</label>
+                                <span id="decimalToBinary">0</span>
+                                <button class="copy-btn" data-target="decimalToBinary">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-box mb-3">
+                                <label>Hexadecimal:</label>
+                                <span id="decimalToHex">0</span>
+                                <button class="copy-btn" data-target="decimalToHex">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-box">
+                                <label>Octal:</label>
+                                <span id="decimalToOctal">0</span>
+                                <button class="copy-btn" data-target="decimalToOctal">
+                                    <i class="fas fa-copy"></i>
+                                </button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion History</h5>
-                            <div id="history" class="text-center text-muted">
-                                No conversions yet
+                        <div class="tab-pane fade" id="hex" role="tabpanel">
+                            <div class="mb-4">
+                                <label class="form-label">Enter Hexadecimal Number</label>
+                                <input type="text" class="form-control" id="hexInput" placeholder="e.g. 2A">
+                                <div class="error-message" id="hexError">Please enter a valid hexadecimal number (0-9, A-F)</div>
+                            </div>
+                            <div class="result-box mb-3">
+                                <label>Binary:</label>
+                                <span id="hexToBinary">0</span>
+                                <button class="copy-btn" data-target="hexToBinary">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-box mb-3">
+                                <label>Decimal:</label>
+                                <span id="hexToDecimal">0</span>
+                                <button class="copy-btn" data-target="hexToDecimal">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-box">
+                                <label>Octal:</label>
+                                <span id="hexToOctal">0</span>
+                                <button class="copy-btn" data-target="hexToOctal">
+                                    <i class="fas fa-copy"></i>
+                                </button>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
-
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Number System Converter</h5>
-                            <p class="card-text">
-                                Convert numbers between different number systems:
-                                binary, decimal, hexadecimal, and octal.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple number systems</li>
-                                <li><i class="fas fa-check text-success"></i> Step-by-step conversion</li>
-                                <li><i class="fas fa-check text-success"></i> Conversion history</li>
-                                <li><i class="fas fa-check text-success"></i> Input validation</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the show steps option to understand the conversion process.</small>
+                        <div class="tab-pane fade" id="octal" role="tabpanel">
+                            <div class="mb-4">
+                                <label class="form-label">Enter Octal Number</label>
+                                <input type="text" class="form-control" id="octalInput" placeholder="e.g. 52">
+                                <div class="error-message" id="octalError">Please enter a valid octal number (0-7)</div>
+                            </div>
+                            <div class="result-box mb-3">
+                                <label>Binary:</label>
+                                <span id="octalToBinary">0</span>
+                                <button class="copy-btn" data-target="octalToBinary">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-box mb-3">
+                                <label>Decimal:</label>
+                                <span id="octalToDecimal">0</span>
+                                <button class="copy-btn" data-target="octalToDecimal">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-box">
+                                <label>Hexadecimal:</label>
+                                <span id="octalToHex">0</span>
+                                <button class="copy-btn" data-target="octalToHex">
+                                    <i class="fas fa-copy"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const inputNumber = document.getElementById('inputNumber');
-            const inputBase = document.getElementById('inputBase');
-            const showSteps = document.getElementById('showSteps');
-            const convertButton = document.getElementById('convertButton');
-            const clearButton = document.getElementById('clearButton');
-            const results = document.getElementById('results');
-            const stepsCard = document.getElementById('stepsCard');
-            const steps = document.getElementById('steps');
-            const history = document.getElementById('history');
-            let conversionHistory = [];
+            // Input elements
+            const binaryInput = document.getElementById('binaryInput');
+            const decimalInput = document.getElementById('decimalInput');
+            const hexInput = document.getElementById('hexInput');
+            const octalInput = document.getElementById('octalInput');
 
-            // Validate input based on base
-            function validateInput(number, base) {
-                const validChars = {
-                    '2': /^[01]+$/,
-                    '8': /^[0-7]+$/,
-                    '10': /^\d+$/,
-                    '16': /^[0-9A-Fa-f]+$/
+            // Error messages
+            const binaryError = document.getElementById('binaryError');
+            const decimalError = document.getElementById('decimalError');
+            const hexError = document.getElementById('hexError');
+            const octalError = document.getElementById('octalError');
+
+            // Binary visualization
+            const binaryVisualizer = document.getElementById('binaryVisualizer');
+
+            function updateBinaryVisualizer(binary) {
+                binaryVisualizer.innerHTML = '';
+                for (let i = 0; i < binary.length; i++) {
+                    const digit = document.createElement('span');
+                    digit.className = `binary-digit ${binary[i] === '1' ? 'active' : ''}`;
+                    digit.textContent = binary[i];
+                    binaryVisualizer.appendChild(digit);
+                }
+            }
+
+            // Validation functions
+            function isValidBinary(str) {
+                return /^[01]+$/.test(str);
+            }
+
+            function isValidHex(str) {
+                return /^[0-9A-Fa-f]+$/.test(str);
+            }
+
+            function isValidOctal(str) {
+                return /^[0-7]+$/.test(str);
+            }
+
+            // Conversion functions
+            function fromBinary(binary) {
+                const decimal = parseInt(binary, 2);
+                return {
+                    decimal: decimal,
+                    hex: decimal.toString(16).toUpperCase(),
+                    octal: decimal.toString(8)
                 };
-
-                return validChars[base].test(number);
             }
 
-            // Convert number between bases
-            function convertNumber(number, fromBase, toBase) {
-                const decimal = parseInt(number, fromBase);
-                return decimal.toString(toBase).toUpperCase();
+            function fromDecimal(decimal) {
+                const num = parseInt(decimal);
+                return {
+                    binary: num.toString(2),
+                    hex: num.toString(16).toUpperCase(),
+                    octal: num.toString(8)
+                };
             }
 
-            // Generate conversion steps
-            function generateSteps(number, fromBase, toBase) {
-                const steps = [];
-                const decimal = parseInt(number, fromBase);
-                
-                if (fromBase !== 10) {
-                    steps.push(`Step 1: Convert from base-${fromBase} to decimal`);
-                    steps.push(`\n${number} (base-${fromBase}) = ${decimal} (decimal)`);
-                    steps.push(`\nCalculation: ${number.split('').reverse().map((digit, index) => 
-                        `${digit} × ${fromBase}^${index}`
-                    ).reverse().join(' + ')} = ${decimal}`);
-                }
-
-                if (toBase !== 10) {
-                    steps.push(`\nStep 2: Convert from decimal to base-${toBase}`);
-                    let num = decimal;
-                    let result = '';
-                    let divisionSteps = [];
-                    
-                    while (num > 0) {
-                        const remainder = num % toBase;
-                        divisionSteps.push(`${num} ÷ ${toBase} = ${Math.floor(num / toBase)} remainder ${remainder}`);
-                        result = remainder.toString(toBase).toUpperCase() + result;
-                        num = Math.floor(num / toBase);
-                    }
-                    
-                    steps.push(`\n${decimal} (decimal) = ${result} (base-${toBase})`);
-                    steps.push(`\nDivision steps:\n${divisionSteps.join('\n')}`);
-                }
-
-                return steps.join('\n');
+            function fromHex(hex) {
+                const decimal = parseInt(hex, 16);
+                return {
+                    binary: decimal.toString(2),
+                    decimal: decimal,
+                    octal: decimal.toString(8)
+                };
             }
 
-            // Convert number
-            function convert() {
-                try {
-                    const number = inputNumber.value.trim();
-                    const fromBase = parseInt(inputBase.value);
-
-                    if (!number) {
-                        throw new Error('Please enter a number');
-                    }
-
-                    if (!validateInput(number, fromBase)) {
-                        throw new Error(`Invalid input for base-${fromBase}`);
-                    }
-
-                    const results = {};
-                    const bases = [2, 8, 10, 16];
-                    
-                    bases.forEach(base => {
-                        if (base !== fromBase) {
-                            results[base] = convertNumber(number, fromBase, base);
-                        }
-                    });
-
-                    // Update results display
-                    const resultHtml = Object.entries(results).map(([base, value]) => {
-                        const baseNames = {
-                            '2': 'Binary',
-                            '8': 'Octal',
-                            '10': 'Decimal',
-                            '16': 'Hexadecimal'
-                        };
-                        return `
-                            <div class="mb-3">
-                                <h6>${baseNames[base]} (Base-${base}):</h6>
-                                <code class="h5">${value}</code>
-                            </div>
-                        `;
-                    }).join('');
-
-                    document.getElementById('results').innerHTML = resultHtml;
-
-                    // Show steps if enabled
-                    if (showSteps.checked) {
-                        stepsCard.classList.remove('d-none');
-                        const stepContent = bases.map(base => {
-                            if (base !== fromBase) {
-                                return generateSteps(number, fromBase, base);
-                            }
-                            return null;
-                        }).filter(Boolean).join('\n\n');
-                        
-                        steps.innerHTML = `<pre><code class="language-text">${stepContent}</code></pre>`;
-                        hljs.highlightAll();
-                    } else {
-                        stepsCard.classList.add('d-none');
-                    }
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        input: number,
-                        fromBase: fromBase,
-                        results: results,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    document.getElementById('results').innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                    stepsCard.classList.add('d-none');
-                }
+            function fromOctal(octal) {
+                const decimal = parseInt(octal, 8);
+                return {
+                    binary: decimal.toString(2),
+                    decimal: decimal,
+                    hex: decimal.toString(16).toUpperCase()
+                };
             }
 
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
+            // Input handlers
+            binaryInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                if (value === '') {
+                    binaryError.classList.remove('show');
                     return;
                 }
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${conv.input} (base-${conv.fromBase})</td>
-                                        <td>${Object.entries(conv.results).map(([base, value]) => 
-                                            `${value} (base-${base})`
-                                        ).join(', ')}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            }
-
-            // Clear form
-            function clearForm() {
-                inputNumber.value = '';
-                results.innerHTML = 'Enter a number to convert';
-                stepsCard.classList.add('d-none');
-            }
-
-            // Event listeners
-            convertButton.addEventListener('click', convert);
-            clearButton.addEventListener('click', clearForm);
-            inputNumber.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    convert();
+                if (isValidBinary(value)) {
+                    binaryError.classList.remove('show');
+                    const results = fromBinary(value);
+                    document.getElementById('binaryToDecimal').textContent = results.decimal;
+                    document.getElementById('binaryToHex').textContent = results.hex;
+                    document.getElementById('binaryToOctal').textContent = results.octal;
+                    updateBinaryVisualizer(value);
+                } else {
+                    binaryError.classList.add('show');
                 }
             });
-            showSteps.addEventListener('change', function() {
-                if (this.checked && inputNumber.value) {
-                    convert();
-                } else {
-                    stepsCard.classList.add('d-none');
+
+            decimalInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                if (value === '') {
+                    decimalError.classList.remove('show');
+                    return;
                 }
+
+                if (!isNaN(value) && parseInt(value) >= 0) {
+                    decimalError.classList.remove('show');
+                    const results = fromDecimal(value);
+                    document.getElementById('decimalToBinary').textContent = results.binary;
+                    document.getElementById('decimalToHex').textContent = results.hex;
+                    document.getElementById('decimalToOctal').textContent = results.octal;
+                } else {
+                    decimalError.classList.add('show');
+                }
+            });
+
+            hexInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                if (value === '') {
+                    hexError.classList.remove('show');
+                    return;
+                }
+
+                if (isValidHex(value)) {
+                    hexError.classList.remove('show');
+                    const results = fromHex(value);
+                    document.getElementById('hexToBinary').textContent = results.binary;
+                    document.getElementById('hexToDecimal').textContent = results.decimal;
+                    document.getElementById('hexToOctal').textContent = results.octal;
+                } else {
+                    hexError.classList.add('show');
+                }
+            });
+
+            octalInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                if (value === '') {
+                    octalError.classList.remove('show');
+                    return;
+                }
+
+                if (isValidOctal(value)) {
+                    octalError.classList.remove('show');
+                    const results = fromOctal(value);
+                    document.getElementById('octalToBinary').textContent = results.binary;
+                    document.getElementById('octalToDecimal').textContent = results.decimal;
+                    document.getElementById('octalToHex').textContent = results.hex;
+                } else {
+                    octalError.classList.add('show');
+                }
+            });
+
+            // Copy button functionality
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const text = document.getElementById(targetId).textContent;
+                    navigator.clipboard.writeText(text).then(() => {
+                        const icon = this.querySelector('i');
+                        icon.className = 'fas fa-check';
+                        setTimeout(() => {
+                            icon.className = 'fas fa-copy';
+                        }, 1500);
+                    });
+                });
             });
         });
     </script>
 </body>
-</html> 
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,8 +22,8 @@
             --hover-bg: #f8f9fa;
             --input-bg: #ffffff;
             --border-color: #dee2e6;
-            --range-track: #dee2e6;
-            --range-thumb: #0d6efd;
+            --protractor-color: #0d6efd;
+            --protractor-bg: rgba(13, 110, 253, 0.1);
         }
 
         [data-theme="dark"] {
@@ -32,12 +32,12 @@
             --card-shadow: rgba(0, 0, 0, 0.2);
             --text-primary: #ffffff;
             --text-secondary: #b0b0b0;
-            --accent-color: #0d6efd;
+            --accent-color: #3d8bfd;
             --hover-bg: #3d3d3d;
-            --input-bg: #2d2d2d;
+            --input-bg: #232323;
             --border-color: #404040;
-            --range-track: #404040;
-            --range-thumb: #0d6efd;
+            --protractor-color: #3d8bfd;
+            --protractor-bg: rgba(61, 139, 253, 0.1);
         }
 
         body {
@@ -50,7 +50,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem 1rem;
-            background-color: var(--card-bg);
         }
 
         .tool-header {
@@ -63,452 +62,292 @@
             font-weight: 700;
             margin-bottom: 1rem;
             color: var(--text-primary);
-        }
-
-        .tool-header p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .card {
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
-            box-shadow: 0 4px 15px var(--card-shadow);
+            box-shadow: 0 8px 25px var(--card-shadow);
             border-radius: 15px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
             transform: translateY(-5px);
-        }
-
-        .card-body {
-            padding: 2rem;
-            color: var(--text-primary);
-        }
-
-        .card-title {
-            color: var(--text-primary);
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+            box-shadow: 0 12px 30px var(--card-shadow);
         }
 
         .form-control, .form-select {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
             transition: all 0.3s ease;
         }
 
         .form-control:focus, .form-select:focus {
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
             color: var(--text-primary);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
 
-        .form-control::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            border-radius: 10px;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
+        .quick-convert {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border-radius: 20px;
+            background-color: var(--protractor-bg);
+            color: var(--protractor-color);
+            border: 1px solid var(--protractor-color);
+            cursor: pointer;
             transition: all 0.3s ease;
-            color: var(--text-primary);
         }
 
-        .btn-primary:hover {
+        .quick-convert:hover {
+            background-color: var(--protractor-color);
+            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
         }
 
-        .btn-outline-secondary {
-            color: var(--text-secondary);
-            border-color: var(--border-color);
+        #protractor {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            margin: 2rem auto;
         }
 
-        .btn-outline-secondary:hover {
-            background: var(--hover-bg);
-            color: var(--text-primary);
-            border-color: var(--border-color);
+        .protractor-base {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--protractor-color);
+            position: relative;
+            background-color: var(--protractor-bg);
         }
 
-        #result {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            padding: 1.5rem;
-            border-radius: 10px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            margin: 1rem 0;
-            transition: all 0.3s ease;
+        .angle-line {
+            width: 50%;
+            height: 2px;
+            background-color: var(--protractor-color);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: left center;
+            transition: transform 0.5s ease;
         }
 
-        .conversion-result {
+        .reference-card {
             background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 1.25rem;
-            margin-bottom: 0.75rem;
             border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .conversion-result:hover {
-            transform: translateX(5px);
-            background-color: var(--hover-bg);
-        }
-
-        .conversion-result .value {
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .conversion-result .unit {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group .form-control {
-            font-size: 1.1rem;
-            padding: 0.75rem 1rem;
-        }
-
-        .input-group-text {
-            background-color: var(--input-bg);
-            border-color: var(--border-color);
-            color: var(--text-secondary);
             border-radius: 10px;
-            font-weight: 500;
+            padding: 1rem;
+            margin-top: 1rem;
         }
 
-        .error-message {
-            color: var(--bs-danger);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 5px;
-            background-color: rgba(var(--bs-danger-rgb), 0.1);
+        .reference-card h5 {
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .reference-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .copied {
+            animation: pulse 0.3s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <!-- Include header -->
+    <div include-html="../../components/header.html"></div>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-compass"></i> Angle Converter</h1>
-                <p>Convert between different units of angle measurement</p>
-            </div>
+    <div class="tool-container">
+        <div class="tool-header">
+            <h1><i class="fas fa-ruler-combined me-2"></i>Angle Converter</h1>
+            <p class="text-muted">Convert angles between degrees, radians, gradians, and more with interactive visualization</p>
+        </div>
 
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="converterForm">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="fromValue" class="form-label">From</label>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" id="fromValue" step="any" required>
-                                                <select class="form-select" id="fromUnit" style="max-width: 150px;">
-                                                    <option value="deg" selected>Degrees (°)</option>
-                                                    <option value="rad">Radians (rad)</option>
-                                                    <option value="grad">Gradians (grad)</option>
-                                                    <option value="arcmin">Arc Minutes (')</option>
-                                                    <option value="arcsec">Arc Seconds (")</option>
-                                                    <option value="mil">Mils (mil)</option>
-                                                    <option value="rev">Revolutions (rev)</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="toValue" class="form-label">To</label>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" id="toValue" readonly>
-                                                <select class="form-select" id="toUnit" style="max-width: 150px;">
-                                                    <option value="deg">Degrees (°)</option>
-                                                    <option value="rad" selected>Radians (rad)</option>
-                                                    <option value="grad">Gradians (grad)</option>
-                                                    <option value="arcmin">Arc Minutes (')</option>
-                                                    <option value="arcsec">Arc Seconds (")</option>
-                                                    <option value="mil">Mils (mil)</option>
-                                                    <option value="rev">Revolutions (rev)</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-primary" id="convertButton">
-                                        <i class="fas fa-sync-alt"></i> Convert
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary" id="swapButton">
-                                        <i class="fas fa-exchange-alt"></i> Swap Units
-                                    </button>
-                                </div>
-                            </form>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Convert Angles</h5>
+                        <div class="mb-3">
+                            <label for="inputValue" class="form-label">Enter Value:</label>
+                            <input type="number" class="form-control" id="inputValue" step="any">
                         </div>
-                    </div>
-
-                    <!-- Results Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion Results</h5>
-                            <div id="results" class="text-center text-muted">
-                                Enter a value to convert
-                            </div>
+                        <div class="mb-3">
+                            <label for="fromUnit" class="form-label">From:</label>
+                            <select class="form-select" id="fromUnit">
+                                <option value="degrees">Degrees (°)</option>
+                                <option value="radians">Radians (rad)</option>
+                                <option value="gradians">Gradians (grad)</option>
+                                <option value="turns">Turns</option>
+                            </select>
                         </div>
-                    </div>
-
-                    <!-- Common Conversions Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Common Conversions</h5>
-                            <div id="commonConversions" class="text-center text-muted">
-                                <!-- Will be populated by JavaScript -->
-                            </div>
+                        <div class="mb-3">
+                            <label for="toUnit" class="form-label">To:</label>
+                            <select class="form-select" id="toUnit">
+                                <option value="degrees">Degrees (°)</option>
+                                <option value="radians">Radians (rad)</option>
+                                <option value="gradians">Gradians (grad)</option>
+                                <option value="turns">Turns</option>
+                            </select>
                         </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Conversion History</h5>
-                            <div id="history" class="text-center text-muted">
-                                No conversions yet
+                        <div class="mb-3">
+                            <label class="form-label">Result:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="result" readonly>
+                                <button class="btn btn-outline-primary" id="copyResult">
+                                    <i class="fas fa-copy"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Quick Conversions</h5>
+                        <div class="quick-converts">
+                            <span class="quick-convert" data-value="90" data-unit="degrees">90°</span>
+                            <span class="quick-convert" data-value="180" data-unit="degrees">180°</span>
+                            <span class="quick-convert" data-value="360" data-unit="degrees">360°</span>
+                            <span class="quick-convert" data-value="3.14159" data-unit="radians">π rad</span>
+                            <span class="quick-convert" data-value="1.5708" data-unit="radians">π/2 rad</span>
+                            <span class="quick-convert" data-value="100" data-unit="gradians">100 grad</span>
+                        </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Angle Converter</h5>
-                            <p class="card-text">
-                                Convert between different units of angle measurement,
-                                including degrees, radians, gradians, and more.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple units</li>
-                                <li><i class="fas fa-check text-success"></i> Real-time conversion</li>
-                                <li><i class="fas fa-check text-success"></i> Common conversions</li>
-                                <li><i class="fas fa-check text-success"></i> Conversion history</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the swap button to quickly switch between units.</small>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Interactive Protractor</h5>
+                        <div id="protractor">
+                            <div class="protractor-base"></div>
+                            <div class="angle-line"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Common Angle References</h5>
+                        <div class="reference-card">
+                            <div class="reference-item">
+                                <span>Right Angle</span>
+                                <span>90° = π/2 rad = 100 grad</span>
+                            </div>
+                            <div class="reference-item">
+                                <span>Straight Angle</span>
+                                <span>180° = π rad = 200 grad</span>
+                            </div>
+                            <div class="reference-item">
+                                <span>Full Circle</span>
+                                <span>360° = 2π rad = 400 grad</span>
+                            </div>
+                            <div class="reference-item">
+                                <span>Golden Angle</span>
+                                <span>137.5° ≈ 2.4 rad</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
+    <!-- Include footer -->
+    <div include-html="../../components/footer.html"></div>
 
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
+    <!-- Include HTML Handler -->
+    <script src="../../js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fromValue = document.getElementById('fromValue');
-            const toValue = document.getElementById('toValue');
+            const inputValue = document.getElementById('inputValue');
             const fromUnit = document.getElementById('fromUnit');
             const toUnit = document.getElementById('toUnit');
-            const convertButton = document.getElementById('convertButton');
-            const swapButton = document.getElementById('swapButton');
-            const results = document.getElementById('results');
-            const commonConversions = document.getElementById('commonConversions');
-            const history = document.getElementById('history');
-            let conversionHistory = [];
+            const result = document.getElementById('result');
+            const copyResult = document.getElementById('copyResult');
+            const angleLine = document.querySelector('.angle-line');
 
-            // Conversion factors to degrees
-            const conversionFactors = {
-                'deg': 1,
-                'rad': 180 / Math.PI,
-                'grad': 0.9,
-                'arcmin': 1/60,
-                'arcsec': 1/3600,
-                'mil': 0.05625,
-                'rev': 360
-            };
-
-            // Format number
-            function formatNumber(number) {
-                if (number >= 1e9 || (number > 0 && number < 1e-9)) {
-                    return number.toExponential(2);
-                }
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 6
-                }).format(number);
-            }
-
-            // Convert angle
-            function convertAngle() {
-                try {
-                    const value = parseFloat(fromValue.value);
-                    const from = fromUnit.value;
-                    const to = toUnit.value;
-
-                    if (isNaN(value)) {
-                        throw new Error('Please enter a valid number');
-                    }
-
-                    // Convert to degrees first, then to target unit
-                    const degrees = value * conversionFactors[from];
-                    const result = degrees / conversionFactors[to];
-
-                    // Update result
-                    toValue.value = formatNumber(result);
-
-                    // Update results display
-                    results.innerHTML = `
-                        <div class="alert alert-success">
-                            <h4 class="alert-heading">Conversion Result</h4>
-                            <p class="mb-0">
-                                ${formatNumber(value)} ${from} = ${formatNumber(result)} ${to}
-                            </p>
-                        </div>
-                    `;
-
-                    // Update common conversions
-                    updateCommonConversions(value, from);
-
-                    // Add to history
-                    conversionHistory.unshift({
-                        fromValue: value,
-                        fromUnit: from,
-                        toValue: result,
-                        toUnit: to,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-
-                } catch (error) {
-                    results.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
+            function toDegrees(value, fromUnit) {
+                switch(fromUnit) {
+                    case 'degrees': return value;
+                    case 'radians': return value * (180 / Math.PI);
+                    case 'gradians': return value * 0.9;
+                    case 'turns': return value * 360;
+                    default: return value;
                 }
             }
 
-            // Update common conversions
-            function updateCommonConversions(value, fromUnit) {
-                const commonUnits = ['deg', 'rad', 'grad', 'rev'];
-                const degrees = value * conversionFactors[fromUnit];
-                
-                const conversions = commonUnits.map(unit => {
-                    const result = degrees / conversionFactors[unit];
-                    return `
-                        <div class="mb-2">
-                            <strong>${formatNumber(value)} ${fromUnit}</strong> = 
-                            <strong>${formatNumber(result)} ${unit}</strong>
-                        </div>
-                    `;
-                }).join('');
-
-                commonConversions.innerHTML = conversions;
+            function fromDegrees(value, toUnit) {
+                switch(toUnit) {
+                    case 'degrees': return value;
+                    case 'radians': return value * (Math.PI / 180);
+                    case 'gradians': return value * (10/9);
+                    case 'turns': return value / 360;
+                    default: return value;
+                }
             }
 
-            // Update history display
-            function updateHistory() {
-                if (conversionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No conversions yet</p>';
+            function updateProtractor(degrees) {
+                angleLine.style.transform = `rotate(${degrees}deg)`;
+            }
+
+            function convert() {
+                const value = parseFloat(inputValue.value);
+                if (isNaN(value)) {
+                    result.value = '';
+                    updateProtractor(0);
                     return;
                 }
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${conversionHistory.slice(0, 5).map(conv => `
-                                    <tr>
-                                        <td>${conv.timestamp}</td>
-                                        <td>${formatNumber(conv.fromValue)} ${conv.fromUnit}</td>
-                                        <td>${formatNumber(conv.toValue)} ${conv.toUnit}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+                const degrees = toDegrees(value, fromUnit.value);
+                const converted = fromDegrees(degrees, toUnit.value);
+                result.value = converted.toFixed(6);
+                updateProtractor(degrees % 360);
             }
 
-            // Swap units
-            function swapUnits() {
-                const tempValue = fromValue.value;
-                const tempUnit = fromUnit.value;
-                fromValue.value = toValue.value;
-                fromUnit.value = toUnit.value;
-                toValue.value = tempValue;
-                toUnit.value = tempUnit;
-                convertAngle();
+            function copyToClipboard() {
+                if (result.value) {
+                    navigator.clipboard.writeText(result.value);
+                    copyResult.classList.add('copied');
+                    setTimeout(() => copyResult.classList.remove('copied'), 300);
+                }
             }
 
-            // Event listeners
-            convertButton.addEventListener('click', convertAngle);
-            swapButton.addEventListener('click', swapUnits);
-            fromValue.addEventListener('input', convertAngle);
-            fromUnit.addEventListener('change', convertAngle);
-            toUnit.addEventListener('change', convertAngle);
+            inputValue.addEventListener('input', convert);
+            fromUnit.addEventListener('change', convert);
+            toUnit.addEventListener('change', convert);
+            copyResult.addEventListener('click', copyToClipboard);
+
+            // Quick conversion buttons
+            document.querySelectorAll('.quick-convert').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    inputValue.value = this.dataset.value;
+                    fromUnit.value = this.dataset.unit;
+                    convert();
+                });
+            });
         });
     </script>
 </body>
-</html> 
+</html>
