@@ -1,5 +1,347 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML Sitemap Generator - SEO Tools</title>
+    <meta name="description" content="Generate XML sitemaps for your website with our advanced sitemap generator. Supports multiple URL types, custom priorities, and change frequencies.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <link href="../../styles/seo-tools-dark.css" rel="stylesheet">
+</head>
+<body>
+    <div class="seo-tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header text-center">
+            <h1 class="mb-3"><i class="fas fa-sitemap me-2"></i>XML Sitemap Generator</h1>
+            <p class="text-secondary mb-0">Create comprehensive XML sitemaps to help search engines discover and index your website content</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="tool-content">
+            <!-- Left Column - Input Form -->
+            <div class="tool-main">
+                <div class="tool-card">
+                    <form id="sitemapForm">
+                        <!-- Website Settings -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-globe me-2"></i>Website Settings</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Website URL</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">https://</span>
+                                    <input type="text" class="form-control" id="websiteUrl" placeholder="example.com" required>
+                                </div>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="crawlWebsite" checked>
+                                <label class="form-check-label" for="crawlWebsite">
+                                    Automatically crawl website for URLs
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="excludeNoindex">
+                                <label class="form-check-label" for="excludeNoindex">
+                                    Exclude pages with noindex meta tag
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- URL Settings -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-link me-2"></i>URL Settings</h5>
+                            <div id="urlList" class="mb-3">
+                                <div class="url-entry card bg-surface-2 p-3 mb-2">
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <input type="url" class="form-control" placeholder="https://example.com/page" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-select priority-select">
+                                                <option value="1.0">High Priority (1.0)</option>
+                                                <option value="0.8" selected>Important (0.8)</option>
+                                                <option value="0.6">Normal (0.6)</option>
+                                                <option value="0.4">Low (0.4)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-select freq-select">
+                                                <option value="always">Always</option>
+                                                <option value="daily" selected>Daily</option>
+                                                <option value="weekly">Weekly</option>
+                                                <option value="monthly">Monthly</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="addUrlBtn">
+                                <i class="fas fa-plus me-2"></i>Add Another URL
+                            </button>
+                        </div>
+
+                        <!-- Advanced Options -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-cogs me-2"></i>Advanced Options</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Last Modified Date Format</label>
+                                <select class="form-control" id="dateFormat">
+                                    <option value="auto">Auto-detect</option>
+                                    <option value="current">Current Date/Time</option>
+                                    <option value="custom">Custom Date</option>
+                                </select>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="includeImages">
+                                <label class="form-check-label" for="includeImages">
+                                    Include image sitemap
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="includeHreflang">
+                                <label class="form-check-label" for="includeHreflang">
+                                    Include hreflang attributes
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-code me-2"></i>Generate Sitemap
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column - Preview & Output -->
+            <div class="tool-sidebar">
+                <!-- Statistics Card -->
+                <div class="tool-card">
+                    <h5><i class="fas fa-chart-bar me-2"></i>Sitemap Statistics</h5>
+                    <div class="row text-center g-3">
+                        <div class="col-6">
+                            <div class="p-3 rounded bg-surface-2">
+                                <h3 class="mb-0" id="urlCount">0</h3>
+                                <small class="text-secondary">Total URLs</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded bg-surface-2">
+                                <h3 class="mb-0" id="fileSize">0 KB</h3>
+                                <small class="text-secondary">File Size</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generated Sitemap -->
+                <div class="tool-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0"><i class="fas fa-code me-2"></i>Generated Sitemap</h5>
+                        <div class="btn-group">
+                            <button class="copy-btn" id="copyBtn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="copy-btn ms-2" id="downloadBtn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                    <pre class="bg-dark p-3 rounded" id="output"><code>Sitemap will appear here...</code></pre>
+                </div>
+
+                <!-- Validation Results -->
+                <div class="tool-card">
+                    <h5><i class="fas fa-check-circle me-2"></i>Validation</h5>
+                    <div id="validationResults">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-info-circle mb-2"></i>
+                            <p>Generate a sitemap to see validation results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/seo-tools.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('sitemapForm');
+            const urlList = document.getElementById('urlList');
+            const addUrlBtn = document.getElementById('addUrlBtn');
+            const output = document.getElementById('output');
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const validationResults = document.getElementById('validationResults');
+
+            // Add URL entry
+            addUrlBtn.addEventListener('click', () => {
+                const urlEntry = document.createElement('div');
+                urlEntry.className = 'url-entry card bg-surface-2 p-3 mb-2';
+                urlEntry.innerHTML = `
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <input type="url" class="form-control" placeholder="https://example.com/page" required>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select priority-select">
+                                <option value="1.0">High Priority (1.0)</option>
+                                <option value="0.8" selected>Important (0.8)</option>
+                                <option value="0.6">Normal (0.6)</option>
+                                <option value="0.4">Low (0.4)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select freq-select">
+                                <option value="always">Always</option>
+                                <option value="daily" selected>Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-link text-danger btn-sm position-absolute top-0 end-0" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                urlList.appendChild(urlEntry);
+                updateUrlCount();
+            });
+
+            // Generate sitemap
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const websiteUrl = document.getElementById('websiteUrl').value;
+                const urls = [];
+                
+                document.querySelectorAll('.url-entry').forEach(entry => {
+                    const url = entry.querySelector('input[type="url"]').value;
+                    const priority = entry.querySelector('.priority-select').value;
+                    const frequency = entry.querySelector('.freq-select').value;
+                    
+                    if (url && seoTools.validateUrl('https://' + url)) {
+                        urls.push({ url: 'https://' + url, priority, frequency });
+                    }
+                });
+
+                const sitemap = generateSitemap(websiteUrl, urls);
+                output.innerHTML = `<code>${sitemap}</code>`;
+                validateSitemap(sitemap);
+                updateFileSize(sitemap);
+                seoTools.showToast('Sitemap generated successfully!', 'success');
+            });
+
+            // Generate XML sitemap
+            function generateSitemap(websiteUrl, urls) {
+                const now = new Date().toISOString();
+                let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+`;
+                
+                urls.forEach(({url, priority, frequency}) => {
+                    xml += `    <url>
+        <loc>${url}</loc>
+        <lastmod>${now}</lastmod>
+        <changefreq>${frequency}</changefreq>
+        <priority>${priority}</priority>
+    </url>
+`;
+                });
+
+                xml += '</urlset>';
+                return xml;
+            }
+
+            // Validate sitemap
+            function validateSitemap(sitemap) {
+                const validation = seoTools.validateXml(sitemap);
+                let html = '<div class="validation-list">';
+                
+                if (validation.valid) {
+                    const checks = [
+                        { test: sitemap.includes('<?xml'), message: 'XML Declaration' },
+                        { test: sitemap.includes('xmlns='), message: 'XML Namespace' },
+                        { test: sitemap.match(/<url>/g), message: 'URL Entries' },
+                        { test: sitemap.includes('<priority>'), message: 'Priority Tags' }
+                    ];
+
+                    checks.forEach(check => {
+                        const icon = check.test ? 'check-circle text-success' : 'times-circle text-danger';
+                        html += `
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-${icon} me-2"></i>
+                                <span>${check.message}</span>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html += `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            ${validation.errors}
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+                validationResults.innerHTML = html;
+            }
+
+            // Update URL count
+            function updateUrlCount() {
+                const count = document.querySelectorAll('.url-entry').length;
+                document.getElementById('urlCount').textContent = count;
+            }
+
+            // Update file size
+            function updateFileSize(content) {
+                const size = seoTools.formatFileSize(new Blob([content]).size);
+                document.getElementById('fileSize').textContent = size;
+            }
+
+            // Copy to clipboard
+            copyBtn.addEventListener('click', () => {
+                const code = output.textContent;
+                seoTools.copyToClipboard(code, copyBtn);
+            });
+
+            // Download sitemap
+            downloadBtn.addEventListener('click', () => {
+                const content = output.textContent;
+                const data = [['<?xml version="1.0" encoding="UTF-8"?>', content]];
+                seoTools.exportToCsv(data, 'sitemap.xml');
+            });
+
+            // Initialize
+            updateUrlCount();
+        });
+    </script>
+
+    <style>
+        .url-entry {
+            position: relative;
+        }
+        
+        .validation-list {
+            font-size: 0.9rem;
+        }
+        
+        .btn-group .copy-btn {
+            border-radius: 4px;
+        }
+        
+        .btn-group .copy-btn:hover {
+            background: var(--surface-3);
+        }
+    </style>
+</body>
+</html>
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +351,205 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+            --alert-info-bg: #cff4fc;
+            --alert-info-border: #b6effb;
+            --alert-info-text: #055160;
+            --table-bg: #ffffff;
+            --table-border: #dee2e6;
+            --table-striped-bg: #f8f9fa;
+            --code-bg: #f8f9fa;
+            --code-border: #dee2e6;
+            --code-text: #212529;
+            --body-bg: #f8f9fa;
+            --form-text: #6c757d;
+            --link-color: #0d6efd;
+            --link-hover: #0a58ca;
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --input-bg: #2d2d2d;
+            --border-color: #404040;
+            --alert-info-bg: #1a3a5f;
+            --alert-info-border: #2d5a8e;
+            --alert-info-text: #75b798;
+            --table-bg: #2d2d2d;
+            --table-border: #404040;
+            --table-striped-bg: #3d3d3d;
+            --code-bg: #2d2d2d;
+            --code-border: #404040;
+            --code-text: #ffffff;
+            --body-bg: #1a1a1a;
+            --form-text: #b0b0b0;
+            --link-color: #4dabf7;
+            --link-hover: #74c0fc;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            color: var(--text-primary);
+        }
+
+        .tool-container {
+            color: var(--text-primary);
+        }
+
+        .tool-header h1 {
+            color: var(--text-primary);
+        }
+
+        .tool-header p {
+            color: var(--text-secondary);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: 0 4px 15px var(--card-shadow);
+        }
+
+        .card-body {
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .form-label {
+            color: var(--text-primary);
+        }
+
+        .form-text {
+            color: var(--form-text);
+        }
+
+        .form-control, .form-select {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: var(--input-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-check-label {
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+            color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-secondary {
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .alert-info {
+            background-color: var(--alert-info-bg);
+            border-color: var(--alert-info-border);
+            color: var(--alert-info-text);
+        }
+
+        .table {
+            color: var(--text-primary);
+            background-color: var(--table-bg);
+            border-color: var(--table-border);
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: var(--table-striped-bg);
+        }
+
+        .table > :not(caption) > * > * {
+            border-bottom-color: var(--table-border);
+        }
+
+        .text-muted {
+            color: var(--text-secondary) !important;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            color: var(--code-text);
+        }
+
+        a {
+            color: var(--link-color);
+        }
+
+        a:hover {
+            color: var(--link-hover);
+        }
+
+        .sitemap-preview {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        .url-path {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .url-priority {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header will be loaded here -->

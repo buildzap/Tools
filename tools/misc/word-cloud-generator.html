@@ -14,36 +14,155 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --cloud-bg: #ffffff;
+            --cloud-border: #dee2e6;
+            --form-bg: #ffffff;
+            --form-text: #212529;
+            --form-border: #dee2e6;
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --cloud-bg: #2d2d2d;
+            --cloud-border: #404040;
+            --form-bg: #2d2d2d;
+            --form-text: #ffffff;
+            --form-border: #404040;
+        }
+
         .word-cloud-container {
             width: 100%;
             height: 400px;
-            border: 1px solid #dee2e6;
+            border: 1px solid var(--cloud-border);
             border-radius: 4px;
             margin-bottom: 1rem;
             position: relative;
-            background-color: white;
+            background-color: var(--cloud-bg);
         }
+
         .word-cloud {
             width: 100%;
             height: 100%;
             position: relative;
         }
+
         .word-cloud-word {
             position: absolute;
             cursor: pointer;
             transition: transform 0.2s;
+            color: var(--text-primary);
         }
+
         .word-cloud-word:hover {
             transform: scale(1.1);
         }
+
         .color-preview {
             width: 30px;
             height: 30px;
             border-radius: 4px;
-            border: 1px solid #dee2e6;
+            border: 1px solid var(--form-border);
             display: inline-block;
             vertical-align: middle;
             margin-right: 0.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .form-label {
+            color: var(--text-primary);
+        }
+
+        .form-control, .form-select {
+            background-color: var(--form-bg);
+            color: var(--form-text);
+            border-color: var(--form-border);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--form-bg);
+            color: var(--form-text);
+            border-color: var(--accent-color);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .alert {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            color: var(--text-primary);
+        }
+
+        .alert-info {
+            background-color: rgba(13, 110, 253, 0.1);
+            border-color: rgba(13, 110, 253, 0.2);
+        }
+
+        [data-theme="dark"] .alert-info {
+            background-color: rgba(13, 110, 253, 0.2);
+            border-color: rgba(13, 110, 253, 0.3);
+        }
+
+        /* Custom scrollbar for dark theme */
+        [data-theme="dark"] ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 4px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Ensure textarea has proper contrast */
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Style for word frequency tooltip */
+        .word-tooltip {
+            position: absolute;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--card-border);
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            z-index: 1000;
+            box-shadow: 0 2px 4px var(--card-shadow);
         }
     </style>
 </head>

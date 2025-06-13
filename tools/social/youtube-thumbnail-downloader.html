@@ -3,150 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Thumbnail Downloader - Multi-Tools</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
+    <title>YouTube Thumbnail Downloader - Free Online Tool</title>
+    <meta name="description" content="Download high-quality thumbnails from any YouTube video with our free online tool. Get thumbnails in multiple resolutions.">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/tool.css" rel="stylesheet">
+    <link href="../../styles/social-tools-dark.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
 </head>
-<body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+<body class="dark-theme">
+    <!-- Header Include -->
+    <div include-html="../../components/header.html"></div>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fab fa-youtube"></i> YouTube Thumbnail Downloader</h1>
-                <p>Download high-quality thumbnails from any YouTube video</p>
+    <main class="social-tool-container">
+        <div class="tool-header">
+            <h1><i class="fab fa-youtube"></i> YouTube Thumbnail Downloader</h1>
+            <p class="text-secondary">Download high-quality thumbnails from any YouTube video in multiple resolutions</p>
+        </div>
+
+        <div class="tool-content">
+            <!-- URL Input Section -->
+            <div class="tool-card">
+                <div class="form-group">
+                    <label for="videoUrl">YouTube Video URL</label>
+                    <div class="input-group">
+                        <input type="text" id="videoUrl" class="form-control" 
+                               placeholder="https://www.youtube.com/watch?v=...">
+                        <button class="btn-primary" onclick="getThumbnails()">
+                            <i class="fas fa-search"></i> Get Thumbnails
+                        </button>
+                    </div>
+                    <small class="text-secondary">Paste any YouTube video URL to download its thumbnails</small>
+                </div>
             </div>
 
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="thumbnailForm">
-                                <!-- URL Input -->
-                                <div class="mb-3">
-                                    <label for="videoUrl" class="form-label">YouTube Video URL</label>
-                                    <div class="input-group">
-                                        <input type="url" class="form-control" id="videoUrl" 
-                                               placeholder="Enter YouTube video URL (e.g., https://www.youtube.com/watch?v=...)" required>
-                                        <button class="btn btn-outline-secondary" type="button" id="clearButton">
-                                            <i class="fas fa-eraser"></i>
-                                        </button>
-                                    </div>
-                                    <div class="form-text">Paste the full YouTube video URL here</div>
-                                </div>
-
-                                <div class="d-grid">
-                                    <button type="button" class="btn btn-primary" id="fetchButton">
-                                        <i class="fas fa-search"></i> Fetch Thumbnails
-                                    </button>
-                                </div>
-                            </form>
+            <!-- Results Section -->
+            <div id="results" style="display: none">
+                <div class="tool-card">
+                    <h3>Available Thumbnails</h3>
+                    <div class="quality-options" id="qualityOptions">
+                        <button class="quality-option active" data-quality="maxres">Maximum Resolution</button>
+                        <button class="quality-option" data-quality="standard">Standard</button>
+                        <button class="quality-option" data-quality="high">High Quality</button>
+                        <button class="quality-option" data-quality="medium">Medium Quality</button>
+                        <button class="quality-option" data-quality="default">Default</button>
+                    </div>
+                                    <button type="button" class="btn btn-primary" id="fetchButton">                    <!-- Preview -->
+                    <div class="media-preview">
+                        <img id="thumbnailPreview" src="" alt="Thumbnail preview">
+                        <div class="overlay">
+                            <button class="btn-primary" onclick="downloadCurrentThumbnail()">
+                                <i class="fas fa-download"></i> Download
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Thumbnails Section -->
-                    <div class="card mt-4" id="thumbnailsCard" style="display: none;">
-                        <div class="card-body">
-                            <h5 class="card-title">Available Thumbnails</h5>
-                            <div class="row" id="thumbnailsList"></div>
+                    <!-- Metadata -->
+                    <div class="metadata-grid">
+                        <div class="metadata-item">
+                            <span class="metadata-label">Video Title</span>
+                            <span class="metadata-value" id="videoTitle">-</span>
                         </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Recent Downloads</h5>
-                            <div id="history" class="text-center text-muted">
-                                No thumbnails downloaded yet
-                            </div>
+                        <div class="metadata-item">
+                            <span class="metadata-label">Resolution</span>
+                            <span class="metadata-value" id="resolution">-</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
-
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About YouTube Thumbnail Downloader</h5>
-                            <p class="card-text">
-                                Download high-quality thumbnails from any YouTube video.
-                                Supports multiple thumbnail resolutions.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Multiple resolutions</li>
-                                <li><i class="fas fa-check text-success"></i> Quick download</li>
-                                <li><i class="fas fa-check text-success"></i> Preview thumbnails</li>
-                                <li><i class="fas fa-check text-success"></i> Download history</li>
-                                <li><i class="fas fa-check text-success"></i> Easy to use</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Use the highest resolution thumbnail for best quality.</small>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            
+            <!-- Information Card -->
+            <div class="tool-card">
+                <h3>About This Tool</h3>
+                <p class="text-secondary">
+                    Download high-quality thumbnails from any YouTube video. Perfect for content creators, bloggers, and social media managers.
+                </p>
+                
+                <h4>Features:</h4>
+                <ul class="feature-list">
+                    <li>
+                        <i class="fas fa-photo-film text-primary"></i>
+                        <span>Multiple Resolution Options</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-bolt text-primary"></i>
+                        <span>Instant Preview & Download</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-eye text-primary"></i>
+                        <span>Live Quality Preview</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-info-circle text-primary"></i>
+                        <span>Video Metadata Support</span>
+                    </li>
+                </ul>
+                      Pro Tip: For best results, try the Maximum Resolution option first, then Standard if the maximum resolution is not available.
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
+    <!-- Footer Include -->
+    <div include-html="../../components/footer.html"></div>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
+    <!-- Scripts -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/social-tools.js"></script>
     <script>
+        let currentVideoId = '';
+        let currentMetadata = null;
+        let currentQuality = 'maxres';
+
+        async function getThumbnails() {
+            const urlInput = document.getElementById('videoUrl');
+            const url = urlInput.value.trim();
+
+            if (!socialTools.videoInfo.validateUrl(url, 'youtube')) {
+                socialTools.showToast('Please enter a valid YouTube URL', 'error');
+                return;
+            }
+
+            try {
+                currentVideoId = socialTools.videoInfo.extractVideoId(url, 'youtube');
+                if (!currentVideoId) throw new Error('Could not extract video ID');
+
+                // Show loading state
+                document.getElementById('results').style.display = 'none';
+                socialTools.showToast('Fetching thumbnail data...', 'info');
+
+                // Get video metadata
+                currentMetadata = await socialTools.youtube.getVideoMetadata(currentVideoId);
+                
+                // Update UI
+                document.getElementById('videoTitle').textContent = currentMetadata.title;
+                document.getElementById('results').style.display = 'block';
+                
+                // Update preview with current quality
+                updateThumbnailPreview();
+                
+                socialTools.showToast('Thumbnails loaded successfully!', 'success');
+            } catch (err) {
+                socialTools.showToast('Failed to fetch thumbnails: ' + err.message, 'error');
+            }
+        }        function updateThumbnailPreview() {
+            if (!currentVideoId) return;
+
+            const preview = document.getElementById('thumbnailPreview');
+            preview.src = `https://img.youtube.com/vi/${currentVideoId}/${currentQuality}.jpg`;
+
+            const resolutions = {
+                maxres: '1280x720',
+                standard: '640x480',
+                high: '480x360',
+                medium: '320x180',
+                default: '120x90'
+            };
+            document.getElementById('resolution').textContent = resolutions[currentQuality];
+        }
+
+        async function downloadCurrentThumbnail() {
+            if (!currentVideoId) return;
+
+            try {
+                await socialTools.youtube.downloadThumbnail(currentVideoId, currentQuality);
+            } catch (err) {
+                socialTools.showToast('Download failed: ' + err.message, 'error');
+            }
+        }
+
+        // Quality selection
+        document.getElementById('qualityOptions').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('quality-option')) return;
+            
+            // Update active state
+            document.querySelectorAll('.quality-option').forEach(btn => 
+                btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            // Update quality and preview
+            currentQuality = e.target.dataset.quality;
+            updateThumbnailPreview();
+        });        // Initialize HTML includes and any startup logic
         document.addEventListener('DOMContentLoaded', function() {
-            const videoUrl = document.getElementById('videoUrl');
-            const fetchButton = document.getElementById('fetchButton');
-            const clearButton = document.getElementById('clearButton');
-            const thumbnailsCard = document.getElementById('thumbnailsCard');
-            const thumbnailsList = document.getElementById('thumbnailsList');
-            const history = document.getElementById('history');
-            let downloadHistory = [];
-
-            // Extract video ID from URL
-            function extractVideoId(url) {
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-                const match = url.match(regExp);
-                return (match && match[2].length === 11) ? match[2] : null;
-            }
-
-            // Generate thumbnail URLs
-            function generateThumbnailUrls(videoId) {
-                return {
-                    maxres: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
-                    hq: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-                    mq: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
-                    sd: `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
-                    default: `https://img.youtube.com/vi/${videoId}/default.jpg`
-                };
-            }
-
-            // Fetch thumbnails
-            async function fetchThumbnails() {
-                try {
+            includeHTML();
+            
+            // Clear URL input on page load
+            document.getElementById('videoUrl').value = '';
+        });
+    </script>
+</body>
+</html>
                     const url = videoUrl.value.trim();
                     const videoId = extractVideoId(url);
                     

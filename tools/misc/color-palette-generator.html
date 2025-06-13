@@ -14,6 +14,30 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --input-bg: #2d2d2d;
+            --border-color: #404040;
+        }
+
         .color-box {
             height: 100px;
             border-radius: 8px;
@@ -24,21 +48,99 @@
             color: white;
             text-shadow: 0 1px 2px rgba(0,0,0,0.3);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
         }
+
         .color-box:hover {
             transform: scale(1.02);
+            box-shadow: 0 4px 8px var(--card-shadow);
         }
+
         .color-box.light {
-            color: #333;
+            color: var(--text-primary);
             text-shadow: 0 1px 2px rgba(255,255,255,0.3);
         }
+
         .color-info {
             font-size: 0.9rem;
             font-family: monospace;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px 8px;
+            border-radius: 4px;
         }
+
+        .color-box.light .color-info {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
         .palette-type {
             margin-bottom: 1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: 0 4px 15px var(--card-shadow);
+        }
+
+        .card-body {
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+        }
+
+        .form-label {
+            color: var(--text-primary);
+        }
+
+        .form-control, .form-select {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: var(--input-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+            color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-primary {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--accent-color);
+            color: var(--text-primary);
+        }
+
+        .btn-success {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .color-box {
+                height: 80px;
+            }
+            .color-info {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>

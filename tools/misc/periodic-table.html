@@ -14,90 +14,176 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --element-bg: #ffffff;
+            --element-border: #dee2e6;
+            --element-text: #212529;
+            --element-number: #6c757d;
+            --element-name: #6c757d;
+            --element-symbol: #212529;
+            --element-hover-shadow: rgba(0, 0, 0, 0.15);
+            --details-bg: #ffffff;
+            --details-border: #dee2e6;
+            --details-text: #212529;
+            --property-strong: #0d6efd;
+        }
+
+        [data-theme="dark"] {
+            --element-bg: #2d2d2d;
+            --element-border: #404040;
+            --element-text: #ffffff;
+            --element-number: #b0b0b0;
+            --element-name: #b0b0b0;
+            --element-symbol: #ffffff;
+            --element-hover-shadow: rgba(0, 0, 0, 0.3);
+            --details-bg: #2d2d2d;
+            --details-border: #404040;
+            --details-text: #ffffff;
+            --property-strong: #0d6efd;
+        }
+
         .periodic-table {
             display: grid;
             grid-template-columns: repeat(18, 1fr);
             gap: 2px;
             margin: 2rem 0;
         }
+
         .element {
             aspect-ratio: 1;
             padding: 0.25rem;
-            border: 1px solid #dee2e6;
+            border: 1px solid var(--element-border);
             border-radius: 4px;
-            background-color: white;
+            background-color: var(--element-bg);
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
             font-size: 0.8rem;
+            color: var(--element-text);
         }
+
         .element:hover {
             transform: scale(1.1);
             z-index: 1;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0.5rem 1rem var(--element-hover-shadow);
         }
+
         .element.selected {
-            border-color: #0d6efd;
+            border-color: var(--property-strong);
             border-width: 2px;
         }
+
         .element .number {
             font-size: 0.7rem;
-            color: #6c757d;
+            color: var(--element-number);
         }
+
         .element .symbol {
             font-size: 1.2rem;
             font-weight: bold;
             margin: 0.1rem 0;
+            color: var(--element-symbol);
         }
+
         .element .name {
             font-size: 0.6rem;
-            color: #6c757d;
+            color: var(--element-name);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .element-details {
-            background-color: white;
-            border: 1px solid #dee2e6;
+            background-color: var(--details-bg);
+            border: 1px solid var(--details-border);
             border-radius: 4px;
             padding: 1rem;
             margin-top: 1rem;
+            color: var(--details-text);
         }
+
         .element-details h3 {
             margin-bottom: 1rem;
+            color: var(--details-text);
         }
+
         .element-property {
             margin-bottom: 0.5rem;
+            color: var(--details-text);
         }
+
         .element-property strong {
-            color: #0d6efd;
+            color: var(--property-strong);
         }
+
         .category-filter {
             margin-bottom: 1rem;
         }
+
         .category-filter .btn {
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
         }
+
         .search-box {
             margin-bottom: 1rem;
         }
+
+        .search-box input {
+            background-color: var(--element-bg);
+            color: var(--element-text);
+            border-color: var(--element-border);
+        }
+
+        .search-box input:focus {
+            background-color: var(--element-bg);
+            color: var(--element-text);
+            border-color: var(--property-strong);
+        }
+
         .legend {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
             margin: 1rem 0;
         }
+
         .legend-item {
             display: flex;
             align-items: center;
             font-size: 0.9rem;
+            color: var(--element-text);
         }
+
         .legend-color {
             width: 1rem;
             height: 1rem;
             border-radius: 2px;
             margin-right: 0.5rem;
+        }
+
+        .card {
+            background-color: var(--element-bg);
+            border-color: var(--element-border);
+        }
+
+        .card-title {
+            color: var(--element-text);
+        }
+
+        .btn-outline-primary {
+            color: var(--property-strong);
+            border-color: var(--property-strong);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--property-strong);
+            color: #ffffff;
+        }
+
+        .btn-outline-primary.active {
+            background-color: var(--property-strong);
+            color: #ffffff;
         }
     </style>
 </head>
@@ -198,191 +284,7 @@
     <!-- Custom JS -->
     <script src="../../js/main.js"></script>
     <script src="../../js/theme.js"></script>
-    <script>
-        // Load header and footer
-        fetch('../../components/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('../../components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-
-        // Sample element data (in a real application, this would be more complete)
-        const elements = [
-            {
-                number: 1,
-                symbol: 'H',
-                name: 'Hydrogen',
-                category: 'nonmetal',
-                atomicMass: 1.008,
-                electronConfiguration: '1s¹',
-                electronegativity: 2.20,
-                atomicRadius: 120,
-                ionizationEnergy: 13.598,
-                density: 0.00008988,
-                meltingPoint: 14.01,
-                boilingPoint: 20.28,
-                discoveredBy: 'Henry Cavendish',
-                year: 1766
-            },
-            {
-                number: 2,
-                symbol: 'He',
-                name: 'Helium',
-                category: 'noble-gas',
-                atomicMass: 4.002602,
-                electronConfiguration: '1s²',
-                electronegativity: null,
-                atomicRadius: 140,
-                ionizationEnergy: 24.587,
-                density: 0.0001785,
-                meltingPoint: 0.95,
-                boilingPoint: 4.22,
-                discoveredBy: 'Pierre Janssen',
-                year: 1895
-            }
-            // Add more elements here...
-        ];
-
-        const categoryColors = {
-            'alkali-metal': '#ffcdd2',
-            'alkaline-earth': '#f8bbd0',
-            'transition-metal': '#e1bee7',
-            'post-transition': '#d1c4e9',
-            'metalloid': '#c5cae9',
-            'nonmetal': '#bbdefb',
-            'noble-gas': '#b3e5fc',
-            'lanthanide': '#b2ebf2',
-            'actinide': '#b2dfdb'
-        };
-
-        let selectedElement = null;
-        let currentCategory = 'all';
-
-        function createElementCard(element) {
-            const div = document.createElement('div');
-            div.className = 'element';
-            div.style.backgroundColor = categoryColors[element.category];
-            div.innerHTML = `
-                <div class="number">${element.number}</div>
-                <div class="symbol">${element.symbol}</div>
-                <div class="name">${element.name}</div>
-            `;
-            div.onclick = () => showElementDetails(element);
-            return div;
-        }
-
-        function showElementDetails(element) {
-            selectedElement = element;
-            const detailsDiv = document.getElementById('elementDetails');
-            detailsDiv.style.display = 'block';
-            detailsDiv.innerHTML = `
-                <h3>${element.name} (${element.symbol})</h3>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="element-property">
-                            <strong>Atomic Number:</strong> ${element.number}
-                        </div>
-                        <div class="element-property">
-                            <strong>Atomic Mass:</strong> ${element.atomicMass} u
-                        </div>
-                        <div class="element-property">
-                            <strong>Category:</strong> ${element.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                        </div>
-                        <div class="element-property">
-                            <strong>Electron Configuration:</strong> ${element.electronConfiguration}
-                        </div>
-                        <div class="element-property">
-                            <strong>Electronegativity:</strong> ${element.electronegativity || 'N/A'}
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="element-property">
-                            <strong>Atomic Radius:</strong> ${element.atomicRadius} pm
-                        </div>
-                        <div class="element-property">
-                            <strong>Ionization Energy:</strong> ${element.ionizationEnergy} eV
-                        </div>
-                        <div class="element-property">
-                            <strong>Density:</strong> ${element.density} g/cm³
-                        </div>
-                        <div class="element-property">
-                            <strong>Melting Point:</strong> ${element.meltingPoint} K
-                        </div>
-                        <div class="element-property">
-                            <strong>Boiling Point:</strong> ${element.boilingPoint} K
-                        </div>
-                    </div>
-                </div>
-                <div class="element-property mt-3">
-                    <strong>Discovered by:</strong> ${element.discoveredBy} (${element.year})
-                </div>
-            `;
-            
-            // Update selected state
-            document.querySelectorAll('.element').forEach(el => {
-                el.classList.remove('selected');
-            });
-            document.querySelector(`.element:nth-child(${element.number})`).classList.add('selected');
-        }
-
-        function filterByCategory(category) {
-            currentCategory = category;
-            
-            // Update button states
-            document.querySelectorAll('.category-filter .btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Update element visibility
-            document.querySelectorAll('.element').forEach(el => {
-                const elementNumber = parseInt(el.querySelector('.number').textContent);
-                const element = elements.find(e => e.number === elementNumber);
-                
-                if (category === 'all' || element.category === category) {
-                    el.style.display = '';
-                } else {
-                    el.style.display = 'none';
-                }
-            });
-        }
-
-        function searchElements() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            document.querySelectorAll('.element').forEach(el => {
-                const elementNumber = parseInt(el.querySelector('.number').textContent);
-                const element = elements.find(e => e.number === elementNumber);
-                
-                if (element.name.toLowerCase().includes(searchTerm) ||
-                    element.symbol.toLowerCase().includes(searchTerm) ||
-                    element.number.toString().includes(searchTerm)) {
-                    el.style.display = '';
-                } else {
-                    el.style.display = 'none';
-                }
-            });
-        }
-
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            filterByCategory(currentCategory);
-        }
-
-        // Initialize periodic table
-        const periodicTable = document.getElementById('periodicTable');
-        elements.forEach(element => {
-            periodicTable.appendChild(createElementCard(element));
-        });
-
-        // Add event listeners
-        document.getElementById('searchInput').addEventListener('input', searchElements);
-    </script>
+    <!-- Periodic Table JS -->
+    <script src="periodic-table.js"></script>
 </body>
 </html> 

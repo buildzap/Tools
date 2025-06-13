@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miscellaneous Tools - Free Online Tools</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --main-bg: #1a1a1a;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --main-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-title {
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .lead {
+            color: var(--text-muted);
+        }
+
+        .form-label {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-control {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            background-color: var(--card-bg);
+            border-color: var(--bs-primary);
+            color: var(--text-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-check-label {
+            color: var(--text-color);
+        }
+
+        .card-text {
+            color: var(--text-color);
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: var(--bs-primary);
+        }
+
+        .tool-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            color: var(--bs-primary);
+        }
+
+        .tool-section {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+            margin-bottom: 20px;
+        }
+
+        .tool-section h3 {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .tool-card h4 {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .tool-card p {
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .tool-icon-large {
+            font-size: 24px;
+            color: var(--bs-primary);
+            margin-bottom: 10px;
+        }
+
+        .search-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .search-box .form-control {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .search-box .form-control:focus {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .category-title {
+            color: var(--text-color);
+            font-weight: 600;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tool-description {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .tool-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tool-tag {
+            background-color: var(--bs-primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container my-4">
+        <h1 class="text-center mb-4">Miscellaneous Tools</h1>
+        <p class="text-center text-muted mb-4">A collection of useful tools for everyday tasks</p>
+
+        <div class="ad-space text-center mb-4">
+            <!-- Ad Space -->
+        </div>
+
+        <div class="search-box">
+            <div class="input-group">
+                <span class="input-group-text bg-transparent border-end-0">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" id="toolSearch" placeholder="Search for tools...">
+            </div>
+        </div>
+
+        <div class="tool-grid" id="toolsGrid">
+            <!-- Calculators -->
+            <div class="tool-card" data-tool="calculator">
+                <i class="fas fa-calculator tool-icon-large"></i>
+                <h4>Calculator</h4>
+                <p class="tool-description">Basic calculator for everyday calculations</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Math</span>
+                    <span class="tool-tag">Basic</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="unit-converter">
+                <i class="fas fa-exchange-alt tool-icon-large"></i>
+                <h4>Unit Converter</h4>
+                <p class="tool-description">Convert between different units of measurement</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Conversion</span>
+                    <span class="tool-tag">Units</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="unit-price-calculator">
+                <i class="fas fa-tags tool-icon-large"></i>
+                <h4>Unit Price Calculator</h4>
+                <p class="tool-description">Calculate and compare unit prices</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Shopping</span>
+                    <span class="tool-tag">Price</span>
+                </div>
+            </div>
+
+            <!-- Time Tools -->
+            <div class="tool-card" data-tool="countdown-timer">
+                <i class="fas fa-hourglass-half tool-icon-large"></i>
+                <h4>Countdown Timer</h4>
+                <p class="tool-description">Set and track countdown timers</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Time</span>
+                    <span class="tool-tag">Timer</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="stopwatch">
+                <i class="fas fa-stopwatch tool-icon-large"></i>
+                <h4>Stopwatch</h4>
+                <p class="tool-description">Track time with a digital stopwatch</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Time</span>
+                    <span class="tool-tag">Timer</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="pomodoro-timer">
+                <i class="fas fa-clock tool-icon-large"></i>
+                <h4>Pomodoro Timer</h4>
+                <p class="tool-description">Boost productivity with the Pomodoro technique</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Productivity</span>
+                    <span class="tool-tag">Timer</span>
+                </div>
+            </div>
+
+            <!-- Generators -->
+            <div class="tool-card" data-tool="password-strength-checker">
+                <i class="fas fa-key tool-icon-large"></i>
+                <h4>Password Strength Checker</h4>
+                <p class="tool-description">Check the strength of your passwords</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Security</span>
+                    <span class="tool-tag">Password</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="random-number-generator">
+                <i class="fas fa-dice tool-icon-large"></i>
+                <h4>Random Number Generator</h4>
+                <p class="tool-description">Generate random numbers within a range</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Random</span>
+                    <span class="tool-tag">Numbers</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="name-generator">
+                <i class="fas fa-user tool-icon-large"></i>
+                <h4>Name Generator</h4>
+                <p class="tool-description">Generate random names for various purposes</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Names</span>
+                    <span class="tool-tag">Random</span>
+                </div>
+            </div>
+
+            <!-- Converters -->
+            <div class="tool-card" data-tool="currency-exchange-rates">
+                <i class="fas fa-money-bill-wave tool-icon-large"></i>
+                <h4>Currency Exchange Rates</h4>
+                <p class="tool-description">Convert between different currencies</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Currency</span>
+                    <span class="tool-tag">Finance</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="file-size-converter">
+                <i class="fas fa-file tool-icon-large"></i>
+                <h4>File Size Converter</h4>
+                <p class="tool-description">Convert between different file size units</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">File</span>
+                    <span class="tool-tag">Size</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="recipe-converter">
+                <i class="fas fa-utensils tool-icon-large"></i>
+                <h4>Recipe Converter</h4>
+                <p class="tool-description">Convert recipe measurements</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Cooking</span>
+                    <span class="tool-tag">Conversion</span>
+                </div>
+            </div>
+
+            <!-- Productivity -->
+            <div class="tool-card" data-tool="todo-list">
+                <i class="fas fa-tasks tool-icon-large"></i>
+                <h4>Todo List</h4>
+                <p class="tool-description">Manage your tasks and to-dos</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Productivity</span>
+                    <span class="tool-tag">Tasks</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="note-pad">
+                <i class="fas fa-sticky-note tool-icon-large"></i>
+                <h4>Note Pad</h4>
+                <p class="tool-description">Quick and simple note-taking</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Notes</span>
+                    <span class="tool-tag">Text</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="resume-builder">
+                <i class="fas fa-file-alt tool-icon-large"></i>
+                <h4>Resume Builder</h4>
+                <p class="tool-description">Create professional resumes</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Career</span>
+                    <span class="tool-tag">Document</span>
+                </div>
+            </div>
+
+            <!-- Fun Tools -->
+            <div class="tool-card" data-tool="dice-roller">
+                <i class="fas fa-dice-d20 tool-icon-large"></i>
+                <h4>Dice Roller</h4>
+                <p class="tool-description">Roll virtual dice for games</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Games</span>
+                    <span class="tool-tag">Random</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="flip-coin">
+                <i class="fas fa-coins tool-icon-large"></i>
+                <h4>Flip Coin</h4>
+                <p class="tool-description">Flip a virtual coin</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Games</span>
+                    <span class="tool-tag">Random</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="decision-maker">
+                <i class="fas fa-random tool-icon-large"></i>
+                <h4>Decision Maker</h4>
+                <p class="tool-description">Make random decisions</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Random</span>
+                    <span class="tool-tag">Fun</span>
+                </div>
+            </div>
+
+            <!-- Utility Tools -->
+            <div class="tool-card" data-tool="weather-forecast">
+                <i class="fas fa-cloud-sun tool-icon-large"></i>
+                <h4>Weather Forecast</h4>
+                <p class="tool-description">Check weather forecasts</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Weather</span>
+                    <span class="tool-tag">Forecast</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="ip-address-tracker">
+                <i class="fas fa-network-wired tool-icon-large"></i>
+                <h4>IP Address Tracker</h4>
+                <p class="tool-description">Track and locate IP addresses</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Network</span>
+                    <span class="tool-tag">Security</span>
+                </div>
+            </div>
+
+            <div class="tool-card" data-tool="speed-test">
+                <i class="fas fa-tachometer-alt tool-icon-large"></i>
+                <h4>Speed Test</h4>
+                <p class="tool-description">Test your internet speed</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Network</span>
+                    <span class="tool-tag">Speed</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/header.js"></script>
+    <script src="/js/footer.js"></script>
+    <script src="misc-tools.js"></script>
+</body>
+</html> 

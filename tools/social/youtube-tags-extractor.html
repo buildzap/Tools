@@ -3,51 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Tags Extractor - Multi-Tools</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
+    <title>YouTube Tags Extractor - Free Online Tool</title>
+    <meta name="description" content="Extract, analyze, and copy tags from any YouTube video. Get insights into trending tags and optimize your video's visibility.">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/tool.css" rel="stylesheet">
+    <link href="../../styles/social-tools-dark.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
 </head>
-<body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+<body class="dark-theme">
+    <!-- Header Include -->
+    <div include-html="../../components/header.html"></div>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fab fa-youtube"></i> YouTube Tags Extractor</h1>
-                <p>Extract and analyze tags from YouTube videos</p>
+    <main class="social-tool-container">
+        <div class="tool-header">
+            <h1><i class="fab fa-youtube"></i> YouTube Tags Extractor</h1>
+            <p class="text-secondary">Extract and analyze tags from any YouTube video for better SEO optimization</p>
+        </div>
+
+        <div class="tool-content">
+            <!-- URL Input Section -->
+            <div class="tool-card">
+                <div class="form-group">
+                    <label for="videoUrl">YouTube Video URL</label>
+                    <div class="input-group">
+                        <input type="text" id="videoUrl" class="form-control" 
+                               placeholder="https://www.youtube.com/watch?v=...">
+                        <button class="btn-primary" onclick="extractTags()">
+                            <i class="fas fa-search"></i> Extract Tags
+                        </button>
+                    </div>
+                    <small class="text-secondary">Paste any YouTube video URL to analyze its tags</small>
+                </div>
+
+                <!-- Tag Categories -->                <div class="tag-categories mt-4">
+                    <h4>Popular Tag Categories</h4>
+                    <div class="quality-options" id="tagCategories">
+                        <button class="quality-option active" data-category="all">All Tags</button>
+                        <button class="quality-option" data-category="trending">Trending</button>
+                        <button class="quality-option" data-category="niche">Niche</button>
+                        <button class="quality-option" data-category="related">Related</button>
+                        <button class="quality-option" data-category="custom">Custom</button>
+                    </div>
+                </div>
             </div>
 
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
+            <!-- Results Section -->
+            <div id="results" style="display: none">
+                <!-- Video Info -->
+                <div class="tool-card">
+                    <div class="media-preview mb-4">
+                        <img id="videoThumbnail" src="" alt="Video thumbnail">
+                        <div class="overlay">
+                            <h3 id="videoTitle" class="text-white mb-2">-</h3>
+                            <p id="videoStats" class="text-white-50">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Tags Display -->
+                    <div class="tag-section">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="mb-0">Video Tags</h3>
+                            <div class="tag-actions">
+                                <button class="btn-outline" onclick="copyAllTags()">
+                                    <i class="fas fa-copy"></i> Copy All
+                                </button>
+                                <button class="btn-outline" onclick="downloadTags()">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tag Cloud -->
+                        <div class="tag-list" id="tagCloud"></div>
+
+                        <!-- Tag Statistics -->
+                        <div class="metadata-grid mt-4">
+                            <div class="metadata-item">
+                                <span class="metadata-label">Total Tags</span>
+                                <span class="metadata-value" id="totalTags">0</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="metadata-label">Popular Tags</span>
+                                <span class="metadata-value" id="popularTags">0</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="metadata-label">Niche Tags</span>
+                                <span class="metadata-value" id="nicheTags">0</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="metadata-label">Tag Score</span>
+                                <span class="metadata-value" id="tagScore">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="videoForm">
-                                <!-- URL Input -->
-                                <div class="mb-3">
-                                    <label for="videoUrl" class="form-label">YouTube Video URL</label>
-                                    <div class="input-group">
-                                        <input type="url" class="form-control" id="videoUrl" 
-                                               placeholder="Enter YouTube video URL (e.g., https://www.youtube.com/watch?v=...)" required>
-                                        <button class="btn btn-outline-secondary" type="button" id="clearButton">
-                                            <i class="fas fa-eraser"></i>
-                                        </button>
-                                    </div>
-                                    <div class="form-text">Paste the full YouTube video URL here</div>
-                                </div>
+            <!-- Tag Suggestions -->
+            <div class="tool-card">
+                <h3>Tag Suggestions</h3>
+                <p class="text-secondary">Popular and trending tags in similar categories</p>
 
-                                <div class="d-grid">
+                <div class="tag-list" id="suggestedTags">
+                    <!-- Will be populated dynamically -->
+                </div>
+
+                <div class="alert alert-info mt-4">
+                    <i class="fas fa-lightbulb"></i>
+                    Pro Tip: Mix popular and niche-specific tags for better visibility. Aim for 10-15 relevant tags per video.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Include -->
+    <div include-html="../../components/footer.html"></div>
                                     <button type="button" class="btn btn-primary" id="fetchButton">
                                         <i class="fas fa-search"></i> Extract Tags
                                     </button>
@@ -132,211 +202,203 @@
     <!-- Custom JS -->
     <script src="/js/main.js"></script>
     <!-- Tool-specific JS -->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/social-tools.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const videoUrl = document.getElementById('videoUrl');
-            const fetchButton = document.getElementById('fetchButton');
-            const clearButton = document.getElementById('clearButton');
-            const videoInfoCard = document.getElementById('videoInfoCard');
-            const tagsCard = document.getElementById('tagsCard');
-            const analysisCard = document.getElementById('analysisCard');
-            const videoInfo = document.getElementById('videoInfo');
-            const tagsContainer = document.getElementById('tagsContainer');
-            const analysisContainer = document.getElementById('analysisContainer');
-            const history = document.getElementById('history');
-            let extractionHistory = [];
+        let currentVideoId = '';
+        let currentMetadata = null;
+        let currentTags = [];
+        let currentCategory = 'all';
 
-            // Extract video ID from URL
-            function extractVideoId(url) {
-                const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-                const match = url.match(regExp);
-                return match ? match[1] : null;
+        async function extractTags() {
+            const urlInput = document.getElementById('videoUrl');
+            const url = urlInput.value.trim();
+
+            if (!socialTools.videoInfo.validateUrl(url, 'youtube')) {
+                socialTools.showToast('Please enter a valid YouTube URL', 'error');
+                return;
             }
 
-            // Fetch video tags
-            async function fetchTags() {
-                try {
-                    const url = videoUrl.value.trim();
-                    const videoId = extractVideoId(url);
-                    
-                    if (!videoId) {
-                        throw new Error('Please enter a valid YouTube video URL');
-                    }
+            try {
+                currentVideoId = socialTools.videoInfo.extractVideoId(url, 'youtube');
+                if (!currentVideoId) throw new Error('Could not extract video ID');
 
-                    // Show loading state
-                    tagsContainer.innerHTML = `
-                        <div class="text-center">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <p class="mt-2">Extracting tags...</p>
-                        </div>
-                    `;
-                    videoInfoCard.style.display = 'block';
-                    tagsCard.style.display = 'block';
-                    analysisCard.style.display = 'none';
+                // Show loading state
+                document.getElementById('results').style.display = 'none';
+                socialTools.showToast('Analyzing video tags...', 'info');
 
-                    // Fetch video data (simulated for demo)
-                    // In a real implementation, you would need to use YouTube's API
-                    const videoData = {
-                        id: videoId,
-                        title: 'Sample YouTube Video Title',
-                        channel: 'Example Channel',
-                        views: '1.2M',
-                        likes: '45K',
-                        tags: [
-                            'gaming', 'minecraft', 'let\'s play', 'survival', 'tutorial',
-                            'gaming channel', 'minecraft tips', 'minecraft tricks',
-                            'minecraft survival', 'minecraft gameplay'
-                        ]
-                    };
-
-                    // Display video information
-                    videoInfo.innerHTML = `
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Title:</strong> ${videoData.title}</p>
-                                <p><strong>Channel:</strong> ${videoData.channel}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Views:</strong> ${videoData.views}</p>
-                                <p><strong>Likes:</strong> ${videoData.likes}</p>
-                            </div>
-                        </div>
-                    `;
-
-                    // Display tags
-                    tagsContainer.innerHTML = `
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">Found ${videoData.tags.length} tags</h6>
-                                <button class="btn btn-sm btn-outline-primary" onclick="copyTags()">
-                                    <i class="fas fa-copy"></i> Copy All Tags
-                                </button>
-                            </div>
-                        </div>
-                        <div class="tags-container">
-                            ${videoData.tags.map(tag => `
-                                <span class="badge bg-primary me-2 mb-2">${tag}</span>
-                            `).join('')}
-                        </div>
-                    `;
-
-                    // Display analysis
-                    const tagLength = videoData.tags.length;
-                    const avgLength = videoData.tags.reduce((acc, tag) => acc + tag.length, 0) / tagLength;
-                    const hasLongTags = videoData.tags.some(tag => tag.length > 20);
-                    const hasShortTags = videoData.tags.some(tag => tag.length < 3);
-
-                    analysisContainer.innerHTML = `
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6>Tag Statistics</h6>
-                                <ul class="list-unstyled">
-                                    <li><i class="fas fa-tags"></i> Total Tags: ${tagLength}</li>
-                                    <li><i class="fas fa-ruler"></i> Average Length: ${avgLength.toFixed(1)} characters</li>
-                                    <li><i class="fas fa-check-circle"></i> Tag Count: ${tagLength <= 15 ? 'Good' : 'Too many'}</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>Recommendations</h6>
-                                <ul class="list-unstyled">
-                                    ${tagLength > 15 ? '<li><i class="fas fa-exclamation-triangle text-warning"></i> Consider reducing number of tags</li>' : ''}
-                                    ${hasLongTags ? '<li><i class="fas fa-exclamation-triangle text-warning"></i> Some tags are too long</li>' : ''}
-                                    ${hasShortTags ? '<li><i class="fas fa-exclamation-triangle text-warning"></i> Some tags are too short</li>' : ''}
-                                    ${!hasLongTags && !hasShortTags && tagLength <= 15 ? 
-                                        '<li><i class="fas fa-check-circle text-success"></i> Tags look good!</li>' : ''}
-                                </ul>
-                            </div>
-                        </div>
-                    `;
-                    analysisCard.style.display = 'block';
-
-                    // Add to history
-                    extractionHistory.unshift({
-                        videoId: videoId,
-                        title: videoData.title,
-                        timestamp: new Date().toLocaleString()
-                    });
-
-                    // Update history display
-                    updateHistory();
-                } catch (error) {
-                    tagsContainer.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h4 class="alert-heading">Error</h4>
-                            <p class="mb-0">${error.message}</p>
-                        </div>
-                    `;
-                }
+                // Get video metadata
+                currentMetadata = await socialTools.youtube.getVideoMetadata(currentVideoId);
+                currentTags = currentMetadata.tags || [];
+                
+                // Update UI
+                updateVideoInfo();
+                updateTagCloud();
+                updateTagStats();
+                generateSuggestions();
+                
+                document.getElementById('results').style.display = 'block';
+                socialTools.showToast('Tags extracted successfully!', 'success');
+            } catch (err) {
+                socialTools.showToast('Failed to extract tags: ' + err.message, 'error');
             }
+        }
 
-            // Copy tags to clipboard
-            window.copyTags = function() {
-                const tags = Array.from(document.querySelectorAll('.tags-container .badge'))
-                    .map(badge => badge.textContent)
-                    .join(', ');
-                navigator.clipboard.writeText(tags).then(() => {
-                    const button = document.querySelector('.btn-outline-primary');
-                    const originalText = button.innerHTML;
-                    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    setTimeout(() => {
-                        button.innerHTML = originalText;
-                    }, 2000);
-                });
-            };
+        function updateVideoInfo() {
+            if (!currentMetadata) return;
 
-            // Update history display
-            function updateHistory() {
-                if (extractionHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No tags extracted yet</p>';
-                    return;
-                }
+            document.getElementById('videoThumbnail').src = currentMetadata.thumbnails.high;
+            document.getElementById('videoTitle').textContent = currentMetadata.title;
+            document.getElementById('videoStats').textContent = `${currentTags.length} tags found`;
+        }
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Video</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${extractionHistory.slice(0, 5).map(item => `
-                                    <tr>
-                                        <td>${item.timestamp}</td>
-                                        <td>${item.title}</td>
-                                        <td>
-                                            <a href="https://www.youtube.com/watch?v=${item.videoId}" 
-                                               target="_blank" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-external-link-alt"></i> View
-                                            </a>
-                                        </td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
+        function updateTagCloud() {
+            const tagCloud = document.getElementById('tagCloud');
+            tagCloud.innerHTML = '';
+
+            const tagsToShow = currentCategory === 'all' ? currentTags : 
+                             filterTagsByCategory(currentTags, currentCategory);
+
+            tagsToShow.forEach(tag => {
+                const tagEl = document.createElement('div');
+                tagEl.className = 'tag-item';
+                tagEl.innerHTML = `
+                    <span>${tag}</span>
+                    <i class="fas fa-copy remove-tag" onclick="copyTag('${tag}')"></i>
                 `;
-            }
+                tagCloud.appendChild(tagEl);
+            });
+        }
 
-            // Clear form
-            function clearForm() {
-                videoUrl.value = '';
-                videoInfoCard.style.display = 'none';
-                tagsCard.style.display = 'none';
-                analysisCard.style.display = 'none';
-                videoInfo.innerHTML = '';
-                tagsContainer.innerHTML = '';
-                analysisContainer.innerHTML = '';
-            }
+        function updateTagStats() {
+            const total = currentTags.length;
+            const popular = currentTags.filter(tag => isPopularTag(tag)).length;
+            const niche = total - popular;
+            const score = calculateTagScore(currentTags);
 
-            // Event listeners
-            fetchButton.addEventListener('click', fetchTags);
-            clearButton.addEventListener('click', clearForm);
+            document.getElementById('totalTags').textContent = total;
+            document.getElementById('popularTags').textContent = popular;
+            document.getElementById('nicheTags').textContent = niche;
+            document.getElementById('tagScore').textContent = score + '%';
+        }
+
+        function generateSuggestions() {
+            const suggestions = getTagSuggestions(currentTags);
+            const suggestedTags = document.getElementById('suggestedTags');
+            suggestedTags.innerHTML = '';
+
+            suggestions.forEach(tag => {
+                const tagEl = document.createElement('div');
+                tagEl.className = 'tag-item';
+                tagEl.innerHTML = `
+                    <span>${tag}</span>
+                    <i class="fas fa-plus remove-tag" onclick="addTag('${tag}')"></i>
+                `;
+                suggestedTags.appendChild(tagEl);
+            });
+        }
+
+        function isPopularTag(tag) {
+            // This would need real data, using mock implementation
+            const popularKeywords = ['tutorial', 'how to', 'guide', 'tips', 'review'];
+            return popularKeywords.some(keyword => tag.toLowerCase().includes(keyword));
+        }
+
+        function calculateTagScore(tags) {
+            // Mock scoring algorithm
+            const hasOptimalCount = tags.length >= 10 && tags.length <= 15;
+            const hasPopularTags = tags.some(tag => isPopularTag(tag));
+            const hasNicheTags = tags.some(tag => !isPopularTag(tag));
+            
+            let score = 0;
+            if (hasOptimalCount) score += 40;
+            if (hasPopularTags) score += 30;
+            if (hasNicheTags) score += 30;
+            
+            return score;
+        }
+
+        function getTagSuggestions(currentTags) {
+            // This would need to be connected to a real tag suggestion API
+            return [
+                'youtube tips 2025',
+                'content creation',
+                'video optimization',
+                'social media strategy',
+                'youtube algorithm',
+                'viral content tips'
+            ];
+        }
+
+        async function copyTag(tag) {
+            await socialTools.copyToClipboard(tag);
+        }
+
+        async function copyAllTags() {
+            const tags = currentCategory === 'all' ? currentTags : 
+                        filterTagsByCategory(currentTags, currentCategory);
+            await socialTools.copyToClipboard(tags.join(', '));
+        }
+
+        function downloadTags() {
+            const tags = currentCategory === 'all' ? currentTags : 
+                        filterTagsByCategory(currentTags, currentCategory);
+            const content = tags.join('\n');
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'youtube-tags.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            socialTools.showToast('Tags downloaded successfully!', 'success');
+        }
+
+        function filterTagsByCategory(tags, category) {
+            switch (category) {
+                case 'trending':
+                    return tags.filter(tag => isPopularTag(tag));
+                case 'niche':
+                    return tags.filter(tag => !isPopularTag(tag));
+                case 'related':
+                    return getRelatedTags(tags);
+                case 'custom':
+                    return getCustomTags(tags);
+                default:
+                    return tags;
+            }
+        }
+
+        function getRelatedTags(tags) {
+            // This would need to be connected to a real related tags API
+            return tags.slice(0, 5);
+        }
+
+        function getCustomTags(tags) {
+            // This would need user preferences/custom tags implementation
+            return tags.filter(tag => tag.startsWith('#'));
+        }
+
+        // Handle category selection
+        document.getElementById('tagCategories').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('quality-option')) return;
+            
+            // Update active state
+            document.querySelectorAll('.quality-option').forEach(btn => 
+                btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            // Update category and refresh tag cloud
+            currentCategory = e.target.dataset.category;
+            updateTagCloud();
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            includeHTML();
         });
     </script>
 </body>
-</html> 
+</html>

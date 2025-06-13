@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,22 +14,82 @@
     <link href="../../styles/main.css" rel="stylesheet">
     <link href="../../styles/theme.css" rel="stylesheet">
     <style>
+        :root {
+            --card-bg: #ffffff;
+            --card-border: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.075);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-color: #0d6efd;
+            --hover-bg: #f8f9fa;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+            --timer-bg: #f8f9fa;
+            --timer-border: #dee2e6;
+            --timer-text: #212529;
+            --timer-shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #2d2d2d;
+            --card-border: #404040;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #0d6efd;
+            --hover-bg: #3d3d3d;
+            --input-bg: #2d2d2d;
+            --border-color: #404040;
+            --timer-bg: #2d2d2d;
+            --timer-border: #404040;
+            --timer-text: #ffffff;
+            --timer-shadow: rgba(0, 0, 0, 0.3);
+        }
+
         .timer-display {
             font-size: 4rem;
             font-weight: bold;
             font-family: monospace;
             text-align: center;
             margin: 2rem 0;
+            color: var(--timer-text);
+            background: var(--timer-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--timer-border);
+            box-shadow: 0 4px 15px var(--timer-shadow);
+            transition: all 0.3s ease;
         }
+
         .timer-controls {
             display: flex;
             gap: 1rem;
             justify-content: center;
             margin-bottom: 2rem;
         }
+
         .timer-input {
             max-width: 200px;
         }
+
+        .timer-input .form-control {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .timer-input .form-control:focus {
+            background: var(--input-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            color: var(--text-primary);
+        }
+
+        .timer-input .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
         .timer-presets {
             display: flex;
             gap: 0.5rem;
@@ -37,17 +97,97 @@
             justify-content: center;
             margin-bottom: 1rem;
         }
+
         .timer-preset-btn {
             min-width: 80px;
+            color: var(--text-primary);
+            border-color: var(--border-color);
+            background: var(--card-bg);
         }
+
+        .timer-preset-btn:hover {
+            background: var(--hover-bg);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
         .timer-alert {
             display: none;
             text-align: center;
             margin-top: 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
         }
+
         .timer-progress {
             height: 10px;
             margin: 1rem 0;
+            background: var(--timer-bg);
+            border: 1px solid var(--timer-border);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: 0 4px 15px var(--card-shadow);
+        }
+
+        .card-body {
+            color: var(--text-primary);
+        }
+
+        .card h1 {
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            color: var(--text-primary);
+        }
+
+        .btn-danger {
+            color: var(--text-primary);
+        }
+
+        /* Custom scrollbar for dark theme */
+        [data-theme="dark"] ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 4px;
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .timer-display {
+                font-size: 3rem;
+            }
+            .timer-controls {
+                flex-wrap: wrap;
+            }
+            .timer-preset-btn {
+                min-width: 70px;
+            }
         }
     </style>
 </head>

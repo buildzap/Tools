@@ -1,389 +1,371 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitter Character Counter - Multi-Tools</title>
-    <!-- Bootstrap 5 CSS -->
+    <title>Twitter Character Counter - Social Tools</title>
+    <meta name="description" content="Advanced Twitter character counter with real-time analytics and suggestions for optimal tweets.">
+    
+    <!-- Stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <link href="../../styles/social-tools-dark.css" rel="stylesheet">
+
     <style>
-        .character-count {
-            font-size: 2rem;
-            font-weight: bold;
-            text-align: center;
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+        .twitter-preview {
+            background: var(--surface-2);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-        .character-count.safe {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .character-count.warning {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        .character-count.danger {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .tweet-preview {
-            background-color: #f8f9fa;
-            border-radius: 4px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-        .tweet-preview .tweet-header {
+
+        .preview-header {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
-        .tweet-preview .tweet-avatar {
+
+        .preview-avatar {
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            margin-right: 10px;
-            background-color: #e9ecef;
+            background: var(--surface-3);
         }
-        .tweet-preview .tweet-content {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .tweet-preview .tweet-footer {
-            margin-top: 10px;
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-        .tweet-stats {
+
+        .preview-engagement {
             display: flex;
-            gap: 15px;
-            margin-top: 10px;
+            gap: 2rem;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
         }
-        .tweet-stat {
+
+        .preview-engagement i {
+            margin-right: 0.5rem;
+        }
+
+        .char-count {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+        }
+
+        .char-count-circle {
+            fill: none;
+            stroke: var(--surface-3);
+            stroke-width: 3;
+        }
+
+        .char-count-progress {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 3;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.2s;
+        }
+
+        .char-count-progress.warning {
+            stroke: var(--warning);
+        }
+
+        .char-count-progress.error {
+            stroke: var(--error);
+        }
+
+        .char-count-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--surface-2);
+            border-radius: var(--radius-md);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .suggestion-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--surface-2);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: var(--surface-3);
+            transform: translateX(4px);
+        }
+
+        .suggestion-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+        }
+
+        .suggestion-text {
+            flex-grow: 1;
+            font-size: 0.875rem;
         }
     </style>
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <div class="social-tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <h1><i class="fab fa-twitter me-2"></i>Twitter Character Counter</h1>
+            <p class="text-secondary">Create the perfect tweet with our advanced character counter</p>
+        </div>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fab fa-twitter"></i> Twitter Character Counter</h1>
-                <p>Count characters for your tweets with Twitter's character counting rules</p>
+        <!-- Main Content -->
+        <div class="tool-content">
+            <!-- Left Column - Editor -->
+            <div class="tool-main">
+                <!-- Tweet Editor -->
+                <div class="tool-card mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Compose Tweet</h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline btn-sm" id="addEmoji">
+                                <i class="far fa-smile me-2"></i>Add Emoji
+                            </button>
+                            <button class="btn btn-outline btn-sm" id="addHashtag">
+                                <i class="fas fa-hashtag me-2"></i>Add Hashtag
+                            </button>
+                        </div>
+                    </div>
+                    <textarea class="form-control mb-3" id="tweetContent" rows="4" 
+                        placeholder="What's happening?"></textarea>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary flex-grow-1" id="copyBtn">
+                            <i class="fas fa-copy me-2"></i>Copy Tweet
+                        </button>
+                        <button class="btn btn-outline flex-grow-1" id="clearBtn">
+                            <i class="fas fa-trash me-2"></i>Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Preview -->
+                <div class="tool-card">
+                    <h5 class="mb-3"><i class="fas fa-eye me-2"></i>Live Preview</h5>
+                    <div class="twitter-preview" id="preview">
+                        <div class="preview-header">
+                            <div class="preview-avatar"></div>
+                            <div>
+                                <div class="fw-bold">Your Account</div>
+                                <small class="text-secondary">@youraccount · Just now</small>
+                            </div>
+                        </div>
+                        <div class="preview-content" id="previewContent">
+                            What's happening?
+                        </div>
+                        <div class="preview-engagement">
+                            <span><i class="far fa-comment"></i>0</span>
+                            <span><i class="fas fa-retweet"></i>0</span>
+                            <span><i class="far fa-heart"></i>0</span>
+                            <span><i class="far fa-bookmark"></i>0</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="tweetForm">
-                                <!-- Tweet Input -->
-                                <div class="mb-3">
-                                    <label for="tweetContent" class="form-label">Tweet Content</label>
-                                    <textarea class="form-control" id="tweetContent" rows="4" 
-                                              placeholder="Type your tweet here..." required></textarea>
-                                </div>
-
-                                <!-- Options -->
-                                <div class="mb-3">
-                                    <label class="form-label">Options</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="includeMedia" checked>
-                                        <label class="form-check-label" for="includeMedia">
-                                            Include media (images, GIFs, videos)
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="includeLinks" checked>
-                                        <label class="form-check-label" for="includeLinks">
-                                            Include links (counts as 23 characters)
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="includeMentions" checked>
-                                        <label class="form-check-label" for="includeMentions">
-                                            Include mentions (@username)
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-primary" id="analyzeButton">
-                                        <i class="fas fa-calculator"></i> Analyze Tweet
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary" id="clearButton">
-                                        <i class="fas fa-eraser"></i> Clear
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+            <!-- Right Column - Analytics -->
+            <div class="tool-sidebar">
+                <!-- Character Count -->
+                <div class="tool-card mb-4">
+                    <h5 class="text-center mb-3"><i class="fas fa-text-width me-2"></i>Character Count</h5>
+                    <div class="char-count mb-3">
+                        <svg viewBox="0 0 36 36">
+                            <path class="char-count-circle"
+                                d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            <path class="char-count-progress" id="charProgress"
+                                d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            <text x="18" y="20.35" class="char-count-text" id="charCount">280</text>
+                        </svg>
                     </div>
-
-                    <!-- Character Count -->
-                    <div class="card mt-4" id="countCard" style="display: none;">
-                        <div class="card-body">
-                            <div class="character-count" id="characterCount">
-                                <span id="countNumber">0</span>
-                                <span id="countStatus"></span>
-                            </div>
-                            <div class="progress mb-3">
-                                <div class="progress-bar" id="countProgress" role="progressbar" 
-                                     style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="280"></div>
-                            </div>
-                            <div class="tweet-stats">
-                                <div class="tweet-stat">
-                                    <i class="fas fa-font"></i>
-                                    <span id="wordCount">0 words</span>
-                                </div>
-                                <div class="tweet-stat">
-                                    <i class="fas fa-hashtag"></i>
-                                    <span id="hashtagCount">0 hashtags</span>
-                                </div>
-                                <div class="tweet-stat">
-                                    <i class="fas fa-at"></i>
-                                    <span id="mentionCount">0 mentions</span>
-                                </div>
-                                <div class="tweet-stat">
-                                    <i class="fas fa-link"></i>
-                                    <span id="linkCount">0 links</span>
-                                </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="stat-item">
+                                <div class="stat-value" id="wordCount">0</div>
+                                <div class="stat-label">Words</div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Tweet Preview -->
-                    <div class="card mt-4" id="previewCard" style="display: none;">
-                        <div class="card-body">
-                            <h5 class="card-title">Tweet Preview</h5>
-                            <div class="tweet-preview">
-                                <div class="tweet-header">
-                                    <div class="tweet-avatar"></div>
-                                    <div>
-                                        <div class="fw-bold">Your Name</div>
-                                        <div class="text-muted">@yourusername</div>
-                                    </div>
-                                </div>
-                                <div class="tweet-content" id="tweetPreview"></div>
-                                <div class="tweet-footer">
-                                    <div class="text-muted">Just now</div>
-                                    <div class="tweet-stats">
-                                        <div class="tweet-stat">
-                                            <i class="far fa-comment"></i>
-                                            <span>0</span>
-                                        </div>
-                                        <div class="tweet-stat">
-                                            <i class="fas fa-retweet"></i>
-                                            <span>0</span>
-                                        </div>
-                                        <div class="tweet-stat">
-                                            <i class="far fa-heart"></i>
-                                            <span>0</span>
-                                        </div>
-                                        <div class="tweet-stat">
-                                            <i class="far fa-share-square"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Recent Tweets</h5>
-                            <div id="history" class="text-center text-muted">
-                                No tweets analyzed yet
+                        <div class="col-6">
+                            <div class="stat-item">
+                                <div class="stat-value" id="hashtagCount">0</div>
+                                <div class="stat-label">Hashtags</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
-
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Character Counter</h5>
-                            <p class="card-text">
-                                Count characters for your tweets with Twitter's character counting rules.
-                                Get real-time feedback and preview your tweet.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Character counting</li>
-                                <li><i class="fas fa-check text-success"></i> Tweet preview</li>
-                                <li><i class="fas fa-check text-success"></i> Media support</li>
-                                <li><i class="fas fa-check text-success"></i> Link counting</li>
-                                <li><i class="fas fa-check text-success"></i> Statistics</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Links are counted as 23 characters, regardless of their length.</small>
+                <!-- Suggestions -->
+                <div class="tool-card mb-4">
+                    <h5 class="mb-3"><i class="fas fa-lightbulb me-2"></i>Suggestions</h5>
+                    <div id="suggestions">
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <div class="suggestion-text">
+                                Use a URL shortener for longer links
+                            </div>
+                        </div>
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon">
+                                <i class="fas fa-hashtag"></i>
+                            </div>
+                            <div class="suggestion-text">
+                                Add relevant hashtags for better reach
+                            </div>
+                        </div>
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon">
+                                <i class="far fa-image"></i>
+                            </div>
+                            <div class="suggestion-text">
+                                Add media to increase engagement
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="tool-card">
+                    <h5 class="mb-3"><i class="fas fa-info-circle me-2"></i>Tips</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <i class="fas fa-check-circle text-success"></i>
+                            Keep it concise and clear
+                        </li>
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <i class="fas fa-check-circle text-success"></i>
+                            Use emojis sparingly
+                        </li>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="fas fa-check-circle text-success"></i>
+                            End with a call to action
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
+    <script src="../../js/social-tools.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Elements
             const tweetContent = document.getElementById('tweetContent');
-            const analyzeButton = document.getElementById('analyzeButton');
-            const clearButton = document.getElementById('clearButton');
-            const countCard = document.getElementById('countCard');
-            const previewCard = document.getElementById('previewCard');
-            const characterCount = document.getElementById('characterCount');
-            const countNumber = document.getElementById('countNumber');
-            const countStatus = document.getElementById('countStatus');
-            const countProgress = document.getElementById('countProgress');
-            const tweetPreview = document.getElementById('tweetPreview');
-            const history = document.getElementById('history');
-            let tweetHistory = [];
+            const previewContent = document.getElementById('previewContent');
+            const charCount = document.getElementById('charCount');
+            const charProgress = document.getElementById('charProgress');
+            const wordCount = document.getElementById('wordCount');
+            const hashtagCount = document.getElementById('hashtagCount');
+            const copyBtn = document.getElementById('copyBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const addEmoji = document.getElementById('addEmoji');
+            const addHashtag = document.getElementById('addHashtag');
 
-            // Analyze tweet
-            function analyzeTweet() {
-                const text = tweetContent.value.trim();
-                if (!text) {
-                    return;
+            const TWITTER_LIMIT = 280;
+            const CIRCLE_LENGTH = 2 * Math.PI * 15.9155;
+            charProgress.style.strokeDasharray = CIRCLE_LENGTH;
+
+            // Update counters
+            function updateCounters() {
+                const text = tweetContent.value || "What's happening?";
+                const count = socialTools.charCounter.count(text, 'twitter');
+                const remaining = TWITTER_LIMIT - count.chars;
+                const progress = (remaining / TWITTER_LIMIT) * CIRCLE_LENGTH;
+
+                // Update character count
+                charCount.textContent = remaining;
+                charProgress.style.strokeDashoffset = CIRCLE_LENGTH - progress;
+
+                // Update progress color
+                charProgress.classList.remove('warning', 'error');
+                if (remaining < 0) {
+                    charProgress.classList.add('error');
+                } else if (remaining < 20) {
+                    charProgress.classList.add('warning');
                 }
 
-                // Get options
-                const includeMedia = document.getElementById('includeMedia').checked;
-                const includeLinks = document.getElementById('includeLinks').checked;
-                const includeMentions = document.getElementById('includeMentions').checked;
-
-                // Count characters
-                let count = text.length;
-                let wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
-                let hashtagCount = (text.match(/#\w+/g) || []).length;
-                let mentionCount = (text.match(/@\w+/g) || []).length;
-                let linkCount = (text.match(/https?:\/\/\S+/g) || []).length;
-
-                // Apply Twitter's character counting rules
-                if (includeLinks) {
-                    count = count - (linkCount * 23) + (linkCount * 23); // Links count as 23 characters
-                }
-                if (includeMedia) {
-                    count += 24; // Media attachments count as 24 characters
-                }
-                if (!includeMentions) {
-                    count -= mentionCount; // Don't count mentions if option is disabled
-                }
-
-                // Update character count display
-                countNumber.textContent = count;
-                countProgress.style.width = `${(count / 280) * 100}%`;
-                countProgress.setAttribute('aria-valuenow', count);
-
-                // Update status
-                if (count <= 280) {
-                    characterCount.className = 'character-count safe';
-                    countStatus.textContent = ' characters remaining';
-                    countNumber.textContent = 280 - count;
-                } else {
-                    characterCount.className = 'character-count danger';
-                    countStatus.textContent = ' characters over limit';
-                    countNumber.textContent = count - 280;
-                }
-
-                // Update statistics
-                document.getElementById('wordCount').textContent = `${wordCount} words`;
-                document.getElementById('hashtagCount').textContent = `${hashtagCount} hashtags`;
-                document.getElementById('mentionCount').textContent = `${mentionCount} mentions`;
-                document.getElementById('linkCount').textContent = `${linkCount} links`;
+                // Update other stats
+                wordCount.textContent = count.words;
+                hashtagCount.textContent = count.hashtags;
 
                 // Update preview
-                tweetPreview.textContent = text;
-
-                // Show cards
-                countCard.style.display = 'block';
-                previewCard.style.display = 'block';
-
-                // Add to history
-                tweetHistory.unshift({
-                    content: text.substring(0, 50) + (text.length > 50 ? '...' : ''),
-                    count: count,
-                    timestamp: new Date().toLocaleString()
-                });
-
-                // Update history display
-                updateHistory();
+                previewContent.textContent = text;
             }
 
-            // Clear form
-            function clearForm() {
-                document.getElementById('tweetForm').reset();
-                countCard.style.display = 'none';
-                previewCard.style.display = 'none';
-            }
+            // Event Listeners
+            tweetContent.addEventListener('input', updateCounters);
 
-            // Update history display
-            function updateHistory() {
-                if (tweetHistory.length === 0) {
-                    history.innerHTML = '<p class="text-muted">No tweets analyzed yet</p>';
-                    return;
-                }
+            copyBtn.addEventListener('click', () => {
+                socialTools.copyToClipboard(tweetContent.value, copyBtn);
+            });
 
-                history.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Content</th>
-                                    <th>Characters</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${tweetHistory.slice(0, 5).map(item => `
-                                    <tr>
-                                        <td>${item.timestamp}</td>
-                                        <td>${item.content}</td>
-                                        <td>${item.count}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            }
+            clearBtn.addEventListener('click', () => {
+                tweetContent.value = '';
+                updateCounters();
+                socialTools.showToast('Content cleared', 'info');
+            });
 
-            // Event listeners
-            analyzeButton.addEventListener('click', analyzeTweet);
-            clearButton.addEventListener('click', clearForm);
-            tweetContent.addEventListener('input', analyzeTweet);
+            addEmoji.addEventListener('click', () => {
+                const emojis = ['😊', '👍', '🎉', '💡', '✨', '🔥'];
+                const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                tweetContent.value += ' ' + randomEmoji;
+                updateCounters();
+            });
+
+            addHashtag.addEventListener('click', () => {
+                const hashtags = socialTools.hashtags.getTrending();
+                const randomTag = hashtags[Math.floor(Math.random() * hashtags.length)];
+                tweetContent.value += ' ' + randomTag;
+                updateCounters();
+            });
+
+            // Initialize
+            updateCounters();
         });
     </script>
 </body>
-</html> 
+</html>

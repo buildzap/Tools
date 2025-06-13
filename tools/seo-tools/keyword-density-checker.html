@@ -1,206 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keyword Density Checker - Multi-Tools</title>
-    <!-- Bootstrap 5 CSS -->
+    <title>Keyword Density Checker - SEO Tools</title>
+    <meta name="description" content="Analyze your content's keyword density and get insights about keyword usage patterns. Supports single and multi-word phrases.">
+    
+    <!-- Stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/styles/main.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.css" rel="stylesheet">
+    <link href="../../styles/main.css" rel="stylesheet">
+    <link href="../../styles/theme.css" rel="stylesheet">
+    <link href="../../styles/seo-tools-dark.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-placeholder"></div>
+    <div class="seo-tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header text-center">
+            <h1 class="mb-3"><i class="fas fa-percentage me-2"></i>Keyword Density Checker</h1>
+            <p class="text-secondary mb-0">Analyze your content's keyword usage and get insights about optimal keyword density</p>
+        </div>
 
-    <!-- Main Content -->
-    <main class="container py-4">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i class="fas fa-percentage"></i> Keyword Density Checker</h1>
-                <p>Analyze keyword density in your content</p>
-            </div>
-
-            <!-- Ad Space -->
-            <div class="ad-space mb-4">
-                <p class="text-muted">Advertisement Space</p>
-            </div>
-
-            <!-- Tool Content -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="densityForm">
-                                <div class="mb-3">
-                                    <label for="content" class="form-label">Content</label>
-                                    <textarea class="form-control" id="content" rows="10" required></textarea>
-                                    <div class="form-text">
-                                        <span id="wordCount">0</span> words
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="minWordLength" class="form-label">Minimum Word Length</label>
-                                    <input type="number" class="form-control" id="minWordLength" min="1" max="20" value="3">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="stopWords" class="form-label">Stop Words</label>
-                                    <textarea class="form-control" id="stopWords" rows="3" placeholder="Enter stop words separated by commas"></textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="caseSensitive">
-                                        <label class="form-check-label" for="caseSensitive">
-                                            Case Sensitive
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-search"></i> Analyze Density
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Results Section -->
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Analysis Results</h5>
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Keyword</th>
-                                            <th>Count</th>
-                                            <th>Density</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="resultsTable">
-                                        <tr>
-                                            <td colspan="4" class="text-center">No results yet</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+        <!-- Main Content -->
+        <div class="tool-content">
+            <!-- Left Column - Input Form -->
+            <div class="tool-main">
+                <div class="tool-card">
+                    <form id="keywordForm">
+                        <!-- Content Input -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-file-alt me-2"></i>Content</h5>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="content" rows="10" placeholder="Paste your content here..." required></textarea>
                             </div>
-                            <div class="d-grid gap-2 mt-3">
-                                <button class="btn btn-outline-primary" id="downloadButton" disabled>
-                                    <i class="fas fa-download"></i> Download Report
-                                </button>
+                            <div class="d-flex justify-content-between">
+                                <div class="text-secondary">
+                                    <small>Words: <span id="wordCount">0</span></small>
+                                </div>
+                                <div class="text-secondary">
+                                    <small>Characters: <span id="charCount">0</span></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Analysis Options -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-cogs me-2"></i>Analysis Options</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Keywords to Track</label>
+                                    <input type="text" class="form-control" id="keywords" placeholder="Enter keywords, comma separated">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phrase Length</label>
+                                    <select class="form-control" id="phraseLength">
+                                        <option value="1">Single Words</option>
+                                        <option value="2">Two-Word Phrases</option>
+                                        <option value="3">Three-Word Phrases</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="checkbox" id="caseSensitive">
+                                <label class="form-check-label" for="caseSensitive">
+                                    Case Sensitive Analysis
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="excludeCommon" checked>
+                                <label class="form-check-label" for="excludeCommon">
+                                    Exclude Common Words
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-2"></i>Analyze Content
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column - Results -->
+            <div class="tool-sidebar">
+                <!-- Overview Card -->
+                <div class="tool-card">
+                    <h5><i class="fas fa-chart-pie me-2"></i>Content Overview</h5>
+                    <div class="row text-center g-3">
+                        <div class="col-6">
+                            <div class="p-3 rounded bg-surface-2">
+                                <h3 class="mb-0" id="keywordCount">0</h3>
+                                <small class="text-secondary">Unique Keywords</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded bg-surface-2">
+                                <h3 class="mb-0" id="densityScore">0%</h3>
+                                <small class="text-secondary">Average Density</small>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <!-- Ad Space -->
-                    <div class="ad-space mb-4">
-                        <p class="text-muted">Advertisement Space</p>
-                    </div>
+                <!-- Keyword Distribution Chart -->
+                <div class="tool-card">
+                    <h5><i class="fas fa-chart-bar me-2"></i>Keyword Distribution</h5>
+                    <canvas id="keywordChart" height="200"></canvas>
+                </div>
 
-                    <!-- Information Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Keyword Density</h5>
-                            <p class="card-text">
-                                Keyword density is the percentage of times a keyword appears in your content
-                                compared to the total number of words.
-                            </p>
-                            <h6>Features:</h6>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success"></i> Word count analysis</li>
-                                <li><i class="fas fa-check text-success"></i> Custom stop words</li>
-                                <li><i class="fas fa-check text-success"></i> Case sensitivity option</li>
-                                <li><i class="fas fa-check text-success"></i> Density recommendations</li>
-                            </ul>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle"></i>
-                                <small>Tip: Aim for a keyword density between 1-3% for optimal SEO results.</small>
-                            </div>
-                        </div>
+                <!-- Detailed Results -->
+                <div class="tool-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Detailed Results</h5>
+                        <button class="copy-btn" id="exportBtn">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Keyword/Phrase</th>
+                                    <th>Count</th>
+                                    <th>Density</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTable"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="/js/main.js"></script>
-    <!-- Tool-specific JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="../../js/seo-tools.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('densityForm');
+            const form = document.getElementById('keywordForm');
             const content = document.getElementById('content');
-            const wordCount = document.getElementById('wordCount');
+            const keywords = document.getElementById('keywords');
+            const phraseLength = document.getElementById('phraseLength');
+            const caseSensitive = document.getElementById('caseSensitive');
+            const excludeCommon = document.getElementById('excludeCommon');
             const resultsTable = document.getElementById('resultsTable');
-            const downloadButton = document.getElementById('downloadButton');
+            const exportBtn = document.getElementById('exportBtn');
+            let keywordChart = null;
 
-            // Update word count
-            content.addEventListener('input', function() {
-                const words = this.value.trim().split(/\s+/);
-                wordCount.textContent = words.length;
+            // Update word and character count
+            content.addEventListener('input', () => {
+                const text = content.value;
+                document.getElementById('charCount').textContent = seoTools.textAnalysis.characterCount(text);
+                document.getElementById('wordCount').textContent = seoTools.textAnalysis.wordCount(text);
             });
 
-            // Handle form submission
+            // Analyze content
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                analyzeDensity();
+                const text = content.value;
+                const targetKeywords = keywords.value ? keywords.value.split(',').map(k => k.trim()) : [];
+                const length = parseInt(phraseLength.value);
+                
+                const results = seoTools.textAnalysis.getPhraseFrequency(text, length, {
+                    caseSensitive: caseSensitive.checked,
+                    excludeCommon: excludeCommon.checked
+                });
+                
+                updateResults(results, targetKeywords);
+                seoTools.showToast('Content analyzed successfully!', 'success');
             });
 
-            // Analyze keyword density
-            function analyzeDensity() {
-                const text = content.value;
-                const minLength = parseInt(document.getElementById('minWordLength').value);
-                const caseSensitive = document.getElementById('caseSensitive').checked;
-                const stopWords = document.getElementById('stopWords').value
-                    .split(',')
-                    .map(word => word.trim().toLowerCase())
-                    .filter(word => word);
+            // Update results
+            function updateResults(results, targetKeywords) {
+                // Update statistics
+                document.getElementById('keywordCount').textContent = results.length;
+                const avgDensity = results.reduce((acc, curr) => acc + parseFloat(curr.density), 0) / results.length;
+                document.getElementById('densityScore').textContent = avgDensity.toFixed(2) + '%';
 
-                // Process text
-                let words = text
-                    .replace(/[^\w\s]/g, '')
-                    .split(/\s+/)
-                    .filter(word => word.length >= minLength);
-
-                if (!caseSensitive) {
-                    words = words.map(word => word.toLowerCase());
-                }
-
-                // Remove stop words
-                words = words.filter(word => !stopWords.includes(word.toLowerCase()));
-
-                // Count word frequency
-                const wordCount = {};
-                words.forEach(word => {
-                    wordCount[word] = (wordCount[word] || 0) + 1;
-                });
-
-                // Calculate density
-                const totalWords = words.length;
-                const results = Object.entries(wordCount)
-                    .map(([word, count]) => ({
-                        word,
-                        count,
-                        density: (count / totalWords * 100).toFixed(2)
-                    }))
-                    .sort((a, b) => b.count - a.count);
-
-                // Update results table
-                resultsTable.innerHTML = results.map(result => `
+                // Update table
+                resultsTable.innerHTML = results.slice(0, 20).map(result => `
                     <tr>
-                        <td>${result.word}</td>
+                        <td>${result.phrase}</td>
                         <td>${result.count}</td>
                         <td>${result.density}%</td>
                         <td>
@@ -209,43 +193,92 @@
                     </tr>
                 `).join('');
 
-                downloadButton.disabled = false;
+                // Update chart
+                updateChart(results.slice(0, 10));
             }
 
             // Get density status
             function getDensityStatus(density) {
-                const value = parseFloat(density);
-                if (value < 1) {
-                    return '<span class="text-warning"><i class="fas fa-exclamation-triangle"></i> Low</span>';
-                } else if (value > 3) {
-                    return '<span class="text-danger"><i class="fas fa-exclamation-circle"></i> High</span>';
-                } else {
-                    return '<span class="text-success"><i class="fas fa-check-circle"></i> Optimal</span>';
+                density = parseFloat(density);
+                if (density < 0.5) {
+                    return '<span class="status-badge warning">Low</span>';
+                } else if (density > 3) {
+                    return '<span class="status-badge error">High</span>';
                 }
+                return '<span class="status-badge success">Good</span>';
             }
 
-            // Handle download
-            downloadButton.addEventListener('click', function() {
-                const rows = Array.from(resultsTable.querySelectorAll('tr'));
-                const csv = [
-                    ['Keyword', 'Count', 'Density', 'Status'],
-                    ...rows.map(row => {
-                        const cells = Array.from(row.querySelectorAll('td'));
-                        return cells.map(cell => cell.textContent.trim());
-                    })
-                ].map(row => row.join(',')).join('\n');
+            // Update chart
+            function updateChart(results) {
+                const ctx = document.getElementById('keywordChart').getContext('2d');
+                
+                if (keywordChart) {
+                    keywordChart.destroy();
+                }
 
-                const blob = new Blob([csv], { type: 'text/csv' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'keyword-density-report.csv';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
+                keywordChart = seoTools.createChart(ctx, {
+                    labels: results.map(r => r.phrase),
+                    values: results.map(r => parseFloat(r.density))
+                }, {
+                    label: 'Keyword Density (%)',
+                    chartOptions: {
+                        scales: {
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Density (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Export results
+            exportBtn.addEventListener('click', () => {
+                const text = content.value;
+                const targetKeywords = keywords.value ? keywords.value.split(',').map(k => k.trim()) : [];
+                const length = parseInt(phraseLength.value);
+                const results = seoTools.textAnalysis.getPhraseFrequency(text, length, {
+                    caseSensitive: caseSensitive.checked,
+                    excludeCommon: excludeCommon.checked
+                });
+
+                const csvData = [
+                    ['Keyword/Phrase', 'Count', 'Density (%)', 'Is Target'],
+                    ...results.map(r => [r.phrase, r.count, r.density, targetKeywords.some(k => r.phrase.includes(k))])
+                ];
+
+                seoTools.exportToCsv(csvData, 'keyword-analysis.csv');
             });
         });
     </script>
+
+    <style>
+        .table { margin-bottom: 0; }
+        .table th, .table td { padding: 0.75rem; vertical-align: middle; }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.success {
+            background: rgba(67, 181, 129, 0.2);
+            color: var(--success-color);
+        }
+        
+        .status-badge.warning {
+            background: rgba(250, 166, 26, 0.2);
+            color: var(--warning-color);
+        }
+        
+        .status-badge.error {
+            background: rgba(240, 71, 71, 0.2);
+            color: var(--error-color);
+        }
+    </style>
 </body>
-</html> 
+</html>
